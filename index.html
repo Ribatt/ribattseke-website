@@ -26,6 +26,9 @@
 .lms-mod-row.done{opacity:.7;}
 .lms-mod-title{font-size:13.5px;font-weight:600;color:var(--fg);margin-bottom:2px;}
 .lms-mod-sub{font-size:11.5px;color:var(--fg3);}
+.lms-yt-link{display:inline-flex;align-items:center;gap:4px;margin-top:5px;font-size:11px;font-weight:600;color:#c4302b;text-decoration:none;padding:2px 7px;border-radius:4px;background:rgba(196,48,43,.08);transition:background .15s;}
+.lms-yt-link:hover{background:rgba(196,48,43,.18);}
+.lms-yt-link svg{flex-shrink:0;}
 .lms-mod-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:12px;white-space:nowrap;}
 .lms-mod-badge.pass{background:rgba(30,133,64,.12);color:var(--amb);}
 .lms-mod-badge.fail{background:rgba(192,57,43,.1);color:#c0392b;}
@@ -2894,11 +2897,56 @@ function lmsShowDash(){
   lmsShowView('lms-dash');
 }
 
+var _SESSION_VIDEOS={
+  p1:[
+    null,
+    'https://www.youtube.com/watch?v=t8QlzrQa3CM',
+    'https://www.youtube.com/watch?v=AQjx2WCrXDw',
+    'https://www.youtube.com/watch?v=7ITaozNXWWo',
+    'https://www.youtube.com/watch?v=n-I1vlX1Xig',
+    null,
+    null,
+    'https://www.youtube.com/watch?v=Ueb9yupmRQk',
+    null,
+    'https://www.youtube.com/watch?v=2QB4_I8B7Qg'
+  ],
+  p2:[
+    'https://www.youtube.com/watch?v=KkIs9ElRycU',
+    'https://www.youtube.com/watch?v=KkIs9ElRycU',
+    null,
+    'https://www.youtube.com/watch?v=Vj4LYWVNsEQ',
+    'https://www.youtube.com/watch?v=zZMpPDlVD2g',
+    null,
+    null,
+    null,
+    'https://www.youtube.com/watch?v=G5HS2HCW194',
+    null
+  ],
+  eir1:[null,null,null,null,null,null,null,null,null],
+  eir2:[null,null,null,null,null,null,null,null,null,null],
+  s101981:[
+    null,
+    null,
+    'https://www.youtube.com/watch?v=KkIs9ElRycU'
+  ],
+  s10292:[
+    'https://www.youtube.com/watch?v=zZMpPDlVD2g',
+    'https://www.youtube.com/watch?v=zZMpPDlVD2g',
+    'https://www.youtube.com/watch?v=G5HS2HCW194'
+  ],
+  s10313:[
+    'https://www.youtube.com/watch?v=G5HS2HCW194',
+    null,
+    null
+  ]
+};
+
 function _buildModList(paper,sessions,containerId){
   var container=document.getElementById(containerId);
   if(!container) return;
   container.innerHTML='';
   var prog=_lmsProgress[paper]||{};
+  var vids=_SESSION_VIDEOS[paper]||[];
   sessions.forEach(function(sess,i){
     var sid='s'+i;
     var rec=prog[sid]||{};
@@ -2906,9 +2954,11 @@ function _buildModList(paper,sessions,containerId){
     if(rec.passed){badge='Passed · '+rec.score+'%';badgeClass='pass';}
     else if(rec.attempts){badge='Attempts: '+rec.attempts;badgeClass='fail';}
     else{badge='Not started';badgeClass='new';}
+    var ytUrl=vids[i]||null;
+    var ytHtml=ytUrl?'<a class="lms-yt-link" href="'+ytUrl+'" target="_blank" rel="noopener" onclick="event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>Watch lesson</a>':'';
     var row=document.createElement('div');
     row.className='lms-mod-row'+(rec.passed?' done':'');
-    row.innerHTML='<div><div class="lms-mod-title">Session '+(i+1)+'</div><div class="lms-mod-sub">'+esc(sess.title)+'</div></div>'
+    row.innerHTML='<div><div class="lms-mod-title">Session '+(i+1)+'</div><div class="lms-mod-sub">'+esc(sess.title)+'</div>'+ytHtml+'</div>'
       +'<span class="lms-mod-badge '+badgeClass+'">'+badge+'</span>';
     row.onclick=(function(pp,ss){return function(){lmsStartQuiz(pp,ss);};})(paper,i);
     container.appendChild(row);
