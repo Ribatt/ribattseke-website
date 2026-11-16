@@ -847,6 +847,21 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <button class="svc-quote-btn" onclick="openSvcForm('consult')">Enquire</button>
         </div>
 
+        <!-- HellermannTyton PROKT Toolkit -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg></div>
+          <div>
+            <div class="svc-name">HellermannTyton PROKT Toolkit</div>
+            <div class="svc-tagline">17-piece VDE 1000V insulated electricians toolkit. Everything you need to start your career safely — in one water-resistant zip case.</div>
+          </div>
+          <div class="svc-stage">
+            <strong>Art.-No. 911-00386 | PROKT-PVC-BK</strong><br>
+            Includes TBM3030 digital clamp meter, CC22 cable cutters, HUK1 universal key, SEP180 &amp; SLN160 pliers, 8-piece insulated screwdriver set (INSSET), CCMP crimp tools, WAK2 knife and AW200. All VDE-rated to 1000V. Lifetime warranty on instruments. H 380mm × W 240mm PVC zip case.<br>
+            <a href="https://www.hellermanntyton.co.za/products/product-overview/tools/toolkits-and-tool-bags/911-00386" target="_blank" rel="noopener" style="color:var(--amb);font-weight:600;font-size:12px;margin-top:6px;display:inline-block;">View product on hellermanntyton.co.za ↗</a>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('prokt')">Enquire / Order</button>
+        </div>
+
       </div>
 
       <!-- Expandable quote forms (appear below the grid) -->
@@ -1263,6 +1278,39 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="ord-result" id="sf-consult-res" hidden></div>
       </div>
 
+      <!-- PROKT Toolkit Enquiry Form -->
+      <div class="svc-form-panel" id="svcf-prokt">
+        <p class="svc-form-ttl">HellermannTyton PROKT Toolkit — Enquiry / Order</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-prokt-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-prokt-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Are you a student, apprentice, or qualified electrician?</label>
+        <select class="ord-input" id="sf-prokt-role">
+          <option value="">Select one</option>
+          <option>Apprentice / TVET student</option>
+          <option>Qualified electrician starting out</option>
+          <option>Qualified electrician upgrading tools</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">How many kits do you need?</label>
+        <select class="ord-input" id="sf-prokt-qty">
+          <option value="1">1 kit</option>
+          <option value="2">2 kits</option>
+          <option value="3">3 kits</option>
+          <option value="5">5 kits (group/class order)</option>
+          <option value="other">Other quantity</option>
+        </select>
+        <label class="ord-lbl">Any questions about the kit?</label>
+        <textarea class="ord-input" id="sf-prokt-notes" rows="2" placeholder="e.g. availability, delivery, specific tools, pricing"></textarea>
+        <div class="ord-err" id="sf-prokt-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('prokt','PROKT Toolkit Enquiry')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('prokt')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-prokt-res" hidden></div>
+      </div>
+
     </div>
   </section>
 
@@ -1583,7 +1631,9 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="lms-card">
           <h3>Access key required</h3>
           <p>This platform is available to Africa TVET College students and paid study guide holders. Enter your access key below to create your account.</p>
-          <label class="lms-label">Access key</label>
+          <label class="lms-label">Cell number (linked to your key)</label>
+          <input class="lms-input" id="lms-access-phone" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
+          <label class="lms-label" style="margin-top:10px;">Access key</label>
           <input class="lms-input" id="lms-access-key" type="text" placeholder="e.g. ATVET-2026 or RIBA-A001" autocapitalize="characters">
           <div class="lms-err" id="lms-access-err"></div>
           <button class="lms-btn" onclick="lmsSubmitKey()">Activate Account</button>
@@ -1699,6 +1749,8 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <span>Donate<span class="donate-sub">keep us going</span></span>
 </a>
 
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script>
 (function(){
   var now=new Date();
@@ -1855,6 +1907,11 @@ function prepSvcNew(sid,sname){
     var loc=gv('sf-consult-loc');if(loc)lines.push('Location: '+loc);
     var u=gv('sf-consult-urgency');if(u)lines.push('Urgency: '+u);
     lines.push('','Note: Relevant photos or documents will follow via WhatsApp.');
+  } else if(sid==='prokt'){
+    var role=gv('sf-prokt-role');if(role)lines.push('Role: '+role);
+    var qty=gv('sf-prokt-qty');if(qty)lines.push('Quantity: '+qty+' kit(s)');
+    var notes=gv('sf-prokt-notes');if(notes)lines.push('Notes: '+notes);
+    lines.push('Product: HellermannTyton PROKT 17-Piece Electricians Toolkit (Art.-No. 911-00386)');
   }
   lines.push('','Please confirm availability and next steps.');
   var msg=lines.join('\n');
@@ -2667,8 +2724,11 @@ function lmsSignup(){
 
 function lmsSubmitKey(){
   var key=(document.getElementById('lms-access-key').value||'').trim();
+  var phone=(document.getElementById('lms-access-phone').value||'').trim().replace(/\s/g,'');
   var err=document.getElementById('lms-access-err');
   err.textContent='';
+  if(!phone){err.textContent='Please enter your cell number.';return;}
+  if(!phone.match(/^0[6-9]\d{8}$/)){err.textContent='Enter a valid SA cell number (e.g. 0824567890).';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
   var tier=lmsCheckKey(key);
   if(!tier){
@@ -2676,8 +2736,10 @@ function lmsSubmitKey(){
     return;
   }
   _lmsUser=_lmsPendingU; _lmsKey=_lmsPendingK;
+  _lmsPhone=phone;
   _lmsProgress={tier:tier,p1:{},p2:{},eir1:{},eir2:{}};
   _lmsStore();
+  lmsFirebaseRegister(_lmsPendingU, phone, tier, key);
   lmsShowDash();
 }
 
@@ -2850,10 +2912,71 @@ function lmsFinish(){
     if(rec.failCount>=3) msg+=' You have failed this session 3 times. Consider reaching out to Tseke: ribatt3@gmail.com';
     document.getElementById('sc-sub').textContent=msg;
   }
+  lmsFirebaseLogActivity(_lmsUser, _lmsPhone||'', _lmsPaper, _lmsSess, pct, passed);
   lmsShowView('lms-score');
 }
 
 function lmsRetry(){lmsStartQuiz(_lmsPaper,_lmsSess);}
+
+/* ===== FIREBASE INTEGRATION ===== */
+var _lmsPhone = null;
+var _lmsFbDb = null;
+(function(){
+  try{
+    // ═══════════════════════════════════════════════════════
+    // FIREBASE CONFIG — replace with your project config from
+    // Firebase Console > Project Settings > Your apps > Web
+    // ═══════════════════════════════════════════════════════
+    var fbConfig = {
+      apiKey: "PASTE_YOUR_FIREBASE_CONFIG_HERE",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
+    };
+    // ═══════════════════════════════════════════════════════
+    if(fbConfig.apiKey === 'PASTE_YOUR_FIREBASE_CONFIG_HERE') return;
+    if(typeof firebase === 'undefined') return;
+    if(!firebase.apps.length) firebase.initializeApp(fbConfig);
+    _lmsFbDb = firebase.firestore();
+  }catch(e){ /* Firebase not configured — LMS works without it */ }
+})();
+
+function lmsFirebaseRegister(username, phone, tier, key){
+  if(!_lmsFbDb) return;
+  try{
+    var now = firebase.firestore.FieldValue.serverTimestamp();
+    // Register user
+    _lmsFbDb.collection('users').doc(username).set({
+      username: username, phone: phone, tier: tier, key: key,
+      joinedAt: now, lastSeen: now, sessionsPassed: 0
+    }, {merge: true});
+    // Mark key as claimed
+    _lmsFbDb.collection('keys').doc(key).set({
+      claimed: true, claimedBy: username, claimedAt: now
+    }, {merge: true});
+  }catch(e){}
+}
+
+function lmsFirebaseLogActivity(username, phone, paper, sessIdx, score, passed){
+  if(!_lmsFbDb) return;
+  try{
+    var subjectMap = {p1:'SANS 10142-1 Paper 1',p2:'SANS 10142-1 Paper 2',eir1:'EIR 1992',eir2:'Construction Regs 2003'};
+    _lmsFbDb.collection('activity').add({
+      username: username, phone: phone,
+      paper: paper, session: sessIdx,
+      sessionTitle: subjectMap[paper]||paper,
+      score: score, passed: passed,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Update lastSeen and sessionsPassed
+    _lmsFbDb.collection('users').doc(username).update({
+      lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+      sessionsPassed: passed ? firebase.firestore.FieldValue.increment(1) : firebase.firestore.FieldValue.increment(0)
+    }).catch(function(){});
+  }catch(e){}
+}
 
 </script>
 

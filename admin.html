@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tseke Riba — LMS Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#F7F7F5;--surface:#FFFFFF;--border:#E5E5E5;--fg:#0F0F0F;--fg2:#555;--fg3:#999;
+  --amb:#1E8540;--amb-lt:#34A853;--danger:#C0392B;--warn:#E67E22;
+  --info:#1A64B4;font-family:'Inter',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--fg);min-height:100vh;}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px;width:100%;max-width:360px;text-align:center;}
+.login-card h1{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px;}
+.login-card p{font-size:13px;color:var(--fg2);margin-bottom:24px;}
+.login-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:var(--bg);}
+.login-input:focus{outline:none;border-color:var(--amb);}
+.login-btn{width:100%;padding:11px;background:var(--amb);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:8px;cursor:pointer;margin-top:10px;}
+.login-btn:hover{background:#156830;}
+.login-err{font-size:12px;color:var(--danger);margin-top:8px;min-height:16px;}
+
+/* SETUP BANNER */
+.setup-banner{background:#FFF8E7;border:1.5px solid #E8C848;border-radius:10px;padding:16px;margin-bottom:20px;font-size:13px;line-height:1.6;}
+.setup-banner strong{color:#7A5C00;}
+.setup-banner code{background:#F0E68C;padding:1px 5px;border-radius:4px;font-size:12px;}
+
+/* APP LAYOUT */
+.app{display:none;min-height:100vh;}
+.app.active{display:flex;flex-direction:column;}
+.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:0;height:52px;}
+.top-bar-logo{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--fg);margin-right:auto;}
+.top-bar-logo span{color:var(--amb);}
+.nav-tabs{display:flex;gap:2px;}
+.nav-tab{padding:8px 14px;font-size:13px;font-weight:500;color:var(--fg3);background:none;border:none;cursor:pointer;border-radius:6px;transition:color .15s,background .15s;}
+.nav-tab:hover{background:var(--bg);color:var(--fg);}
+.nav-tab.active{background:var(--amb);color:#fff;}
+.top-bar-out{font-size:12px;color:var(--fg3);background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:6px;}
+.top-bar-out:hover{color:var(--danger);}
+.main{padding:24px;max-width:1100px;margin:0 auto;width:100%;}
+
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.stat-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);}
+.stat-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:600;color:var(--amb);margin:4px 0 2px;}
+.stat-sub{font-size:11.5px;color:var(--fg3);}
+
+/* TABLES */
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.section-hdr h2{font-size:15px;font-weight:700;}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--bg);padding:9px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg3);border-bottom:1px solid var(--border);}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--fg);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg);}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:10px;}
+.badge.paid{background:rgba(26,100,180,.12);color:var(--info);}
+.badge.cohort{background:rgba(30,133,64,.12);color:var(--amb);}
+.badge.pass{background:rgba(30,133,64,.12);color:var(--amb);}
+.badge.fail{background:rgba(192,57,43,.1);color:var(--danger);}
+.badge.claimed{background:rgba(39,174,96,.1);color:#27AE60;}
+.badge.unclaimed{background:var(--bg);color:var(--fg3);}
+
+/* FORMS */
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px;}
+.form-card h3{font-size:14px;font-weight:700;margin-bottom:14px;}
+.form-row{display:flex;gap:10px;flex-wrap:wrap;}
+.form-grp{flex:1;min-width:140px;}
+.form-lbl{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--fg3);margin-bottom:4px;}
+.form-input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;background:var(--bg);}
+.form-input:focus{outline:none;border-color:var(--amb);}
+.form-sel{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;background:var(--bg);}
+.form-btn{padding:8px 18px;background:var(--amb);color:#fff;font-size:13px;font-weight:700;border:none;border-radius:7px;cursor:pointer;margin-top:20px;}
+.form-btn:hover{background:#156830;}
+.form-msg{font-size:12px;margin-top:8px;min-height:16px;}
+
+/* SEARCH */
+.search-input{padding:8px 12px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;background:var(--surface);width:220px;}
+.search-input:focus{outline:none;border-color:var(--amb);}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:32px 20px;color:var(--fg3);font-size:13px;}
+.view{display:none;}
+.view.active{display:block;}
+@media(max-width:600px){
+  .top-bar{padding:0 14px;flex-wrap:wrap;height:auto;padding:10px 14px;gap:8px;}
+  .nav-tabs{overflow-x:auto;}
+  .main{padding:14px;}
+  .form-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <h1>LMS Admin</h1>
+    <p>ribattseke.co.za — Learner management</p>
+    <label class="form-lbl" style="text-align:left;display:block;margin-bottom:4px;">Admin password</label>
+    <input class="login-input" id="admin-pw" type="password" placeholder="Enter admin password" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()">
+    <button class="login-btn" onclick="adminLogin()">Sign In</button>
+    <div class="login-err" id="login-err"></div>
+    <p style="font-size:11px;color:var(--fg3);margin-top:14px;line-height:1.6;">This panel is for Tseke Riba only. If you arrived here by accident, please close this page.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="admin-app">
+  <div class="top-bar">
+    <div class="top-bar-logo">Tseke Riba <span>Admin</span></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showView('dashboard')">Dashboard</button>
+      <button class="nav-tab" onclick="showView('learners')">Learners</button>
+      <button class="nav-tab" onclick="showView('keys')">Keys</button>
+      <button class="nav-tab" onclick="showView('activity')">Activity</button>
+    </div>
+    <button class="top-bar-out" onclick="adminLogout()">Sign out</button>
+  </div>
+  <div class="main">
+    <div id="setup-banner" style="display:none;" class="setup-banner">
+      <strong>Firebase not configured yet.</strong> To activate real-time learner tracking:<br>
+      1. Go to <strong>console.firebase.google.com</strong> and create a free project.<br>
+      2. Add a web app, copy the <code>firebaseConfig</code> object.<br>
+      3. Open <strong>admin.html</strong> (and <strong>index.html</strong>) in a text editor, find <code>PASTE_YOUR_FIREBASE_CONFIG_HERE</code> and replace the placeholder with your config.<br>
+      4. In Firebase console: Firestore Database &rarr; Create database &rarr; Start in test mode.<br>
+      Until configured, this panel shows demo data only.
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="v-dashboard">
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-label">Total Learners</div><div class="stat-num" id="stat-users">—</div><div class="stat-sub">registered accounts</div></div>
+        <div class="stat-card"><div class="stat-label">Paid</div><div class="stat-num" id="stat-paid">—</div><div class="stat-sub">R1 000 purchasers</div></div>
+        <div class="stat-card"><div class="stat-label">Cohort</div><div class="stat-num" id="stat-cohort">—</div><div class="stat-sub">Africa TVET students</div></div>
+        <div class="stat-card"><div class="stat-label">Quiz Attempts</div><div class="stat-num" id="stat-attempts">—</div><div class="stat-sub">total submissions</div></div>
+        <div class="stat-card"><div class="stat-label">Pass Rate</div><div class="stat-num" id="stat-pass">—</div><div class="stat-sub">across all sessions</div></div>
+        <div class="stat-card"><div class="stat-label">Keys Issued</div><div class="stat-num" id="stat-keys">—</div><div class="stat-sub">of 50 paid keys used</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--fg3);margin-top:-8px;" id="dash-updated"></div>
+    </div>
+
+    <!-- LEARNERS -->
+    <div class="view" id="v-learners">
+      <div class="section-hdr">
+        <h2>Registered Learners</h2>
+        <input class="search-input" id="learner-search" placeholder="Search name or phone..." oninput="filterLearners()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Username</th><th>Phone</th><th>Tier</th><th>Key</th><th>Joined</th><th>Sessions Passed</th></tr></thead>
+          <tbody id="learners-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- KEYS -->
+    <div class="view" id="v-keys">
+      <div class="form-card">
+        <h3>Issue a new access key</h3>
+        <div class="form-row">
+          <div class="form-grp">
+            <label class="form-lbl">Learner name</label>
+            <input class="form-input" id="key-name" placeholder="Full name">
+          </div>
+          <div class="form-grp">
+            <label class="form-lbl">Cell number</label>
+            <input class="form-input" id="key-phone" placeholder="e.g. 0824567890">
+          </div>
+          <div class="form-grp">
+            <label class="form-lbl">Tier</label>
+            <select class="form-sel" id="key-tier">
+              <option value="paid">Paid (R1 000)</option>
+              <option value="cohort">Cohort (Africa TVET)</option>
+            </select>
+          </div>
+          <div class="form-grp">
+            <label class="form-lbl">Access key</label>
+            <input class="form-input" id="key-code" placeholder="e.g. RIBA-A001" style="text-transform:uppercase;">
+          </div>
+        </div>
+        <button class="form-btn" onclick="issueKey()">Issue Key</button>
+        <div class="form-msg" id="key-msg"></div>
+      </div>
+      <div class="section-hdr"><h2>Issued Keys</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Issued To</th><th>Phone</th><th>Tier</th><th>Status</th><th>Claimed By (username)</th></tr></thead>
+          <tbody id="keys-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="view" id="v-activity">
+      <div class="section-hdr"><h2>Quiz Activity Log</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date &amp; Time</th><th>Learner</th><th>Phone</th><th>Subject</th><th>Session</th><th>Score</th><th>Result</th></tr></thead>
+          <tbody id="activity-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════
+// FIREBASE CONFIGURATION
+// Replace this block with your project's config from:
+// Firebase Console > Project Settings > Your apps > Web app
+// ═══════════════════════════════════════════════════════
+const FB_CONFIG = {
+  apiKey: "PASTE_YOUR_FIREBASE_CONFIG_HERE",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+// ═══════════════════════════════════════════════════════
+
+const ADMIN_PASS = 'ribatt3Admin'; // Change this after first login
+var db = null;
+var fbReady = false;
+var _allLearners = [];
+var _allKeys = [];
+var _allActivity = [];
+
+function initFirebase(){
+  try{
+    if(FB_CONFIG.apiKey === 'PASTE_YOUR_FIREBASE_CONFIG_HERE') throw new Error('not configured');
+    firebase.initializeApp(FB_CONFIG);
+    db = firebase.firestore();
+    fbReady = true;
+  }catch(e){
+    document.getElementById('setup-banner').style.display='block';
+    fbReady = false;
+  }
+}
+
+function adminLogin(){
+  var pw = (document.getElementById('admin-pw').value||'').trim();
+  var err = document.getElementById('login-err');
+  if(pw !== ADMIN_PASS){ err.textContent='Incorrect password.'; return; }
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('admin-app').classList.add('active');
+  initFirebase();
+  loadAll();
+}
+
+function adminLogout(){
+  document.getElementById('admin-app').classList.remove('active');
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('admin-pw').value='';
+}
+
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.getElementById('v-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
+  event.target.classList.add('active');
+}
+
+async function loadAll(){
+  if(!fbReady){ showDemoData(); return; }
+  try{
+    var [usersSnap, keysSnap, actSnap] = await Promise.all([
+      db.collection('users').get(),
+      db.collection('keys').get(),
+      db.collection('activity').orderBy('timestamp','desc').limit(200).get()
+    ]);
+    _allLearners = usersSnap.docs.map(function(d){ var x=d.data(); x._id=d.id; return x; });
+    _allKeys = keysSnap.docs.map(function(d){ var x=d.data(); x._id=d.id; return x; });
+    _allActivity = actSnap.docs.map(function(d){ var x=d.data(); x._id=d.id; return x; });
+    renderDash();
+    renderLearners();
+    renderKeys();
+    renderActivity();
+    document.getElementById('dash-updated').textContent='Last refreshed: '+new Date().toLocaleString('en-ZA');
+  }catch(e){
+    console.error(e);
+    showDemoData();
+  }
+}
+
+function renderDash(){
+  var paid = _allLearners.filter(function(u){return u.tier==='paid';}).length;
+  var cohort = _allLearners.filter(function(u){return u.tier==='cohort';}).length;
+  var totalAtt = _allActivity.length;
+  var passed = _allActivity.filter(function(a){return a.passed;}).length;
+  var pct = totalAtt ? Math.round(passed/totalAtt*100) : 0;
+  var claimed = _allKeys.filter(function(k){return k.claimed;}).length;
+  document.getElementById('stat-users').textContent = _allLearners.length;
+  document.getElementById('stat-paid').textContent = paid;
+  document.getElementById('stat-cohort').textContent = cohort;
+  document.getElementById('stat-attempts').textContent = totalAtt;
+  document.getElementById('stat-pass').textContent = pct+'%';
+  document.getElementById('stat-keys').textContent = claimed;
+}
+
+function renderLearners(){
+  var rows = _allLearners.map(function(u){
+    var joined = u.joinedAt ? new Date(u.joinedAt.toDate ? u.joinedAt.toDate() : u.joinedAt).toLocaleDateString('en-ZA') : '—';
+    var sessions = u.sessionsPassed || 0;
+    return '<tr><td>'+esc(u.username||u._id)+'</td><td>'+esc(u.phone||'—')+'</td>'
+      +'<td><span class="badge '+esc(u.tier||'')+'">'+esc(u.tier||'—')+'</span></td>'
+      +'<td><code style="font-size:11.5px;">'+esc(u.key||'—')+'</code></td>'
+      +'<td>'+joined+'</td><td>'+sessions+'</td></tr>';
+  });
+  document.getElementById('learners-tbody').innerHTML = rows.length ? rows.join('') : '<tr><td colspan="6" class="empty">No learners registered yet.</td></tr>';
+}
+
+function filterLearners(){
+  var q = (document.getElementById('learner-search').value||'').toLowerCase();
+  var rows = _allLearners.filter(function(u){
+    return (u.username||'').toLowerCase().includes(q) || (u.phone||'').includes(q) || (u.name||'').toLowerCase().includes(q);
+  }).map(function(u){
+    var joined = u.joinedAt ? new Date(u.joinedAt.toDate ? u.joinedAt.toDate() : u.joinedAt).toLocaleDateString('en-ZA') : '—';
+    return '<tr><td>'+esc(u.username||u._id)+'</td><td>'+esc(u.phone||'—')+'</td>'
+      +'<td><span class="badge '+esc(u.tier||'')+'">'+esc(u.tier||'—')+'</span></td>'
+      +'<td><code style="font-size:11.5px;">'+esc(u.key||'—')+'</code></td>'
+      +'<td>'+joined+'</td><td>'+(u.sessionsPassed||0)+'</td></tr>';
+  });
+  document.getElementById('learners-tbody').innerHTML = rows.length ? rows.join('') : '<tr><td colspan="6" class="empty">No results.</td></tr>';
+}
+
+function renderKeys(){
+  var rows = _allKeys.map(function(k){
+    return '<tr><td><code style="font-size:12px;font-weight:700;">'+esc(k._id)+'</code></td>'
+      +'<td>'+esc(k.name||'—')+'</td><td>'+esc(k.phone||'—')+'</td>'
+      +'<td><span class="badge '+esc(k.tier||'')+'">'+esc(k.tier||'—')+'</span></td>'
+      +'<td><span class="badge '+(k.claimed?'claimed':'unclaimed')+'">'+( k.claimed?'Claimed':'Available')+'</span></td>'
+      +'<td>'+esc(k.claimedBy||'—')+'</td></tr>';
+  });
+  document.getElementById('keys-tbody').innerHTML = rows.length ? rows.join('') : '<tr><td colspan="6" class="empty">No keys issued yet.</td></tr>';
+}
+
+function renderActivity(){
+  var subjectMap = {p1:'SANS 10142-1 Paper 1',p2:'SANS 10142-1 Paper 2',eir1:'EIR 1992',eir2:'Construction Regs'};
+  var rows = _allActivity.map(function(a){
+    var ts = a.timestamp ? new Date(a.timestamp.toDate ? a.timestamp.toDate() : a.timestamp).toLocaleString('en-ZA') : '—';
+    var subj = subjectMap[a.paper]||a.paper||'—';
+    return '<tr><td style="font-size:12px;">'+ts+'</td><td>'+esc(a.username||'—')+'</td><td>'+esc(a.phone||'—')+'</td>'
+      +'<td>'+esc(subj)+'</td><td>Session '+(( a.session||0)+1)+'</td>'
+      +'<td>'+esc(a.score||'—')+'%</td>'
+      +'<td><span class="badge '+(a.passed?'pass':'fail')+'">'+(a.passed?'Pass':'Fail')+'</span></td></tr>';
+  });
+  document.getElementById('activity-tbody').innerHTML = rows.length ? rows.join('') : '<tr><td colspan="7" class="empty">No activity recorded yet.</td></tr>';
+}
+
+async function issueKey(){
+  var name = (document.getElementById('key-name').value||'').trim();
+  var phone = (document.getElementById('key-phone').value||'').trim().replace(/\s/g,'');
+  var tier = document.getElementById('key-tier').value;
+  var code = (document.getElementById('key-code').value||'').trim().toUpperCase();
+  var msg = document.getElementById('key-msg');
+  msg.style.color='var(--danger)'; msg.textContent='';
+  if(!name||!phone||!code){ msg.textContent='Fill in all fields.'; return; }
+  if(!phone.match(/^0[6-9]\d{8}$/)){ msg.textContent='Phone must be a valid SA cell number (e.g. 0821234567).'; return; }
+  if(!db){ msg.textContent='Firebase not configured. Keys will be issued once Firebase is set up.'; return; }
+  try{
+    var existing = await db.collection('keys').doc(code).get();
+    if(existing.exists){ msg.textContent='Key '+code+' is already in use. Choose a different code.'; return; }
+    await db.collection('keys').doc(code).set({
+      name: name, phone: phone, tier: tier,
+      issuedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      claimed: false, claimedBy: null, claimedAt: null
+    });
+    msg.style.color='var(--amb)';
+    msg.textContent='Key '+code+' issued to '+name+' ('+phone+'). Send this key to them.';
+    document.getElementById('key-name').value='';
+    document.getElementById('key-phone').value='';
+    document.getElementById('key-code').value='';
+    _allKeys.push({_id:code,name:name,phone:phone,tier:tier,claimed:false,claimedBy:null});
+    renderKeys();
+    renderDash();
+  }catch(e){
+    msg.textContent='Error: '+e.message;
+  }
+}
+
+function showDemoData(){
+  _allLearners = [];
+  _allKeys = [];
+  _allActivity = [];
+  renderDash();
+  renderLearners();
+  renderKeys();
+  renderActivity();
+  document.getElementById('dash-updated').textContent='Demo mode — connect Firebase to see real data';
+}
+
+function esc(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
