@@ -41,10 +41,11 @@ nav{
 .nav-logo{display:flex;flex-direction:column;line-height:1;text-decoration:none;gap:2px;flex-shrink:0;}
 .nav-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#FFFFFF;}
 .nav-domain{font-size:9px;font-weight:500;color:#AAAAAA;letter-spacing:.07em;}
-.nav-circs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;align-items:center;padding:0 6px;}
+.nav-circs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;align-items:center;padding:0 4px;justify-content:space-evenly;}
 .nav-circs::-webkit-scrollbar{display:none;}
 .nav-circ{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;flex-shrink:0;padding:0 2px;}
 .nav-circ-ic{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#AAAAAA;transition:background .15s,border-color .15s;}
+@media(max-width:420px){.nav-circ-ic{width:32px;height:32px;}.nav-circ-lbl{font-size:8px;}}
 .nav-circ:hover .nav-circ-ic,.nav-circ:focus .nav-circ-ic{background:var(--amb);border-color:var(--amb);color:#fff;}
 .nav-circ-lbl{font-size:9px;font-weight:500;color:#888;white-space:nowrap;letter-spacing:.02em;}
 .btn-live-nav{display:inline-flex;align-items:center;gap:5px;background:var(--amb);color:#fff;font-size:11px;font-weight:700;padding:6px 11px;border-radius:20px;text-decoration:none;letter-spacing:.03em;flex-shrink:0;white-space:nowrap;}
@@ -286,10 +287,6 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
     <a href="#" onclick="showTab('resources');return false;" class="nav-circ" data-tab="resources">
       <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-1.5-.05zM21 18.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg></div>
       <span class="nav-circ-lbl">Resources</span>
-    </a>
-    <a href="#" onclick="showTab('services');return false;" class="nav-circ" data-tab="services">
-      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.63-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
-      <span class="nav-circ-lbl">Services</span>
     </a>
     <a href="#" onclick="showTab('projects');return false;" class="nav-circ" data-tab="projects">
       <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg></div>
@@ -685,299 +682,8 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <p class="books-note">Tseke confirms availability and pricing before any payment is required. Payment details shared on confirmation.</p>
       <p class="refund-note">Books are sourced to order on confirmed payment. Raise any concern with Tseke within 24 hours of receiving the book.</p>
     </div>
-  </section>
 
-  <section class="tab-panel" id="tab-projects" hidden>
-    <p class="sec-label">Work Portfolio</p>
-    <h2 class="sec-title">Selected Projects</h2>
-    <p style="color:var(--fg2);font-size:14px;margin:0 0 24px;max-width:600px;">Electrical installations, solar PV and hybrid systems, EWSETA learnership facilitation, and technical training panel builds across Gauteng, Limpopo, and beyond.</p>
-
-    <div class="proj-grid">
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/><path d="M6 13h5v4H6zm7-6h3v3h-3zM6 7h5v5H6zm7 4h3v7h-3z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">Training</span><span class="proj-cat">Panel Build</span></div>
-          <p class="proj-name">Electrical Training Panels</p>
-          <p class="proj-where">Vanderbijlpark, Gauteng · Effective Engineering Institute</p>
-          <p class="proj-desc">Built and commissioned practical electrical training panels for the Vanderbijlpark learnership programme. Wired to EWSETA and QCTO apprenticeship standards, these panels are used for hands-on trade test preparation with live circuits.</p>
-          <p class="proj-photo-note">Photos available on request.</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">Electrical</span><span class="proj-cat">Smart Automation</span></div>
-          <p class="proj-name">Ga Selepe Moshate Smart House</p>
-          <p class="proj-where">Ga Selepe Moshate, Limpopo · King Hlabirwa and Queen Mogo&#353;h&#225;di Selepe</p>
-          <p class="proj-desc">Full electrical installation with conduit and tubing, integrated with Sonoff smart home automation for remote switching and scheduling of lighting and outlet circuits throughout the residence.</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">Solar PV</span><span class="proj-cat">Electrical</span></div>
-          <p class="proj-name">Hybrid Solar System and Electrical Installation</p>
-          <p class="proj-where">Mohlaletse, Limpopo · Tseke and Mathuding Makotanyane</p>
-          <p class="proj-desc">Complete residential electrical installation with Citiq prepaid meter integration, conduit and tubing, and a Sunsynk 5 kW hybrid inverter system with solar PV panels and battery energy storage for load-shedding resilience.</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.909V17h2V9L12 3z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">Lecturing</span><span class="proj-cat">Invigilation</span></div>
-          <p class="proj-name">Installation Rules Facilitation</p>
-          <p class="proj-where">Limpopo · Africa TVET College</p>
-          <p class="proj-desc">Facilitated and invigilated Paper 1 and Paper 2 Installation Rules sessions and written examinations for Africa TVET College students.</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">EWSETA</span><span class="proj-cat">Assessment</span></div>
-          <p class="proj-name">Electrical Learnership Facilitation</p>
-          <p class="proj-where">Kgosi Mampuru II Correctional Centre, Pretoria</p>
-          <p class="proj-desc">Facilitated and assessed the EWSETA Electrical Learnership programme for incarcerated learners. Practical skills development work inside a correctional services facility.</p>
-          <p class="proj-yr">2021</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">Solar PV</span><span class="proj-cat">Hybrid System</span></div>
-          <p class="proj-name">6 kW Hybrid Solar System</p>
-          <p class="proj-where">Tjatane · Kgagudi and Dinao Riba</p>
-          <p class="proj-desc">6 kW hybrid solar PV system with battery storage at a Tjatane residence. Grid-tied with automatic battery backup that cuts in during load shedding. This is also the installation reviewed by Kgagudi Riba in the Google review below.</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">Electrical</span></div>
-          <p class="proj-name">Tubing and Electrical Installation</p>
-          <p class="proj-where">Phokwane, Limpopo · Immanuel Matlala</p>
-          <p class="proj-desc">Residential electrical installation covering conduit and tubing, distribution board setup, circuit wiring, and Certificate of Compliance issuance on completion.</p>
-        </div>
-      </div>
-
-      <div class="proj-card">
-        <div class="proj-ph">
-          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-cats"><span class="proj-cat">ECSA</span><span class="proj-cat">Mentorship</span></div>
-          <p class="proj-name">ECSA Registration Guidance</p>
-          <p class="proj-where">Gauteng · Humphrey Thekwane Nkadimeng</p>
-          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the ECSA candidate engineer registration process, including how to record competencies, structure his experience documentation, and prepare for the candidate assessment.</p>
-        </div>
-      </div>
-
-    </div>
-    <p style="font-size:12px;color:var(--fg3);margin-top:14px;">Contact Tseke for detailed project documentation or references. Additional projects available on request.</p>
-  </section>
-
-  <section class="tab-panel" id="tab-reviews" hidden>
-    <p class="sec-label">Client Feedback</p>
-    <h2 class="sec-title">Google Reviews</h2>
-
-    <div class="reviews-cta">
-      <div class="reviews-cta-text">
-        <h3>Worked with Tseke? Leave a review.</h3>
-        <p>Your feedback helps other clients and learners find reliable electrical and training services.</p>
-      </div>
-      <a href="https://g.page/r/CYJdVjVsHkLBEBM/review" target="_blank" rel="noopener" class="btn-google-review">
-        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Leave a Google Review
-      </a>
-    </div>
-
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
-        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="review-text">"Tseke installed our solar system and the work was neat and professional. He explained everything clearly and the Certificate of Compliance was issued the same day. Highly recommended."</p>
-        <p class="review-author">Kgagudi Riba</p>
-        <p class="review-date">Tjatane · Limpopo</p>
-      </div>
-      <div class="review-card">
-        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
-        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="review-text">"The Installation Rules sessions are very well structured and Tseke makes the content easy to understand. The recordings on YouTube are a great resource to revise before the exam."</p>
-        <p class="review-author">Installation Rules Student</p>
-        <p class="review-date">November 2026 Cohort</p>
-      </div>
-      <div class="review-card">
-        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
-        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="review-text">"He's the best."</p>
-        <p class="review-author">Ummi Eisa</p>
-        <p class="review-date">November 2026</p>
-      </div>
-      <div class="review-card">
-        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
-        <p class="review-text">"I have collaborated with Tseke Riba for several years, and I consider him a mentor due to his invaluable guidance, strong work ethic, and practical experience, all of which have significantly inspired my professional development."</p>
-        <p class="review-author">Ipfi Austin Makatu</p>
-        <p class="review-date">Junior Project Engineer · Electrical Artisan · June 2026</p>
-      </div>
-      <div class="review-card">
-        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
-        <p class="review-text">"I had the privilege of working under Tseke's leadership, and I can say without hesitation that he is one of the most dependable and capable professionals I've encountered in my career. Tseke leads by example — his work ethic is consistent and his reliability is something the entire team could count on, regardless of the pressure or complexity of the task at hand. He brings a strong technical foundation to everything he does, and what sets him apart is his ability to translate that knowledge into practical solutions when it matters most. His leadership style is both empowering and collaborative. I would not hesitate to recommend Tseke to any organization looking for a leader who combines professionalism, integrity, and genuine care for the people around him."</p>
-        <p class="review-author">Siphesihle Mooke</p>
-        <p class="review-date">Procurement and Logistics Specialist · June 2026</p>
-      </div>
-      <div class="review-card">
-        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
-        <p class="review-text">"I had the privilege of learning from an incredible mentor, Mr Tseke, during my time at Wetility. Your guidance, patience, and willingness to share knowledge helped me grow both professionally and personally."</p>
-        <p class="review-author">Nyiko Maswanganyi</p>
-        <p class="review-date">Assistant C&amp;I Technologist at Proconics · June 2026</p>
-      </div>
-      <div class="review-card">
-        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
-        <p class="review-text">"I have worked with Tseke Riba in the renewable energy sector and found him to be a skilled and reliable professional. As a qualified Wireman and Project Engineer at Wetility, he demonstrates strong technical knowledge and good professional conduct."</p>
-        <p class="review-author">Tawanda Nderuma</p>
-        <p class="review-date">Subcontractor · Co-founder, Grid Tied Systems · April 2026</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="tab-panel" id="tab-about">
-    <div class="about-banner" id="about-banner-img"></div>
-    <p class="sec-label">About &amp; Contact</p>
-    <h2 class="sec-title">Tseke Riba</h2>
-
-    <p class="bio">I'm a licensed electrician and electrical contractor based in Gauteng, with over 10 years in the trade. I hold a National Diploma in Electrical Engineering, an Installation Electrician Wireman's Licence (IE(DOL)), and a Trade Test Certificate. During the day I work in a senior quality role in the renewable energy sector. In the evenings I lecture Installation Rules, and on the side I run my own contracting practice, assess and moderate trade tests, issue CoCs, and build electrical and solar training panels for TVET colleges and accredited training centres.</p>
-
-    <div class="profile-grid">
-      <div class="pcard">
-        <h4>Qualifications</h4>
-        <ul class="plist">
-          <li>National Diploma, Electrical Engineering (NQF 6, 360 credits, UNISA)</li>
-          <li>Trade Test Certificate (Electrical)</li>
-          <li>National N Diploma, Electrical Engineering (NQF 6, 360 credits, EEC)</li>
-        </ul>
-      </div>
-      <div class="pcard">
-        <h4>Registrations</h4>
-        <ul class="plist">
-          <li>Installation Electrician (DOeL)</li>
-          <li>EWSETA Registered Assessor</li>
-          <li>NAMB Registered Assessor and Moderator</li>
-        </ul>
-      </div>
-      <div class="pcard">
-        <h4>Khosithi Training Institute</h4>
-        <ul class="plist">
-          <li>Appointed Trade Test Assessor (NAMB-A/2020) · Conducts formal NAMB summative trade test assessments for the Occupational Certificate: Electrician (QCTO 671101, NQF Level 5)</li>
-          <li>Appointed Internal Moderator (NAMB-M/2021) · Independently reviews and verifies summative assessments conducted by other assessors, producing formal moderation reports</li>
-          <li>Technical Facilitator · Delivers specialist upskilling sessions to facilitators covering solar PV, PLC systems, motor control, electronics, and electrical installation</li>
-          <li>Nelspruit, Mpumalanga · Part-time · July 2020 to present</li>
-        </ul>
-      </div>
-      <div class="pcard">
-        <h4>Memberships</h4>
-        <ul class="plist">
-          <li>Association for Renewable Energy Practitioners (AREP)</li>
-          <li>South African Photovoltaic Industry Association (SAPVIA)</li>
-          <li>Southern African Energy Efficiency Confederation (SAEEC) · No. SAEEC2009</li>
-          <li>Chamber of Engineering Technology (CET) · No. 8100848</li>
-          <li>South African Institute of Electrical Engineers (SAIEE), Associate Member</li>
-          <li>Electrical Contractors Association South Africa (ECA(SA))</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="seek-banner">
-      <strong>Know of a suitable opportunity?</strong> I'm open to being referred to organisations hiring in electrical engineering, solar PV quality management, technical training, or construction quality. Based in Gauteng. Share this page or reach out directly to make an introduction.
-      <div class="seek-banner-row">
-        <span style="font-size:13px;color:var(--fg2);">10+ years · Electrical contracting · Solar PV EPC · NAMB Assessor · EWSETA and CETA Assessor</span>
-        <a href="https://www.linkedin.com/in/tseke-riba-b7341598" target="_blank" rel="noopener" class="btn-linkedin">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          View LinkedIn Profile
-        </a>
-      </div>
-    </div>
-
-    <div class="svc-tags">
-      <span class="svc-tag">Electrical Contractor</span>
-      <span class="svc-tag">LV Electrical Installations</span>
-      <span class="svc-tag">Certificate of Compliance (CoC)</span>
-      <span class="svc-tag">Solar PV Installation</span>
-      <span class="svc-tag">BESS (Battery Energy Storage)</span>
-      <span class="svc-tag">Small-Scale Embedded Generation</span>
-      <span class="svc-tag">Site Inspection and Verification</span>
-      <span class="svc-tag">Training Panel Construction</span>
-      <span class="svc-tag">NAMB Assessment and Moderation</span>
-      <span class="svc-tag">Installation Rules Tutoring</span>
-    </div>
-
-    <div class="contact-block">
-      <h3>Contact</h3>
-      <div class="contact-grid">
-        <div class="contact-item">
-          <div class="citem-label">Email</div>
-          <div class="citem-val"><a href="mailto:ribatt3@gmail.com">ribatt3@gmail.com</a></div>
-        </div>
-        <div class="contact-item">
-          <div class="citem-label">Phone and WhatsApp</div>
-          <div class="citem-val"><a href="tel:+27724748888">072 474 8888</a> <button onclick="var b=this;navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText('072 474 8888').then(function(){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy';},1600);}).catch(function(){var i=document.createElement('input');i.value='072 474 8888';document.body.appendChild(i);i.select();try{document.execCommand('copy');b.textContent='Copied!';}catch(e){}document.body.removeChild(i);setTimeout(function(){b.textContent='Copy';},1600);}):b.textContent='Tap &amp; hold to copy';" style="margin-left:5px;font-size:11px;padding:3px 9px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);cursor:pointer;vertical-align:middle;">Copy</button> &nbsp;·&nbsp; <a href="https://wa.me/27724748888" target="_blank" rel="noopener">Open WhatsApp</a></div>
-        </div>
-        <div class="contact-item">
-          <div class="citem-label">Location</div>
-          <div class="citem-val">Gauteng, South Africa<br><a href="https://maps.google.com/?q=Bryanston,Sandton,Gauteng,South+Africa" target="_blank" rel="noopener">View on Google Maps</a></div>
-        </div>
-        <div class="contact-item">
-          <div class="citem-label">Sessions</div>
-          <div class="citem-val">Tue and Thu · 18:00 to 20:00 SAST</div>
-        </div>
-        <div class="contact-item">
-          <div class="citem-label">Telegram</div>
-          <div class="citem-val"><a href="https://t.me/+27724748888" target="_blank" rel="noopener">t.me/+27724748888</a><br><span style="font-size:11px;color:var(--fg3);">072 474 8888</span></div>
-        </div>
-      </div>
-
-      <button class="btn-show-pay" onclick="togglePay('pay-about')" style="margin-top:4px;">Show payment details</button>
-      <div id="pay-about" hidden>
-        <div class="pay-block">
-          <p class="pay-block-head">Payment Details</p>
-          <div class="pay-details">
-            <span class="lbl">Account holder:</span> Tseke Riba<br>
-            <span class="lbl">Bank:</span> Capitec Bank<br>
-            <span class="lbl">Account no.:</span> <strong>2605150883</strong><br>
-            <span class="lbl">Branch code:</span> 470010 · Savings
-          </div>
-          <div class="pay-shap">
-            <div class="pay-shap-label">PayShap · Any Bank</div>
-            <div class="pay-shap-num">072 474 8888</div>
-            <div class="pay-shap-note">T T Riba · open your banking app and tap PayShap</div>
-          </div>
-          <p class="pay-instructions">For sessions, resources, books, or services. Send proof of payment to ribatt3@gmail.com or WhatsApp after paying. Include your name and what you are paying for.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section class="tab-panel sec" id="tab-services" hidden>
+    <div style="margin-top:48px;" id="services-content">
     <h2 class="sec-title">Services</h2>
       <p style="color:var(--fg2);font-size:14px;margin:0 0 24px;max-width:600px;">Electrical contractor and training services across Gauteng. Click any service to request a quote.</p>
 
@@ -1481,7 +1187,299 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="ord-result" id="sf-consult-res" hidden></div>
       </div>
 
+    </div>
   </section>
+
+  <section class="tab-panel" id="tab-projects" hidden>
+    <p class="sec-label">Work Portfolio</p>
+    <h2 class="sec-title">Selected Projects</h2>
+    <p style="color:var(--fg2);font-size:14px;margin:0 0 24px;max-width:600px;">Electrical installations, solar PV and hybrid systems, EWSETA learnership facilitation, and technical training panel builds across Gauteng, Limpopo, and beyond.</p>
+
+    <div class="proj-grid">
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/><path d="M6 13h5v4H6zm7-6h3v3h-3zM6 7h5v5H6zm7 4h3v7h-3z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Training</span><span class="proj-cat">Panel Build</span></div>
+          <p class="proj-name">Electrical Training Panels</p>
+          <p class="proj-where">Vanderbijlpark, Gauteng · Effective Engineering Institute</p>
+          <p class="proj-desc">Built and commissioned practical electrical training panels for the Vanderbijlpark learnership programme. Wired to EWSETA and QCTO apprenticeship standards, these panels are used for hands-on trade test preparation with live circuits.</p>
+          <p class="proj-photo-note">Photos available on request.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Electrical</span><span class="proj-cat">Smart Automation</span></div>
+          <p class="proj-name">Ga Selepe Moshate Smart House</p>
+          <p class="proj-where">Ga Selepe Moshate, Limpopo · King Hlabirwa and Queen Mogo&#353;h&#225;di Selepe</p>
+          <p class="proj-desc">Full electrical installation with conduit and tubing, integrated with Sonoff smart home automation for remote switching and scheduling of lighting and outlet circuits throughout the residence.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Solar PV</span><span class="proj-cat">Electrical</span></div>
+          <p class="proj-name">Hybrid Solar System and Electrical Installation</p>
+          <p class="proj-where">Mohlaletse, Limpopo · Tseke and Mathuding Makotanyane</p>
+          <p class="proj-desc">Complete residential electrical installation with Citiq prepaid meter integration, conduit and tubing, and a Sunsynk 5 kW hybrid inverter system with solar PV panels and battery energy storage for load-shedding resilience.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.909V17h2V9L12 3z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Lecturing</span><span class="proj-cat">Invigilation</span></div>
+          <p class="proj-name">Installation Rules Facilitation</p>
+          <p class="proj-where">Limpopo · Africa TVET College</p>
+          <p class="proj-desc">Facilitated and invigilated Paper 1 and Paper 2 Installation Rules sessions and written examinations for Africa TVET College students.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">EWSETA</span><span class="proj-cat">Assessment</span></div>
+          <p class="proj-name">Electrical Learnership Facilitation</p>
+          <p class="proj-where">Kgosi Mampuru II Correctional Centre, Pretoria</p>
+          <p class="proj-desc">Facilitated and assessed the EWSETA Electrical Learnership programme for incarcerated learners. Practical skills development work inside a correctional services facility.</p>
+          <p class="proj-yr">2021</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Solar PV</span><span class="proj-cat">Hybrid System</span></div>
+          <p class="proj-name">6 kW Hybrid Solar System</p>
+          <p class="proj-where">Tjatane · Kgagudi and Dinao Riba</p>
+          <p class="proj-desc">6 kW hybrid solar PV system with battery storage at a Tjatane residence. Grid-tied with automatic battery backup that cuts in during load shedding. This is also the installation reviewed by Kgagudi Riba in the Google review below.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Electrical</span></div>
+          <p class="proj-name">Tubing and Electrical Installation</p>
+          <p class="proj-where">Phokwane, Limpopo · Immanuel Matlala</p>
+          <p class="proj-desc">Residential electrical installation covering conduit and tubing, distribution board setup, circuit wiring, and Certificate of Compliance issuance on completion.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">ECSA</span><span class="proj-cat">Mentorship</span></div>
+          <p class="proj-name">ECSA Registration Guidance</p>
+          <p class="proj-where">Gauteng · Humphrey Thekwane Nkadimeng</p>
+          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the ECSA candidate engineer registration process, including how to record competencies, structure his experience documentation, and prepare for the candidate assessment.</p>
+        </div>
+      </div>
+
+    </div>
+    <p style="font-size:12px;color:var(--fg3);margin-top:14px;">Contact Tseke for detailed project documentation or references. Additional projects available on request.</p>
+  </section>
+
+  <section class="tab-panel" id="tab-reviews" hidden>
+    <p class="sec-label">Client Feedback</p>
+    <h2 class="sec-title">Google Reviews</h2>
+
+    <div class="reviews-cta">
+      <div class="reviews-cta-text">
+        <h3>Worked with Tseke? Leave a review.</h3>
+        <p>Your feedback helps other clients and learners find reliable electrical and training services.</p>
+      </div>
+      <a href="https://g.page/r/CYJdVjVsHkLBEBM/review" target="_blank" rel="noopener" class="btn-google-review">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Leave a Google Review
+      </a>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"Tseke installed our solar system and the work was neat and professional. He explained everything clearly and the Certificate of Compliance was issued the same day. Highly recommended."</p>
+        <p class="review-author">Kgagudi Riba</p>
+        <p class="review-date">Tjatane · Limpopo</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"The Installation Rules sessions are very well structured and Tseke makes the content easy to understand. The recordings on YouTube are a great resource to revise before the exam."</p>
+        <p class="review-author">Installation Rules Student</p>
+        <p class="review-date">November 2026 Cohort</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"He's the best."</p>
+        <p class="review-author">Ummi Eisa</p>
+        <p class="review-date">November 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I have collaborated with Tseke Riba for several years, and I consider him a mentor due to his invaluable guidance, strong work ethic, and practical experience, all of which have significantly inspired my professional development."</p>
+        <p class="review-author">Ipfi Austin Makatu</p>
+        <p class="review-date">Junior Project Engineer · Electrical Artisan · June 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I had the privilege of working under Tseke's leadership, and I can say without hesitation that he is one of the most dependable and capable professionals I've encountered in my career. Tseke leads by example — his work ethic is consistent and his reliability is something the entire team could count on, regardless of the pressure or complexity of the task at hand. He brings a strong technical foundation to everything he does, and what sets him apart is his ability to translate that knowledge into practical solutions when it matters most. His leadership style is both empowering and collaborative. I would not hesitate to recommend Tseke to any organization looking for a leader who combines professionalism, integrity, and genuine care for the people around him."</p>
+        <p class="review-author">Siphesihle Mooke</p>
+        <p class="review-date">Procurement and Logistics Specialist · June 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I had the privilege of learning from an incredible mentor, Mr Tseke, during my time at Wetility. Your guidance, patience, and willingness to share knowledge helped me grow both professionally and personally."</p>
+        <p class="review-author">Nyiko Maswanganyi</p>
+        <p class="review-date">Assistant C&amp;I Technologist at Proconics · June 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I have worked with Tseke Riba in the renewable energy sector and found him to be a skilled and reliable professional. As a qualified Wireman and Project Engineer at Wetility, he demonstrates strong technical knowledge and good professional conduct."</p>
+        <p class="review-author">Tawanda Nderuma</p>
+        <p class="review-date">Subcontractor · Co-founder, Grid Tied Systems · April 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="tab-about">
+    <div class="about-banner" id="about-banner-img"></div>
+    <p class="sec-label">About &amp; Contact</p>
+    <h2 class="sec-title">Tseke Riba</h2>
+
+    <p class="bio">I'm a licensed electrician and electrical contractor based in Gauteng, with over 10 years in the trade. I hold a National Diploma in Electrical Engineering, an Installation Electrician Wireman's Licence (IE(DOL)), and a Trade Test Certificate. During the day I work in a senior quality role in the renewable energy sector. In the evenings I lecture Installation Rules, and on the side I run my own contracting practice, assess and moderate trade tests, issue CoCs, and build electrical and solar training panels for TVET colleges and accredited training centres.</p>
+
+    <div class="profile-grid">
+      <div class="pcard">
+        <h4>Qualifications</h4>
+        <ul class="plist">
+          <li>National Diploma, Electrical Engineering (NQF 6, 360 credits, UNISA)</li>
+          <li>Trade Test Certificate (Electrical)</li>
+          <li>National N Diploma, Electrical Engineering (NQF 6, 360 credits, EEC)</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <h4>Registrations</h4>
+        <ul class="plist">
+          <li>Installation Electrician (DOeL)</li>
+          <li>EWSETA Registered Assessor</li>
+          <li>NAMB Registered Assessor and Moderator</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <h4>Khosithi Training Institute</h4>
+        <ul class="plist">
+          <li>Appointed Trade Test Assessor (NAMB-A/2020) · Conducts formal NAMB summative trade test assessments for the Occupational Certificate: Electrician (QCTO 671101, NQF Level 5)</li>
+          <li>Appointed Internal Moderator (NAMB-M/2021) · Independently reviews and verifies summative assessments conducted by other assessors, producing formal moderation reports</li>
+          <li>Technical Facilitator · Delivers specialist upskilling sessions to facilitators covering solar PV, PLC systems, motor control, electronics, and electrical installation</li>
+          <li>Nelspruit, Mpumalanga · Part-time · July 2020 to present</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <h4>Memberships</h4>
+        <ul class="plist">
+          <li>Association for Renewable Energy Practitioners (AREP)</li>
+          <li>South African Photovoltaic Industry Association (SAPVIA)</li>
+          <li>Southern African Energy Efficiency Confederation (SAEEC) · No. SAEEC2009</li>
+          <li>Chamber of Engineering Technology (CET) · No. 8100848</li>
+          <li>South African Institute of Electrical Engineers (SAIEE), Associate Member</li>
+          <li>Electrical Contractors Association South Africa (ECA(SA))</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="seek-banner">
+      <strong>Know of a suitable opportunity?</strong> I'm open to being referred to organisations hiring in electrical engineering, solar PV quality management, technical training, or construction quality. Based in Gauteng. Share this page or reach out directly to make an introduction.
+      <div class="seek-banner-row">
+        <span style="font-size:13px;color:var(--fg2);">10+ years · Electrical contracting · Solar PV EPC · NAMB Assessor · EWSETA and CETA Assessor</span>
+        <a href="https://www.linkedin.com/in/tseke-riba-b7341598" target="_blank" rel="noopener" class="btn-linkedin">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          View LinkedIn Profile
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-tags">
+      <span class="svc-tag">Electrical Contractor</span>
+      <span class="svc-tag">LV Electrical Installations</span>
+      <span class="svc-tag">Certificate of Compliance (CoC)</span>
+      <span class="svc-tag">Solar PV Installation</span>
+      <span class="svc-tag">BESS (Battery Energy Storage)</span>
+      <span class="svc-tag">Small-Scale Embedded Generation</span>
+      <span class="svc-tag">Site Inspection and Verification</span>
+      <span class="svc-tag">Training Panel Construction</span>
+      <span class="svc-tag">NAMB Assessment and Moderation</span>
+      <span class="svc-tag">Installation Rules Tutoring</span>
+    </div>
+
+    <div class="contact-block">
+      <h3>Contact</h3>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="citem-label">Email</div>
+          <div class="citem-val"><a href="mailto:ribatt3@gmail.com">ribatt3@gmail.com</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Phone and WhatsApp</div>
+          <div class="citem-val"><a href="tel:+27724748888">072 474 8888</a> <button onclick="var b=this;navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText('072 474 8888').then(function(){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy';},1600);}).catch(function(){var i=document.createElement('input');i.value='072 474 8888';document.body.appendChild(i);i.select();try{document.execCommand('copy');b.textContent='Copied!';}catch(e){}document.body.removeChild(i);setTimeout(function(){b.textContent='Copy';},1600);}):b.textContent='Tap &amp; hold to copy';" style="margin-left:5px;font-size:11px;padding:3px 9px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);cursor:pointer;vertical-align:middle;">Copy</button> &nbsp;·&nbsp; <a href="https://wa.me/27724748888" target="_blank" rel="noopener">Open WhatsApp</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Location</div>
+          <div class="citem-val">Gauteng, South Africa<br><a href="https://maps.google.com/?q=Bryanston,Sandton,Gauteng,South+Africa" target="_blank" rel="noopener">View on Google Maps</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Sessions</div>
+          <div class="citem-val">Tue and Thu · 18:00 to 20:00 SAST</div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Telegram</div>
+          <div class="citem-val"><a href="https://t.me/+27724748888" target="_blank" rel="noopener">t.me/+27724748888</a><br><span style="font-size:11px;color:var(--fg3);">072 474 8888</span></div>
+        </div>
+      </div>
+
+      <button class="btn-show-pay" onclick="togglePay('pay-about')" style="margin-top:4px;">Show payment details</button>
+      <div id="pay-about" hidden>
+        <div class="pay-block">
+          <p class="pay-block-head">Payment Details</p>
+          <div class="pay-details">
+            <span class="lbl">Account holder:</span> Tseke Riba<br>
+            <span class="lbl">Bank:</span> Capitec Bank<br>
+            <span class="lbl">Account no.:</span> <strong>2605150883</strong><br>
+            <span class="lbl">Branch code:</span> 470010 · Savings
+          </div>
+          <div class="pay-shap">
+            <div class="pay-shap-label">PayShap · Any Bank</div>
+            <div class="pay-shap-num">072 474 8888</div>
+            <div class="pay-shap-note">T T Riba · open your banking app and tap PayShap</div>
+          </div>
+          <p class="pay-instructions">For sessions, resources, books, or services. Send proof of payment to ribatt3@gmail.com or WhatsApp after paying. Include your name and what you are paying for.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
 
 </div>
 
@@ -1489,9 +1487,9 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <div class="wrap">Tseke Riba · ribattseke.co.za · Installation Rules Lecturer and Electrical Contractor · Gauteng</div>
 </footer>
 
-<a href="#" onclick="showTab('about');return false;" class="float-pay" aria-label="Pay">
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-  Pay / Donate
+<a href="#" onclick="showTab('sessions');document.getElementById('pay-sess').hidden=false;setTimeout(function(){var el=document.getElementById('pay-sess');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},80);return false;" class="float-pay" aria-label="Donate">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+  Donate
 </a>
 
 <script>
