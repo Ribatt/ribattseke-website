@@ -1,0 +1,1690 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Tseke Riba</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --bg:#FFFFFF;--bg-alt:#F2F2F2;--surface:#FFFFFF;--surf-alt:#F9F9F9;
+  --bd:#111111;--amb:#1E8540;--amb-lt:#34A853;
+  --fg:#0F0F0F;--fg2:#606060;--fg3:#909090;--border:#E5E5E5;
+  color-scheme:light;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F0F0F;--bg-alt:#161616;--surface:#212121;--surf-alt:#272727;
+    --fg:#FFFFFF;--fg2:#AAAAAA;--fg3:#717171;--border:#3F3F3F;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F0F0F;--bg-alt:#161616;--surface:#212121;--surf-alt:#272727;
+  --fg:#FFFFFF;--fg2:#AAAAAA;--fg3:#717171;--border:#3F3F3F;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:101;background:var(--bd);}
+
+nav{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:var(--bd);
+  margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding-left:max(14px,env(safe-area-inset-left,0px));
+  padding-right:max(14px,env(safe-area-inset-right,0px));
+  padding-block:0;display:flex;align-items:center;gap:8px;height:62px;
+}
+.nav-logo{display:flex;flex-direction:column;line-height:1;text-decoration:none;gap:2px;flex-shrink:0;}
+.nav-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#FFFFFF;}
+.nav-domain{font-size:9px;font-weight:500;color:#AAAAAA;letter-spacing:.07em;}
+.nav-circs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;align-items:center;padding:0 6px;}
+.nav-circs::-webkit-scrollbar{display:none;}
+.nav-circ{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;flex-shrink:0;padding:0 2px;}
+.nav-circ-ic{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#AAAAAA;transition:background .15s,border-color .15s;}
+.nav-circ:hover .nav-circ-ic,.nav-circ:focus .nav-circ-ic{background:var(--amb);border-color:var(--amb);color:#fff;}
+.nav-circ-lbl{font-size:9px;font-weight:500;color:#888;white-space:nowrap;letter-spacing:.02em;}
+.btn-live-nav{display:inline-flex;align-items:center;gap:5px;background:var(--amb);color:#fff;font-size:11px;font-weight:700;padding:6px 11px;border-radius:20px;text-decoration:none;letter-spacing:.03em;flex-shrink:0;white-space:nowrap;}
+.btn-live-nav:hover{background:#156830;}
+.nav-dot{width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1.8s ease-in-out infinite;flex-shrink:0;}
+
+.hero{
+  background:var(--bd);color:#FFFFFF;
+  margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding:52px max(28px,env(safe-area-inset-left,16px));
+  position:relative;overflow:hidden;
+}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 92% 40%,rgba(30,133,64,.15) 0%,transparent 65%);pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--amb-lt);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(34px,5.5vw,52px);font-weight:700;line-height:1.07;margin:0 0 10px;color:#FFFFFF;text-wrap:balance;}
+.hero-role{font-size:14px;color:#AAAAAA;margin:0 0 20px;}
+.creds{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:26px;}
+.pill{background:rgba(30,133,64,.12);border:1px solid rgba(30,133,64,.35);color:var(--amb-lt);font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;letter-spacing:.02em;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-amb{background:var(--amb);color:#fff;font-size:14px;font-weight:600;padding:10px 20px;border-radius:7px;text-decoration:none;transition:background .15s;}
+.btn-amb:hover{background:#156830;}
+.btn-ghost{color:#FFFFFF;border:1px solid rgba(255,255,255,.3);font-size:14px;font-weight:500;padding:10px 20px;border-radius:7px;text-decoration:none;}
+
+.wrap{max-width:860px;margin:0 auto;}
+section{padding:42px 0;border-bottom:1px solid var(--border);}
+section:last-child{border-bottom:none;}
+.sec-label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);margin-bottom:5px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(20px,3.6vw,27px);font-weight:600;margin:0 0 20px;text-wrap:balance;}
+
+.live-card{background:var(--bd);border-radius:12px;padding:22px 24px;margin-bottom:12px;position:relative;overflow:hidden;}
+.live-card::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 95% 15%,rgba(30,133,64,.15) 0%,transparent 55%);pointer-events:none;}
+.live-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(30,133,64,.15);border:1px solid rgba(30,133,64,.4);color:var(--amb-lt);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:11px;}
+.live-dot{width:6px;height:6px;background:var(--amb-lt);border-radius:50%;animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.live-card h3{font-family:'Playfair Display',serif;font-size:17px;margin:0 0 4px;color:#FFFFFF;}
+.live-card>p{font-size:13px;color:#AAAAAA;margin:0 0 16px;}
+.join-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.btn-yt{background:#c4302b;color:#fff;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-live{background:var(--amb);color:#fff;font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-live:hover{background:#156830;}
+
+.support-card{background:var(--surf-alt);border:1px solid rgba(30,133,64,.2);border-radius:10px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.support-text strong{display:block;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:2px;}
+.support-text p{font-size:13px;color:var(--fg2);margin:0;}
+
+.exam-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px;}
+@media(max-width:460px){.exam-row{grid-template-columns:1fr;}}
+.exam-card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:14px 16px;}
+.exam-card-label{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;}
+.exam-name{font-size:14px;font-weight:600;color:var(--fg);margin-bottom:1px;}
+.exam-date-str{font-size:12px;color:var(--fg2);margin-bottom:7px;}
+.exam-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--amb);line-height:1;}
+.exam-unit{display:block;font-family:'Inter',sans-serif;font-size:11px;color:var(--fg3);margin-top:1px;}
+
+.sess-counter{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surf-alt);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;font-size:13px;}
+.sc-done{font-weight:600;color:var(--amb);}
+.sc-sep{color:var(--fg3);}
+.sc-rem{color:var(--fg2);}
+
+.sched-info{font-size:12px;color:var(--fg3);margin-bottom:10px;}
+.schedule{display:flex;flex-direction:column;gap:5px;}
+.sched-group-hdr{display:flex;align-items:center;gap:10px;padding:8px 2px 6px;border-bottom:1px solid var(--border);margin-bottom:5px;margin-top:12px;}
+.sched-group-hdr:first-child{margin-top:0;}
+.sched-group-name{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amb);}
+.sched-group-sub{font-size:12px;color:var(--fg3);}
+.sched-row{display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:11px;padding:9px 13px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
+.snum{width:32px;height:32px;border-radius:50%;background:var(--bg-alt);color:var(--fg2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.snum.done{background:rgba(30,133,64,.10);color:var(--amb);}
+.snum.now{background:var(--amb);color:#fff;}
+.snum.next{background:var(--bg-alt);color:var(--fg3);}
+.stopic{font-size:13px;font-weight:600;color:var(--fg);}
+.ssub{font-size:11px;color:var(--fg3);margin-top:1px;}
+.sright{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.stag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.stag.done{background:rgba(30,133,64,.10);color:var(--amb);}
+.stag.now{background:var(--amb);color:#fff;}
+.stag.upcoming{background:var(--bg-alt);color:var(--fg3);}
+.rec-link{font-size:11px;color:var(--amb);text-decoration:none;}
+.rec-link:hover{text-decoration:underline;}
+.sched-note{margin-top:12px;padding:11px 14px;background:var(--surf-alt);border:1px solid var(--border);border-radius:7px;font-size:13px;color:var(--fg2);}
+
+/* RESOURCES */
+.res-wrap{background:var(--surf-alt);border:1px solid var(--border);border-radius:14px;padding:28px 30px;display:grid;grid-template-columns:1fr 180px;gap:28px;align-items:start;}
+@media(max-width:620px){.res-wrap{grid-template-columns:1fr;}}
+.res-badge{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:10px;}
+.res-badge.avail{background:rgba(30,133,64,.10);color:var(--amb);}
+.res-left h3{font-family:'Playfair Display',serif;font-size:20px;margin:0 0 10px;}
+.res-left p{font-size:14px;color:var(--fg2);margin:0 0 14px;line-height:1.65;}
+.res-inc{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;}
+.res-inc li{font-size:13px;color:var(--fg2);padding-left:16px;position:relative;line-height:1.45;}
+.res-inc li::before{content:"✓";color:var(--amb);position:absolute;left:0;}
+.res-right{text-align:center;}
+.res-price{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--amb);line-height:1;margin-bottom:4px;}
+.res-delivery{font-size:12px;color:var(--fg3);margin:0 0 14px;}
+.pay-step{font-size:11px;color:var(--fg3);margin-top:7px;line-height:1.5;}
+
+.res-books{background:var(--surf-alt);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-top:14px;}
+.res-books h3{font-family:'Playfair Display',serif;font-size:19px;margin:0 0 7px;}
+.res-books>p{font-size:14px;color:var(--fg2);margin:0 0 16px;line-height:1.65;}
+.books-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.book-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
+.book-title{font-size:13.5px;font-weight:600;color:var(--fg);margin-bottom:2px;}
+.book-sub{font-size:11.5px;color:var(--fg3);}
+.btn-book-order{background:var(--amb);color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:6px;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.btn-book-order:hover{background:#156830;}
+.ord-form{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-top:4px;margin-bottom:4px;}
+.ord-form-ttl{font-size:13px;font-weight:600;color:var(--fg);margin:0 0 10px;}
+.ord-lbl{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px;margin-top:8px;}
+.ord-lbl:first-of-type{margin-top:0;}
+.ord-input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--fg);margin-bottom:4px;resize:vertical;box-sizing:border-box;}
+.ord-input:focus{outline:none;border-color:var(--amb);}
+.ord-err{font-size:12px;color:var(--amb);min-height:16px;margin-bottom:4px;}
+.ord-btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.btn-ord-go{background:var(--amb);color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;}
+.btn-ord-go:hover{background:#156830;}
+.btn-ord-x{background:transparent;color:var(--fg3);font-size:13px;padding:8px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;}
+.ord-result{margin-top:12px;background:var(--surf-alt);border:1px solid var(--border);border-radius:7px;padding:12px 14px;}
+.ord-msg{font-size:13px;color:var(--fg2);line-height:1.6;white-space:pre-wrap;margin:0 0 10px;font-family:monospace;background:var(--bg-alt);padding:8px 10px;border-radius:5px;}
+.btn-copy-ord{background:var(--surface);border:1px solid var(--border);font-size:12px;padding:6px 12px;border-radius:5px;cursor:pointer;color:var(--fg);}
+.books-note{font-size:12.5px;color:var(--fg3);line-height:1.5;margin:0;}
+
+.btn-show-pay{background:transparent;border:1px solid var(--border);color:var(--fg2);font-size:12.5px;font-weight:500;padding:7px 14px;border-radius:6px;cursor:pointer;margin-bottom:10px;}
+.btn-show-pay:hover{border-color:var(--amb);color:var(--amb);}
+.refund-note{font-size:12px;color:var(--fg3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);line-height:1.5;}
+
+/* ABOUT / CONTACT */
+.bio{font-size:15px;color:var(--fg2);line-height:1.75;margin-bottom:22px;max-width:640px;}
+.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;}
+@media(max-width:620px){.profile-grid{grid-template-columns:1fr;}}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:16px 18px;}
+.pcard h4{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--amb);margin:0 0 11px;}
+.plist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;}
+.plist li{font-size:13px;color:var(--fg2);padding-left:13px;position:relative;line-height:1.45;}
+.plist li::before{content:"▸";color:var(--amb);position:absolute;left:0;font-size:10px;top:3px;}
+.seek-banner{margin-top:16px;background:linear-gradient(135deg,rgba(30,133,64,.12),rgba(52,168,83,.07));border:1.5px solid var(--amb);border-radius:10px;padding:16px 18px;font-size:14px;color:var(--fg);line-height:1.6;}
+.seek-banner strong{color:var(--amb);}.seek-banner-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;}.btn-linkedin{display:inline-flex;align-items:center;gap:6px;background:#0A66C2;color:#fff;font-size:12.5px;font-weight:700;padding:8px 15px;border-radius:7px;text-decoration:none;letter-spacing:.01em;}.btn-linkedin:hover{background:#004B9A;}
+.svc-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
+.svc-tag{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:13px;color:var(--fg2);}
+.contact-block{margin-top:28px;padding-top:24px;border-top:1px solid var(--border);}
+.contact-block h3{font-family:'Playfair Display',serif;font-size:20px;margin:0 0 16px;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px;}
+@media(max-width:560px){.contact-grid{grid-template-columns:1fr;}}
+.contact-item{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:14px 16px;}
+.citem-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;}
+.citem-val{font-size:14px;color:var(--fg);font-weight:500;line-height:1.5;}
+.citem-val a{color:var(--amb);text-decoration:none;font-weight:600;}
+.citem-val a:hover{text-decoration:underline;}
+.citem-val a{color:var(--amb);text-decoration:none;}
+.citem-val a:hover{text-decoration:underline;}
+.pay-block{background:var(--bd);border-radius:12px;padding:20px 22px;margin-top:0;}
+.pay-block-head{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amb-lt);margin:0 0 10px;}
+.pay-details{font-size:13px;color:#AAAAAA;line-height:1.75;}
+.pay-details .lbl{color:#717171;}
+.pay-details strong{color:#FFFFFF;}
+.pay-shap{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);}
+.pay-shap-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amb-lt);margin-bottom:3px;}
+.pay-shap-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#FFFFFF;letter-spacing:.03em;}
+.pay-shap-note{font-size:11px;color:#717171;margin-top:3px;}
+.pay-instructions{font-size:12px;color:var(--fg3);margin-top:12px;line-height:1.5;}
+
+.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:#005eb8;color:#fff;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:22px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);display:inline-flex;align-items:center;gap:7px;transition:opacity .15s;}
+.float-pay:hover{opacity:.85;}
+
+footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
+/* Services */
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:28px;}
+@media(max-width:480px){.svc-grid{grid-template-columns:1fr;}}
+.svc-tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px;}
+.svc-icon{width:36px;height:36px;border-radius:50%;background:rgba(30,133,64,.12);border:1.5px solid rgba(30,133,64,.2);display:flex;align-items:center;justify-content:center;color:var(--amb);flex-shrink:0;}
+.svc-name{font-size:14px;font-weight:700;color:var(--fg);margin:0 0 2px;line-height:1.3;}
+.svc-tagline{font-size:12px;color:var(--fg2);line-height:1.45;margin:0;}
+.svc-stage{font-size:11px;color:var(--amb);background:rgba(30,133,64,.07);border:1px solid rgba(30,133,64,.18);border-radius:6px;padding:5px 8px;line-height:1.45;}
+.svc-quote-btn{margin-top:auto;background:none;border:1px solid var(--amb);color:var(--amb);border-radius:7px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;align-self:flex-start;}
+.svc-quote-btn:hover{background:rgba(30,133,64,.08);}
+.svc-form-panel{display:none;background:var(--bg-alt);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:4px;}
+.svc-form-panel.open{display:block;}
+.svc-form-ttl{font-size:14px;font-weight:700;color:var(--fg);margin:0 0 14px;}
+.svc-photo-note{font-size:12px;color:var(--fg2);background:rgba(30,133,64,.06);border:1px solid rgba(30,133,64,.18);border-radius:7px;padding:9px 11px;margin:12px 0 4px;line-height:1.5;}
+.svc-cta-wrap{text-align:center;padding-top:4px;}
+.svc-wa-note{font-size:12px;color:var(--fg3);margin:8px 0 0;}
+/* Projects */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:20px;}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.proj-ph{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,rgba(30,133,64,.8) 0%,rgba(8,22,13,.92) 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.proj-body{padding:16px;flex:1;display:flex;flex-direction:column;}
+.proj-cats{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px;}
+.proj-cat{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);background:rgba(30,133,64,.1);border:1px solid rgba(30,133,64,.2);padding:2px 8px;border-radius:12px;}
+.proj-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;margin:0 0 4px;line-height:1.3;}
+.proj-where{font-size:11.5px;color:var(--fg3);margin:0 0 9px;}
+.proj-desc{font-size:13px;color:var(--fg2);line-height:1.65;margin:0;flex:1;}
+.proj-yr{font-size:11px;color:var(--fg3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.proj-photo-note{font-size:11px;color:var(--amb);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+/* Reviews */
+.reviews-cta{background:var(--bd);border-radius:12px;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:20px;}
+.reviews-cta-text h3{font-family:'Playfair Display',serif;font-size:17px;color:#FFFFFF;margin:0 0 5px;}
+.reviews-cta-text p{font-size:13px;color:#AAAAAA;margin:0;}
+.btn-google-review{display:inline-flex;align-items:center;gap:8px;background:#FFFFFF;color:#1a1a1a;font-size:13.5px;font-weight:700;padding:11px 18px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.btn-google-review:hover{background:#f1f3f4;}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.review-stars{color:#fbbc04;font-size:15px;letter-spacing:1px;margin-bottom:8px;}
+.review-text{font-size:13px;color:var(--fg2);line-height:1.65;margin:0 0 12px;}
+.review-author{font-size:12px;font-weight:600;color:var(--fg);}
+.review-date{font-size:11px;color:var(--fg3);}
+.review-google-logo{display:flex;align-items:center;gap:5px;margin-bottom:8px;}
+.review-g{font-size:11px;font-weight:700;color:var(--fg3);letter-spacing:.03em;}
+</style>
+
+<nav>
+  <a href="#top" class="nav-logo">
+    <span class="nav-name">Tseke Riba</span>
+    <span class="nav-domain">ribattseke.co.za</span>
+  </a>
+  <div class="nav-circs">
+    <a href="#sessions" class="nav-circ">
+      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5C3.89 3 3 3.9 3 5v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+      <span class="nav-circ-lbl">Sessions</span>
+    </a>
+    <a href="#resources" class="nav-circ">
+      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 3.75.4 5 1.5 1.35-1.15 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-1.5-.05zM21 18.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg></div>
+      <span class="nav-circ-lbl">Resources</span>
+    </a>
+    <a href="#services" class="nav-circ">
+      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.63-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
+      <span class="nav-circ-lbl">Services</span>
+    </a>
+    <a href="#projects" class="nav-circ">
+      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg></div>
+      <span class="nav-circ-lbl">Projects</span>
+    </a>
+    <a href="#reviews" class="nav-circ">
+      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+      <span class="nav-circ-lbl">Reviews</span>
+    </a>
+    <a href="#about" class="nav-circ">
+      <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      <span class="nav-circ-lbl">About</span>
+    </a>
+  </div>
+  <a href="https://www.youtube.com/@tseke-sk-riba/live" target="_blank" rel="noopener" class="btn-live-nav">
+    <span class="nav-dot"></span>Live
+  </a>
+</nav>
+
+<div class="hero" id="top">
+  <div class="hero-inner">
+    <p class="hero-eyebrow" id="hero-eyebrow">Installation Rules</p>
+    <h1>Tseke Riba</h1>
+    <p class="hero-role">Registered electrician and contractor based in Gauteng. I run Installation Rules classes on Tuesday and Thursday evenings, do solar PV and battery installations, and assess and moderate trade tests through NAMB and EWSETA.</p>
+    <div class="creds">
+      <span class="pill">Installation Electrician (DoeL)</span>
+      <span class="pill">Electrical Contractor (DoeL)</span>
+      <span class="pill">Solar PV and BESS Installer</span>
+      <span class="pill">EWSETA Assessor</span>
+      <span class="pill">NAMB Assessor and Moderator</span>
+      <span class="pill">AREP Member</span>
+      <span class="pill">SAPVIA Member</span>
+      <span class="pill">SAIEE Associate Member</span>
+    </div>
+    <div class="hero-btns">
+      <a href="#sessions" class="btn-amb">View Sessions</a>
+      <a href="#resources" class="btn-ghost">Study Guide</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section id="sessions">
+    <p class="sec-label">November 2026 Sitting</p>
+    <h2 class="sec-title">Installation Rules Sessions</h2>
+
+    <div class="live-card">
+      <div class="live-badge"><span class="live-dot"></span>Live · Tue and Thu 18:00 to 20:00 SAST</div>
+      <h3>Installation Rules Live</h3>
+      <p>Tuesday and Thursday, 18:00 to 20:00 SAST on Microsoft Teams. Recordings published to YouTube after each session.</p>
+      <div class="join-row">
+        <a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzIzODYzZGYtMTkzYS00NjlmLTljMmMtNjQ0MDRiNTU4NjBk%40thread.v2/0?context=%7b%22Tid%22%3a%22ca9a8b8c-3ea3-4799-a43e-5510398e7a3b%22%2c%22Oid%22%3a%22833313ae-b350-4db7-8558-7f11cbf91a9f%22%7d" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#5059C9;color:#fff;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:6px;text-decoration:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0zM12 13c-4 0-7 2-7 4.5V19h18v-1.5c0-2.5-3-4.5-7-4.5h-2zM6 10a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM2 14c-1.1 0-2 .4-2 1v1h5v-1c0-.6-.9-1-3-1z"/></svg>
+          Join on Teams
+        </a>
+        <a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="btn-yt">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+          Recordings
+        </a>
+        <a href="https://www.youtube.com/@tseke-sk-riba/live" target="_blank" rel="noopener" class="btn-live">
+          <span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1.8s ease-in-out infinite;display:inline-block;flex-shrink:0;"></span>
+          Watch Live
+        </a>
+        <a href="https://www.youtube.com/@tseke-sk-riba?sub_confirmation=1" target="_blank" rel="noopener" class="btn-yt" style="background:#333;">
+          Subscribe
+        </a>
+      </div>
+    </div>
+
+    <div class="support-card">
+      <div class="support-text">
+        <strong>Pay for Sessions or Donate</strong>
+        <p>Sessions are open to all. Pay via EFT or PayShap. Send proof to ribatt3@gmail.com with your name and what you are paying for.</p>
+        <button class="btn-show-pay" onclick="togglePay('pay-sess')">Show payment details</button>
+        <div id="pay-sess" hidden style="display:flex;gap:12px;flex-wrap:wrap;margin-top:0;">
+          <div style="flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">EFT · Bank Transfer</div>
+            <div style="font-size:12px;color:var(--fg2);line-height:1.75;">
+              <span style="color:var(--fg3);">Account holder:</span> Tseke Riba<br>
+              <span style="color:var(--fg3);">Bank:</span> Capitec Bank<br>
+              <span style="color:var(--fg3);">Account no.:</span> <strong style="color:var(--amb);">2605150883</strong><br>
+              <span style="color:var(--fg3);">Branch code:</span> 470010 · Savings
+            </div>
+          </div>
+          <div style="flex:0 0 auto;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;min-width:150px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px;">PayShap · Any Bank</div>
+            <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--amb);letter-spacing:.03em;">072 474 8888</div>
+            <div style="font-size:11px;color:var(--fg3);margin-top:2px;">T T Riba</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-row">
+      <div class="exam-card">
+        <p class="exam-card-label">November Sitting</p>
+        <p class="exam-name">Paper 1</p>
+        <p class="exam-date-str">Tuesday 24 November 2026</p>
+        <div class="exam-num" id="cd1"><span class="exam-unit">days to go</span></div>
+      </div>
+      <div class="exam-card">
+        <p class="exam-card-label">November Sitting</p>
+        <p class="exam-name">Paper 2</p>
+        <p class="exam-date-str">Monday 30 November 2026</p>
+        <div class="exam-num" id="cd2"><span class="exam-unit">days to go</span></div>
+      </div>
+    </div>
+
+    <div id="sess-counter" class="sess-counter"></div>
+    <p class="sched-info">Paper 1: 9 sessions · Paper 2: 10 sessions · Tuesday and Thursday 18:00 to 20:00 SAST</p>
+
+    <div class="schedule">
+
+      <div class="sched-group-hdr">
+        <span class="sched-group-name">Paper 1</span>
+        <span class="sched-group-sub">OHS Act · SANS 10142-1 Sections 1, 2, 3, 4, 5, 7 · SANS 10198 · SANS 10292</span>
+      </div>
+
+      <div class="sched-row">
+        <div class="snum done">1</div>
+        <div><div class="stopic">Paper 1 Introduction and OHS Act 85 of 1993</div><div class="ssub">Tue 7 Oct · Paper 1 syllabus, OHS Act 85/1993, EIR, EMR, Construction Regulations</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">2</div>
+        <div><div class="stopic">Electrical Machinery Regulations and Construction Regulations</div><div class="ssub">EMR and Construction Regulations in depth</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">3</div>
+        <div><div class="stopic">SANS 10142-1 Section 1, 2 and Section 3: Scope, Normative References, Definitions</div><div class="ssub">Thu 9 Oct · Section 2 normative references, Section 3 definitions, key terms and legal definitions</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">4</div>
+        <div><div class="stopic">SANS 10142-1 Section 4: Compliance</div></div>
+        <div class="sright"><span class="stag done">Done</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">5</div>
+        <div><div class="stopic">SANS 10142-1 Section 5: Fundamental Requirements</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">6</div>
+        <div><div class="stopic">SANS 10142-1 Section 7: Special Installations or Locations</div></div>
+        <div class="sright"><span class="stag done">Done</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">7</div>
+        <div><div class="stopic">SANS 10142-1 Paper 1 Annexes</div><div class="ssub">Annexure C: Example of assessing estimated and connected load · Annexure E: Recommended bending of cables · Annexure F: Examples of determining the conduit size required for single-core cables of different sizes · Annexure G: Explanation of IP ratings · Annexure J: Electricity supply systems · Annexure N: IEC symbols associated with switchgear</div></div>
+        <div class="sright"><span class="stag done">Done</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">8</div>
+        <div><div class="stopic">SANS 10198-1 and SANS 10198-2</div><div class="ssub">SANS 10198-1: The selection, handling and installation of electric power cables of rating not exceeding 33 kV, Part 1: Definitions and statutory requirements · SANS 10198-2: The selection, handling and installation of electric power cables of rating not exceeding 33 kV, Part 2: Selection of cable type and methods of installation (no calculations will be asked on SANS 10198-2)</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">9</div>
+        <div><div class="stopic">SANS 10292: Earthing of Low-Voltage Distribution Systems</div><div class="ssub">LV earthing arrangements, MEN systems, TN/TT systems, bonding requirements</div></div>
+        <div class="sright"><span class="stag done">Done</span></div>
+      </div>
+
+      <div class="sched-group-hdr">
+        <span class="sched-group-name">Paper 2</span>
+        <span class="sched-group-sub">SANS 10142-1 Sections 6 and 8 · SANS 10313 · SANS 1973-3</span>
+      </div>
+
+      <div class="sched-row">
+        <div class="snum done">1</div>
+        <div><div class="stopic">Paper 2 Introduction and SANS 10142-1 Section 6: Installation Requirements Part 1</div><div class="ssub">The wiring of premises Part 1: Low voltage installations, Section 6 installation requirements</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">2</div>
+        <div><div class="stopic">SANS 10142-1 Section 6: Installation Requirements Part 2</div><div class="ssub">Section 6 continued</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">3</div>
+        <div><div class="stopic">SANS 10142-1 Section 6: Installation Requirements Part 3</div><div class="ssub">Section 6 continued</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">4</div>
+        <div><div class="stopic">SANS 10142-1 Section 8: Verification and Certification Part 1</div><div class="ssub">Section 8 verification and certification</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">5</div>
+        <div><div class="stopic">SANS 10142-1 Section 8: Verification and Certification Part 2</div><div class="ssub">Section 8 continued</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum now">6</div>
+        <div><div class="stopic">SANS 10142-1 Paper 2 Annexes Part 1</div><div class="ssub">Tue 18 Nov · Annexure A: Limits of arm's reach · Annexure B: Installation components · Annexure D: Calculation of voltage drop · Annexure H: Notification of a potential danger · Annexure I: Installations of surge protection devices (SPDs) into low-voltage systems</div></div>
+        <div class="sright"><span class="stag now">Next</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">7</div>
+        <div><div class="stopic">SANS 10142-1 Paper 2 Annexes Part 2</div><div class="ssub">Annexure K: Earthing arrangements and equipotential bonding of information technology installations for functional purposes · Annexure L: Classification of safety services necessary for medical locations · Annexure G: Explanation of IP ratings · Annexure J: Electricity supply systems · Annexure N: IEC symbols associated with switchgear</div></div>
+        <div class="sright"><span class="stag done">Done</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">8</div>
+        <div><div class="stopic">SANS 10142-1 Annexure D: Calculation of Voltage Drop</div><div class="ssub">Annexure D worked examples, exam practice, multi-segment circuit analysis</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">&#9658; Recording</a></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum next">9</div>
+        <div><div class="stopic">SANS 10313: Protection of Structures Against Lightning</div></div>
+        <div class="sright"><span class="stag upcoming">Upcoming</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum next">10</div>
+        <div><div class="stopic">SANS 1973-3: Low-Voltage Switchgear and Controlgear Assemblies Part 3: Safety of assemblies with a rated prospective short-circuit current of up to and including 10 kA</div></div>
+        <div class="sright"><span class="stag upcoming">Upcoming</span></div>
+      </div>
+
+    </div>
+
+
+    <div style="background:#111111;border-radius:12px;padding:22px 24px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#c4302b"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+          <span style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#FFFFFF;">@tseke-sk-riba</span>
+        </div>
+        <p style="font-size:13px;color:#AAAAAA;margin:0;line-height:1.55;">Each session gets recorded and uploaded to YouTube after the class. If you miss a session or want to go over something again, it's all there. Subscribe so you get notified when the next one goes up.</p>
+      </div>
+      <a href="https://www.youtube.com/@tseke-sk-riba?sub_confirmation=1" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#c4302b;color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+        Subscribe on YouTube
+      </a>
+    </div>
+  </section>
+
+  <section id="resources">
+    <p class="sec-label">Study Resources</p>
+    <h2 class="sec-title">Study Guide and SANS Books</h2>
+
+    <div class="res-wrap">
+      <div class="res-left">
+        <span class="res-badge avail">Available Now</span>
+        <h3>Installation Rules Study Guide</h3>
+        <p>A decade of past question papers with worked solutions, session study notes, and video walkthroughs linked directly inside the pack. Covers both Paper 1 and Paper 2. Prepared by the same person who runs the Tuesday and Thursday sessions.</p>
+        <ul class="res-inc">
+          <li>Past papers, Paper 1 and Paper 2, the last 10 years, each with worked model answers</li>
+          <li>Video walkthrough for every past paper (YouTube links in the pack)</li>
+          <li>A short navigation video showing you how to work through the guide</li>
+          <li>Study notes covering all sessions, both papers</li>
+          <li>Voltage drop worked solutions, including Annex D, Table 6.4(b) and multi-segment circuits</li>
+          <li>WhatsApp access after purchase if you get stuck on anything</li>
+        </ul>
+      </div>
+      <div class="res-right">
+        <p class="res-price">R1000</p>
+        <p class="res-delivery">PDF pack and YouTube links via WhatsApp or email</p>
+        <button class="btn-show-pay" onclick="togglePay('pay-guide')" style="width:100%;margin-top:8px;">Show payment details</button>
+        <div id="pay-guide" hidden style="background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;text-align:left;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">EFT · Bank Transfer</div>
+          <div style="font-size:12px;color:var(--fg2);line-height:1.75;margin-bottom:8px;">
+            <span style="color:var(--fg3);">Account holder:</span> Tseke Riba<br>
+            <span style="color:var(--fg3);">Bank:</span> Capitec Bank<br>
+            <span style="color:var(--fg3);">Account no.:</span> <strong style="color:var(--amb);">2605150883</strong><br>
+            <span style="color:var(--fg3);">Branch code:</span> 470010 · Savings
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:7px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:3px;">PayShap · Any Bank</div>
+            <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--amb);letter-spacing:.03em;">072 474 8888</div>
+            <div style="font-size:11px;color:var(--fg3);margin-top:1px;">T T Riba</div>
+          </div>
+        </div>
+        <p class="pay-step">Send proof to ribatt3@gmail.com or WhatsApp. Pack delivered same day.</p>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--fg3);margin-top:8px;line-height:1.5;">Study packs are non-refundable digital products. Contact ribatt3@gmail.com within 24 hours if there is a delivery issue.</p>
+
+    <div class="res-books">
+      <h3>Standards and Legislation</h3>
+      <p>All standards and legislation referenced in both exam syllabi, sourced and supplied directly by Tseke. As an active Installation Rules lecturer, assessor, and electrical contractor, he confirms the correct current edition for your paper and delivers to your door. Enter your full name and delivery address and Tseke will confirm availability and send you a quote before anything is processed. No prices are shown here — you will receive a quote first.</p>
+            <div class="books-list">
+        <div class="book-row">
+          <div><div class="book-title">OHS Act 85 of 1993</div><div class="book-sub">Occupational Health and Safety Act with Electrical Installation Regulations and Electrical Machinery Regulations · Paper 1</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-ohsact')">Order</button>
+        </div>
+        <div id="ord-ohsact" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: OHS Act 85 of 1993</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-ohsact" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-ohsact" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-ohsact" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-ohsact"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('ohsact','OHS Act 85 of 1993')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-ohsact')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-ohsact" hidden></div>
+        </div>
+        <div class="book-row">
+          <div><div class="book-title">SANS 10142-1:2026 (Ed 3.3)</div><div class="book-sub">Wiring of Premises, Low Voltage Installations · Paper 1: Sections 1, 2, 3, 4, 5, 7 · Annexures C, E · Paper 2: Sections 6, 8 · Annexures A, B, D, G, H, I, J, K, L, N</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-10142')">Order</button>
+        </div>
+        <div id="ord-10142" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: SANS 10142-1:2026 (Ed 3.3)</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-10142" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-10142" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-10142" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-10142"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('10142','SANS 10142-1:2026 (Ed 3.3)')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10142')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-10142" hidden></div>
+        </div>
+        <div class="book-row">
+          <div><div class="book-title">SANS 10292</div><div class="book-sub">Earthing of low-voltage (LV) distribution systems · Paper 1</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-10292')">Order</button>
+        </div>
+        <div id="ord-10292" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: SANS 10292</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-10292" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-10292" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-10292" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-10292"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('10292','SANS 10292')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10292')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-10292" hidden></div>
+        </div>
+        <div class="book-row">
+          <div><div class="book-title">SANS 10198-1</div><div class="book-sub">Selection, handling and installation of electric power cables · Part 1: Definitions and statutory requirements · Paper 1</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-10198-1')">Order</button>
+        </div>
+        <div id="ord-10198-1" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: SANS 10198-1</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-10198-1" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-10198-1" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-10198-1" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-10198-1"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('10198-1','SANS 10198-1')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10198-1')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-10198-1" hidden></div>
+        </div>
+        <div class="book-row">
+          <div><div class="book-title">SANS 10198-2</div><div class="book-sub">Selection, handling and installation of electric power cables · Part 2: Selection of cable type · Paper 1 (no calculation questions)</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-10198-2')">Order</button>
+        </div>
+        <div id="ord-10198-2" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: SANS 10198-2</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-10198-2" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-10198-2" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-10198-2" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-10198-2"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('10198-2','SANS 10198-2')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10198-2')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-10198-2" hidden></div>
+        </div>
+        <div class="book-row">
+          <div><div class="book-title">SANS 10313</div><div class="book-sub">Protection against lightning: Physical damage to structures and life hazard · Paper 2</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-10313')">Order</button>
+        </div>
+        <div id="ord-10313" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: SANS 10313</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-10313" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-10313" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-10313" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-10313"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('10313','SANS 10313')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10313')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-10313" hidden></div>
+        </div>
+        <div class="book-row">
+          <div><div class="book-title">SANS 1973-3</div><div class="book-sub">Low-voltage switchgear and controlgear assemblies: Safety of assemblies with a rated prospective short-circuit current of up to and including 10 kA · Paper 2</div></div>
+          <button class="btn-book-order" onclick="toggleOrdForm('ord-1973')">Order</button>
+        </div>
+        <div id="ord-1973" class="ord-form" hidden>
+          <p class="ord-form-ttl">Order: SANS 1973-3</p>
+          <label class="ord-lbl">Full Name</label>
+          <input type="text" class="ord-input" id="oname-1973" placeholder="Your full name">
+          <label class="ord-lbl">Cell Number</label>
+          <input type="tel" class="ord-input" id="ocell-1973" placeholder="e.g. 072 123 4567">
+          <label class="ord-lbl">Full Delivery Address</label>
+          <textarea class="ord-input" id="oaddr-1973" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
+          <div class="ord-err" id="oerr-1973"></div>
+          <div class="ord-btn-row">
+            <button class="btn-ord-go" onclick="prepOrd('1973','SANS 1973-3')">Prepare Message</button>
+            <button class="btn-ord-x" onclick="toggleOrdForm('ord-1973')">Cancel</button>
+          </div>
+          <div class="ord-result" id="ores-1973" hidden></div>
+        </div>
+      </div>
+      <p class="books-note">Tseke confirms availability and pricing before any payment is required. Payment details shared on confirmation.</p>
+      <p class="refund-note">Books are sourced to order on confirmed payment. Raise any concern with Tseke within 24 hours of receiving the book.</p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <p class="sec-label">Work Portfolio</p>
+    <h2 class="sec-title">Selected Projects</h2>
+    <p style="color:var(--fg2);font-size:14px;margin:0 0 24px;max-width:600px;">Electrical installations, solar PV and hybrid systems, EWSETA learnership facilitation, and technical training panel builds across Gauteng, Limpopo, and beyond.</p>
+
+    <div class="proj-grid">
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/><path d="M6 13h5v4H6zm7-6h3v3h-3zM6 7h5v5H6zm7 4h3v7h-3z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Training</span><span class="proj-cat">Panel Build</span></div>
+          <p class="proj-name">Electrical Training Panels</p>
+          <p class="proj-where">Vanderbijlpark, Gauteng · Effective Engineering Institute</p>
+          <p class="proj-desc">Built and commissioned practical electrical training panels for the Vanderbijlpark learnership programme. Wired to EWSETA and QCTO apprenticeship standards, these panels are used for hands-on trade test preparation with live circuits.</p>
+          <p class="proj-photo-note">Photos available on request.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Electrical</span><span class="proj-cat">Smart Automation</span></div>
+          <p class="proj-name">Ga Selepe Moshate Smart House</p>
+          <p class="proj-where">Ga Selepe Moshate, Limpopo · King Hlabirwa and Queen Mogo&#353;h&#225;di Selepe</p>
+          <p class="proj-desc">Full electrical installation with conduit and tubing, integrated with Sonoff smart home automation for remote switching and scheduling of lighting and outlet circuits throughout the residence.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Solar PV</span><span class="proj-cat">Electrical</span></div>
+          <p class="proj-name">Hybrid Solar System and Electrical Installation</p>
+          <p class="proj-where">Mohlaletse, Limpopo · Tseke and Mathuding Makotanyane</p>
+          <p class="proj-desc">Complete residential electrical installation with Citiq prepaid meter integration, conduit and tubing, and a Sunsynk 5 kW hybrid inverter system with solar PV panels and battery energy storage for load-shedding resilience.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.909V17h2V9L12 3z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Lecturing</span><span class="proj-cat">Invigilation</span></div>
+          <p class="proj-name">Installation Rules Facilitation</p>
+          <p class="proj-where">Limpopo · Africa TVET College</p>
+          <p class="proj-desc">Facilitated and invigilated Paper 1 and Paper 2 Installation Rules sessions and written examinations for Africa TVET College students.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">EWSETA</span><span class="proj-cat">Assessment</span></div>
+          <p class="proj-name">Electrical Learnership Facilitation</p>
+          <p class="proj-where">Kgosi Mampuru II Correctional Centre, Pretoria</p>
+          <p class="proj-desc">Facilitated and assessed the EWSETA Electrical Learnership programme for incarcerated learners. Practical skills development work inside a correctional services facility.</p>
+          <p class="proj-yr">2021</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Solar PV</span><span class="proj-cat">Hybrid System</span></div>
+          <p class="proj-name">6 kW Hybrid Solar System</p>
+          <p class="proj-where">Tjatane · Kgagudi and Dinao Riba</p>
+          <p class="proj-desc">6 kW hybrid solar PV system with battery storage at a Tjatane residence. Grid-tied with automatic battery backup that cuts in during load shedding. This is also the installation reviewed by Kgagudi Riba in the Google review below.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">Electrical</span></div>
+          <p class="proj-name">Tubing and Electrical Installation</p>
+          <p class="proj-where">Phokwane, Limpopo · Immanuel Matlala</p>
+          <p class="proj-desc">Residential electrical installation covering conduit and tubing, distribution board setup, circuit wiring, and Certificate of Compliance issuance on completion.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-ph">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="rgba(255,255,255,.35)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-cats"><span class="proj-cat">ECSA</span><span class="proj-cat">Mentorship</span></div>
+          <p class="proj-name">ECSA Registration Guidance</p>
+          <p class="proj-where">Gauteng · Humphrey Thekwane Nkadimeng</p>
+          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the ECSA candidate engineer registration process, including how to record competencies, structure his experience documentation, and prepare for the candidate assessment.</p>
+        </div>
+      </div>
+
+    </div>
+    <p style="font-size:12px;color:var(--fg3);margin-top:14px;">Contact Tseke for detailed project documentation or references. Additional projects available on request.</p>
+  </section>
+
+  <section id="reviews">
+    <p class="sec-label">Client Feedback</p>
+    <h2 class="sec-title">Google Reviews</h2>
+
+    <div class="reviews-cta">
+      <div class="reviews-cta-text">
+        <h3>Worked with Tseke? Leave a review.</h3>
+        <p>Your feedback helps other clients and learners find reliable electrical and training services.</p>
+      </div>
+      <a href="https://g.page/r/CYJdVjVsHkLBEBM/review" target="_blank" rel="noopener" class="btn-google-review">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Leave a Google Review
+      </a>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"Tseke installed our solar system and the work was neat and professional. He explained everything clearly and the Certificate of Compliance was issued the same day. Highly recommended."</p>
+        <p class="review-author">Kgagudi Riba</p>
+        <p class="review-date">Tjatane · Limpopo</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"The Installation Rules sessions are very well structured and Tseke makes the content easy to understand. The recordings on YouTube are a great resource to revise before the exam."</p>
+        <p class="review-author">Installation Rules Student</p>
+        <p class="review-date">November 2026 Cohort</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span class="review-g">Google Review</span></div>
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="review-text">"He's the best."</p>
+        <p class="review-author">Ummi Eisa</p>
+        <p class="review-date">November 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I have collaborated with Tseke Riba for several years, and I consider him a mentor due to his invaluable guidance, strong work ethic, and practical experience, all of which have significantly inspired my professional development."</p>
+        <p class="review-author">Ipfi Austin Makatu</p>
+        <p class="review-date">Junior Project Engineer · Electrical Artisan · June 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I had the privilege of working under Tseke's leadership, and I can say without hesitation that he is one of the most dependable and capable professionals I've encountered in my career. Tseke leads by example — his work ethic is consistent and his reliability is something the entire team could count on, regardless of the pressure or complexity of the task at hand. He brings a strong technical foundation to everything he does, and what sets him apart is his ability to translate that knowledge into practical solutions when it matters most. His leadership style is both empowering and collaborative. I would not hesitate to recommend Tseke to any organization looking for a leader who combines professionalism, integrity, and genuine care for the people around him."</p>
+        <p class="review-author">Siphesihle Mooke</p>
+        <p class="review-date">Procurement and Logistics Specialist · June 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I had the privilege of learning from an incredible mentor, Mr Tseke, during my time at Wetility. Your guidance, patience, and willingness to share knowledge helped me grow both professionally and personally."</p>
+        <p class="review-author">Nyiko Maswanganyi</p>
+        <p class="review-date">Assistant C&amp;I Technologist at Proconics · June 2026</p>
+      </div>
+      <div class="review-card">
+        <div class="review-google-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#0A66C2;border-radius:4px;font-size:11px;font-weight:800;color:#fff;">in</span> <span class="review-g">LinkedIn Recommendation</span></div>
+        <p class="review-text">"I have worked with Tseke Riba in the renewable energy sector and found him to be a skilled and reliable professional. As a qualified Wireman and Project Engineer at Wetility, he demonstrates strong technical knowledge and good professional conduct."</p>
+        <p class="review-author">Tawanda Nderuma</p>
+        <p class="review-date">Subcontractor · Co-founder, Grid Tied Systems · April 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <p class="sec-label">About &amp; Contact</p>
+    <h2 class="sec-title">Tseke Riba</h2>
+
+    <p class="bio">I'm a licensed electrician and electrical contractor based in Gauteng, with over 10 years in the trade. I hold a National Diploma in Electrical Engineering, an Installation Electrician Wireman's Licence (IE(DOL)), and a Trade Test Certificate. During the day I work in a senior quality role in the renewable energy sector. In the evenings I lecture Installation Rules, and on the side I run my own contracting practice, assess and moderate trade tests, issue CoCs, and build electrical and solar training panels for TVET colleges and accredited training centres.</p>
+
+    <div class="profile-grid">
+      <div class="pcard">
+        <h4>Qualifications</h4>
+        <ul class="plist">
+          <li>National Diploma, Electrical Engineering (NQF 6, 360 credits, UNISA)</li>
+          <li>Trade Test Certificate (Electrical)</li>
+          <li>National N Diploma, Electrical Engineering (NQF 6, 360 credits, EEC)</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <h4>Registrations</h4>
+        <ul class="plist">
+          <li>Installation Electrician (DOeL)</li>
+          <li>EWSETA Registered Assessor</li>
+          <li>NAMB Registered Assessor and Moderator</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <h4>Khosithi Training Institute</h4>
+        <ul class="plist">
+          <li>Appointed Trade Test Assessor (NAMB-A/2020) · Conducts formal NAMB summative trade test assessments for the Occupational Certificate: Electrician (QCTO 671101, NQF Level 5)</li>
+          <li>Appointed Internal Moderator (NAMB-M/2021) · Independently reviews and verifies summative assessments conducted by other assessors, producing formal moderation reports</li>
+          <li>Technical Facilitator · Delivers specialist upskilling sessions to facilitators covering solar PV, PLC systems, motor control, electronics, and electrical installation</li>
+          <li>Nelspruit, Mpumalanga · Part-time · July 2020 to present</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <h4>Memberships</h4>
+        <ul class="plist">
+          <li>Association for Renewable Energy Practitioners (AREP)</li>
+          <li>South African Photovoltaic Industry Association (SAPVIA)</li>
+          <li>Southern African Energy Efficiency Confederation (SAEEC) · No. SAEEC2009</li>
+          <li>Chamber of Engineering Technology (CET) · No. 8100848</li>
+          <li>South African Institute of Electrical Engineers (SAIEE), Associate Member</li>
+          <li>Electrical Contractors Association South Africa (ECA(SA))</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="seek-banner">
+      <strong>Know of a suitable opportunity?</strong> I'm open to being referred to organisations hiring in electrical engineering, solar PV quality management, technical training, or construction quality. Based in Gauteng. Share this page or reach out directly to make an introduction.
+      <div class="seek-banner-row">
+        <span style="font-size:13px;color:var(--fg2);">10+ years · Electrical contracting · Solar PV EPC · NAMB Assessor · EWSETA and CETA Assessor</span>
+        <a href="https://www.linkedin.com/in/tseke-riba-b7341598" target="_blank" rel="noopener" class="btn-linkedin">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          View LinkedIn Profile
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-tags">
+      <span class="svc-tag">Electrical Contractor</span>
+      <span class="svc-tag">LV Electrical Installations</span>
+      <span class="svc-tag">Certificate of Compliance (CoC)</span>
+      <span class="svc-tag">Solar PV Installation</span>
+      <span class="svc-tag">BESS (Battery Energy Storage)</span>
+      <span class="svc-tag">Small-Scale Embedded Generation</span>
+      <span class="svc-tag">Site Inspection and Verification</span>
+      <span class="svc-tag">Training Panel Construction</span>
+      <span class="svc-tag">NAMB Assessment and Moderation</span>
+      <span class="svc-tag">Installation Rules Tutoring</span>
+    </div>
+
+    <div class="contact-block">
+      <h3>Contact</h3>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="citem-label">Email</div>
+          <div class="citem-val"><a href="mailto:ribatt3@gmail.com">ribatt3@gmail.com</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Phone and WhatsApp</div>
+          <div class="citem-val"><a href="tel:+27724748888">072 474 8888</a> <button onclick="var b=this;navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText('072 474 8888').then(function(){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy';},1600);}).catch(function(){var i=document.createElement('input');i.value='072 474 8888';document.body.appendChild(i);i.select();try{document.execCommand('copy');b.textContent='Copied!';}catch(e){}document.body.removeChild(i);setTimeout(function(){b.textContent='Copy';},1600);}):b.textContent='Tap &amp; hold to copy';" style="margin-left:5px;font-size:11px;padding:3px 9px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);cursor:pointer;vertical-align:middle;">Copy</button> &nbsp;·&nbsp; <a href="https://wa.me/27724748888" target="_blank" rel="noopener">Open WhatsApp</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Location</div>
+          <div class="citem-val">Gauteng, South Africa<br><a href="https://maps.google.com/?q=Bryanston,Sandton,Gauteng,South+Africa" target="_blank" rel="noopener">View on Google Maps</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Sessions</div>
+          <div class="citem-val">Tue and Thu · 18:00 to 20:00 SAST</div>
+        </div>
+        <div class="contact-item">
+          <div class="citem-label">Telegram</div>
+          <div class="citem-val"><a href="https://t.me/+27724748888" target="_blank" rel="noopener">t.me/+27724748888</a><br><span style="font-size:11px;color:var(--fg3);">072 474 8888</span></div>
+        </div>
+      </div>
+
+      <button class="btn-show-pay" onclick="togglePay('pay-about')" style="margin-top:4px;">Show payment details</button>
+      <div id="pay-about" hidden>
+        <div class="pay-block">
+          <p class="pay-block-head">Payment Details</p>
+          <div class="pay-details">
+            <span class="lbl">Account holder:</span> Tseke Riba<br>
+            <span class="lbl">Bank:</span> Capitec Bank<br>
+            <span class="lbl">Account no.:</span> <strong>2605150883</strong><br>
+            <span class="lbl">Branch code:</span> 470010 · Savings
+          </div>
+          <div class="pay-shap">
+            <div class="pay-shap-label">PayShap · Any Bank</div>
+            <div class="pay-shap-num">072 474 8888</div>
+            <div class="pay-shap-note">T T Riba · open your banking app and tap PayShap</div>
+          </div>
+          <p class="pay-instructions">For sessions, resources, books, or services. Send proof of payment to ribatt3@gmail.com or WhatsApp after paying. Include your name and what you are paying for.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="sec">
+    <div class="wrap">
+      <h2 class="sec-title">Services</h2>
+      <p style="color:var(--fg2);font-size:14px;margin:0 0 24px;max-width:600px;">Electrical contractor and training services across Gauteng. Click any service to request a quote.</p>
+
+      <div class="svc-grid">
+
+        <!-- Electrical Compliance Inspection -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+          <div>
+            <div class="svc-name">Electrical Compliance Inspection</div>
+            <div class="svc-tagline">Site visit and testing. Residential, commercial, agricultural.</div>
+          </div>
+          <div class="svc-stage">Two-stage process: Quote 1 (inspection/testing fee) is separate from Quote 2 (CoC issuance). Quote 2 is only issued if all tests pass.</div>
+          <button class="svc-quote-btn" onclick="openSvcForm('eci')">Get a Quote</button>
+        </div>
+
+        <!-- CoC Issuance -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4z"/></svg></div>
+          <div>
+            <div class="svc-name">CoC Issuance</div>
+            <div class="svc-tagline">Full certificate package after a passed inspection.</div>
+          </div>
+          <div class="svc-stage">Includes final test report, portfolio of evidence, Chief Inspector-approved format report, and Annexure 1 (Certificate of Compliance).</div>
+          <button class="svc-quote-btn" onclick="openSvcForm('coc')">Get a Quote</button>
+        </div>
+
+        <!-- PV Solar Installation -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg></div>
+          <div>
+            <div class="svc-name">PV Solar Installation</div>
+            <div class="svc-tagline">Grid-tied and off-grid solar PV systems. SSEG compliant. Gauteng.</div>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('solar')">Get a Quote</button>
+        </div>
+
+        <!-- Electrical Installation -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
+          <div>
+            <div class="svc-name">Electrical Installation</div>
+            <div class="svc-tagline">New installations and upgrades. Domestic and commercial. DB boards, circuits, lighting, power.</div>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('install')">Get a Quote</button>
+        </div>
+
+        <!-- Electrical Contracting -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/></svg></div>
+          <div>
+            <div class="svc-name">Electrical Contracting</div>
+            <div class="svc-tagline">Registered contractor for projects requiring a formal contract. ECA(SA) registered.</div>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('contract')">Get a Quote</button>
+        </div>
+
+        <!-- Installation Rules Training -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg></div>
+          <div>
+            <div class="svc-name">Installation Rules Training</div>
+            <div class="svc-tagline">Group classes for Paper 1 and Paper 2 exam preparation. Online and in-person.</div>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('training')">Enquire</button>
+        </div>
+
+        <!-- One-on-One Mentoring -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18V15c0 3 7 3 7 3s7 0 7-3v-3.82L23 9zm-5 7.73l5 2.73 5-2.73V9L12 6.27 7 9v1.73z"/></svg></div>
+          <div>
+            <div class="svc-name">One-on-One Mentoring</div>
+            <div class="svc-tagline">Personal coaching for trade test candidates, apprentices, learners. Theory, practical, exam technique.</div>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('mentor')">Enquire</button>
+        </div>
+
+        <!-- Electrician Consultation -->
+        <div class="svc-tile">
+          <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div>
+          <div>
+            <div class="svc-name">Electrician Consultation</div>
+            <div class="svc-tagline">Technical support for qualified electricians. CoC queries, SANS 10142-1 interpretation, fault analysis.</div>
+          </div>
+          <button class="svc-quote-btn" onclick="openSvcForm('consult')">Enquire</button>
+        </div>
+
+      </div>
+
+      <!-- Expandable quote forms (appear below the grid) -->
+
+      <!-- ECI Form -->
+      <div class="svc-form-panel" id="svcf-eci">
+        <p class="svc-form-ttl">Electrical Compliance Inspection — Quote Request</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-eci-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-eci-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Email Address</label>
+        <input type="email" class="ord-input" id="sf-eci-email" placeholder="Optional but useful for the report">
+        <label class="ord-lbl">Installation Address *</label>
+        <textarea class="ord-input" id="sf-eci-addr" rows="2" placeholder="Street address, suburb, city"></textarea>
+        <label class="ord-lbl">Type of Installation *</label>
+        <select class="ord-input" id="sf-eci-type">
+          <option value="">Select one</option>
+          <option>Residential (single dwelling)</option>
+          <option>Residential (sectional title / flat)</option>
+          <option>Commercial / light industrial</option>
+          <option>Agricultural</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Approximate DB size (number of ways / circuits)</label>
+        <input type="text" class="ord-input" id="sf-eci-db" placeholder="e.g. 12-way DB, or leave blank if unsure">
+        <label class="ord-lbl">Age of installation (approximate)</label>
+        <input type="text" class="ord-input" id="sf-eci-age" placeholder="e.g. 10 years, recently built, unknown">
+        <label class="ord-lbl">Reason for requiring the CoC</label>
+        <select class="ord-input" id="sf-eci-reason">
+          <option value="">Select one</option>
+          <option>Property sale</option>
+          <option>Property purchase (buyer's requirement)</option>
+          <option>Insurance requirement</option>
+          <option>Tenant / landlord dispute</option>
+          <option>Municipal / utility requirement</option>
+          <option>Routine compliance</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Any known faults or issues with the installation?</label>
+        <textarea class="ord-input" id="sf-eci-faults" rows="2" placeholder="e.g. tripping breakers, exposed wiring, old wiring, no earth leakage — or leave blank if none known"></textarea>
+        <label class="ord-lbl">Preferred inspection date and time</label>
+        <input type="text" class="ord-input" id="sf-eci-date" placeholder="e.g. anytime this week, Saturday morning">
+        <label class="ord-lbl">Is there a tenant or occupant who needs to be notified?</label>
+        <select class="ord-input" id="sf-eci-tenant">
+          <option value="">Select one</option>
+          <option>No, I am the occupant</option>
+          <option>Yes, I will arrange access</option>
+          <option>Not sure yet</option>
+        </select>
+        <div class="svc-photo-note">
+          <strong>Photos speed up the quote.</strong> After sending your request, please WhatsApp photos of your DB board, distribution boards, and any visible wiring or problem areas to the same number. This helps us quote accurately before the site visit.
+        </div>
+        <div class="ord-err" id="sf-eci-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('eci','Electrical Compliance Inspection')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('eci')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-eci-res" hidden></div>
+      </div>
+
+      <!-- CoC Issuance Form -->
+      <div class="svc-form-panel" id="svcf-coc">
+        <p class="svc-form-ttl">CoC Issuance — Quote Request</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-coc-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-coc-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Email Address *</label>
+        <input type="email" class="ord-input" id="sf-coc-email" placeholder="For delivery of the certificate package">
+        <label class="ord-lbl">Installation Address *</label>
+        <textarea class="ord-input" id="sf-coc-addr" rows="2" placeholder="Street address, suburb, city"></textarea>
+        <label class="ord-lbl">Was the inspection done by us?</label>
+        <select class="ord-input" id="sf-coc-inspector">
+          <option value="">Select one</option>
+          <option>Yes, you inspected the installation</option>
+          <option>No, it was done by another contractor</option>
+          <option>Not sure</option>
+        </select>
+        <label class="ord-lbl">Do you have an existing test report?</label>
+        <select class="ord-input" id="sf-coc-report">
+          <option value="">Select one</option>
+          <option>Yes, I have the test report</option>
+          <option>No, no test report yet</option>
+          <option>Not sure what I have</option>
+        </select>
+        <label class="ord-lbl">Reason the CoC is needed</label>
+        <select class="ord-input" id="sf-coc-reason">
+          <option value="">Select one</option>
+          <option>Property sale</option>
+          <option>Property purchase</option>
+          <option>Fault was found and repairs were done — CoC now needed</option>
+          <option>Electrical work was done but no CoC was issued at the time</option>
+          <option>Current CoC is lost or cannot be located — retest required</option>
+          <option>Insurance requirement — periodic retest after a number of years</option>
+          <option>Municipal / utility requirement</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Urgency / deadline</label>
+        <input type="text" class="ord-input" id="sf-coc-deadline" placeholder="e.g. transfer date is 15 December, no rush">
+        <div class="svc-photo-note">
+          <strong>Send supporting documents.</strong> After sending your request, please WhatsApp any existing test reports, inspection certificates, or property documents to the same number. This helps us confirm what is needed before quoting.
+        </div>
+        <div class="ord-err" id="sf-coc-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('coc','CoC Issuance')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('coc')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-coc-res" hidden></div>
+      </div>
+
+      <!-- Solar Form -->
+      <div class="svc-form-panel" id="svcf-solar">
+        <p class="svc-form-ttl">PV Solar Installation — Quote Request</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-solar-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-solar-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Email Address</label>
+        <input type="email" class="ord-input" id="sf-solar-email" placeholder="For the detailed quote">
+        <label class="ord-lbl">Property Address *</label>
+        <textarea class="ord-input" id="sf-solar-addr" rows="2" placeholder="Street address, suburb, city"></textarea>
+        <label class="ord-lbl">Type of property</label>
+        <select class="ord-input" id="sf-solar-prop">
+          <option value="">Select one</option>
+          <option>Residential (house)</option>
+          <option>Residential (complex / sectional title)</option>
+          <option>Commercial / office</option>
+          <option>Industrial</option>
+          <option>Agricultural / farm</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Type of system required</label>
+        <select class="ord-input" id="sf-solar-sys">
+          <option value="">Select one</option>
+          <option>Grid-tied (export back to grid, net metering)</option>
+          <option>Off-grid (no grid connection)</option>
+          <option>Hybrid (solar + battery, grid backup)</option>
+          <option>Not sure, need guidance</option>
+        </select>
+        <label class="ord-lbl">Approximate monthly electricity bill (Rands)</label>
+        <input type="text" class="ord-input" id="sf-solar-bill" placeholder="e.g. R2 500/month, or attach a recent Eskom / municipal bill">
+        <label class="ord-lbl">Existing supply (municipality or Eskom direct)?</label>
+        <input type="text" class="ord-input" id="sf-solar-supply" placeholder="e.g. City of Tshwane, Eskom prepaid, Johannesburg City Power">
+        <label class="ord-lbl">Phase supply</label>
+        <select class="ord-input" id="sf-solar-phase">
+          <option value="">Select one</option>
+          <option>Single phase</option>
+          <option>Three phase</option>
+          <option>Not sure</option>
+        </select>
+        <label class="ord-lbl">Main breaker / supply size (if known)</label>
+        <input type="text" class="ord-input" id="sf-solar-breaker" placeholder="e.g. 60A, 80A, or not sure">
+        <label class="ord-lbl">Priority loads to run on solar / battery</label>
+        <textarea class="ord-input" id="sf-solar-loads" rows="2" placeholder="e.g. lights and sockets, fridge, TV, Wi-Fi, security system, borehole pump"></textarea>
+        <label class="ord-lbl">Any specific budget range?</label>
+        <input type="text" class="ord-input" id="sf-solar-budget" placeholder="e.g. R80 000 to R120 000, or no specific limit">
+        <div class="svc-photo-note">
+          <strong>Photos will help us quote accurately.</strong> After sending your request, please WhatsApp photos of your DB board, electricity meter, roof (showing tilt and orientation), and any existing solar or inverter equipment to the same number.
+        </div>
+        <div class="ord-err" id="sf-solar-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('solar','PV Solar Installation')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('solar')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-solar-res" hidden></div>
+      </div>
+
+      <!-- Electrical Installation Form -->
+      <div class="svc-form-panel" id="svcf-install">
+        <p class="svc-form-ttl">Electrical Installation — Quote Request</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-install-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-install-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Property Address *</label>
+        <textarea class="ord-input" id="sf-install-addr" rows="2" placeholder="Street address, suburb, city"></textarea>
+        <label class="ord-lbl">Type of property</label>
+        <select class="ord-input" id="sf-install-prop">
+          <option value="">Select one</option>
+          <option>Residential</option>
+          <option>Commercial / office</option>
+          <option>Industrial</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Work required *</label>
+        <textarea class="ord-input" id="sf-install-work" rows="3" placeholder="Describe what needs to be done, e.g. new DB board, add sockets in kitchen, run circuits for new rooms, outdoor lighting, geyser installation, etc."></textarea>
+        <label class="ord-lbl">Is the installation new or an upgrade to an existing one?</label>
+        <select class="ord-input" id="sf-install-type">
+          <option value="">Select one</option>
+          <option>New installation (no existing wiring)</option>
+          <option>Upgrade or addition to existing installation</option>
+          <option>Fault finding and repair</option>
+          <option>Combination of the above</option>
+        </select>
+        <label class="ord-lbl">Phase supply</label>
+        <select class="ord-input" id="sf-install-phase">
+          <option value="">Select one</option>
+          <option>Single phase</option>
+          <option>Three phase</option>
+          <option>Not sure</option>
+        </select>
+        <label class="ord-lbl">Will a CoC be required after the work?</label>
+        <select class="ord-input" id="sf-install-coc">
+          <option value="">Select one</option>
+          <option>Yes, CoC will be required</option>
+          <option>No CoC needed</option>
+          <option>Not sure</option>
+        </select>
+        <label class="ord-lbl">Preferred start date</label>
+        <input type="text" class="ord-input" id="sf-install-date" placeholder="e.g. as soon as possible, January 2027">
+        <div class="svc-photo-note">
+          <strong>Photos help us assess the job.</strong> After sending your request, please WhatsApp photos of the existing DB board, the areas where work is needed, and any visible wiring or relevant details to the same number.
+        </div>
+        <div class="ord-err" id="sf-install-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('install','Electrical Installation')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('install')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-install-res" hidden></div>
+      </div>
+
+      <!-- Contracting Form -->
+      <div class="svc-form-panel" id="svcf-contract">
+        <p class="svc-form-ttl">Electrical Contracting — Quote Request</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-contract-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-contract-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Company Name (if applicable)</label>
+        <input type="text" class="ord-input" id="sf-contract-company" placeholder="Name of the company or project owner">
+        <label class="ord-lbl">Email Address</label>
+        <input type="email" class="ord-input" id="sf-contract-email" placeholder="For the formal quote / contract">
+        <label class="ord-lbl">Project Site Address *</label>
+        <textarea class="ord-input" id="sf-contract-addr" rows="2" placeholder="Street address, suburb, city"></textarea>
+        <label class="ord-lbl">Type of project</label>
+        <select class="ord-input" id="sf-contract-projtype">
+          <option value="">Select one</option>
+          <option>New residential development</option>
+          <option>Commercial fit-out or refurbishment</option>
+          <option>Industrial installation</option>
+          <option>Subcontracting (you are the main contractor)</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Brief description of scope *</label>
+        <textarea class="ord-input" id="sf-contract-scope" rows="3" placeholder="Describe the electrical work required. Include size, phases, known load, and any special requirements."></textarea>
+        <label class="ord-lbl">Approximate project value or size</label>
+        <input type="text" class="ord-input" id="sf-contract-value" placeholder="e.g. R500 000 project, 50 units, 3-storey building">
+        <label class="ord-lbl">Expected start date and duration</label>
+        <input type="text" class="ord-input" id="sf-contract-timeline" placeholder="e.g. start February, 3 months on site">
+        <label class="ord-lbl">Are drawings or specifications available?</label>
+        <select class="ord-input" id="sf-contract-drawings">
+          <option value="">Select one</option>
+          <option>Yes, full electrical drawings available</option>
+          <option>Partial drawings / schematic only</option>
+          <option>No drawings yet</option>
+        </select>
+        <div class="svc-photo-note">
+          <strong>Send drawings or site photos.</strong> After sending your request, please WhatsApp any electrical drawings, plans, or site photos to the same number. If you have a bill of quantities or spec document, email it to ribatt3@gmail.com.
+        </div>
+        <div class="ord-err" id="sf-contract-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('contract','Electrical Contracting')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('contract')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-contract-res" hidden></div>
+      </div>
+
+      <!-- Training Form -->
+      <div class="svc-form-panel" id="svcf-training">
+        <p class="svc-form-ttl">Installation Rules Training — Enquiry</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-training-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-training-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Email Address</label>
+        <input type="email" class="ord-input" id="sf-training-email" placeholder="For joining link and class materials">
+        <label class="ord-lbl">Which paper are you preparing for?</label>
+        <select class="ord-input" id="sf-training-paper">
+          <option value="">Select one</option>
+          <option>Paper 1 (Theory)</option>
+          <option>Paper 2 (Calculations)</option>
+          <option>Both Paper 1 and Paper 2</option>
+          <option>Not sure yet</option>
+        </select>
+        <label class="ord-lbl">Which exam sitting are you targeting?</label>
+        <select class="ord-input" id="sf-training-sitting">
+          <option value="">Select one</option>
+          <option>May / June sitting</option>
+          <option>November sitting</option>
+          <option>Not registered yet, just preparing</option>
+        </select>
+        <label class="ord-lbl">Current level of experience</label>
+        <select class="ord-input" id="sf-training-level">
+          <option value="">Select one</option>
+          <option>Apprentice (in training, not yet qualified)</option>
+          <option>Qualified electrician preparing for trade test</option>
+          <option>Qualified electrician upgrading knowledge</option>
+          <option>Lecturer or assessor</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Preferred class format</label>
+        <select class="ord-input" id="sf-training-format">
+          <option value="">Select one</option>
+          <option>Online (Teams or similar)</option>
+          <option>In person (Gauteng)</option>
+          <option>Either works</option>
+        </select>
+        <label class="ord-lbl">Any specific topics you are struggling with?</label>
+        <textarea class="ord-input" id="sf-training-topics" rows="2" placeholder="e.g. earthing systems, Annex C calculations, bathroom zones — or leave blank if unsure"></textarea>
+        <label class="ord-lbl">Group size (if enquiring for a group)</label>
+        <input type="text" class="ord-input" id="sf-training-group" placeholder="e.g. 10 people, or leave blank if individual">
+        <div class="ord-err" id="sf-training-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('training','Installation Rules Training')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('training')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-training-res" hidden></div>
+      </div>
+
+      <!-- Mentoring Form -->
+      <div class="svc-form-panel" id="svcf-mentor">
+        <p class="svc-form-ttl">One-on-One Mentoring — Enquiry</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-mentor-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-mentor-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Email Address</label>
+        <input type="email" class="ord-input" id="sf-mentor-email" placeholder="Optional">
+        <label class="ord-lbl">What are you studying or preparing for? *</label>
+        <textarea class="ord-input" id="sf-mentor-goal" rows="2" placeholder="e.g. Trade test in March, N5 Installation Rules, Paper 1 exam in November"></textarea>
+        <label class="ord-lbl">Current stage of training / apprenticeship</label>
+        <select class="ord-input" id="sf-mentor-stage">
+          <option value="">Select one</option>
+          <option>Year 1 apprentice</option>
+          <option>Year 2 apprentice</option>
+          <option>Year 3 apprentice</option>
+          <option>Year 4 / final year apprentice</option>
+          <option>Qualified electrician preparing for trade test</option>
+          <option>TVET student (N4-N6)</option>
+          <option>Learnership participant (EWSETA / QCTO)</option>
+          <option>Other</option>
+        </select>
+        <label class="ord-lbl">Which areas do you need help with most?</label>
+        <textarea class="ord-input" id="sf-mentor-weak" rows="2" placeholder="e.g. theory, practical skills, calculations, exam technique, specific SANS clauses"></textarea>
+        <label class="ord-lbl">Have you attempted the trade test or exam before?</label>
+        <select class="ord-input" id="sf-mentor-attempt">
+          <option value="">Select one</option>
+          <option>No, first attempt</option>
+          <option>Yes, failed once</option>
+          <option>Yes, failed more than once</option>
+          <option>Not applicable</option>
+        </select>
+        <label class="ord-lbl">Preferred session format</label>
+        <select class="ord-input" id="sf-mentor-format">
+          <option value="">Select one</option>
+          <option>In person (Gauteng)</option>
+          <option>Online (video call)</option>
+          <option>Either works</option>
+        </select>
+        <label class="ord-lbl">Preferred days and times</label>
+        <input type="text" class="ord-input" id="sf-mentor-times" placeholder="e.g. weekday evenings, Saturday mornings">
+        <div class="ord-err" id="sf-mentor-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('mentor','One-on-One Mentoring')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('mentor')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-mentor-res" hidden></div>
+      </div>
+
+      <!-- Consultation Form -->
+      <div class="svc-form-panel" id="svcf-consult">
+        <p class="svc-form-ttl">Electrician Consultation — Enquiry</p>
+        <label class="ord-lbl">Full Name *</label>
+        <input type="text" class="ord-input" id="sf-consult-name" placeholder="Your full name">
+        <label class="ord-lbl">Cell Number *</label>
+        <input type="tel" class="ord-input" id="sf-consult-cell" placeholder="e.g. 072 123 4567">
+        <label class="ord-lbl">Company Name (if applicable)</label>
+        <input type="text" class="ord-input" id="sf-consult-company" placeholder="Your practice or employer name">
+        <label class="ord-lbl">Registration status</label>
+        <select class="ord-input" id="sf-consult-reg">
+          <option value="">Select one</option>
+          <option>Registered Installation Electrician</option>
+          <option>Registered Master Electrician</option>
+          <option>Apprentice / in training</option>
+          <option>Other electrical professional</option>
+        </select>
+        <label class="ord-lbl">Brief description of what you need help with *</label>
+        <textarea class="ord-input" id="sf-consult-desc" rows="3" placeholder="e.g. second opinion on a CoC I received, SANS 10142-1 interpretation query, fault I cannot identify, on-site technical issue in Pretoria"></textarea>
+        <label class="ord-lbl">Type of consultation needed</label>
+        <select class="ord-input" id="sf-consult-type">
+          <option value="">Select one</option>
+          <option>Phone or video call only</option>
+          <option>On-site visit required</option>
+          <option>Either, depending on cost</option>
+        </select>
+        <label class="ord-lbl">Location (if on-site visit is needed)</label>
+        <input type="text" class="ord-input" id="sf-consult-loc" placeholder="Suburb and city">
+        <label class="ord-lbl">Urgency</label>
+        <select class="ord-input" id="sf-consult-urgency">
+          <option value="">Select one</option>
+          <option>Urgent (same day or next day)</option>
+          <option>This week</option>
+          <option>Not urgent, within the next few weeks</option>
+        </select>
+        <div class="svc-photo-note">
+          <strong>Send photos or documents.</strong> After sending your request, please WhatsApp any relevant photos, test reports, or documents to the same number. This helps prepare for the consultation.
+        </div>
+        <div class="ord-err" id="sf-consult-err"></div>
+        <div class="ord-btn-row">
+          <button class="btn-ord-go" onclick="prepSvcNew('consult','Electrician Consultation')">Prepare Message</button>
+          <button class="btn-ord-x" onclick="closeSvcForm('consult')">Cancel</button>
+        </div>
+        <div class="ord-result" id="sf-consult-res" hidden></div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">Tseke Riba · ribattseke.co.za · Installation Rules Lecturer and Electrical Contractor · Gauteng</div>
+</footer>
+
+<a href="#about" class="float-pay" aria-label="Pay">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+  Pay / Donate
+</a>
+
+<script>
+(function(){
+  var now=new Date();
+  var m=now.getMonth()+1;
+  var y=now.getFullYear();
+  var sitting=m<=6?'May '+y+' Sitting':'November '+y+' Sitting';
+  var el=document.getElementById('hero-eyebrow');
+  if(el){el.textContent='Installation Rules · '+sitting;}
+})();
+function daysUntil(iso){var t=new Date(iso+'T00:00:00'),n=new Date();n.setHours(0,0,0,0);return Math.round((t-n)/86400000);}
+function renderCountdown(id,iso){
+  var el=document.getElementById(id);if(!el)return;
+  var d=daysUntil(iso);
+  if(d<0){el.innerHTML='Exam passed';el.style.fontSize='14px';}
+  else if(d===0){el.innerHTML='TODAY';el.style.color='#34A853';}
+  else{el.innerHTML=d+'<span class="exam-unit">days to go</span>';}
+}
+renderCountdown('cd1','2026-11-24');
+renderCountdown('cd2','2026-11-30');
+
+function updateCounter(){
+  var done=document.querySelectorAll('.snum.done').length;
+  var total=20;
+  var el=document.getElementById('sess-counter');
+  if(el){el.innerHTML='<span class="sc-done">'+done+' sessions done</span><span class="sc-sep"> · </span><span class="sc-rem">'+(total-done)+' to go</span>';}
+}
+updateCounter();
+
+function toggleOrdForm(id){
+  var f=document.getElementById(id);var open=!f.hidden;
+  document.querySelectorAll('.ord-form').forEach(function(x){x.hidden=true;});
+  f.hidden=open;
+}
+function prepOrd(bid,bname){
+  var n=document.getElementById('oname-'+bid).value.trim();
+  var c=document.getElementById('ocell-'+bid).value.trim();
+  var a=document.getElementById('oaddr-'+bid).value.trim();
+  var err=document.getElementById('oerr-'+bid);
+  err.textContent='';
+  if(!n){err.textContent='Please enter your full name.';return;}
+  if(!c){err.textContent='Please enter your cell number.';return;}
+  if(!a){err.textContent='Please enter your delivery address.';return;}
+  var msg='Book Order\n\nBook: '+bname+'\nFull Name: '+n+'\nCell: '+c+'\nDelivery Address: '+a+'\n\nPlease confirm availability and pricing.';
+  var enc=encodeURIComponent(msg);
+  var res=document.getElementById('ores-'+bid);
+  res.innerHTML='<p style="font-size:12px;font-weight:600;color:var(--fg);margin:0 0 8px;">Send this order to Tseke:</p>'
+    +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;">'
+    +'<a href="https://wa.me/27724748888?text='+enc+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;background:#25D366;color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;text-decoration:none;">&#128172; WhatsApp</a>'
+    +'<a href="mailto:ribatt3@gmail.com?subject=Book%20Order%3A%20'+encodeURIComponent(bname)+'&body='+enc+'" style="display:inline-flex;align-items:center;gap:5px;background:var(--amb);color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;text-decoration:none;">&#9993;&#65039; Email</a>'
+    +'<a href="https://t.me/+27724748888" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;background:#0088cc;color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;text-decoration:none;">&#9992; Telegram</a>'
+    +'</div>'
+    +'<pre class="ord-msg"></pre><button class="btn-copy-ord" onclick="copyOrd(this)">Copy message</button>';
+  res.querySelector('.ord-msg').textContent=msg;
+  res.hidden=false;
+}
+function openSvcForm(sid){
+  // close all panels first
+  document.querySelectorAll('.svc-form-panel').forEach(function(p){p.classList.remove('open');});
+  var panel=document.getElementById('svcf-'+sid);
+  if(panel){
+    panel.classList.add('open');
+    setTimeout(function(){panel.scrollIntoView({behavior:'smooth',block:'start'});},80);
+  }
+}
+function closeSvcForm(sid){
+  var panel=document.getElementById('svcf-'+sid);
+  if(panel){panel.classList.remove('open');}
+}
+function gv(id){var el=document.getElementById(id);return el?(el.value||'').trim():'';}
+function prepSvcNew(sid,sname){
+  var n=gv('sf-'+sid+'-name');
+  var c=gv('sf-'+sid+'-cell');
+  var errEl=document.getElementById('sf-'+sid+'-err');
+  var resEl=document.getElementById('sf-'+sid+'-res');
+  errEl.textContent='';
+  if(!n){errEl.textContent='Please enter your full name.';return;}
+  if(!c){errEl.textContent='Please enter your cell number.';return;}
+  var lines=['Service Request: '+sname,'','Full Name: '+n,'Cell: '+c];
+  var email=gv('sf-'+sid+'-email');if(email)lines.push('Email: '+email);
+  if(sid==='eci'){
+    var addr=gv('sf-eci-addr');if(!addr){errEl.textContent='Please enter the installation address.';return;}
+    lines.push('Installation Address: '+addr);
+    var t=gv('sf-eci-type');if(t)lines.push('Installation Type: '+t);
+    var db=gv('sf-eci-db');if(db)lines.push('DB Size: '+db);
+    var age=gv('sf-eci-age');if(age)lines.push('Age of Installation: '+age);
+    var r=gv('sf-eci-reason');if(r)lines.push('Reason for CoC: '+r);
+    var f=gv('sf-eci-faults');if(f)lines.push('Known Faults: '+f);
+    var d=gv('sf-eci-date');if(d)lines.push('Preferred Date: '+d);
+    var ten=gv('sf-eci-tenant');if(ten)lines.push('Tenant/Access: '+ten);
+    lines.push('','Note: Photos of DB board and wiring will follow via WhatsApp.');
+  } else if(sid==='coc'){
+    var addr=gv('sf-coc-addr');if(!addr){errEl.textContent='Please enter the installation address.';return;}
+    lines.push('Installation Address: '+addr);
+    var ins=gv('sf-coc-inspector');if(ins)lines.push('Inspector: '+ins);
+    var rep=gv('sf-coc-report');if(rep)lines.push('Existing Test Report: '+rep);
+    var r=gv('sf-coc-reason');if(r)lines.push('Reason: '+r);
+    var dl=gv('sf-coc-deadline');if(dl)lines.push('Deadline: '+dl);
+    lines.push('','Note: Supporting documents will follow via WhatsApp.');
+  } else if(sid==='solar'){
+    var addr=gv('sf-solar-addr');if(!addr){errEl.textContent='Please enter the property address.';return;}
+    lines.push('Property Address: '+addr);
+    var p=gv('sf-solar-prop');if(p)lines.push('Property Type: '+p);
+    var s=gv('sf-solar-sys');if(s)lines.push('System Type: '+s);
+    var b=gv('sf-solar-bill');if(b)lines.push('Monthly Bill: '+b);
+    var sup=gv('sf-solar-supply');if(sup)lines.push('Supply: '+sup);
+    var ph=gv('sf-solar-phase');if(ph)lines.push('Phase: '+ph);
+    var br=gv('sf-solar-breaker');if(br)lines.push('Main Breaker: '+br);
+    var l=gv('sf-solar-loads');if(l)lines.push('Priority Loads: '+l);
+    var bud=gv('sf-solar-budget');if(bud)lines.push('Budget: '+bud);
+    lines.push('','Note: DB board, meter, roof, and equipment photos will follow via WhatsApp.');
+  } else if(sid==='install'){
+    var addr=gv('sf-install-addr');if(!addr){errEl.textContent='Please enter the property address.';return;}
+    var w=gv('sf-install-work');if(!w){errEl.textContent='Please describe the work required.';return;}
+    lines.push('Property Address: '+addr);
+    var pr=gv('sf-install-prop');if(pr)lines.push('Property Type: '+pr);
+    lines.push('Work Required: '+w);
+    var t=gv('sf-install-type');if(t)lines.push('Installation Type: '+t);
+    var ph=gv('sf-install-phase');if(ph)lines.push('Phase: '+ph);
+    var coc=gv('sf-install-coc');if(coc)lines.push('CoC Required: '+coc);
+    var d=gv('sf-install-date');if(d)lines.push('Preferred Start: '+d);
+    lines.push('','Note: DB board and site photos will follow via WhatsApp.');
+  } else if(sid==='contract'){
+    var addr=gv('sf-contract-addr');if(!addr){errEl.textContent='Please enter the project site address.';return;}
+    var sc=gv('sf-contract-scope');if(!sc){errEl.textContent='Please describe the project scope.';return;}
+    var co=gv('sf-contract-company');if(co)lines.push('Company: '+co);
+    lines.push('Site Address: '+addr);
+    var pt=gv('sf-contract-projtype');if(pt)lines.push('Project Type: '+pt);
+    lines.push('Scope: '+sc);
+    var v=gv('sf-contract-value');if(v)lines.push('Project Size: '+v);
+    var tl=gv('sf-contract-timeline');if(tl)lines.push('Timeline: '+tl);
+    var dr=gv('sf-contract-drawings');if(dr)lines.push('Drawings: '+dr);
+    lines.push('','Note: Drawings and site photos will follow via WhatsApp or email ribatt3@gmail.com.');
+  } else if(sid==='training'){
+    var pap=gv('sf-training-paper');if(pap)lines.push('Paper: '+pap);
+    var sit=gv('sf-training-sitting');if(sit)lines.push('Target Sitting: '+sit);
+    var lv=gv('sf-training-level');if(lv)lines.push('Level: '+lv);
+    var fm=gv('sf-training-format');if(fm)lines.push('Format: '+fm);
+    var top=gv('sf-training-topics');if(top)lines.push('Topics Needed: '+top);
+    var grp=gv('sf-training-group');if(grp)lines.push('Group Size: '+grp);
+  } else if(sid==='mentor'){
+    var g=gv('sf-mentor-goal');if(!g){errEl.textContent='Please tell us what you are preparing for.';return;}
+    lines.push('Preparing For: '+g);
+    var st=gv('sf-mentor-stage');if(st)lines.push('Stage: '+st);
+    var w=gv('sf-mentor-weak');if(w)lines.push('Areas Needing Help: '+w);
+    var at=gv('sf-mentor-attempt');if(at)lines.push('Previous Attempts: '+at);
+    var fm=gv('sf-mentor-format');if(fm)lines.push('Format: '+fm);
+    var ti=gv('sf-mentor-times');if(ti)lines.push('Preferred Times: '+ti);
+  } else if(sid==='consult'){
+    var d=gv('sf-consult-desc');if(!d){errEl.textContent='Please describe what you need help with.';return;}
+    var co=gv('sf-consult-company');if(co)lines.push('Company: '+co);
+    var reg=gv('sf-consult-reg');if(reg)lines.push('Registration: '+reg);
+    lines.push('Query: '+d);
+    var t=gv('sf-consult-type');if(t)lines.push('Consultation Type: '+t);
+    var loc=gv('sf-consult-loc');if(loc)lines.push('Location: '+loc);
+    var u=gv('sf-consult-urgency');if(u)lines.push('Urgency: '+u);
+    lines.push('','Note: Relevant photos or documents will follow via WhatsApp.');
+  }
+  lines.push('','Please confirm availability and next steps.');
+  var msg=lines.join('\n');
+  var enc=encodeURIComponent(msg);
+  resEl.innerHTML='<p style="font-size:12px;font-weight:600;color:var(--fg);margin:0 0 8px;">Send your request to Tseke:</p>'
+    +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;">'
+    +'<a href="https://wa.me/27724748888?text='+enc+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;background:#25D366;color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;text-decoration:none;">&#128172; WhatsApp</a>'
+    +'<a href="mailto:ribatt3@gmail.com?subject='+encodeURIComponent(sname+' Request')+'&body='+enc+'" style="display:inline-flex;align-items:center;gap:5px;background:var(--amb);color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:6px;text-decoration:none;">&#9993;&#65039; Email</a>'
+    +'</div>'
+    +'<pre class="ord-msg" style="white-space:pre-wrap;"></pre><button class="btn-copy-ord" onclick="copyOrd(this)">Copy message</button>';
+  resEl.querySelector('.ord-msg').textContent=msg;
+  resEl.hidden=false;
+}
+function togglePay(id){
+  var el=document.getElementById(id);
+  el.hidden=!el.hidden;
+  var btn=el.previousElementSibling;
+  if(btn&&btn.classList.contains('btn-show-pay')){btn.textContent=el.hidden?'Show payment details':'Hide payment details';}
+}
+function copyOrd(btn){
+  var msg=btn.previousElementSibling.textContent;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(msg).then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy message';},2000);}).catch(function(){selTxt(btn.previousElementSibling);});
+  }else{selTxt(btn.previousElementSibling);}
+}
+function selTxt(el){var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}
+</script>
+
+</body></html>
