@@ -1806,17 +1806,42 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <!-- LOGIN VIEW -->
       <div id="lms-login" class="lms-view active">
         <div class="lms-card">
-          <h3>Sign in</h3>
-          <p>Create an account or sign in to start practising.</p>
-          <label class="lms-label">Username</label>
-          <input class="lms-input" id="lms-u" type="text" placeholder="Choose a username" autocomplete="username" autocapitalize="none">
-          <label class="lms-label">PIN</label>
-          <input class="lms-input" id="lms-p" type="password" placeholder="Choose a PIN (any length)">
-          <div class="lms-err" id="lms-login-err"></div>
-          <button class="lms-btn" onclick="lmsSignup()">Continue</button>
-          <p style="font-size:11.5px;color:var(--fg3);margin-top:10px;text-align:center;">Returning user? Enter your username and PIN to sign back in. New user? You will be asked for an access key.</p>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
+          <h3 style="text-align:center;margin-bottom:4px;">Installation Rules LMS</h3>
+          <p style="text-align:center;margin-bottom:18px;">SANS 10142-1 &middot; EIR 1992 &middot; Construction Regs</p>
+          <button class="lms-btn" onclick="lmsShowView('lms-signup')" style="margin-bottom:8px;">New Student &mdash; Create Account</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')">Returning Student &mdash; Sign In</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
           <button class="lms-btn-sec" style="margin-top:4px;font-size:10px;opacity:.5;" onclick="lmsAdminEntry()">Admin</button>
+        </div>
+      </div>
+
+      <!-- SIGN UP VIEW -->
+      <div id="lms-signup" class="lms-view">
+        <div class="lms-card">
+          <h3>Create account</h3>
+          <p>You will need an access key from Tseke to complete registration. No key yet? <a href="#" onclick="lmsShowView('lms-paywall');return false;" style="color:var(--amb);">Get one here.</a></p>
+          <label class="lms-label">Choose a username</label>
+          <input class="lms-input" id="lms-su-u" type="text" placeholder="e.g. john123" autocomplete="username" autocapitalize="none">
+          <label class="lms-label" style="margin-top:10px;">Choose a PIN</label>
+          <input class="lms-input" id="lms-su-p" type="password" placeholder="At least 3 characters">
+          <div class="lms-err" id="lms-signup-err"></div>
+          <button class="lms-btn" onclick="lmsDoSignup()">Next &mdash; Enter Access Key</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
+        </div>
+      </div>
+
+      <!-- SIGN IN VIEW -->
+      <div id="lms-signin" class="lms-view">
+        <div class="lms-card">
+          <h3>Sign in</h3>
+          <label class="lms-label">Username</label>
+          <input class="lms-input" id="lms-u" type="text" placeholder="Your username" autocomplete="username" autocapitalize="none">
+          <label class="lms-label" style="margin-top:10px;">PIN</label>
+          <input class="lms-input" id="lms-p" type="password" placeholder="Your PIN">
+          <div class="lms-err" id="lms-login-err"></div>
+          <button class="lms-btn" onclick="lmsSignin()">Sign In</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
         </div>
       </div>
 
@@ -3049,28 +3074,39 @@ function _lmsUserExists(u){
   return false;
 }
 
-function lmsSignup(){
+function lmsSignin(){
   var u=(document.getElementById('lms-u').value||'').trim();
   var p=(document.getElementById('lms-p').value||'').trim();
   var err=document.getElementById('lms-login-err');
   err.textContent='';
-  if(!u){err.textContent='Please enter a username.';return;}
-  if(!p||p.length<3){err.textContent='PIN must be at least 3 characters.';return;}
-  
+  if(!u){err.textContent='Please enter your username.';return;}
+  if(!p){err.textContent='Please enter your PIN.';return;}
   var existing=_lmsLoad(u,p);
   if(existing){
-    // Returning user — sign in directly
     _lmsUser=u; _lmsKey=p; _lmsProgress=existing;
     lmsShowDash();
   } else if(_lmsUserExists(u)){
-    err.textContent='Username taken or wrong PIN. Try again or choose a different username.';
+    err.textContent='Wrong PIN. Try again or use Forgot PIN to reset.';
   } else {
-    // New user — need access key
-    _lmsPendingU=u; _lmsPendingK=p;
-    document.getElementById('lms-access-key').value='';
-    document.getElementById('lms-access-err').textContent='';
-    lmsShowView('lms-access');
+    err.textContent='Username not found. Create a new account instead.';
   }
+}
+
+function lmsSignup(){lmsSignin();}
+
+function lmsDoSignup(){
+  var u=(document.getElementById('lms-su-u').value||'').trim();
+  var p=(document.getElementById('lms-su-p').value||'').trim();
+  var err=document.getElementById('lms-signup-err');
+  err.textContent='';
+  if(!u){err.textContent='Please choose a username.';return;}
+  if(u.length<3){err.textContent='Username must be at least 3 characters.';return;}
+  if(!p||p.length<3){err.textContent='PIN must be at least 3 characters.';return;}
+  if(_lmsUserExists(u)){err.textContent='That username is already taken. Choose a different one.';return;}
+  _lmsPendingU=u; _lmsPendingK=p;
+  document.getElementById('lms-access-key').value='';
+  document.getElementById('lms-access-err').textContent='';
+  lmsShowView('lms-access');
 }
 
 function lmsSubmitKey(){
