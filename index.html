@@ -210,8 +210,9 @@ section:last-child{border-bottom:none;}
 .pay-shap-note{font-size:11px;color:#717171;margin-top:3px;}
 .pay-instructions{font-size:12px;color:var(--fg3);margin-top:12px;line-height:1.5;}
 
-.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:#005eb8;color:#fff;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:22px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);display:inline-flex;align-items:center;gap:7px;transition:opacity .15s;}
-.float-pay:hover{opacity:.85;}
+.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;font-size:12.5px;font-weight:700;padding:10px 16px;border-radius:24px;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:inline-flex;align-items:center;gap:8px;transition:box-shadow .2s,transform .15s;line-height:1.1;}
+.float-pay:hover{box-shadow:0 6px 26px rgba(30,133,64,.6);transform:translateY(-1px);}
+.donate-sub{display:block;font-size:9px;font-weight:500;opacity:.85;letter-spacing:.04em;text-transform:lowercase;}
 
 footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 /* Services */
@@ -329,12 +330,12 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       </div>
     </div>
 
-    <div class="support-card">
+    <div class="support-card" id="pay-sess-wrap">
       <div class="support-text">
         <strong>Pay for Sessions or Donate</strong>
-        <p>Sessions are open to all. Pay via EFT or PayShap. Send proof to ribatt3@gmail.com with your name and what you are paying for.</p>
+        <p>Sessions are open to all. Pay via EFT or PayShap. Send proof to <a href="mailto:ribatt3@gmail.com" style="color:var(--amb);">ribatt3@gmail.com</a> with your name and what you are paying for.</p>
         <button class="btn-show-pay" onclick="togglePay('pay-sess')">Show payment details</button>
-        <div id="pay-sess" hidden style="display:flex;gap:12px;flex-wrap:wrap;margin-top:0;">
+        <div id="pay-sess" hidden style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
           <div style="flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;">
             <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">EFT · Bank Transfer</div>
             <div style="font-size:12px;color:var(--fg2);line-height:1.75;">
@@ -350,6 +351,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
             <div style="font-size:11px;color:var(--fg3);margin-top:2px;">T T Riba</div>
           </div>
         </div>
+        <p style="font-size:12px;color:var(--fg3);margin:10px 0 0;">Photos of session materials available on request.</p>
       </div>
     </div>
 
@@ -1485,9 +1487,9 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <div class="wrap">Tseke Riba · ribattseke.co.za · Installation Rules Lecturer and Electrical Contractor · Gauteng</div>
 </footer>
 
-<a href="#" onclick="showTab('sessions');document.getElementById('pay-sess').hidden=false;setTimeout(function(){var el=document.getElementById('pay-sess');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},80);return false;" class="float-pay" aria-label="Donate">
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
-  Donate
+<a href="#" onclick="showTab('sessions');document.getElementById('pay-sess-wrap').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){document.getElementById('pay-sess').hidden=false;setTimeout(function(){document.getElementById('pay-sess').scrollIntoView({behavior:'smooth',block:'nearest'});},80);},300);return false;" class="float-pay" aria-label="Donate to keep us going">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
+  <span>Donate<span class="donate-sub">keep us going</span></span>
 </a>
 
 <script>
