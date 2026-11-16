@@ -638,7 +638,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         </ul>
       </div>
       <div class="res-right">
-        <p class="res-price">R1000</p>
+        <p class="res-price"><span style="text-decoration:line-through;color:var(--fg3);font-size:14px;font-weight:400;">R1&#8201;200</span> <span style="color:var(--amb);">R1&#8201;000</span></p>
         <p class="res-delivery">PDF pack and YouTube links via WhatsApp or email</p>
         <button class="btn-show-pay" onclick="togglePay('pay-guide')" style="width:100%;margin-top:8px;">Show payment details</button>
         <div id="pay-guide" hidden style="background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;text-align:left;">
@@ -1805,13 +1805,13 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <div id="lms-access" class="lms-view">
         <div class="lms-card">
           <h3>Access key required</h3>
-          <p>This platform is available to Africa TVET College students and paid study guide holders. Enter your access key below to create your account.</p>
+          <p>Enter the access key Tseke sent you to activate your account. Keys are issued per tier after registration or payment confirmation.</p>
           <label class="lms-label">Cell number (linked to your key)</label>
           <input class="lms-input" id="lms-access-phone" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
           <label class="lms-label" style="margin-top:10px;">Email address (recovery backup)</label>
           <input class="lms-input" id="lms-access-email" type="email" placeholder="e.g. student@gmail.com" autocomplete="email">
           <label class="lms-label" style="margin-top:10px;">Access key</label>
-          <input class="lms-input" id="lms-access-key" type="text" placeholder="e.g. ATVET-2026 or RIBA-A001" autocapitalize="characters">
+          <input class="lms-input" id="lms-access-key" type="text" placeholder="e.g. VQ-A001, ATVET-2026 or RIBA-A001" autocapitalize="characters">
           <div class="lms-err" id="lms-access-err"></div>
           <button class="lms-btn" onclick="lmsSubmitKey()">Activate Account</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')">I don&rsquo;t have a key</button>
@@ -1823,7 +1823,13 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <div id="lms-paywall" class="lms-view">
         <div class="lms-paywall-card">
           <h3>Get access</h3>
-          <p style="font-size:13px;color:var(--fg2);margin:0 0 16px;line-height:1.6;">Choose the option that applies to you to get an access key.</p>
+          <p style="font-size:13px;color:var(--fg2);margin:0 0 16px;line-height:1.6;">Three options below. Once payment or registration is confirmed, Tseke will send your personal key via WhatsApp.</p>
+          <div class="lms-tier-box">
+            <span class="tier-tag" style="background:rgba(120,60,180,.12);color:#783cb4;">Videos + Quizzes</span>
+            <h4>Quiz and video access</h4>
+            <p>Get access to all quizzes and session video recordings at a reduced rate. Contact Tseke to get your key after payment.</p>
+            <p style="margin-top:8px;"><strong>WhatsApp:</strong> 072 474 8888</p>
+          </div>
           <div class="lms-tier-box">
             <span class="tier-tag cohort">Africa TVET College</span>
             <h4>Enrolled student</h4>
@@ -1831,9 +1837,9 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
             <p style="margin-top:8px;"><strong>Email:</strong> ribatt3@gmail.com<br><strong>WhatsApp:</strong> 072 474 8888</p>
           </div>
           <div class="lms-tier-box">
-            <span class="tier-tag paid">Paid access</span>
-            <h4>Study guide purchaser &mdash; R1&thinsp;000</h4>
-            <p>Purchase the SANS 10142-1 Installation Rules study guide for R1&thinsp;000. Once payment is confirmed, Tseke will issue your personal access key.</p>
+            <span class="tier-tag paid">Study Guide Pack</span>
+            <h4>Study guide pack (R1&#8201;200, now R1&#8201;000)</h4>
+            <p>Includes the full study guide PDF, past paper worked solutions, and your personal access key. Once payment is confirmed, Tseke will issue your key via WhatsApp.</p>
             <p style="margin-top:8px;"><strong>Payment:</strong> EFT to Tseke Riba (details on request)<br><strong>WhatsApp to confirm:</strong> 072 474 8888</p>
           </div>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-access')" style="margin-top:4px;">I have a key</button>
@@ -2921,9 +2927,21 @@ const LMS_DATA3={s101981:[{q:'What is the primary scope of SANS 10198-1?',a:'Sel
 
 /* ===== ACCESS KEY SYSTEM ===== */
 // Tier 1: Africa TVET College cohort — Tseke distributes this key to enrolled students
+// TIER 1: Videos + Quizzes (cheaper rate) — format VQ-XXXX
+// Issue one per VQ buyer. Add below as payments come in.
+var VQ_KEYS=[
+  'VQ-A001','VQ-A002','VQ-A003','VQ-A004','VQ-A005',
+  'VQ-B001','VQ-B002','VQ-B003','VQ-B004','VQ-B005',
+  'VQ-C001','VQ-C002','VQ-C003','VQ-C004','VQ-C005',
+  'VQ-D001','VQ-D002','VQ-D003','VQ-D004','VQ-D005',
+  'VQ-E001','VQ-E002','VQ-E003','VQ-E004','VQ-E005'
+];
+
+// TIER 2: Africa TVET College enrolled students — cohort key per intake
+// Change key each intake to prevent sharing from previous cohort.
 var COHORT_KEYS=['ATVET-2026','AFRICA-2026'];
 
-// Tier 2: Paid access (R1000 study guide purchasers) — issue one per buyer
+// TIER 3: Study Guide Pack buyers (R1000) — one personal key per buyer
 // Add new keys here as payments are received. Format: RIBA-XXXX
 var PAID_KEYS=[
   'RIBA-A001','RIBA-A002','RIBA-A003','RIBA-A004','RIBA-A005',
@@ -2940,6 +2958,7 @@ var PAID_KEYS=[
 
 function lmsCheckKey(key){
   var k=(key||'').trim().toUpperCase();
+  if(VQ_KEYS.indexOf(k)!==-1) return 'vq';
   if(COHORT_KEYS.indexOf(k)!==-1) return 'cohort';
   if(PAID_KEYS.indexOf(k)!==-1) return 'paid';
   return null;
