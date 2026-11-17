@@ -3837,7 +3837,7 @@ function lmsOpenAdmin(){
           +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;">'
           +'<div><strong style="font-size:13px;">'+d.username+'</strong>'
           +(joinedStr?' <span style="color:var(--fg3);font-size:11px;">'+joinedStr+'</span>':'')+'</div>'
-          +'<button onclick="admShowSendKey(''+safeName+'',''+d.phone+'',''+(d.email||'')+'',''+d.username+'')" '
+          +'<button data-sid="'+safeName+'" data-phone="'+d.phone+'" data-email="'+(d.email||'')+'" data-uname="'+d.username+'" onclick="admShowSendKey(this.dataset.sid,this.dataset.phone,this.dataset.email,this.dataset.uname)"'
           +'style="background:var(--amb);color:#fff;border:none;border-radius:6px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">Send Key</button>'
           +'</div>'
           +'<div style="font-size:12px;color:var(--fg2);">'+d.phone+(d.email?' &middot; '+d.email:'')+'</div>'
@@ -3889,12 +3889,12 @@ function admShowSendKey(safeId, phone, email, username){
     +'<select id="adm-key-sel-'+safeId+'" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);font-size:12px;margin-bottom:8px;">'
     +opts+'</select>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
-    +'<button onclick="admDoSendKey(''+safeId+'',''+phone+'',''+email+'',''+username+'')" '
-    +'style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
-    +(email?'<button onclick="admDoSendEmail(''+safeId+'',''+email+'',''+username+'')" '
-    +'style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
-    +'</div>';
-  box.style.display='block';
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    +'<button data-sid="'+safeId+'" data-phone="'+phone+'" data-email="'+email+'" data-uname="'+username+'" onclick="admDoSendKey(this.dataset.sid,this.dataset.phone,this.dataset.email,this.dataset.uname)" style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
+    +(email?'<button data-sid2="'+safeId+'" data-email2="'+email+'" data-uname2="'+username+'" onclick="admDoSendEmail(this.dataset.sid2,this.dataset.email2,this.dataset.uname2)" style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
+
+
+
 }
 
 function admGetSelectedKey(safeId){
@@ -3919,21 +3919,7 @@ function admDoSendKey(safeId, phone, email, username){
   // Mark as issued
   try{localStorage.setItem(ADM_NS+'k_'+key, username+' ('+phone+')');}catch(e){}
   // Build WhatsApp message
-  var msg='Hi '+username+',
-
-Your Installation Rules LMS access key is:
-
-*'+key+'*
-
-'
-    +'Steps to activate:
-1. Go to ribattseke.co.za
-2. Click Study tab
-3. Sign in with your username and PIN
-4. Enter the key above when prompted
-
-'
-    +'For support WhatsApp Tseke: 072 474 8888';
+    var msg='Hi '+username+',\n\nYour Installation Rules LMS access key is:\n\n*'+key+'*\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support WhatsApp Tseke: 072 474 8888';
   var num=phone.replace(/\s/g,'').replace(/^0/,'27').replace(/^\+/,'');
   window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
   // Update Firebase
@@ -3951,24 +3937,7 @@ function admDoSendEmail(safeId, email, username){
   var key=admGetSelectedKey(safeId);
   if(!key){alert('No key selected.');return;}
   var subj='Your Installation Rules LMS Access Key';
-  var body='Hi '+username+',
-
-Your Installation Rules LMS access key is:
-
-'+key+'
-
-'
-    +'Steps to activate:
-1. Go to ribattseke.co.za
-2. Click Study tab
-3. Sign in with your username and PIN
-4. Enter the key above when prompted
-
-'
-    +'For support contact Tseke: 072 474 8888 or ribatt3@gmail.com
-
-Regards,
-Tseke Riba';
+  var body='Hi '+username+',\n\nYour Installation Rules LMS access key is:\n\n'+key+'\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support contact Tseke: 072 474 8888 or ribatt3@gmail.com\n\nRegards,\nTseke Riba';
   window.location.href='mailto:'+email+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
 }
 
