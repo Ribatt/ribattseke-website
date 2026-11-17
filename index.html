@@ -5354,16 +5354,6 @@ function jobPrint(id){
     +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr>'
     +'<tr><td>Date: __________</td><td>Date: __________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -5467,16 +5457,6 @@ function cocPrint(id){
     +'<tr><td>Date: __________</td><td>Date: __________</td></tr></table>'
     +'<p style="font-size:11px;color:#666">Valid for 3 years from date of issue. Issued under SANS 10142-1.</p>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -5598,16 +5578,6 @@ function poePrint(id){
     +'<br><table><tr><th>Inspector Signature</th><th>Client Signature</th></tr>'
     +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -5697,16 +5667,6 @@ function projPrint(id){
     +'<tr><th>Description</th><td colspan="3" style="white-space:pre-wrap">'+esc(p.desc||'—')+'</td></tr></table>'
     +(miles.length?'<h3>Milestones</h3><table><thead><tr><th>Milestone</th><th>Due Date</th><th>Status</th></tr></thead><tbody>'+mileRows+'</tbody></table>':'')
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -5859,16 +5819,6 @@ function riskPrint(id){
     +'<p style="font-size:11px">L=Likelihood(1-5), S=Severity(1-5), RPN=L×S. High≥15, Medium≥9, Low&lt;9</p>'
     +'<br><table><tr><th style="width:50%">Assessor Signature</th><th>Reviewer Signature</th></tr><tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -5932,16 +5882,6 @@ function msPrint(id){
     +'<br><table><tr><th style="width:50%">Responsible Person</th><th>Reviewed By</th></tr>'
     +'<tr><td style="height:50px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6016,16 +5956,6 @@ function ptwPrint(id){
     +'<td>___________________<br>Date/Time: __________</td>'
     +'<td>___________________<br>Date/Time: __________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6097,16 +6027,6 @@ function incPrint(id){
     +'<br><table><tr><th style="width:50%">Reporter Signature</th><th>Supervisor Signature</th></tr>'
     +'<tr><td style="height:60px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6229,16 +6149,6 @@ function tstPrint(id){
     +'<tr><td style="height:50px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
     +'<p style="font-size:11px">Tested per SANS 10142-1. IR≥1MΩ, RCD trip ≤300ms.</p>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6346,16 +6256,6 @@ function pvtPrint(id){
     +'<tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
     +'<p style="font-size:11px">PV testing per SANS 61215 / IEC 62446. SANS 10142-1 applies to AC wiring.</p>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6567,16 +6467,6 @@ function payPrint(id){
     +(p.notes?'<p><i>'+esc(p.notes)+'</i></p>':'')
     +'<p style="font-size:11px;color:#666">UIF: Employer also contributes 1% (R '+fmt((p.basic||0)*0.01)+'). Total UIF = R '+fmt((p.basic||0)*0.02)+'.<br>PAYE: Not applicable (earnings below threshold or Director loan arrangement).</p>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6683,16 +6573,6 @@ function kpiPrint(id){
     +'<br><table><tr><th>Employee Signature</th><th>Manager Signature</th></tr>'
     +'<tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6853,16 +6733,6 @@ function sopPrint(id){
     +'<tr><td style="border:1px solid #ccc;padding:8px;height:60px">___________________<br>Date: __________</td>'
     +'<td style="border:1px solid #ccc;padding:8px">___________________<br>Date: __________</td></tr></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
@@ -6985,16 +6855,6 @@ function ecsaPrint(){
     }).join('')
     +'</tbody></table>'
     +'
-// Hide/show study public title based on admin state
-(function(){
-  var orig = window.lmsShowView;
-  window.lmsShowView = function(id){
-    if(typeof orig==='function') orig(id);
-    var t = document.getElementById('study-public-title');
-    if(t) t.style.display = (id==='lms-admin') ? 'none' : '';
-  };
-})();
-
 </body></html>');
   w.document.close();w.print();
 }
