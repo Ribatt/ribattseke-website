@@ -164,6 +164,25 @@
 .biz-input{padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt);color:var(--fg);font-size:13.5px;width:100%;box-sizing:border-box;font-family:inherit;}
 .biz-textarea{padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt);color:var(--fg);font-size:13.5px;width:100%;box-sizing:border-box;min-height:70px;resize:vertical;font-family:inherit;}
 .biz-modal-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+
+/* ===== H&S / TEST / HR SUB-TABS ===== */
+.hs-sub,.tst-sub,.hr-sub{display:none;}
+.hs-sub.active,.tst-sub.active,.hr-sub.active{display:block;}
+/* ===== CoC STATUS BADGES ===== */
+.biz-badge-teal{background:#e0f4f1;color:#0d7a68;}
+.cli-search-item{padding:7px 10px;cursor:pointer;border-bottom:1px solid var(--border,#eee);font-size:14px;}
+.cli-search-item:hover{background:var(--surface2,#f0f0f0);}
+#cli-search-results{position:absolute;background:var(--surface,#fff);border:1px solid var(--border,#ddd);border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:200;max-height:220px;overflow-y:auto;width:100%;}
+/* ===== ECSA ===== */
+.ecsa-outcome-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:16px;}
+.ecsa-outcome-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.ecsa-outcome-num{font-size:11px;font-weight:700;color:var(--amb);margin-bottom:2px;}
+.ecsa-outcome-title{font-size:12px;font-weight:600;color:var(--fg);}
+.ecsa-outcome-count{font-size:11px;color:var(--fg3);margin-top:3px;}
+/* ===== TEST RECORD TABLE ===== */
+.test-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.test-grid{grid-template-columns:1fr;}}
+
 /* ===== LINE ITEMS TABLE ===== */
 .li-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:10px;}
 .li-table th{text-align:left;font-size:10.5px;font-weight:700;color:var(--fg3);letter-spacing:.04em;padding:4px 6px;border-bottom:1px solid var(--border);}
@@ -2208,6 +2227,15 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <button class="hub-nav-btn" onclick="hubShow('hub-quotes',this)">Quotes</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-loi',this)">LOI / NTP</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-invoices',this)">Invoices</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-jobs',this)">Job Cards</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-coc',this)">CoC Register</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-poe',this)">Portfolio</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-projects',this)">Projects</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-hs',this)">H&amp;S</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-tests',this)">Test Records</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-hr',this)">HR / Payroll</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-sops',this)">SOPs</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">ECSA CPD</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -2279,6 +2307,131 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         </div>
 
       </div>
+
+
+        <!-- ===== PHASE 2: JOB CARDS ===== -->
+        <div id="hub-jobs" class="hub-section">
+          <div class="biz-toolbar">
+            <input class="biz-search" id="job-search" placeholder="Search job cards..." oninput="jobRender()">
+            <button class="biz-btn biz-btn-primary" onclick="jobNew()">+ New Job Card</button>
+          </div>
+          <div id="job-list"></div>
+        </div>
+
+        <!-- ===== PHASE 2: CoC REGISTER ===== -->
+        <div id="hub-coc" class="hub-section">
+          <div class="biz-toolbar">
+            <input class="biz-search" id="coc-search" placeholder="Search CoC register..." oninput="cocRender()">
+            <button class="biz-btn biz-btn-primary" onclick="cocNew()">+ New CoC Entry</button>
+          </div>
+          <div id="coc-list"></div>
+        </div>
+
+        <!-- ===== PHASE 2: PORTFOLIO OF EVIDENCE ===== -->
+        <div id="hub-poe" class="hub-section">
+          <div class="biz-toolbar">
+            <input class="biz-search" id="poe-search" placeholder="Search portfolio..." oninput="poeRender()">
+            <button class="biz-btn biz-btn-primary" onclick="poeNew()">+ New Inspection Report</button>
+          </div>
+          <div id="poe-list"></div>
+        </div>
+
+        <!-- ===== PHASE 3: PROJECTS ===== -->
+        <div id="hub-projects" class="hub-section">
+          <div class="biz-toolbar">
+            <input class="biz-search" id="proj-search" placeholder="Search projects..." oninput="projRender()">
+            <button class="biz-btn biz-btn-primary" onclick="projNew()">+ New Project</button>
+          </div>
+          <div id="proj-list"></div>
+        </div>
+
+        <!-- ===== PHASE 4: H&S ===== -->
+        <div id="hub-hs" class="hub-section">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+            <button class="biz-btn biz-btn-primary" onclick="hsShow('hs-risk')">Risk Assessments</button>
+            <button class="biz-btn biz-btn-secondary" onclick="hsShow('hs-ms')">Method Statements</button>
+            <button class="biz-btn biz-btn-secondary" onclick="hsShow('hs-ptw')">Permits to Work</button>
+            <button class="biz-btn biz-btn-secondary" onclick="hsShow('hs-inc')">Incident Reports</button>
+          </div>
+          <div id="hs-risk" class="hs-sub active">
+            <div class="biz-toolbar"><input class="biz-search" id="risk-search" placeholder="Search risk assessments..." oninput="riskRender()"><button class="biz-btn biz-btn-primary" onclick="riskNew()">+ New RA</button></div>
+            <div id="risk-list"></div>
+          </div>
+          <div id="hs-ms" class="hs-sub">
+            <div class="biz-toolbar"><input class="biz-search" id="ms-search" placeholder="Search method statements..." oninput="msRender()"><button class="biz-btn biz-btn-primary" onclick="msNew()">+ New MS</button></div>
+            <div id="ms-list"></div>
+          </div>
+          <div id="hs-ptw" class="hs-sub">
+            <div class="biz-toolbar"><input class="biz-search" id="ptw-search" placeholder="Search permits..." oninput="ptwRender()"><button class="biz-btn biz-btn-primary" onclick="ptwNew()">+ New Permit</button></div>
+            <div id="ptw-list"></div>
+          </div>
+          <div id="hs-inc" class="hs-sub">
+            <div class="biz-toolbar"><input class="biz-search" id="inc-search" placeholder="Search incidents..." oninput="incRender()"><button class="biz-btn biz-btn-primary" onclick="incNew()">+ New Incident Report</button></div>
+            <div id="inc-list"></div>
+          </div>
+        </div>
+
+        <!-- ===== PHASE 5: TEST RECORDS ===== -->
+        <div id="hub-tests" class="hub-section">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+            <button class="biz-btn biz-btn-primary" onclick="tstShow('tst-elec')">Electrical Tests</button>
+            <button class="biz-btn biz-btn-secondary" onclick="tstShow('tst-pv')">PV String Tests</button>
+          </div>
+          <div id="tst-elec" class="tst-sub active">
+            <div class="biz-toolbar"><input class="biz-search" id="tst-search" placeholder="Search test records..." oninput="tstRender()"><button class="biz-btn biz-btn-primary" onclick="tstNew()">+ New Test Record</button></div>
+            <div id="tst-list"></div>
+          </div>
+          <div id="tst-pv" class="tst-sub">
+            <div class="biz-toolbar"><input class="biz-search" id="pvt-search" placeholder="Search PV tests..." oninput="pvtRender()"><button class="biz-btn biz-btn-primary" onclick="pvtNew()">+ New PV String Test</button></div>
+            <div id="pvt-list"></div>
+          </div>
+        </div>
+
+        <!-- ===== HR / PAYROLL ===== -->
+        <div id="hub-hr" class="hub-section">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+            <button class="biz-btn biz-btn-primary" onclick="hrShow('hr-emp')">Employees</button>
+            <button class="biz-btn biz-btn-secondary" onclick="hrShow('hr-pay')">Payslips</button>
+            <button class="biz-btn biz-btn-secondary" onclick="hrShow('hr-kpi')">KPI Scorecards</button>
+            <button class="biz-btn biz-btn-secondary" onclick="hrShow('hr-mem')">Memberships</button>
+          </div>
+          <div id="hr-emp" class="hr-sub active">
+            <div class="biz-toolbar"><input class="biz-search" id="emp-search" placeholder="Search employees..." oninput="empRender()"><button class="biz-btn biz-btn-primary" onclick="empNew()">+ New Employee</button></div>
+            <div id="emp-list"></div>
+          </div>
+          <div id="hr-pay" class="hr-sub">
+            <div class="biz-toolbar"><input class="biz-search" id="pay-search" placeholder="Search payslips..." oninput="payRender()"><button class="biz-btn biz-btn-primary" onclick="payNew()">+ New Payslip</button></div>
+            <div id="pay-list"></div>
+          </div>
+          <div id="hr-kpi" class="hr-sub">
+            <div class="biz-toolbar"><input class="biz-search" id="kpi-search" placeholder="Search scorecards..." oninput="kpiRender()"><button class="biz-btn biz-btn-primary" onclick="kpiNew()">+ New KPI Scorecard</button></div>
+            <div id="kpi-list"></div>
+          </div>
+          <div id="hr-mem" class="hr-sub">
+            <div class="biz-toolbar"><button class="biz-btn biz-btn-primary" onclick="memNew()">+ Add Membership / Subscription</button></div>
+            <div id="mem-list"></div>
+          </div>
+        </div>
+
+        <!-- ===== SOPs ===== -->
+        <div id="hub-sops" class="hub-section">
+          <div class="biz-toolbar">
+            <input class="biz-search" id="sop-search" placeholder="Search SOPs..." oninput="sopRender()">
+            <button class="biz-btn biz-btn-primary" onclick="sopNew()">+ New SOP</button>
+            <button class="biz-btn biz-btn-secondary" onclick="sopLoadDefaults()">Load Default SOPs</button>
+          </div>
+          <div id="sop-list"></div>
+        </div>
+
+        <!-- ===== ECSA CPD ===== -->
+        <div id="hub-ecsa" class="hub-section">
+          <div class="biz-toolbar">
+            <button class="biz-btn biz-btn-primary" onclick="ecsaNew()">+ Log CPD Activity</button>
+            <button class="biz-btn biz-btn-secondary" onclick="ecsaPrint()">Print CPD Summary</button>
+          </div>
+          <div id="ecsa-summary" style="margin-bottom:16px;"></div>
+          <div id="ecsa-list"></div>
+        </div>
 
       <!-- PRINT AREA (hidden, shown on print only) -->
       <div id="biz-print-area"></div>
@@ -5106,6 +5259,1674 @@ function bizDelConfirm(storageKey,cb){
     +'</div></div>';
   document.body.appendChild(ov);
 }
+
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE 2 — JOB CARDS
+   ═══════════════════════════════════════════════════════════ */
+function jobRender(){
+  var list=bizList('job');
+  list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('job-list');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No job cards yet. Click <b>+ New Job Card</b> to start.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Job #</th><th>Client</th><th>Site Address</th><th>Type</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(j){
+    html+='<tr><td><b>'+j.jobNo+'</b></td><td>'+esc(j.clientName||'—')+'</td><td>'+esc(j.site||'—')+'</td><td>'+esc(j.jobType||'—')+'</td>'
+      +'<td><span class="biz-badge '+(j.status==='Complete'?'biz-badge-green':j.status==='In Progress'?'biz-badge-blue':'biz-badge-teal')+'">'+esc(j.status||'Open')+'</span></td>'
+      +'<td>'+(j.date||'—')+'</td>'
+      +'<td><button class="biz-btn" onclick="jobEdit(\''+j.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="jobPrint(\''+j.id+'\')">Print</button> '
+      +'<button class="biz-btn biz-btn-teal" onclick="cocFromJob(\''+j.id+'\')">→CoC</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function jobNew(){jobEdit(null);}
+function jobEdit(id){
+  var j=id?bizGet('job_'+id):{};
+  var clients=bizList('cli');
+  var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(j.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
+  var html='<div class="biz-modal-backdrop" id="job-modal">'
+    +'<div class="biz-modal">'
+    +'<h3>'+(id?'Edit':'New')+' Job Card</h3>'
+    +'<label>Client *<select id="jm-client"><option value="">— Select Client —</option>'+cOpts+'</select></label>'
+    +'<label>Site / Work Address *<input id="jm-site" value="'+esc(j.site||'')+'"></label>'
+    +'<label>Job Type<select id="jm-type">'
+      +['CoC Inspection','PV Installation','DB Upgrade','Fault Finding','New Installation','Maintenance','Other'].map(function(t){return '<option'+(j.jobType===t?' selected':'')+'>'+t+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Date<input type="date" id="jm-date" value="'+(j.date||today())+'"></label>'
+    +'<label>Status<select id="jm-status">'
+      +['Open','In Progress','Complete','Cancelled'].map(function(s){return '<option'+(j.status===s?' selected':'')+'>'+s+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Assigned Technician<input id="jm-tech" value="'+esc(j.tech||'Tseke Riba')+'"></label>'
+    +'<label>Description / Scope of Work<textarea id="jm-desc" rows="3">'+esc(j.desc||'')+'</textarea></label>'
+    +'<label>Client PO / Reference<input id="jm-ref" value="'+esc(j.clientRef||'')+'"></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="jobSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'job-modal\')">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'job_'+id+'\');closeModal(\'job-modal\');jobRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function jobSave(id){
+  var clientId=val('jm-client');
+  var site=val('jm-site').trim();
+  if(!clientId){alert('Please select a client.');return;}
+  if(!site){alert('Site address is required.');return;}
+  var clients=bizList('cli');
+  var cli=clients.find(function(c){return c.id===clientId;})||{};
+  var seq=id?null:bizSeq('job');
+  var jobNo=id?(bizGet('job_'+id)||{}).jobNo:('JC-'+String(seq).padStart(4,'0'));
+  var obj={clientId:clientId,clientName:cli.name||'',site:site,jobType:val('jm-type'),
+    date:val('jm-date'),status:val('jm-status'),tech:val('jm-tech'),desc:val('jm-desc'),clientRef:val('jm-ref'),
+    jobNo:jobNo,ts:Date.now()};
+  if(id){obj=Object.assign(bizGet('job_'+id)||{},obj);}else{obj.id=jobNo;}
+  bizSet('job_'+(id||jobNo),obj);
+  closeModal('job-modal');
+  jobRender();
+}
+function jobPrint(id){
+  var j=bizGet('job_'+id);if(!j)return;
+  var co=getCompany();
+  var w=window.open('','_blank','width=800,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>Job Card '+j.jobNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}h1{color:#1a237e}.hdr{display:flex;justify-content:space-between}'
+    +'table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}'
+    +'.notice{background:#fff3cd;padding:8px;margin:12px 0;border-left:4px solid #f0a500}'
+    +'</style></head><body>'
+    +'<div class="hdr"><div><h2>'+esc(co.name||'Ribatt Electrical')+'</h2><small>'+esc(co.reg||'')+'</small></div>'
+    +'<div style="text-align:right"><h1>JOB CARD</h1><b>'+j.jobNo+'</b><br>Date: '+j.date+'</div></div><hr>'
+    +'<div class="notice">⚠ This company is NOT VAT registered. No VAT applicable.</div>'
+    +'<table><tr><th>Client</th><td>'+esc(j.clientName)+'</td><th>Status</th><td>'+esc(j.status)+'</td></tr>'
+    +'<tr><th>Site Address</th><td colspan="3">'+esc(j.site)+'</td></tr>'
+    +'<tr><th>Job Type</th><td>'+esc(j.jobType)+'</td><th>Technician</th><td>'+esc(j.tech)+'</td></tr>'
+    +'<tr><th>Client PO/Ref</th><td colspan="3">'+esc(j.clientRef||'—')+'</td></tr>'
+    +'<tr><th>Description</th><td colspan="3" style="white-space:pre-wrap">'+esc(j.desc||'')+'</td></tr></table>'
+    +'<br><table><tr><th style="width:50%">Technician Signature</th><th>Client Signature</th></tr>'
+    +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr>'
+    +'<tr><td>Date: __________</td><td>Date: __________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+function cocFromJob(jobId){
+  var j=bizGet('job_'+jobId);if(!j)return;
+  hubShow('hub-coc');
+  setTimeout(function(){cocNew(j.clientId,j.site,j.jobNo);},100);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE 2 — CoC REGISTER
+   ═══════════════════════════════════════════════════════════ */
+function cocRender(){
+  var list=bizList('coc');
+  list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('coc-list');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No CoCs yet. Click <b>+ New CoC</b> to start.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>CoC #</th><th>Client</th><th>Site</th><th>Installation Type</th><th>Date</th><th>Expiry</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(c){
+    var exp=c.expiry?'<span class="biz-badge '+(isExpired(c.expiry)?'biz-badge-red':'biz-badge-green')+'">'+c.expiry+'</span>':'—';
+    html+='<tr><td><b>'+c.cocNo+'</b></td><td>'+esc(c.clientName||'—')+'</td><td>'+esc(c.site||'—')+'</td><td>'+esc(c.instType||'—')+'</td>'
+      +'<td>'+(c.date||'—')+'</td><td>'+exp+'</td>'
+      +'<td><button class="biz-btn" onclick="cocEdit(\''+c.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="cocPrint(\''+c.id+'\')">Print</button> '
+      +'<button class="biz-btn biz-btn-teal" onclick="poeFromCoc(\''+c.id+'\')">→POE</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function cocNew(preClientId,preSite,preJobRef){cocEdit(null,preClientId,preSite,preJobRef);}
+function cocEdit(id,preClientId,preSite,preJobRef){
+  var c=id?bizGet('coc_'+id):{};
+  var cliId=preClientId||c.clientId||'';
+  var clients=bizList('cli');
+  var cOpts=clients.map(function(cl){return '<option value="'+cl.id+'"'+(cliId===cl.id?' selected':'')+'>'+esc(cl.name)+'</option>';}).join('');
+  var html='<div class="biz-modal-backdrop" id="coc-modal">'
+    +'<div class="biz-modal">'
+    +'<h3>'+(id?'Edit':'New')+' Certificate of Compliance (CoC)</h3>'
+    +'<label>Client *<select id="cm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
+    +'<label>Site / Installation Address *<input id="cm-site" value="'+esc(preSite||c.site||'')+'"></label>'
+    +'<label>Installation Type<select id="cm-type">'
+      +['Domestic','Commercial','Industrial','Agricultural','PV System','Temporary'].map(function(t){return '<option'+(c.instType===t?' selected':'')+'>'+t+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Job Card Reference<input id="cm-jobref" value="'+esc(preJobRef||c.jobRef||'')+'"></label>'
+    +'<label>Date of Inspection<input type="date" id="cm-date" value="'+(c.date||today())+'"></label>'
+    +'<label>Expiry Date (3 years)<input type="date" id="cm-expiry" value="'+(c.expiry||threeYearsFrom(today()))+'"></label>'
+    +'<label>Inspector Name<input id="cm-inspector" value="'+esc(c.inspector||'Tseke Riba')+'"></label>'
+    +'<label>Inspector Registration #<input id="cm-reg" value="'+esc(c.inspReg||'')+'"></label>'
+    +'<label>Findings / Notes<textarea id="cm-notes" rows="3">'+esc(c.notes||'')+'</textarea></label>'
+    +'<label>Result<select id="cm-result">'
+      +['Pass','Conditional Pass','Fail','Pending'].map(function(r){return '<option'+(c.result===r?' selected':'')+'>'+r+'</option>';}).join('')
+    +'</select></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="cocSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'coc-modal\')">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'coc_'+id+'\');closeModal(\'coc-modal\');cocRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function cocSave(id){
+  var clientId=val('cm-client');
+  var site=val('cm-site').trim();
+  if(!clientId){alert('Please select a client.');return;}
+  if(!site){alert('Site address is required.');return;}
+  var clients=bizList('cli');
+  var cli=clients.find(function(c){return c.id===clientId;})||{};
+  var seq=id?null:bizSeq('coc');
+  var cocNo=id?(bizGet('coc_'+id)||{}).cocNo:('COC-'+String(seq).padStart(4,'0'));
+  var obj={clientId:clientId,clientName:cli.name||'',site:site,instType:val('cm-type'),
+    jobRef:val('cm-jobref'),date:val('cm-date'),expiry:val('cm-expiry'),
+    inspector:val('cm-inspector'),inspReg:val('cm-reg'),notes:val('cm-notes'),result:val('cm-result'),
+    cocNo:cocNo,ts:Date.now()};
+  if(id){obj=Object.assign(bizGet('coc_'+id)||{},obj);}else{obj.id=cocNo;}
+  bizSet('coc_'+(id||cocNo),obj);
+  closeModal('coc-modal');
+  cocRender();
+}
+function cocPrint(id){
+  var c=bizGet('coc_'+id);if(!c)return;
+  var co=getCompany();
+  var w=window.open('','_blank','width=800,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>CoC '+c.cocNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}h1{color:#1a237e}.hdr{display:flex;justify-content:space-between}'
+    +'table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}'
+    +'.result-pass{color:green;font-weight:bold}.result-fail{color:red;font-weight:bold}'
+    +'.notice{background:#fff3cd;padding:8px;margin:12px 0;border-left:4px solid #f0a500}'
+    +'</style></head><body>'
+    +'<div class="hdr"><div><h2>'+esc(co.name||'Ribatt Electrical')+'</h2><small>'+esc(co.reg||'')+'</small></div>'
+    +'<div style="text-align:right"><h1>CERTIFICATE OF COMPLIANCE</h1><b>'+c.cocNo+'</b></div></div><hr>'
+    +'<div class="notice">⚠ This company is NOT VAT registered. No VAT applicable.</div>'
+    +'<table>'
+    +'<tr><th>Client</th><td>'+esc(c.clientName)+'</td><th>Date</th><td>'+c.date+'</td></tr>'
+    +'<tr><th>Site Address</th><td colspan="3">'+esc(c.site)+'</td></tr>'
+    +'<tr><th>Installation Type</th><td>'+esc(c.instType)+'</td><th>Job Ref</th><td>'+esc(c.jobRef||'—')+'</td></tr>'
+    +'<tr><th>Inspector</th><td>'+esc(c.inspector)+'</td><th>Registration #</th><td>'+esc(c.inspReg||'—')+'</td></tr>'
+    +'<tr><th>Expiry Date</th><td>'+esc(c.expiry||'—')+'</td><th>Result</th><td class="'+(c.result==='Pass'?'result-pass':'result-fail')+'">'+esc(c.result)+'</td></tr>'
+    +'<tr><th>Notes / Findings</th><td colspan="3" style="white-space:pre-wrap">'+esc(c.notes||'—')+'</td></tr></table>'
+    +'<br><p>I, the undersigned, hereby certify that the electrical installation described above has been inspected and tested in accordance with SANS 10142-1 and the Occupational Health and Safety Act.</p>'
+    +'<br><table><tr><th>Inspector Signature</th><th>Client Signature</th></tr>'
+    +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr>'
+    +'<tr><td>Date: __________</td><td>Date: __________</td></tr></table>'
+    +'<p style="font-size:11px;color:#666">Valid for 3 years from date of issue. Issued under SANS 10142-1.</p>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+function poeFromCoc(cocId){
+  var c=bizGet('coc_'+cocId);if(!c)return;
+  hubShow('hub-poe');
+  setTimeout(function(){poeNew(c.clientId,c.cocNo,c.site);},100);
+}
+function isExpired(dateStr){
+  if(!dateStr)return false;
+  return new Date(dateStr)<new Date();
+}
+function threeYearsFrom(d){
+  var dt=new Date(d);dt.setFullYear(dt.getFullYear()+3);return dt.toISOString().slice(0,10);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE 2 — PORTFOLIO OF EVIDENCE
+   ═══════════════════════════════════════════════════════════ */
+var POE_CHECKLIST=[
+  'Earthing and bonding verified per SANS 10142-1',
+  'Circuit breaker ratings checked and correct',
+  'RCD / RCCB tested and functional',
+  'Polarity of all socket outlets verified',
+  'Insulation resistance test passed (>1 MΩ)',
+  'Continuity of protective conductors verified',
+  'No live parts accessible (IP2X minimum)',
+  'Main distribution board labelled and secured',
+  'All wiring correctly routed and secured',
+  'As-built drawings / schematic provided to client'
+];
+function poeRender(){
+  var list=bizList('poe');
+  list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('poe-list');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No POE records yet. Click <b>+ New POE</b> to start.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>POE #</th><th>Client</th><th>Site</th><th>CoC Ref</th><th>Date</th><th>Score</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(p){
+    var score=p.checks?p.checks.filter(Boolean).length+'/'+p.checks.length:'—';
+    html+='<tr><td><b>'+p.poeNo+'</b></td><td>'+esc(p.clientName||'—')+'</td><td>'+esc(p.site||'—')+'</td><td>'+esc(p.cocRef||'—')+'</td>'
+      +'<td>'+(p.date||'—')+'</td><td>'+score+'</td>'
+      +'<td><button class="biz-btn" onclick="poeEdit(\''+p.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="poePrint(\''+p.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function poeNew(preClientId,preCocRef,preSite){poeEdit(null,preClientId,preCocRef,preSite);}
+function poeEdit(id,preClientId,preCocRef,preSite){
+  var p=id?bizGet('poe_'+id):{};
+  var cliId=preClientId||p.clientId||'';
+  var clients=bizList('cli');
+  var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(cliId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
+  var checks=p.checks||POE_CHECKLIST.map(function(){return false;});
+  var checkHtml=POE_CHECKLIST.map(function(item,i){
+    return '<label style="display:flex;gap:8px;align-items:center;margin:4px 0"><input type="checkbox" id="poe-chk-'+i+'" '+(checks[i]?'checked':'')+'>'+esc(item)+'</label>';
+  }).join('');
+  var html='<div class="biz-modal-backdrop" id="poe-modal">'
+    +'<div class="biz-modal" style="max-width:600px">'
+    +'<h3>'+(id?'Edit':'New')+' Portfolio of Evidence</h3>'
+    +'<label>Client *<select id="pm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
+    +'<label>Site Address<input id="pm-site" value="'+esc(preSite||p.site||'')+'"></label>'
+    +'<label>CoC Reference<input id="pm-cocref" value="'+esc(preCocRef||p.cocRef||'')+'"></label>'
+    +'<label>Date<input type="date" id="pm-date" value="'+(p.date||today())+'"></label>'
+    +'<label>Inspector<input id="pm-inspector" value="'+esc(p.inspector||'Tseke Riba')+'"></label>'
+    +'<fieldset style="margin:12px 0;padding:12px"><legend><b>Inspection Checklist</b></legend>'+checkHtml+'</fieldset>'
+    +'<label>Additional Findings / Comments<textarea id="pm-notes" rows="3">'+esc(p.notes||'')+'</textarea></label>'
+    +'<label>ECSA Outcome Supported<select id="pm-ecsa">'
+      +['None','1 - Problem Solving','2 - Scientific Knowledge','3 - Engineering Design','4 - Investigations','5 - Methods/Tools/IT','6 - Communication','7 - Sustainability','8 - Team Working','9 - Independent Learning','10 - Professionalism','11 - Management'].map(function(o){return '<option'+(p.ecsaOutcome===o?' selected':'')+'>'+o+'</option>';}).join('')
+    +'</select></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="poeSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'poe-modal\')">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'poe_'+id+'\');closeModal(\'poe-modal\');poeRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function poeSave(id){
+  var clientId=val('pm-client');
+  if(!clientId){alert('Please select a client.');return;}
+  var clients=bizList('cli');
+  var cli=clients.find(function(c){return c.id===clientId;})||{};
+  var checks=POE_CHECKLIST.map(function(_,i){return document.getElementById('poe-chk-'+i)?document.getElementById('poe-chk-'+i).checked:false;});
+  var seq=id?null:bizSeq('poe');
+  var poeNo=id?(bizGet('poe_'+id)||{}).poeNo:('POE-'+String(seq).padStart(4,'0'));
+  var obj={clientId:clientId,clientName:cli.name||'',site:val('pm-site'),cocRef:val('pm-cocref'),
+    date:val('pm-date'),inspector:val('pm-inspector'),checks:checks,notes:val('pm-notes'),
+    ecsaOutcome:val('pm-ecsa'),poeNo:poeNo,ts:Date.now()};
+  if(id){obj=Object.assign(bizGet('poe_'+id)||{},obj);}else{obj.id=poeNo;}
+  bizSet('poe_'+(id||poeNo),obj);
+  closeModal('poe-modal');
+  poeRender();
+}
+function poePrint(id){
+  var p=bizGet('poe_'+id);if(!p)return;
+  var co=getCompany();
+  var checkRows=POE_CHECKLIST.map(function(item,i){
+    var ok=p.checks&&p.checks[i];
+    return '<tr><td>'+(i+1)+'</td><td>'+esc(item)+'</td><td style="color:'+(ok?'green':'red')+';font-weight:bold">'+(ok?'✓ PASS':'✗ FAIL')+'</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=800,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>POE '+p.poeNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}h1{color:#1a237e}'
+    +'.hdr{display:flex;justify-content:space-between}table{width:100%;border-collapse:collapse}'
+    +'td,th{border:1px solid #ccc;padding:8px}th{background:#eee}'
+    +'.notice{background:#fff3cd;padding:8px;margin:12px 0;border-left:4px solid #f0a500}'
+    +'</style></head><body>'
+    +'<div class="hdr"><div><h2>'+esc(co.name||'Ribatt Electrical')+'</h2></div>'
+    +'<div style="text-align:right"><h1>PORTFOLIO OF EVIDENCE</h1><b>'+p.poeNo+'</b></div></div><hr>'
+    +'<div class="notice">⚠ This company is NOT VAT registered. No VAT applicable.</div>'
+    +'<table><tr><th>Client</th><td>'+esc(p.clientName)+'</td><th>Date</th><td>'+p.date+'</td></tr>'
+    +'<tr><th>Site</th><td colspan="3">'+esc(p.site||'—')+'</td></tr>'
+    +'<tr><th>CoC Reference</th><td>'+esc(p.cocRef||'—')+'</td><th>Inspector</th><td>'+esc(p.inspector||'—')+'</td></tr>'
+    +'<tr><th>ECSA Outcome</th><td colspan="3">'+esc(p.ecsaOutcome||'None')+'</td></tr></table>'
+    +'<h3>Inspection Checklist</h3>'
+    +'<table><thead><tr><th>#</th><th>Item</th><th>Result</th></tr></thead><tbody>'+checkRows+'</tbody></table>'
+    +'<h3>Additional Notes</h3><p style="white-space:pre-wrap">'+esc(p.notes||'—')+'</p>'
+    +'<br><table><tr><th>Inspector Signature</th><th>Client Signature</th></tr>'
+    +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE 3 — PROJECTS
+   ═══════════════════════════════════════════════════════════ */
+function projRender(){
+  var list=bizList('proj');
+  list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('proj-list');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No projects yet. Click <b>+ New Project</b> to start.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Proj #</th><th>Name</th><th>Client</th><th>Value (R)</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(p){
+    var miles=bizList('mile').filter(function(m){return m.projId===p.id;});
+    var done=miles.filter(function(m){return m.done;}).length;
+    html+='<tr><td><b>'+p.projNo+'</b></td><td>'+esc(p.name||'—')+'</td><td>'+esc(p.clientName||'—')+'</td>'
+      +'<td>'+fmt(p.value||0)+'</td><td>'+(p.startDate||'—')+'</td><td>'+(p.endDate||'—')+'</td>'
+      +'<td><span class="biz-badge '+(p.status==='Complete'?'biz-badge-green':p.status==='Active'?'biz-badge-blue':'biz-badge-teal')+'">'+esc(p.status||'Planning')+'</span></td>'
+      +'<td><button class="biz-btn" onclick="projEdit(\''+p.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="mileModal(\''+p.id+'\')">Milestones ('+(done+'/'+miles.length)+')</button> '
+      +'<button class="biz-btn" onclick="projPrint(\''+p.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function projNew(){projEdit(null);}
+function projEdit(id){
+  var p=id?bizGet('proj_'+id):{};
+  var clients=bizList('cli');
+  var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(p.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
+  var html='<div class="biz-modal-backdrop" id="proj-modal">'
+    +'<div class="biz-modal" style="max-width:580px">'
+    +'<h3>'+(id?'Edit':'New')+' Project</h3>'
+    +'<label>Project Name *<input id="pjm-name" value="'+esc(p.name||'')+'"></label>'
+    +'<label>Client<select id="pjm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
+    +'<label>Project Value (R)<input type="number" id="pjm-value" value="'+(p.value||0)+'" min="0"></label>'
+    +'<label>Start Date<input type="date" id="pjm-start" value="'+(p.startDate||today())+'"></label>'
+    +'<label>End Date<input type="date" id="pjm-end" value="'+(p.endDate||'')+'"></label>'
+    +'<label>Status<select id="pjm-status">'
+      +['Planning','Active','On Hold','Complete','Cancelled'].map(function(s){return '<option'+(p.status===s?' selected':'')+'>'+s+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Description / Scope<textarea id="pjm-desc" rows="3">'+esc(p.desc||'')+'</textarea></label>'
+    +'<label>ECSA Outcomes Covered<input id="pjm-ecsa" value="'+esc(p.ecsaOutcomes||'')+'"><small>e.g. 1,3,5</small></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="projSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'proj-modal\')">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'proj_'+id+'\');closeModal(\'proj-modal\');projRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function projSave(id){
+  var name=val('pjm-name').trim();
+  if(!name){alert('Project name is required.');return;}
+  var clientId=val('pjm-client');
+  var clients=bizList('cli');
+  var cli=clients.find(function(c){return c.id===clientId;})||{};
+  var seq=id?null:bizSeq('proj');
+  var projNo=id?(bizGet('proj_'+id)||{}).projNo:('PRJ-'+String(seq).padStart(3,'0'));
+  var obj={name:name,clientId:clientId,clientName:cli.name||'',value:parseFloat(val('pjm-value'))||0,
+    startDate:val('pjm-start'),endDate:val('pjm-end'),status:val('pjm-status'),desc:val('pjm-desc'),
+    ecsaOutcomes:val('pjm-ecsa'),projNo:projNo,ts:Date.now()};
+  if(id){obj=Object.assign(bizGet('proj_'+id)||{},obj);}else{obj.id=projNo;}
+  bizSet('proj_'+(id||projNo),obj);
+  closeModal('proj-modal');
+  projRender();
+}
+function projPrint(id){
+  var p=bizGet('proj_'+id);if(!p)return;
+  var co=getCompany();
+  var miles=bizList('mile').filter(function(m){return m.projId===id;});
+  var mileRows=miles.map(function(m){
+    return '<tr><td>'+esc(m.title)+'</td><td>'+(m.due||'—')+'</td><td style="color:'+(m.done?'green':'#888')+'">'+(m.done?'✓ Done':'Pending')+'</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=800,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Project '+p.projNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}h1{color:#1a237e}'
+    +'.hdr{display:flex;justify-content:space-between}table{width:100%;border-collapse:collapse}'
+    +'td,th{border:1px solid #ccc;padding:8px}th{background:#eee}'
+    +'</style></head><body>'
+    +'<div class="hdr"><div><h2>'+esc(co.name||'Ribatt Electrical')+'</h2></div>'
+    +'<div style="text-align:right"><h1>PROJECT CHARTER</h1><b>'+p.projNo+'</b></div></div><hr>'
+    +'<table><tr><th>Project Name</th><td colspan="3">'+esc(p.name)+'</td></tr>'
+    +'<tr><th>Client</th><td>'+esc(p.clientName||'—')+'</td><th>Value</th><td>R '+fmt(p.value||0)+'</td></tr>'
+    +'<tr><th>Start Date</th><td>'+esc(p.startDate||'—')+'</td><th>End Date</th><td>'+esc(p.endDate||'—')+'</td></tr>'
+    +'<tr><th>Status</th><td>'+esc(p.status||'—')+'</td><th>ECSA Outcomes</th><td>'+esc(p.ecsaOutcomes||'—')+'</td></tr>'
+    +'<tr><th>Description</th><td colspan="3" style="white-space:pre-wrap">'+esc(p.desc||'—')+'</td></tr></table>'
+    +(miles.length?'<h3>Milestones</h3><table><thead><tr><th>Milestone</th><th>Due Date</th><th>Status</th></tr></thead><tbody>'+mileRows+'</tbody></table>':'')
+    +'</body></html>');
+  w.document.close();w.print();
+}
+function mileModal(projId){
+  var p=bizGet('proj_'+projId)||{};
+  var miles=bizList('mile').filter(function(m){return m.projId===projId;});
+  var rows=miles.map(function(m){
+    return '<tr><td>'+esc(m.title)+'</td><td>'+(m.due||'—')+'</td>'
+      +'<td><input type="checkbox" '+(m.done?'checked':'')+' onchange="mileToggle(\''+m.id+'\',\''+projId+'\',this.checked)"></td>'
+      +'<td><button class="biz-btn biz-btn-xs" onclick="bizDel(\'mile_'+m.id+'\');mileModal(\''+projId+'\')">✕</button></td></tr>';
+  }).join('');
+  var html='<div class="biz-modal-backdrop" id="mile-modal">'
+    +'<div class="biz-modal" style="max-width:520px">'
+    +'<h3>Milestones — '+esc(p.projNo||projId)+': '+esc(p.name||'')+'</h3>'
+    +'<table class="biz-table"><thead><tr><th>Milestone</th><th>Due</th><th>Done</th><th></th></tr></thead><tbody>'
+    +(rows||'<tr><td colspan="4" style="color:var(--muted)">No milestones yet.</td></tr>')+'</tbody></table>'
+    +'<div style="margin-top:12px;display:flex;gap:8px">'
+    +'<input id="mile-title" placeholder="Milestone title" style="flex:1">'
+    +'<input type="date" id="mile-due" style="width:140px">'
+    +'<button class="biz-btn biz-btn-primary" onclick="mileAdd(\''+projId+'\')">Add</button>'
+    +'</div>'
+    +'<div class="biz-modal-actions"><button class="biz-btn" onclick="closeModal(\'mile-modal\');projRender()">Close</button></div>'
+    +'</div></div>';
+  var old=document.getElementById('mile-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function mileAdd(projId){
+  var title=val('mile-title').trim();
+  if(!title)return;
+  var id='M'+Date.now();
+  bizSet('mile_'+id,{id:id,projId:projId,title:title,due:val('mile-due'),done:false,ts:Date.now()});
+  mileModal(projId);
+}
+function mileToggle(id,projId,done){
+  var m=bizGet('mile_'+id)||{};m.done=done;bizSet('mile_'+id,m);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE 4 — HEALTH & SAFETY
+   ═══════════════════════════════════════════════════════════ */
+function hsShow(id){
+  document.querySelectorAll('.hs-sub').forEach(function(el){el.classList.remove('active');});
+  var t=document.getElementById(id);if(t)t.classList.add('active');
+  document.querySelectorAll('.hub-hs-tab').forEach(function(b){b.classList.toggle('active',b.dataset.target===id);});
+  if(id==='hs-risk')riskRender();
+  else if(id==='hs-ms')msRender();
+  else if(id==='hs-ptw')ptwRender();
+  else if(id==='hs-inc')incRender();
+}
+
+/* — Risk Assessments — */
+var RISK_HAZARDS=['Electrical shock','Arc flash / arc blast','Working at heights','Falling objects','Slippery surfaces',
+  'Fire','Chemical exposure','Confined spaces','Manual handling','Heat stress','UV exposure (outdoor PV)',
+  'Moving machinery','Tripping hazard','Inadequate lighting'];
+var RISK_LIKELIHOOD=['Rare (1)','Unlikely (2)','Possible (3)','Likely (4)','Almost Certain (5)'];
+var RISK_SEVERITY=['Negligible (1)','Minor (2)','Moderate (3)','Major (4)','Catastrophic (5)'];
+
+function riskRender(){
+  var list=bizList('risk');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('risk-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No risk assessments yet.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>RA #</th><th>Title</th><th>Site</th><th>Date</th><th>Rating</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(r){
+    var rating=r.rating||'—';
+    var rc=parseInt(rating)>=15?'biz-badge-red':parseInt(rating)>=9?'biz-badge-orange':'biz-badge-green';
+    html+='<tr><td><b>'+r.raNo+'</b></td><td>'+esc(r.title||'—')+'</td><td>'+esc(r.site||'—')+'</td><td>'+(r.date||'—')+'</td>'
+      +'<td><span class="biz-badge '+rc+'">'+rating+'</span></td>'
+      +'<td><button class="biz-btn" onclick="riskEdit(\''+r.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="riskPrint(\''+r.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function riskNew(){
+  var seq=bizSeq('risk');
+  var raNo='RA-'+String(seq).padStart(4,'0');
+  var id=raNo;
+  bizSet('risk_'+id,{id:id,raNo:raNo,title:'',site:'',date:today(),rows:[],rating:0,ts:Date.now()});
+  riskEdit(id);
+}
+function riskEdit(id){
+  var r=bizGet('risk_'+id)||{id:id,raNo:id,rows:[]};
+  var rows=r.rows||[];
+  var rowsHtml=rows.map(function(row,i){
+    return '<tr><td>'+esc(row.hazard)+'</td><td>'+esc(row.control)+'</td><td>'+row.L+'</td><td>'+row.S+'</td><td>'+(row.L*row.S)+'</td>'
+      +'<td><button class="biz-btn biz-btn-xs" onclick="riskRemoveRow(\''+id+'\','+i+')">✕</button></td></tr>';
+  }).join('');
+  var hazOpts=RISK_HAZARDS.map(function(h){return '<option>'+h+'</option>';}).join('');
+  var html='<div class="biz-modal-backdrop" id="risk-modal">'
+    +'<div class="biz-modal" style="max-width:700px">'
+    +'<h3>Risk Assessment — '+r.raNo+'</h3>'
+    +'<label>Title / Activity<input id="rim-title" value="'+esc(r.title||'')+'"></label>'
+    +'<label>Site<input id="rim-site" value="'+esc(r.site||'')+'"></label>'
+    +'<label>Date<input type="date" id="rim-date" value="'+(r.date||today())+'"></label>'
+    +'<h4 style="margin:12px 0 4px">Hazards &amp; Controls</h4>'
+    +'<table class="biz-table" id="risk-rows-tbl"><thead><tr><th>Hazard</th><th>Control Measure</th><th>L(1-5)</th><th>S(1-5)</th><th>RPN</th><th></th></tr></thead><tbody id="risk-rows">'+rowsHtml+'</tbody></table>'
+    +'<div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">'
+    +'<select id="rim-haz" style="flex:1;min-width:160px">'+hazOpts+'</select>'
+    +'<input id="rim-ctrl" placeholder="Control measure" style="flex:2;min-width:140px">'
+    +'<input type="number" id="rim-L" min="1" max="5" value="1" style="width:50px" title="Likelihood">'
+    +'<input type="number" id="rim-S" min="1" max="5" value="1" style="width:50px" title="Severity">'
+    +'<button class="biz-btn biz-btn-primary" onclick="riskAddRow(\''+id+'\')">Add Hazard</button>'
+    +'</div>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="riskSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'risk-modal\');riskRender()">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'risk_'+id+'\');closeModal(\'risk-modal\');riskRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('risk-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function riskAddRow(id){
+  var r=bizGet('risk_'+id)||{rows:[]};
+  if(!r.rows)r.rows=[];
+  var L=parseInt(document.getElementById('rim-L').value)||1;
+  var S=parseInt(document.getElementById('rim-S').value)||1;
+  r.rows.push({hazard:val('rim-haz'),control:val('rim-ctrl'),L:L,S:S});
+  bizSet('risk_'+id,r);
+  riskEdit(id);
+}
+function riskRemoveRow(id,idx){
+  var r=bizGet('risk_'+id)||{rows:[]};
+  r.rows.splice(idx,1);bizSet('risk_'+id,r);riskEdit(id);
+}
+function riskSave(id){
+  var r=bizGet('risk_'+id)||{};
+  r.title=val('rim-title');r.site=val('rim-site');r.date=val('rim-date');
+  r.rating=Math.max.apply(null,(r.rows||[]).map(function(x){return x.L*x.S;}).concat([0]));
+  r.ts=Date.now();
+  bizSet('risk_'+id,r);
+  closeModal('risk-modal');riskRender();
+}
+function riskPrint(id){
+  var r=bizGet('risk_'+id);if(!r)return;
+  var co=getCompany();
+  var rows=(r.rows||[]).map(function(row){
+    var rpn=row.L*row.S;
+    var color=rpn>=15?'#c62828':rpn>=9?'#e65100':'#2e7d32';
+    return '<tr><td>'+esc(row.hazard)+'</td><td>'+esc(row.control)+'</td><td style="text-align:center">'+row.L+'</td><td style="text-align:center">'+row.S+'</td>'
+      +'<td style="text-align:center;color:'+color+';font-weight:bold">'+rpn+'</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>RA '+r.raNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:7px}th{background:#eee}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>RISK ASSESSMENT — '+r.raNo+'</h1>'
+    +'<table><tr><th>Title</th><td>'+esc(r.title||'—')+'</td><th>Site</th><td>'+esc(r.site||'—')+'</td><th>Date</th><td>'+r.date+'</td></tr></table>'
+    +'<h3>Hazard Register</h3>'
+    +'<table><thead><tr><th>Hazard</th><th>Control Measure</th><th>L</th><th>S</th><th>RPN</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<p style="margin-top:16px"><b>Overall Risk Rating: '+r.rating+'</b> '+(r.rating>=15?'<span style="color:red">HIGH RISK</span>':r.rating>=9?'<span style="color:orange">MEDIUM RISK</span>':'<span style="color:green">LOW RISK</span>')+'</p>'
+    +'<p style="font-size:11px">L=Likelihood(1-5), S=Severity(1-5), RPN=L×S. High≥15, Medium≥9, Low&lt;9</p>'
+    +'<br><table><tr><th style="width:50%">Assessor Signature</th><th>Reviewer Signature</th></tr><tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* — Method Statements — */
+function msRender(){
+  var list=bizList('ms');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('ms-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No method statements yet.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>MS #</th><th>Activity</th><th>Site</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(m){
+    html+='<tr><td><b>'+m.msNo+'</b></td><td>'+esc(m.activity||'—')+'</td><td>'+esc(m.site||'—')+'</td><td>'+(m.date||'—')+'</td>'
+      +'<td><button class="biz-btn" onclick="msEdit(\''+m.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="msPrint(\''+m.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function msNew(){
+  var seq=bizSeq('ms');var msNo='MS-'+String(seq).padStart(4,'0');
+  var obj={id:msNo,msNo:msNo,activity:'',site:'',date:today(),steps:'',ppe:'',ts:Date.now()};
+  bizSet('ms_'+msNo,obj);msEdit(msNo);
+}
+function msEdit(id){
+  var m=bizGet('ms_'+id)||{};
+  var html='<div class="biz-modal-backdrop" id="ms-modal">'
+    +'<div class="biz-modal" style="max-width:580px">'
+    +'<h3>Method Statement — '+m.msNo+'</h3>'
+    +'<label>Activity *<input id="mm-act" value="'+esc(m.activity||'')+'"></label>'
+    +'<label>Site<input id="mm-site" value="'+esc(m.site||'')+'"></label>'
+    +'<label>Date<input type="date" id="mm-date" value="'+(m.date||today())+'"></label>'
+    +'<label>PPE Required<input id="mm-ppe" value="'+esc(m.ppe||'Hard hat, safety boots, gloves, hi-vis vest, safety glasses')+'"></label>'
+    +'<label>Method / Procedure Steps<textarea id="mm-steps" rows="6" placeholder="1. Isolate supply and lock out / tag out&#10;2. Verify isolation with test instrument&#10;3. ...">'+esc(m.steps||'')+'</textarea></label>'
+    +'<label>Emergency Procedure<textarea id="mm-emerg" rows="2">'+esc(m.emerg||'')+'</textarea></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="msSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'ms-modal\');msRender()">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'ms_'+id+'\');closeModal(\'ms-modal\');msRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('ms-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function msSave(id){
+  var m=bizGet('ms_'+id)||{};
+  m.activity=val('mm-act');m.site=val('mm-site');m.date=val('mm-date');
+  m.ppe=val('mm-ppe');m.steps=val('mm-steps');m.emerg=val('mm-emerg');m.ts=Date.now();
+  bizSet('ms_'+id,m);closeModal('ms-modal');msRender();
+}
+function msPrint(id){
+  var m=bizGet('ms_'+id);if(!m)return;
+  var co=getCompany();
+  var w=window.open('','_blank','width=800,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>MS '+m.msNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}'
+    +'pre{white-space:pre-wrap;font-family:Arial,sans-serif}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>METHOD STATEMENT — '+m.msNo+'</h1>'
+    +'<table><tr><th>Activity</th><td colspan="3">'+esc(m.activity||'—')+'</td></tr>'
+    +'<tr><th>Site</th><td>'+esc(m.site||'—')+'</td><th>Date</th><td>'+m.date+'</td></tr>'
+    +'<tr><th>PPE Required</th><td colspan="3">'+esc(m.ppe||'—')+'</td></tr></table>'
+    +'<h3>Procedure</h3><pre>'+esc(m.steps||'—')+'</pre>'
+    +'<h3>Emergency Procedure</h3><pre>'+esc(m.emerg||'Call emergency services: 10111 / 10177')+'</pre>'
+    +'<br><table><tr><th style="width:50%">Responsible Person</th><th>Reviewed By</th></tr>'
+    +'<tr><td style="height:50px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* — Permits to Work — */
+function ptwRender(){
+  var list=bizList('ptw');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('ptw-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No permits to work yet.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>PTW #</th><th>Work Type</th><th>Location</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(p){
+    html+='<tr><td><b>'+p.ptwNo+'</b></td><td>'+esc(p.workType||'—')+'</td><td>'+esc(p.location||'—')+'</td>'
+      +'<td>'+(p.startTime||'—')+'</td><td>'+(p.endTime||'—')+'</td>'
+      +'<td><span class="biz-badge '+(p.status==='Closed'?'biz-badge-green':'biz-badge-orange')+'">'+esc(p.status||'Open')+'</span></td>'
+      +'<td><button class="biz-btn" onclick="ptwEdit(\''+p.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="ptwPrint(\''+p.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function ptwNew(){
+  var seq=bizSeq('ptw');var pNo='PTW-'+String(seq).padStart(4,'0');
+  var obj={id:pNo,ptwNo:pNo,workType:'',location:'',startTime:'',endTime:'',status:'Open',
+    isolations:'',hazards:'',auth:'Tseke Riba',ts:Date.now()};
+  bizSet('ptw_'+pNo,obj);ptwEdit(pNo);
+}
+function ptwEdit(id){
+  var p=bizGet('ptw_'+id)||{};
+  var html='<div class="biz-modal-backdrop" id="ptw-modal">'
+    +'<div class="biz-modal">'
+    +'<h3>Permit to Work — '+p.ptwNo+'</h3>'
+    +'<label>Work Type *<input id="pw-type" value="'+esc(p.workType||'')+'"></label>'
+    +'<label>Location<input id="pw-loc" value="'+esc(p.location||'')+'"></label>'
+    +'<label>Planned Start<input type="datetime-local" id="pw-start" value="'+(p.startTime||'')+'"></label>'
+    +'<label>Planned End<input type="datetime-local" id="pw-end" value="'+(p.endTime||'')+'"></label>'
+    +'<label>Isolations Required<textarea id="pw-iso" rows="2">'+esc(p.isolations||'')+'</textarea></label>'
+    +'<label>Known Hazards<textarea id="pw-haz" rows="2">'+esc(p.hazards||'')+'</textarea></label>'
+    +'<label>Authorised By<input id="pw-auth" value="'+esc(p.auth||'Tseke Riba')+'"></label>'
+    +'<label>Status<select id="pw-status">'
+      +['Open','In Progress','Suspended','Closed'].map(function(s){return '<option'+(p.status===s?' selected':'')+'>'+s+'</option>';}).join('')+'</select></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="ptwSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'ptw-modal\');ptwRender()">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'ptw_'+id+'\');closeModal(\'ptw-modal\');ptwRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('ptw-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function ptwSave(id){
+  var p=bizGet('ptw_'+id)||{};
+  p.workType=val('pw-type');p.location=val('pw-loc');p.startTime=val('pw-start');p.endTime=val('pw-end');
+  p.isolations=val('pw-iso');p.hazards=val('pw-haz');p.auth=val('pw-auth');p.status=val('pw-status');p.ts=Date.now();
+  bizSet('ptw_'+id,p);closeModal('ptw-modal');ptwRender();
+}
+function ptwPrint(id){
+  var p=bizGet('ptw_'+id);if(!p)return;
+  var co=getCompany();
+  var w=window.open('','_blank','width=800,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>PTW '+p.ptwNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#ffebee}'
+    +'h1{color:#c62828}.warn{background:#ffebee;padding:10px;border-left:4px solid #c62828;margin:12px 0}'
+    +'</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>⚠ PERMIT TO WORK — '+p.ptwNo+'</h1>'
+    +'<div class="warn">This permit authorises specified work only. Any change to scope requires a new permit.</div>'
+    +'<table><tr><th>Work Type</th><td colspan="3">'+esc(p.workType||'—')+'</td></tr>'
+    +'<tr><th>Location</th><td colspan="3">'+esc(p.location||'—')+'</td></tr>'
+    +'<tr><th>Start</th><td>'+esc(p.startTime||'—')+'</td><th>End</th><td>'+esc(p.endTime||'—')+'</td></tr>'
+    +'<tr><th>Isolations</th><td colspan="3" style="white-space:pre-wrap">'+esc(p.isolations||'—')+'</td></tr>'
+    +'<tr><th>Known Hazards</th><td colspan="3" style="white-space:pre-wrap">'+esc(p.hazards||'—')+'</td></tr>'
+    +'<tr><th>Authorised By</th><td>'+esc(p.auth||'—')+'</td><th>Status</th><td>'+esc(p.status||'Open')+'</td></tr></table>'
+    +'<br><table><tr><th>Issuer Signature</th><th>Receiver Signature</th><th>Clearance Signature</th></tr>'
+    +'<tr><td style="height:60px">___________________<br>Date/Time: __________</td>'
+    +'<td>___________________<br>Date/Time: __________</td>'
+    +'<td>___________________<br>Date/Time: __________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* — Incidents — */
+function incRender(){
+  var list=bizList('inc');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('inc-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No incidents recorded. Great — keep the LTI rate at zero!</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Inc #</th><th>Type</th><th>Date</th><th>Location</th><th>Severity</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(i){
+    html+='<tr><td><b>'+i.incNo+'</b></td><td>'+esc(i.type||'—')+'</td><td>'+(i.date||'—')+'</td><td>'+esc(i.location||'—')+'</td>'
+      +'<td><span class="biz-badge '+(i.severity==='LTI'||i.severity==='Fatality'?'biz-badge-red':'biz-badge-orange')+'">'+esc(i.severity||'Near Miss')+'</span></td>'
+      +'<td><button class="biz-btn" onclick="incEdit(\''+i.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="incPrint(\''+i.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function incNew(){
+  var seq=bizSeq('inc');var iNo='INC-'+String(seq).padStart(4,'0');
+  var obj={id:iNo,incNo:iNo,type:'Near Miss',date:today(),location:'',severity:'Near Miss',
+    desc:'',cause:'',corrective:'',reported:'',ts:Date.now()};
+  bizSet('inc_'+iNo,obj);incEdit(iNo);
+}
+function incEdit(id){
+  var i=bizGet('inc_'+id)||{};
+  var html='<div class="biz-modal-backdrop" id="inc-modal">'
+    +'<div class="biz-modal">'
+    +'<h3>Incident Report — '+i.incNo+'</h3>'
+    +'<label>Incident Type<select id="im-type">'
+      +['Near Miss','First Aid','Medical Treatment','Lost Time Injury (LTI)','Fatality','Property Damage'].map(function(t){return '<option'+(i.type===t?' selected':'')+'>'+t+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Date<input type="date" id="im-date" value="'+(i.date||today())+'"></label>'
+    +'<label>Location<input id="im-loc" value="'+esc(i.location||'')+'"></label>'
+    +'<label>Severity<select id="im-sev">'
+      +['Near Miss','Minor','Moderate','Serious','LTI','Fatality'].map(function(s){return '<option'+(i.severity===s?' selected':'')+'>'+s+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Description of Incident<textarea id="im-desc" rows="3">'+esc(i.desc||'')+'</textarea></label>'
+    +'<label>Root Cause<textarea id="im-cause" rows="2">'+esc(i.cause||'')+'</textarea></label>'
+    +'<label>Corrective Action<textarea id="im-corr" rows="2">'+esc(i.corrective||'')+'</textarea></label>'
+    +'<label>Reported To<input id="im-rep" value="'+esc(i.reported||'')+'"></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="incSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'inc-modal\');incRender()">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'inc_'+id+'\');closeModal(\'inc-modal\');incRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('inc-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function incSave(id){
+  var i=bizGet('inc_'+id)||{};
+  i.type=val('im-type');i.date=val('im-date');i.location=val('im-loc');i.severity=val('im-sev');
+  i.desc=val('im-desc');i.cause=val('im-cause');i.corrective=val('im-corr');i.reported=val('im-rep');i.ts=Date.now();
+  bizSet('inc_'+id,i);closeModal('inc-modal');incRender();
+}
+function incPrint(id){
+  var i=bizGet('inc_'+id);if(!i)return;
+  var co=getCompany();
+  var w=window.open('','_blank','width=800,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>Incident '+i.incNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>INCIDENT REPORT — '+i.incNo+'</h1>'
+    +'<table><tr><th>Type</th><td>'+esc(i.type||'—')+'</td><th>Date</th><td>'+i.date+'</td></tr>'
+    +'<tr><th>Location</th><td>'+esc(i.location||'—')+'</td><th>Severity</th><td>'+esc(i.severity||'—')+'</td></tr>'
+    +'<tr><th>Description</th><td colspan="3" style="white-space:pre-wrap">'+esc(i.desc||'—')+'</td></tr>'
+    +'<tr><th>Root Cause</th><td colspan="3" style="white-space:pre-wrap">'+esc(i.cause||'—')+'</td></tr>'
+    +'<tr><th>Corrective Action</th><td colspan="3" style="white-space:pre-wrap">'+esc(i.corrective||'—')+'</td></tr>'
+    +'<tr><th>Reported To</th><td colspan="3">'+esc(i.reported||'—')+'</td></tr></table>'
+    +'<br><table><tr><th style="width:50%">Reporter Signature</th><th>Supervisor Signature</th></tr>'
+    +'<tr><td style="height:60px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE 5 — TEST RECORDS (Electrical & PV)
+   ═══════════════════════════════════════════════════════════ */
+function tstShow(id){
+  document.querySelectorAll('.tst-sub').forEach(function(el){el.classList.remove('active');});
+  var t=document.getElementById(id);if(t)t.classList.add('active');
+  document.querySelectorAll('.hub-tst-tab').forEach(function(b){b.classList.toggle('active',b.dataset.target===id);});
+  if(id==='tst-elec')tstRender();
+  else if(id==='tst-pv')pvtRender();
+}
+
+/* — Electrical Test Records — */
+function tstRender(){
+  var list=bizList('tst');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('tst-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No test records yet. Click <b>+ New Test Record</b>.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Test #</th><th>Client</th><th>Site</th><th>Date</th><th>Circuits</th><th>Result</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(t){
+    var circs=(t.circuits||[]).length;
+    html+='<tr><td><b>'+t.tstNo+'</b></td><td>'+esc(t.clientName||'—')+'</td><td>'+esc(t.site||'—')+'</td><td>'+(t.date||'—')+'</td>'
+      +'<td>'+circs+'</td>'
+      +'<td><span class="biz-badge '+(t.result==='Pass'?'biz-badge-green':'biz-badge-red')+'">'+esc(t.result||'—')+'</span></td>'
+      +'<td><button class="biz-btn" onclick="tstEdit(\''+t.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="tstPrint(\''+t.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function tstNew(){tstEdit(null);}
+function tstEdit(id){
+  var t=id?bizGet('tst_'+id):{};
+  var clients=bizList('cli');
+  var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(t.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
+  var circs=t.circuits||[];
+  var circRows=circs.map(function(c,i){
+    return '<tr><td>'+esc(c.id||'')+'</td><td>'+esc(c.desc||'')+'</td><td>'+esc(c.ir||'')+'</td><td>'+esc(c.cont||'')+'</td><td>'+esc(c.rcd||'')+'</td>'
+      +'<td><button class="biz-btn biz-btn-xs" onclick="tstRemoveCirc(\''+id+'\','+i+')">✕</button></td></tr>';
+  }).join('');
+  var html='<div class="biz-modal-backdrop" id="tst-modal">'
+    +'<div class="biz-modal" style="max-width:720px">'
+    +'<h3>'+(id?'Edit':'New')+' Electrical Test Record</h3>'
+    +'<label>Client<select id="tm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
+    +'<label>Site<input id="tm-site" value="'+esc(t.site||'')+'"></label>'
+    +'<label>Date<input type="date" id="tm-date" value="'+(t.date||today())+'"></label>'
+    +'<label>Instrument Used<input id="tm-instr" value="'+esc(t.instrument||'Fluke 1507')+'"></label>'
+    +'<label>Inspector<input id="tm-insp" value="'+esc(t.inspector||'Tseke Riba')+'"></label>'
+    +'<h4 style="margin:10px 0 4px">Circuit Test Results</h4>'
+    +'<table class="biz-table" style="font-size:13px"><thead><tr><th>Circuit ID</th><th>Description</th><th>IR (MΩ)</th><th>Continuity (Ω)</th><th>RCD Trip (ms)</th><th></th></tr></thead>'
+    +'<tbody id="tst-circs">'+circRows+'</tbody></table>'
+    +'<div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">'
+    +'<input id="tc-id" placeholder="Circuit ID" style="width:80px">'
+    +'<input id="tc-desc" placeholder="Description" style="flex:1;min-width:100px">'
+    +'<input id="tc-ir" placeholder="IR MΩ" style="width:70px">'
+    +'<input id="tc-cont" placeholder="Cont Ω" style="width:70px">'
+    +'<input id="tc-rcd" placeholder="RCD ms" style="width:70px">'
+    +'<button class="biz-btn biz-btn-primary" onclick="tstAddCirc(\''+id+'\')">Add</button>'
+    +'</div>'
+    +'<label>Overall Result<select id="tm-result">'
+      +['Pass','Fail','Conditional Pass'].map(function(r){return '<option'+(t.result===r?' selected':'')+'>'+r+'</option>';}).join('')+'</select></label>'
+    +'<label>Notes<textarea id="tm-notes" rows="2">'+esc(t.notes||'')+'</textarea></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="tstSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'tst-modal\');tstRender()">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'tst_'+id+'\');closeModal(\'tst-modal\');tstRender()">Delete</button>':'')
+    +'</div></div></div>';
+  var old=document.getElementById('tst-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function tstAddCirc(id){
+  var t=id?bizGet('tst_'+id):{circuits:[]};
+  if(!t.circuits)t.circuits=[];
+  t.circuits.push({id:val('tc-id'),desc:val('tc-desc'),ir:val('tc-ir'),cont:val('tc-cont'),rcd:val('tc-rcd')});
+  if(id)bizSet('tst_'+id,t);
+  tstEdit(id);
+}
+function tstRemoveCirc(id,idx){
+  var t=bizGet('tst_'+id)||{circuits:[]};
+  t.circuits.splice(idx,1);bizSet('tst_'+id,t);tstEdit(id);
+}
+function tstSave(id){
+  var clientId=val('tm-client');
+  var clients=bizList('cli');
+  var cli=clients.find(function(c){return c.id===clientId;})||{};
+  var saved=id?bizGet('tst_'+id):{};
+  var seq=id?null:bizSeq('tst');
+  var tstNo=id?(saved.tstNo||id):('TST-'+String(seq).padStart(4,'0'));
+  var obj=Object.assign(saved,{clientId:clientId,clientName:cli.name||'',site:val('tm-site'),
+    date:val('tm-date'),instrument:val('tm-instr'),inspector:val('tm-insp'),
+    result:val('tm-result'),notes:val('tm-notes'),tstNo:tstNo,ts:Date.now()});
+  if(!id){obj.id=tstNo;}
+  bizSet('tst_'+(id||tstNo),obj);
+  closeModal('tst-modal');tstRender();
+}
+function tstPrint(id){
+  var t=bizGet('tst_'+id);if(!t)return;
+  var co=getCompany();
+  var circRows=(t.circuits||[]).map(function(c){
+    var irOk=parseFloat(c.ir)>=1;var rcdOk=parseFloat(c.rcd)<=300;
+    return '<tr><td>'+esc(c.id||'')+'</td><td>'+esc(c.desc||'')+'</td>'
+      +'<td style="color:'+(irOk?'green':'red')+'">'+esc(c.ir||'—')+'</td>'
+      +'<td>'+esc(c.cont||'—')+'</td>'
+      +'<td style="color:'+(rcdOk?'green':'red')+'">'+esc(c.rcd||'—')+'</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Test Record '+t.tstNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:7px}th{background:#eee}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>ELECTRICAL TEST RECORD — '+t.tstNo+'</h1>'
+    +'<table><tr><th>Client</th><td>'+esc(t.clientName||'—')+'</td><th>Date</th><td>'+t.date+'</td></tr>'
+    +'<tr><th>Site</th><td colspan="3">'+esc(t.site||'—')+'</td></tr>'
+    +'<tr><th>Instrument</th><td>'+esc(t.instrument||'—')+'</td><th>Inspector</th><td>'+esc(t.inspector||'—')+'</td></tr>'
+    +'<tr><th>Overall Result</th><td colspan="3" style="font-weight:bold;color:'+(t.result==='Pass'?'green':'red')+'">'+esc(t.result||'—')+'</td></tr></table>'
+    +'<h3>Circuit Test Results</h3>'
+    +'<table><thead><tr><th>Circuit ID</th><th>Description</th><th>IR (MΩ) ≥1</th><th>Continuity (Ω)</th><th>RCD (ms) ≤300</th></tr></thead><tbody>'+(circRows||'<tr><td colspan="5">No circuits</td></tr>')+'</tbody></table>'
+    +'<p style="white-space:pre-wrap"><b>Notes:</b> '+esc(t.notes||'—')+'</p>'
+    +'<br><table><tr><th>Inspector Signature</th><th>Client Acceptance</th></tr>'
+    +'<tr><td style="height:50px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
+    +'<p style="font-size:11px">Tested per SANS 10142-1. IR≥1MΩ, RCD trip ≤300ms.</p>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* — PV Test Records — */
+function pvtRender(){
+  var list=bizList('pvt');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('pvt-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No PV test records yet. Click <b>+ New PV Test</b>.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Test #</th><th>Client</th><th>Site</th><th>Date</th><th>Strings</th><th>Result</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(p){
+    html+='<tr><td><b>'+p.pvtNo+'</b></td><td>'+esc(p.clientName||'—')+'</td><td>'+esc(p.site||'—')+'</td><td>'+(p.date||'—')+'</td>'
+      +'<td>'+((p.strings||[]).length)+'</td>'
+      +'<td><span class="biz-badge '+(p.result==='Pass'?'biz-badge-green':'biz-badge-red')+'">'+esc(p.result||'—')+'</span></td>'
+      +'<td><button class="biz-btn" onclick="pvtEdit(\''+p.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="pvtPrint(\''+p.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function pvtNew(){pvtEdit(null);}
+function pvtEdit(id){
+  var p=id?bizGet('pvt_'+id):{};
+  var clients=bizList('cli');
+  var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(p.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
+  var strings=p.strings||[];
+  var strRows=strings.map(function(s,i){
+    return '<tr><td>'+esc(s.id||'')+'</td><td>'+esc(s.panels||'')+'</td><td>'+esc(s.voc||'')+'</td><td>'+esc(s.isc||'')+'</td><td>'+esc(s.ir||'')+'</td><td>'+esc(s.pmax||'')+'</td>'
+      +'<td><button class="biz-btn biz-btn-xs" onclick="pvtRemoveStr(\''+id+'\','+i+')">✕</button></td></tr>';
+  }).join('');
+  var html='<div class="biz-modal-backdrop" id="pvt-modal">'
+    +'<div class="biz-modal" style="max-width:760px">'
+    +'<h3>'+(id?'Edit':'New')+' PV System Test Record</h3>'
+    +'<label>Client<select id="pv-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
+    +'<label>Site<input id="pv-site" value="'+esc(p.site||'')+'"></label>'
+    +'<label>Date<input type="date" id="pv-date" value="'+(p.date||today())+'"></label>'
+    +'<label>System Size (kWp)<input type="number" id="pv-kw" value="'+(p.kw||0)+'" min="0" step="0.01"></label>'
+    +'<label>Inverter Make/Model<input id="pv-inv" value="'+esc(p.inverter||'')+'"></label>'
+    +'<label>Panel Make/Model<input id="pv-pan" value="'+esc(p.panel||'')+'"></label>'
+    +'<label>Inspector<input id="pv-insp" value="'+esc(p.inspector||'Tseke Riba')+'"></label>'
+    +'<h4 style="margin:10px 0 4px">String Test Results</h4>'
+    +'<table class="biz-table" style="font-size:13px"><thead><tr><th>String ID</th><th># Panels</th><th>Voc (V)</th><th>Isc (A)</th><th>IR (MΩ)</th><th>Pmax (W)</th><th></th></tr></thead>'
+    +'<tbody id="pvt-strings">'+strRows+'</tbody></table>'
+    +'<div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap">'
+    +'<input id="ps-id" placeholder="String ID" style="width:70px">'
+    +'<input id="ps-panels" placeholder="# panels" style="width:70px">'
+    +'<input id="ps-voc" placeholder="Voc" style="width:70px">'
+    +'<input id="ps-isc" placeholder="Isc" style="width:70px">'
+    +'<input id="ps-ir" placeholder="IR MΩ" style="width:70px">'
+    +'<input id="ps-pmax" placeholder="Pmax W" style="width:70px">'
+    +'<button class="biz-btn biz-btn-primary" onclick="pvtAddString(\''+id+'\')">Add String</button>'
+    +'</div>'
+    +'<label>Overall Result<select id="pv-result">'
+      +['Pass','Fail','Conditional Pass'].map(function(r){return '<option'+(p.result===r?' selected':'')+'>'+r+'</option>';}).join('')+'</select></label>'
+    +'<label>Notes<textarea id="pv-notes" rows="2">'+esc(p.notes||'')+'</textarea></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="pvtSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'pvt-modal\');pvtRender()">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'pvt_'+id+'\');closeModal(\'pvt-modal\');pvtRender()">Delete</button>':'')
+    +'</div></div></div>';
+  var old=document.getElementById('pvt-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function pvtAddString(id){
+  var p=id?bizGet('pvt_'+id):{strings:[]};
+  if(!p.strings)p.strings=[];
+  p.strings.push({id:val('ps-id'),panels:val('ps-panels'),voc:val('ps-voc'),isc:val('ps-isc'),ir:val('ps-ir'),pmax:val('ps-pmax')});
+  if(id)bizSet('pvt_'+id,p);pvtEdit(id);
+}
+function pvtRemoveStr(id,idx){
+  var p=bizGet('pvt_'+id)||{strings:[]};p.strings.splice(idx,1);bizSet('pvt_'+id,p);pvtEdit(id);
+}
+function pvtSave(id){
+  var clientId=val('pv-client');
+  var clients=bizList('cli');
+  var cli=clients.find(function(c){return c.id===clientId;})||{};
+  var saved=id?bizGet('pvt_'+id):{};
+  var seq=id?null:bizSeq('pvt');
+  var pvtNo=id?(saved.pvtNo||id):('PVT-'+String(seq).padStart(4,'0'));
+  var obj=Object.assign(saved,{clientId:clientId,clientName:cli.name||'',site:val('pv-site'),
+    date:val('pv-date'),kw:parseFloat(val('pv-kw'))||0,inverter:val('pv-inv'),panel:val('pv-pan'),
+    inspector:val('pv-insp'),result:val('pv-result'),notes:val('pv-notes'),pvtNo:pvtNo,ts:Date.now()});
+  if(!id){obj.id=pvtNo;}
+  bizSet('pvt_'+(id||pvtNo),obj);
+  closeModal('pvt-modal');pvtRender();
+}
+function pvtPrint(id){
+  var p=bizGet('pvt_'+id);if(!p)return;
+  var co=getCompany();
+  var strRows=(p.strings||[]).map(function(s){
+    return '<tr><td>'+esc(s.id||'')+'</td><td>'+esc(s.panels||'')+'</td><td>'+esc(s.voc||'')+'</td><td>'+esc(s.isc||'')+'</td><td>'+esc(s.ir||'')+'</td><td>'+esc(s.pmax||'')+'</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=900,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>PV Test '+p.pvtNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:7px}th{background:#eee}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>PV SYSTEM TEST RECORD — '+p.pvtNo+'</h1>'
+    +'<table><tr><th>Client</th><td>'+esc(p.clientName||'—')+'</td><th>Date</th><td>'+p.date+'</td></tr>'
+    +'<tr><th>Site</th><td colspan="3">'+esc(p.site||'—')+'</td></tr>'
+    +'<tr><th>System Size</th><td>'+p.kw+' kWp</td><th>Inverter</th><td>'+esc(p.inverter||'—')+'</td></tr>'
+    +'<tr><th>Panel Type</th><td>'+esc(p.panel||'—')+'</td><th>Inspector</th><td>'+esc(p.inspector||'—')+'</td></tr>'
+    +'<tr><th>Result</th><td colspan="3" style="font-weight:bold;color:'+(p.result==='Pass'?'green':'red')+'">'+esc(p.result||'—')+'</td></tr></table>'
+    +'<h3>String Test Results</h3>'
+    +'<table><thead><tr><th>String</th><th>Panels</th><th>Voc (V)</th><th>Isc (A)</th><th>IR (MΩ)</th><th>Pmax (W)</th></tr></thead><tbody>'+(strRows||'<tr><td colspan="6">No strings</td></tr>')+'</tbody></table>'
+    +'<p><b>Notes:</b> '+esc(p.notes||'—')+'</p>'
+    +'<br><table><tr><th>Inspector Signature</th><th>Client Acceptance</th></tr>'
+    +'<tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
+    +'<p style="font-size:11px">PV testing per SANS 61215 / IEC 62446. SANS 10142-1 applies to AC wiring.</p>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   HR / PAYROLL
+   ═══════════════════════════════════════════════════════════ */
+function hrShow(id){
+  document.querySelectorAll('.hr-sub').forEach(function(el){el.classList.remove('active');});
+  var t=document.getElementById(id);if(t)t.classList.add('active');
+  document.querySelectorAll('.hub-hr-tab').forEach(function(b){b.classList.toggle('active',b.dataset.target===id);});
+  if(id==='hr-emp')empRender();
+  else if(id==='hr-pay')payRender();
+  else if(id==='hr-kpi')kpiRender();
+  else if(id==='hr-mem')memRender();
+}
+
+/* — Seed Tseke — */
+function hrSeedTseke(){
+  if(bizGet('emp_EMP0001'))return;
+  bizSet('emp_EMP0001',{id:'EMP0001',empNo:'EMP0001',name:'Tshegofatso Tseke Riba',
+    jobTitle:'Director / Installation Electrician',dept:'Management',
+    startDate:'2024-01-01',idNo:'',bank:'Capitec Bank',accNo:'2605150883',branch:'470010',
+    salary:0,uifRate:1,phone:'072 474 8888',email:'ribatt3@gmail.com',
+    regNo:'',ecsaReg:'',skills:'Electrical Installation, PV Systems, DB Inspection, CoC Issuance',
+    ts:Date.now()});
+}
+
+/* — Employees — */
+function empRender(){
+  hrSeedTseke();
+  var list=bizList('emp');list.sort(function(a,b){return a.empNo>b.empNo?1:-1;});
+  var el=document.getElementById('emp-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No employees yet.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Emp #</th><th>Name</th><th>Job Title</th><th>Dept</th><th>Start Date</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(e){
+    html+='<tr><td><b>'+e.empNo+'</b></td><td>'+esc(e.name||'—')+'</td><td>'+esc(e.jobTitle||'—')+'</td><td>'+esc(e.dept||'—')+'</td><td>'+(e.startDate||'—')+'</td>'
+      +'<td><button class="biz-btn" onclick="empEdit(\''+e.id+'\')">Edit</button> '
+      +'<button class="biz-btn biz-btn-teal" onclick="payNew(\''+e.id+'\')">Pay</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function empNew(){empEdit(null);}
+function empEdit(id){
+  var e=id?bizGet('emp_'+id):{};
+  var html='<div class="biz-modal-backdrop" id="emp-modal">'
+    +'<div class="biz-modal" style="max-width:580px">'
+    +'<h3>'+(id?'Edit':'New')+' Employee</h3>'
+    +'<label>Full Name *<input id="em-name" value="'+esc(e.name||'')+'"></label>'
+    +'<label>Job Title *<input id="em-title" value="'+esc(e.jobTitle||'')+'"></label>'
+    +'<label>Department<input id="em-dept" value="'+esc(e.dept||'')+'"></label>'
+    +'<label>Start Date<input type="date" id="em-start" value="'+(e.startDate||today())+'"></label>'
+    +'<label>ID Number<input id="em-id" value="'+esc(e.idNo||'')+'"></label>'
+    +'<label>Phone<input id="em-phone" value="'+esc(e.phone||'')+'"></label>'
+    +'<label>Email<input id="em-email" value="'+esc(e.email||'')+'"></label>'
+    +'<label>Bank<input id="em-bank" value="'+esc(e.bank||'')+'"></label>'
+    +'<label>Account Number<input id="em-acc" value="'+esc(e.accNo||'')+'"></label>'
+    +'<label>Branch Code<input id="em-branch" value="'+esc(e.branch||'')+'"></label>'
+    +'<label>Basic Salary (R/month)<input type="number" id="em-salary" value="'+(e.salary||0)+'" min="0"></label>'
+    +'<label>UIF % (employer)<input type="number" id="em-uif" value="'+(e.uifRate||1)+'" min="0" max="2" step="0.1"></label>'
+    +'<label>ECSA Registration #<input id="em-ecsa" value="'+esc(e.ecsaReg||'')+'"></label>'
+    +'<label>Skills / Qualifications<textarea id="em-skills" rows="2">'+esc(e.skills||'')+'</textarea></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="empSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'emp-modal\')">Cancel</button>'
+    +(id&&id!=='EMP0001'?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'emp_'+id+'\');closeModal(\'emp-modal\');empRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function empSave(id){
+  var name=val('em-name').trim();var title=val('em-title').trim();
+  if(!name||!title){alert('Name and job title are required.');return;}
+  var saved=id?bizGet('emp_'+id):{};
+  var seq=id?null:bizSeq('emp');
+  var empNo=id?(saved.empNo||id):('EMP'+String(seq).padStart(4,'0'));
+  var obj=Object.assign(saved,{name:name,jobTitle:title,dept:val('em-dept'),startDate:val('em-start'),
+    idNo:val('em-id'),phone:val('em-phone'),email:val('em-email'),bank:val('em-bank'),accNo:val('em-acc'),
+    branch:val('em-branch'),salary:parseFloat(val('em-salary'))||0,uifRate:parseFloat(val('em-uif'))||1,
+    ecsaReg:val('em-ecsa'),skills:val('em-skills'),empNo:empNo,ts:Date.now()});
+  if(!id){obj.id=empNo;}
+  bizSet('emp_'+(id||empNo),obj);
+  closeModal('emp-modal');empRender();
+}
+
+/* — Payslips — */
+var SA_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function payRender(){
+  var list=bizList('pay');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('pay-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No payslips yet. Click <b>+ New Payslip</b>.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Slip #</th><th>Employee</th><th>Period</th><th>Gross (R)</th><th>Net (R)</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(p){
+    html+='<tr><td><b>'+p.slipNo+'</b></td><td>'+esc(p.empName||'—')+'</td><td>'+esc(p.period||'—')+'</td>'
+      +'<td>'+fmt(p.gross||0)+'</td><td>'+fmt(p.net||0)+'</td>'
+      +'<td><button class="biz-btn" onclick="payEdit(\''+p.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="payPrint(\''+p.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function payNew(preEmpId){
+  var now=new Date();
+  var period=SA_MONTHS[now.getMonth()]+' '+now.getFullYear();
+  var emps=bizList('emp');
+  var emp=emps.find(function(e){return e.id===preEmpId;})||emps[0]||{};
+  var seq=bizSeq('pay');var slipNo='PAY-'+String(seq).padStart(4,'0');
+  var uif=Math.round((emp.salary||0)*0.01*100)/100;
+  var net=(emp.salary||0)-uif;
+  var obj={id:slipNo,slipNo:slipNo,empId:emp.id||'',empName:emp.name||'',period:period,
+    basic:emp.salary||0,allowances:0,deductions:uif,uif:uif,gross:emp.salary||0,net:net,ts:Date.now()};
+  bizSet('pay_'+slipNo,obj);payEdit(slipNo);
+}
+function payEdit(id){
+  var p=bizGet('pay_'+id)||{};
+  var emps=bizList('emp');
+  var eOpts=emps.map(function(e){return '<option value="'+e.id+'"'+(p.empId===e.id?' selected':'')+'>'+esc(e.name)+'</option>';}).join('');
+  var yearNow=new Date().getFullYear();
+  var periodOpts=[];
+  for(var y=yearNow;y>=yearNow-2;y--){
+    SA_MONTHS.slice().reverse().forEach(function(m){periodOpts.push(m+' '+y);});
+  }
+  var pOpts=periodOpts.map(function(o){return '<option'+(p.period===o?' selected':'')+'>'+o+'</option>';}).join('');
+  var html='<div class="biz-modal-backdrop" id="pay-modal">'
+    +'<div class="biz-modal" style="max-width:500px">'
+    +'<h3>Payslip — '+p.slipNo+'</h3>'
+    +'<label>Employee<select id="py-emp" onchange="payLoadEmp()"><option value="">— Select —</option>'+eOpts+'</select></label>'
+    +'<label>Period<select id="py-period">'+pOpts+'</select></label>'
+    +'<label>Basic Salary (R)<input type="number" id="py-basic" value="'+(p.basic||0)+'" min="0" oninput="payCalcNet()"></label>'
+    +'<label>Allowances (R)<input type="number" id="py-allow" value="'+(p.allowances||0)+'" min="0" oninput="payCalcNet()"></label>'
+    +'<label>UIF Deduction (R) <small style="color:var(--muted)">(1% of basic)</small><input type="number" id="py-uif" value="'+(p.uif||0)+'" min="0" oninput="payCalcNet()"></label>'
+    +'<label>Other Deductions (R)<input type="number" id="py-ded" value="'+(p.deductions||0)+'" min="0" oninput="payCalcNet()"></label>'
+    +'<div style="background:var(--surface2,#f5f5f5);padding:10px;border-radius:6px;margin:8px 0">'
+    +'<b>Gross: R <span id="py-gross">'+fmt(p.gross||0)+'</span></b><br>'
+    +'<b>Net Pay: R <span id="py-net">'+fmt(p.net||0)+'</span></b>'
+    +'</div>'
+    +'<label>Notes<input id="py-notes" value="'+esc(p.notes||'')+'"></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="paySave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'pay-modal\')">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'pay_'+id+'\');closeModal(\'pay-modal\');payRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('pay-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function payLoadEmp(){
+  var empId=val('py-emp');
+  var emps=bizList('emp');
+  var emp=emps.find(function(e){return e.id===empId;})||{};
+  if(emp.salary){document.getElementById('py-basic').value=emp.salary;}
+  payAutoUIF();payCalcNet();
+}
+function payAutoUIF(){
+  var basic=parseFloat(document.getElementById('py-basic')?document.getElementById('py-basic').value:0)||0;
+  var uifEl=document.getElementById('py-uif');
+  if(uifEl)uifEl.value=(Math.round(basic*0.01*100)/100).toFixed(2);
+}
+function payCalcNet(){
+  var basic=parseFloat(document.getElementById('py-basic')?document.getElementById('py-basic').value:0)||0;
+  var allow=parseFloat(document.getElementById('py-allow')?document.getElementById('py-allow').value:0)||0;
+  var uif=parseFloat(document.getElementById('py-uif')?document.getElementById('py-uif').value:0)||0;
+  var ded=parseFloat(document.getElementById('py-ded')?document.getElementById('py-ded').value:0)||0;
+  var gross=basic+allow;var net=gross-uif-ded;
+  var gEl=document.getElementById('py-gross');var nEl=document.getElementById('py-net');
+  if(gEl)gEl.textContent=fmt(gross);if(nEl)nEl.textContent=fmt(net);
+}
+function paySave(id){
+  var p=bizGet('pay_'+id)||{};
+  var empId=val('py-emp');
+  var emps=bizList('emp');
+  var emp=emps.find(function(e){return e.id===empId;})||{};
+  var basic=parseFloat(val('py-basic'))||0;
+  var allow=parseFloat(val('py-allow'))||0;
+  var uif=parseFloat(val('py-uif'))||0;
+  var ded=parseFloat(val('py-ded'))||0;
+  var gross=basic+allow;var net=gross-uif-ded;
+  Object.assign(p,{empId:empId,empName:emp.name||'',period:val('py-period'),
+    basic:basic,allowances:allow,uif:uif,deductions:ded,gross:gross,net:net,notes:val('py-notes'),ts:Date.now()});
+  bizSet('pay_'+id,p);closeModal('pay-modal');payRender();
+}
+function payPrint(id){
+  var p=bizGet('pay_'+id);if(!p)return;
+  var emp=bizGet('emp_'+p.empId)||{};
+  var co=getCompany();
+  var w=window.open('','_blank','width=600,height=700');
+  w.document.write('<!DOCTYPE html><html><head><title>Payslip '+p.slipNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222;max-width:500px}'
+    +'.hdr{display:flex;justify-content:space-between}.slip{border:2px solid #333;padding:20px;margin:20px 0}'
+    +'.row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #eee}'
+    +'.total{font-weight:bold;font-size:1.1em;border-top:2px solid #333;padding-top:8px}'
+    +'.notice{background:#fff3cd;padding:8px;border-left:4px solid #f0a500;margin:12px 0;font-size:12px}'
+    +'</style></head><body>'
+    +'<div class="hdr"><div><h2>'+esc(co.name||'Ribatt Electrical')+'</h2><small>'+esc(co.reg||'')+'</small></div>'
+    +'<div style="text-align:right"><h3>PAYSLIP</h3><small>'+p.slipNo+'</small></div></div>'
+    +'<div class="notice">⚠ This company is NOT VAT registered. No VAT applicable.</div>'
+    +'<div class="slip">'
+    +'<div class="row"><span>Employee</span><span><b>'+esc(p.empName||'—')+'</b></span></div>'
+    +'<div class="row"><span>Employee #</span><span>'+esc(emp.empNo||'—')+'</span></div>'
+    +'<div class="row"><span>Job Title</span><span>'+esc(emp.jobTitle||'—')+'</span></div>'
+    +'<div class="row"><span>Period</span><span>'+esc(p.period||'—')+'</span></div>'
+    +'<div class="row"><span>Bank</span><span>'+esc(emp.bank||'—')+'</span></div>'
+    +'<div class="row"><span>Account #</span><span>'+esc(emp.accNo||'—')+'</span></div>'
+    +'<br><div class="row"><span>Basic Salary</span><span>R '+fmt(p.basic||0)+'</span></div>'
+    +'<div class="row"><span>Allowances</span><span>R '+fmt(p.allowances||0)+'</span></div>'
+    +'<div class="row total"><span>GROSS PAY</span><span>R '+fmt(p.gross||0)+'</span></div>'
+    +'<br><div class="row"><span>UIF (Employee 1%)</span><span>- R '+fmt(p.uif||0)+'</span></div>'
+    +'<div class="row"><span>Other Deductions</span><span>- R '+fmt(p.deductions||0)+'</span></div>'
+    +'<div class="row total"><span>NET PAY</span><span>R '+fmt(p.net||0)+'</span></div>'
+    +'</div>'
+    +(p.notes?'<p><i>'+esc(p.notes)+'</i></p>':'')
+    +'<p style="font-size:11px;color:#666">UIF: Employer also contributes 1% (R '+fmt((p.basic||0)*0.01)+'). Total UIF = R '+fmt((p.basic||0)*0.02)+'.<br>PAYE: Not applicable (earnings below threshold or Director loan arrangement).</p>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* — KPI Scorecards — */
+var KPI_ITEMS=[
+  {key:'cocs',label:'CoCs Issued',target:4,unit:'per month'},
+  {key:'jobs',label:'Jobs Completed',target:8,unit:'per month'},
+  {key:'revenue',label:'Revenue (R)',target:20000,unit:'per month'},
+  {key:'invoices',label:'Invoices Outstanding',target:2,unit:'max'},
+  {key:'lti',label:'Lost Time Injuries',target:0,unit:'zero target'},
+  {key:'csat',label:'Customer Satisfaction',target:4,unit:'/5 rating'},
+  {key:'cpd',label:'CPD Hours',target:3,unit:'per month'},
+  {key:'quotes',label:'Quote Conversion %',target:50,unit:'%'}
+];
+function kpiRender(){
+  var list=bizList('kpi');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('kpi-list');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No KPI scorecards yet. Click <b>+ New KPI Scorecard</b>.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>KPI #</th><th>Employee</th><th>Period</th><th>Score</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(k){
+    html+='<tr><td><b>'+k.kpiNo+'</b></td><td>'+esc(k.empName||'—')+'</td><td>'+esc(k.period||'—')+'</td>'
+      +'<td><span class="biz-badge '+(k.score>=80?'biz-badge-green':k.score>=50?'biz-badge-orange':'biz-badge-red')+'">'+Math.round(k.score||0)+'%</span></td>'
+      +'<td><button class="biz-btn" onclick="kpiEdit(\''+k.id+'\')">View</button> '
+      +'<button class="biz-btn" onclick="kpiPrint(\''+k.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function kpiNew(preEmpId){
+  var now=new Date();
+  var period=SA_MONTHS[now.getMonth()]+' '+now.getFullYear();
+  var emps=bizList('emp');
+  var emp=emps.find(function(e){return e.id===preEmpId;})||emps[0]||{};
+  var seq=bizSeq('kpi');var kpiNo='KPI-'+String(seq).padStart(4,'0');
+  var vals={};KPI_ITEMS.forEach(function(k){vals[k.key]=0;});
+  var obj={id:kpiNo,kpiNo:kpiNo,empId:emp.id||'',empName:emp.name||'',period:period,vals:vals,score:0,ts:Date.now()};
+  bizSet('kpi_'+kpiNo,obj);kpiEdit(kpiNo);
+}
+function kpiEdit(id){
+  var k=bizGet('kpi_'+id)||{vals:{}};
+  var emps=bizList('emp');
+  var eOpts=emps.map(function(e){return '<option value="'+e.id+'"'+(k.empId===e.id?' selected':'')+'>'+esc(e.name)+'</option>';}).join('');
+  var yearNow=new Date().getFullYear();
+  var periodOpts=[];
+  for(var y=yearNow;y>=yearNow-2;y--){SA_MONTHS.slice().reverse().forEach(function(m){periodOpts.push(m+' '+y);});}
+  var pOpts=periodOpts.map(function(o){return '<option'+(k.period===o?' selected':'')+'>'+o+'</option>';}).join('');
+  var kpiRows=KPI_ITEMS.map(function(item){
+    var v=(k.vals&&k.vals[item.key])||0;
+    return '<tr><td>'+esc(item.label)+'</td><td>'+esc(item.unit)+'</td><td style="color:var(--muted)">'+item.target+'</td>'
+      +'<td><input type="number" id="kv-'+item.key+'" value="'+v+'" min="0" oninput="kpiCalc()" style="width:80px"></td></tr>';
+  }).join('');
+  var html='<div class="biz-modal-backdrop" id="kpi-modal">'
+    +'<div class="biz-modal" style="max-width:580px">'
+    +'<h3>KPI Scorecard — '+k.kpiNo+'</h3>'
+    +'<label>Employee<select id="ki-emp"><option value="">— Select —</option>'+eOpts+'</select></label>'
+    +'<label>Period<select id="ki-period">'+pOpts+'</select></label>'
+    +'<h4>Performance Metrics</h4>'
+    +'<table class="biz-table"><thead><tr><th>Metric</th><th>Unit</th><th>Target</th><th>Actual</th></tr></thead><tbody>'+kpiRows+'</tbody></table>'
+    +'<div style="background:var(--surface2,#f5f5f5);padding:10px;border-radius:6px;margin:8px 0">'
+    +'Overall Score: <b id="kpi-score">'+Math.round(k.score||0)+'%</b></div>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="kpiSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'kpi-modal\')">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'kpi_'+id+'\');closeModal(\'kpi-modal\');kpiRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('kpi-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function kpiCalc(){
+  var scores=KPI_ITEMS.map(function(item){
+    var v=parseFloat(document.getElementById('kv-'+item.key)?document.getElementById('kv-'+item.key).value:0)||0;
+    if(item.key==='lti')return v===0?100:0;
+    return Math.min(100,(v/item.target)*100);
+  });
+  var avg=scores.reduce(function(a,b){return a+b;},0)/scores.length;
+  var el=document.getElementById('kpi-score');if(el)el.textContent=Math.round(avg)+'%';
+  return avg;
+}
+function kpiSave(id){
+  var k=bizGet('kpi_'+id)||{};
+  var empId=val('ki-emp');var emps=bizList('emp');var emp=emps.find(function(e){return e.id===empId;})||{};
+  var vals={};KPI_ITEMS.forEach(function(item){vals[item.key]=parseFloat(document.getElementById('kv-'+item.key)?document.getElementById('kv-'+item.key).value:0)||0;});
+  var score=kpiCalc();
+  Object.assign(k,{empId:empId,empName:emp.name||'',period:val('ki-period'),vals:vals,score:score,ts:Date.now()});
+  bizSet('kpi_'+id,k);closeModal('kpi-modal');kpiRender();
+}
+function kpiPrint(id){
+  var k=bizGet('kpi_'+id);if(!k)return;
+  var co=getCompany();
+  var rows=KPI_ITEMS.map(function(item){
+    var v=(k.vals&&k.vals[item.key])||0;
+    var pct=item.key==='lti'?(v===0?100:0):Math.min(100,Math.round((v/item.target)*100));
+    var color=pct>=80?'green':pct>=50?'orange':'red';
+    return '<tr><td>'+esc(item.label)+'</td><td>'+item.target+' '+esc(item.unit)+'</td><td>'+v+'</td><td style="color:'+color+'">'+pct+'%</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=700,height=600');
+  w.document.write('<!DOCTYPE html><html><head><title>KPI '+k.kpiNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>KPI SCORECARD — '+k.kpiNo+'</h1>'
+    +'<table><tr><th>Employee</th><td>'+esc(k.empName||'—')+'</td><th>Period</th><td>'+esc(k.period||'—')+'</td></tr></table>'
+    +'<h3>Performance Results</h3>'
+    +'<table><thead><tr><th>Metric</th><th>Target</th><th>Actual</th><th>Score</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<h2 style="margin-top:16px">Overall Score: '+Math.round(k.score||0)+'%</h2>'
+    +'<br><table><tr><th>Employee Signature</th><th>Manager Signature</th></tr>'
+    +'<tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* — Memberships — */
+var MEMBERSHIP_DEFAULTS=[
+  {org:'SAIEE',name:'South African Institute of Electrical Engineers',cat:'Professional',annual:0,due:''},
+  {org:'ECA(SA)',name:'Electrical Contractors\' Association',cat:'Trade',annual:0,due:''},
+  {org:'AREP',name:'Approved Registration of Electrical Practitioners',cat:'Regulatory',annual:0,due:''},
+  {org:'SAEEC',name:'South African Association of Energy Efficiency',cat:'Professional',annual:0,due:''},
+  {org:'SAPVIA',name:'South African Photovoltaic Industry Association',cat:'Industry',annual:0,due:''},
+  {org:'CET',name:'Certificate of Electrical Training',cat:'Training',annual:0,due:''},
+  {org:'EWSETA Assessor',name:'EWSETA Registered Assessor',cat:'Training Authority',annual:0,due:''},
+  {org:'NAMB Assessor/Moderator',name:'NAMB Assessor / Moderator',cat:'Training Authority',annual:0,due:''},
+  {org:'PI Insurance',name:'Professional Indemnity Insurance',cat:'Insurance',annual:0,due:''}
+];
+function memRender(){
+  var list=bizList('mem');list.sort(function(a,b){return a.org>b.org?1:-1;});
+  var el=document.getElementById('mem-list');if(!el)return;
+  if(!list.length){
+    el.innerHTML='<p style="color:var(--muted)">No memberships yet. '
+      +'<button class="biz-btn" onclick="memLoadDefaults()">Load defaults</button></p>';
+    return;
+  }
+  var html='<table class="biz-table"><thead><tr><th>Organisation</th><th>Category</th><th>Annual (R)</th><th>Renewal Due</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(m){
+    var status=m.due?(isExpired(m.due)?'<span class="biz-badge biz-badge-red">Expired</span>':'<span class="biz-badge biz-badge-green">Active</span>'):'<span class="biz-badge">Unknown</span>';
+    html+='<tr><td><b>'+esc(m.org||'—')+'</b><br><small>'+esc(m.name||'')+'</small></td><td>'+esc(m.cat||'—')+'</td>'
+      +'<td>'+fmt(m.annual||0)+'</td><td>'+(m.due||'—')+'</td><td>'+status+'</td>'
+      +'<td><button class="biz-btn" onclick="memEdit(\''+m.id+'\')">Edit</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function memLoadDefaults(){
+  MEMBERSHIP_DEFAULTS.forEach(function(d){
+    var id='MEM-'+d.org.replace(/[^A-Z0-9]/gi,'-').toUpperCase();
+    if(!bizGet('mem_'+id)){bizSet('mem_'+id,Object.assign({id:id},d,{ts:Date.now()}));}
+  });
+  memRender();
+}
+function memNew(){memEdit(null);}
+function memEdit(id){
+  var m=id?bizGet('mem_'+id):{};
+  var html='<div class="biz-modal-backdrop" id="mem-modal">'
+    +'<div class="biz-modal">'
+    +'<h3>'+(id?'Edit':'New')+' Membership / Licence</h3>'
+    +'<label>Organisation Abbreviation<input id="mm-org" value="'+esc(m.org||'')+'"></label>'
+    +'<label>Full Name<input id="mm-name" value="'+esc(m.name||'')+'"></label>'
+    +'<label>Category<input id="mm-cat" value="'+esc(m.cat||'')+'"></label>'
+    +'<label>Annual Fee (R)<input type="number" id="mm-ann" value="'+(m.annual||0)+'" min="0"></label>'
+    +'<label>Renewal Due Date<input type="date" id="mm-due" value="'+(m.due||'')+'"></label>'
+    +'<label>Member # / Reg #<input id="mm-memno" value="'+esc(m.memNo||'')+'"></label>'
+    +'<label>Notes<input id="mm-notes" value="'+esc(m.notes||'')+'"></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="memSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'mem-modal\')">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'mem_'+id+'\');closeModal(\'mem-modal\');memRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function memSave(id){
+  var saved=id?bizGet('mem_'+id):{};
+  var newId=id||('MEM-'+Date.now());
+  Object.assign(saved,{org:val('mm-org'),name:val('mm-name'),cat:val('mm-cat'),
+    annual:parseFloat(val('mm-ann'))||0,due:val('mm-due'),memNo:val('mm-memno'),notes:val('mm-notes'),ts:Date.now()});
+  if(!id){saved.id=newId;}
+  bizSet('mem_'+(id||newId),saved);
+  closeModal('mem-modal');memRender();
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   SOPs
+   ═══════════════════════════════════════════════════════════ */
+var SOP_DEFAULTS=[
+  {id:'SOP-001',sopNo:'SOP-001',title:'CoC Issuance Procedure',version:'1.0',
+    desc:'Standard operating procedure for issuing a Certificate of Compliance (CoC) for electrical installations.',
+    steps:'1. Receive client request or job card for CoC inspection.\n2. Review installation drawings and previous CoC (if applicable).\n3. Conduct visual inspection: check DB labelling, wiring condition, earthing.\n4. Perform electrical tests: insulation resistance (≥1 MΩ), continuity, RCD trip time (≤300ms).\n5. Record all test results on Test Record form.\n6. Identify and document any defects or non-conformances.\n7. If installation passes, complete CoC form with client details, site address, and expiry date.\n8. If installation fails, issue a defect notice and schedule re-inspection.\n9. Obtain signatures from inspector and client.\n10. File original; provide copy to client.\n11. Update CoC Register in the admin system.',
+    ecsa:'10 - Professionalism'},
+  {id:'SOP-002',sopNo:'SOP-002',title:'PV System Commissioning',version:'1.0',
+    desc:'Procedure for commissioning a grid-tied or off-grid photovoltaic (PV) solar installation.',
+    steps:'1. Verify PV array installation: panel orientation, tilt angle, shading assessment.\n2. Inspect all wiring: MC4 connectors, DC cable sizing, fusing, surge protection.\n3. Verify AC inverter wiring, isolators, and anti-islanding settings.\n4. Test each string: Voc, Isc, insulation resistance per string.\n5. Measure and record string polarity before connecting to inverter.\n6. Commission inverter: set grid parameters (220V/50Hz), feed-in limits.\n7. Monitor inverter display for faults; test protection relay (anti-islanding).\n8. Complete PV Test Record with all measurements.\n9. Issue CoC for AC wiring portion (SANS 10142-1).\n10. Provide handover documentation: system manual, warranty cards, monitoring app setup.\n11. Train client on basic operation and fault identification.',
+    ecsa:'3 - Engineering Design'},
+  {id:'SOP-003',sopNo:'SOP-003',title:'DB (Distribution Board) Inspection',version:'1.0',
+    desc:'Procedure for inspecting and testing a main or sub-distribution board.',
+    steps:'1. Confirm isolation: switch off main breaker; apply LOTO (lock out / tag out).\n2. Remove DB cover safely; inspect for moisture, corrosion, pest ingress.\n3. Verify all breakers are correctly rated and labelled.\n4. Check earthing and neutral bar connections; torque check on all terminals.\n5. Inspect cable entry and gland sizes.\n6. Test RCDs: press test button; verify 30mA RCDs trip within 300ms using test instrument.\n7. Measure insulation resistance on each outgoing circuit (≥1 MΩ).\n8. Check earth leakage current on main (must be below RCD threshold).\n9. Document all readings on Test Record form.\n10. Reinstate supply; monitor for abnormal current draw.\n11. Issue defect notice if any non-conformance found; re-test after repair.',
+    ecsa:'4 - Investigations'}
+];
+
+function sopRender(){
+  var list=bizList('sop');list.sort(function(a,b){return a.sopNo>b.sopNo?1:-1;});
+  var el=document.getElementById('sop-list');if(!el)return;
+  if(!list.length){
+    el.innerHTML='<p style="color:var(--muted)">No SOPs yet. '
+      +'<button class="biz-btn" onclick="sopLoadDefaults()">Load default SOPs</button></p>';
+    return;
+  }
+  var html='<table class="biz-table"><thead><tr><th>SOP #</th><th>Title</th><th>Version</th><th>ECSA Outcome</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(s){
+    html+='<tr><td><b>'+s.sopNo+'</b></td><td>'+esc(s.title||'—')+'</td><td>'+esc(s.version||'1.0')+'</td>'
+      +'<td>'+esc(s.ecsa||'—')+'</td>'
+      +'<td><button class="biz-btn" onclick="sopEdit(\''+s.id+'\')">Edit</button> '
+      +'<button class="biz-btn" onclick="sopPrint(\''+s.id+'\')">Print</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function sopLoadDefaults(){
+  SOP_DEFAULTS.forEach(function(s){if(!bizGet('sop_'+s.id)){bizSet('sop_'+s.id,Object.assign({ts:Date.now()},s));}});
+  sopRender();
+}
+function sopNew(){
+  var seq=bizSeq('sop');var sopNo='SOP-'+String(seq+3).padStart(3,'0');
+  var obj={id:sopNo,sopNo:sopNo,title:'',version:'1.0',desc:'',steps:'',ecsa:'',ts:Date.now()};
+  bizSet('sop_'+sopNo,obj);sopEdit(sopNo);
+}
+function sopEdit(id){
+  var s=bizGet('sop_'+id)||{};
+  var html='<div class="biz-modal-backdrop" id="sop-modal">'
+    +'<div class="biz-modal" style="max-width:640px">'
+    +'<h3>SOP — '+s.sopNo+'</h3>'
+    +'<label>Title *<input id="sm-title" value="'+esc(s.title||'')+'"></label>'
+    +'<label>Version<input id="sm-ver" value="'+esc(s.version||'1.0')+'" style="width:80px"></label>'
+    +'<label>Description<textarea id="sm-desc" rows="2">'+esc(s.desc||'')+'</textarea></label>'
+    +'<label>Procedure Steps<textarea id="sm-steps" rows="10" style="font-family:monospace">'+esc(s.steps||'')+'</textarea></label>'
+    +'<label>ECSA Outcome Supported<select id="sm-ecsa">'
+      +['None','1 - Problem Solving','2 - Scientific Knowledge','3 - Engineering Design','4 - Investigations','5 - Methods/Tools/IT','6 - Communication','7 - Sustainability','8 - Team Working','9 - Independent Learning','10 - Professionalism','11 - Management'].map(function(o){return '<option'+(s.ecsa===o?' selected':'')+'>'+o+'</option>';}).join('')
+    +'</select></label>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="sopSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'sop-modal\')">Cancel</button>'
+    +'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'sop_'+id+'\');closeModal(\'sop-modal\');sopRender()">Delete</button>'
+    +'</div></div></div>';
+  var old=document.getElementById('sop-modal');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function sopSave(id){
+  var s=bizGet('sop_'+id)||{};
+  s.title=val('sm-title');s.version=val('sm-ver');s.desc=val('sm-desc');s.steps=val('sm-steps');s.ecsa=val('sm-ecsa');s.ts=Date.now();
+  bizSet('sop_'+id,s);closeModal('sop-modal');sopRender();
+}
+function sopPrint(id){
+  var s=bizGet('sop_'+id);if(!s)return;
+  var co=getCompany();
+  var stepsHtml=esc(s.steps||'—').replace(/\n/g,'<br>');
+  var w=window.open('','_blank','width=800,height=800');
+  w.document.write('<!DOCTYPE html><html><head><title>'+s.sopNo+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}h1{color:#1a237e}'
+    +'.hdr{display:flex;justify-content:space-between}.meta{background:#eee;padding:10px;border-radius:4px;margin:12px 0}'
+    +'</style></head><body>'
+    +'<div class="hdr"><div><h2>'+esc(co.name||'Ribatt Electrical')+'</h2></div>'
+    +'<div style="text-align:right"><h1>STANDARD OPERATING PROCEDURE</h1><b>'+s.sopNo+' | v'+s.version+'</b></div></div><hr>'
+    +'<h2>'+esc(s.title||'Untitled SOP')+'</h2>'
+    +'<div class="meta"><b>ECSA Outcome:</b> '+esc(s.ecsa||'—')+'<br><b>Description:</b> '+esc(s.desc||'—')+'</div>'
+    +'<h3>Procedure</h3><p>'+stepsHtml+'</p>'
+    +'<br><table style="width:100%;border-collapse:collapse"><tr>'
+    +'<th style="border:1px solid #ccc;padding:8px;width:50%">Prepared By / Reviewed By</th>'
+    +'<th style="border:1px solid #ccc;padding:8px">Approved By</th></tr>'
+    +'<tr><td style="border:1px solid #ccc;padding:8px;height:60px">___________________<br>Date: __________</td>'
+    +'<td style="border:1px solid #ccc;padding:8px">___________________<br>Date: __________</td></tr></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ECSA CPD TRACKER
+   ═══════════════════════════════════════════════════════════ */
+var ECSA_OUTCOMES=[
+  {no:1,label:'Problem Solving',desc:'Apply scientific and engineering knowledge to solve complex problems.'},
+  {no:2,label:'Scientific Knowledge',desc:'Apply relevant fundamental knowledge of natural sciences and mathematics.'},
+  {no:3,label:'Engineering Design',desc:'Perform creative, procedural and non-procedural engineering design.'},
+  {no:4,label:'Investigations',desc:'Conduct investigations of complex engineering problems.'},
+  {no:5,label:'Methods, Tools & IT',desc:'Use appropriate engineering methods, tools and information technology.'},
+  {no:6,label:'Communication',desc:'Communicate effectively with engineering and broader communities.'},
+  {no:7,label:'Sustainability',desc:'Demonstrate knowledge of the impact of engineering on society and the environment.'},
+  {no:8,label:'Team Working',desc:'Work effectively as an individual, in teams and in multidisciplinary settings.'},
+  {no:9,label:'Independent Learning',desc:'Engage in independent learning, recognise the need for continued practice.'},
+  {no:10,label:'Professionalism',desc:'Act with professionalism and take responsibility for decisions.'},
+  {no:11,label:'Management',desc:'Manage projects and processes in a disciplined manner.'}
+];
+function ecsaRender(){
+  ecsaSummary();
+  var list=bizList('ecsa');list.sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('ecsa-log');if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted)">No CPD activities yet. Click <b>+ Log CPD Activity</b>.</p>';return;}
+  var html='<table class="biz-table"><thead><tr><th>Date</th><th>Activity</th><th>Type</th><th>Hours</th><th>Outcomes</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(e){
+    html+='<tr><td>'+(e.date||'—')+'</td><td>'+esc(e.activity||'—')+'</td><td>'+esc(e.type||'—')+'</td>'
+      +'<td>'+esc(e.hours||0)+'</td><td>'+esc(e.outcomes||'—')+'</td>'
+      +'<td><button class="biz-btn" onclick="ecsaEdit(\''+e.id+'\')">Edit</button>'
+      +'<button class="biz-btn biz-btn-danger" style="margin-left:4px" onclick="bizDel(\'ecsa_'+e.id+'\');ecsaRender()">✕</button></td></tr>';
+  });
+  el.innerHTML=html+'</tbody></table>';
+}
+function ecsaSummary(){
+  var list=bizList('ecsa');
+  var totalHours=list.reduce(function(a,e){return a+(parseFloat(e.hours)||0);},0);
+  var byOutcome={};
+  ECSA_OUTCOMES.forEach(function(o){byOutcome[o.no]=0;});
+  list.forEach(function(e){
+    (e.outcomes||'').split(',').forEach(function(o){
+      var n=parseInt(o.trim());if(n>=1&&n<=11)byOutcome[n]=(byOutcome[n]||0)+(parseFloat(e.hours)||0);
+    });
+  });
+  var el=document.getElementById('ecsa-summary');
+  if(!el)return;
+  var cards=ECSA_OUTCOMES.map(function(o){
+    var h=byOutcome[o.no]||0;
+    var pct=Math.min(100,Math.round((h/40)*100));
+    return '<div class="ecsa-outcome-card">'
+      +'<div style="font-weight:bold;font-size:13px">'+o.no+'. '+esc(o.label)+'</div>'
+      +'<div style="font-size:11px;color:var(--muted)">'+esc(o.desc)+'</div>'
+      +'<div style="margin-top:6px"><div style="height:6px;background:var(--border,#ddd);border-radius:3px"><div style="height:6px;background:#1a237e;border-radius:3px;width:'+pct+'%"></div></div>'
+      +'<small>'+h+' hrs (target: 40)</small></div>'
+      +'</div>';
+  }).join('');
+  el.innerHTML='<div style="margin-bottom:12px"><b>Total CPD Hours: '+totalHours+'</b></div>'
+    +'<div class="ecsa-outcome-grid">'+cards+'</div>';
+}
+function ecsaNew(){ecsaEdit(null);}
+function ecsaEdit(id){
+  var e=id?bizGet('ecsa_'+id):{};
+  var outChecks=ECSA_OUTCOMES.map(function(o){
+    var checked=(e.outcomes||'').split(',').map(function(x){return x.trim();}).indexOf(String(o.no))>=0;
+    return '<label style="display:flex;gap:6px;align-items:center;white-space:nowrap"><input type="checkbox" class="ecsa-chk" value="'+o.no+'" '+(checked?'checked':'')+'>'+o.no+'. '+esc(o.label)+'</label>';
+  }).join('');
+  var html='<div class="biz-modal-backdrop" id="ecsa-modal">'
+    +'<div class="biz-modal" style="max-width:580px">'
+    +'<h3>'+(id?'Edit':'Log')+' CPD Activity</h3>'
+    +'<label>Activity Description *<input id="ea-act" value="'+esc(e.activity||'')+'"></label>'
+    +'<label>Type<select id="ea-type">'
+      +['Short Course','Seminar / Webinar','Conference','Workshop','In-house Training','Mentoring','Technical Reading','Project Work','Other'].map(function(t){return '<option'+(e.type===t?' selected':'')+'>'+t+'</option>';}).join('')
+    +'</select></label>'
+    +'<label>Date<input type="date" id="ea-date" value="'+(e.date||today())+'"></label>'
+    +'<label>CPD Hours<input type="number" id="ea-hours" value="'+(e.hours||1)+'" min="0.5" step="0.5"></label>'
+    +'<label>Provider / Organiser<input id="ea-prov" value="'+esc(e.provider||'')+'"></label>'
+    +'<label>Certificate / Ref #<input id="ea-cert" value="'+esc(e.cert||'')+'"></label>'
+    +'<fieldset style="margin:12px 0;padding:12px"><legend><b>ECSA Outcomes Covered</b></legend>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">'+outChecks+'</div>'
+    +'</fieldset>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="ecsaSave(\''+id+'\')">Save</button> '
+    +'<button class="biz-btn" onclick="closeModal(\'ecsa-modal\')">Cancel</button>'
+    +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'ecsa_'+id+'\');closeModal(\'ecsa-modal\');ecsaRender()">Delete</button>':'')
+    +'</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function ecsaSave(id){
+  var act=val('ea-act').trim();if(!act){alert('Activity description required.');return;}
+  var chks=document.querySelectorAll('.ecsa-chk:checked');
+  var outcomes=Array.from(chks).map(function(c){return c.value;}).join(', ');
+  var saved=id?bizGet('ecsa_'+id):{};
+  var newId=id||('CPD-'+Date.now());
+  Object.assign(saved,{activity:act,type:val('ea-type'),date:val('ea-date'),hours:parseFloat(val('ea-hours'))||1,
+    provider:val('ea-prov'),cert:val('ea-cert'),outcomes:outcomes,id:saved.id||newId,ts:Date.now()});
+  bizSet('ecsa_'+(id||newId),saved);
+  closeModal('ecsa-modal');ecsaRender();
+}
+function ecsaPrint(){
+  var list=bizList('ecsa');list.sort(function(a,b){return a.date>b.date?1:-1;});
+  var co=getCompany();
+  var totalHours=list.reduce(function(a,e){return a+(parseFloat(e.hours)||0);},0);
+  var rows=list.map(function(e){
+    return '<tr><td>'+e.date+'</td><td>'+esc(e.activity||'—')+'</td><td>'+esc(e.type||'—')+'</td>'
+      +'<td>'+esc(e.hours||0)+'</td><td>'+esc(e.outcomes||'—')+'</td><td>'+esc(e.cert||'—')+'</td></tr>';
+  }).join('');
+  var w=window.open('','_blank','width=1000,height=800');
+  w.document.write('<!DOCTYPE html><html><head><title>CPD Summary</title>'
+    +'<style>body{font-family:Arial,sans-serif;margin:40px;color:#222}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:7px}th{background:#eee}</style></head><body>'
+    +'<h2>'+esc(co.name||'Ribatt Electrical')+'</h2><h1>ECSA CPD ACTIVITY LOG</h1>'
+    +'<p>Engineer: '+esc(bizGet('emp_EMP0001')?bizGet('emp_EMP0001').name:'Tseke Riba')+'</p>'
+    +'<p>Total CPD Hours Logged: <b>'+totalHours+'</b></p>'
+    +'<table><thead><tr><th>Date</th><th>Activity</th><th>Type</th><th>Hours</th><th>ECSA Outcomes</th><th>Cert/Ref</th></tr></thead><tbody>'
+    +(rows||'<tr><td colspan="6">No activities logged</td></tr>')+'</tbody></table>'
+    +'<h3>CPD Hours by Outcome</h3>'
+    +'<table><thead><tr><th>#</th><th>Outcome</th><th>Hours</th></tr></thead><tbody>'
+    +ECSA_OUTCOMES.map(function(o){
+      var h=0;list.forEach(function(e){(e.outcomes||'').split(',').forEach(function(oc){if(parseInt(oc.trim())===o.no)h+=(parseFloat(e.hours)||0);});});
+      return '<tr><td>'+o.no+'</td><td>'+esc(o.label)+'</td><td>'+h+'</td></tr>';
+    }).join('')
+    +'</tbody></table>'
+    +'</body></html>');
+  w.document.close();w.print();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CLIENT LINKING & DEDUPLICATION
+   New clients: website requests → auto onboarding
+   Existing: search/manual add; always match by name/email/phone
+   ═══════════════════════════════════════════════════════════ */
+function cliFind(query){
+  if(!query||query.length<2)return[];
+  var q=query.toLowerCase();
+  return bizList('cli').filter(function(c){
+    return (c.name||'').toLowerCase().indexOf(q)>=0
+      ||(c.email||'').toLowerCase().indexOf(q)>=0
+      ||(c.phone||'').replace(/\s/g,'').indexOf(q.replace(/\s/g,''))>=0;
+  });
+}
+function cliFindDuplicate(name,email,phone){
+  var all=bizList('cli');
+  var n=(name||'').toLowerCase().trim();
+  var e=(email||'').toLowerCase().trim();
+  var p=(phone||'').replace(/\D/g,'');
+  return all.find(function(c){
+    if(n&&(c.name||'').toLowerCase().trim()===n)return true;
+    if(e&&e.length>3&&(c.email||'').toLowerCase().trim()===e)return true;
+    if(p&&p.length>=9&&(c.phone||'').replace(/\D/g,'')===p)return true;
+    return false;
+  });
+}
+function cliOnboardFromWebsite(reqData){
+  var dup=cliFindDuplicate(reqData.name,reqData.email,reqData.phone);
+  if(dup){
+    console.log('[ClientLink] Matched existing client:',dup.id,dup.name);
+    return dup;
+  }
+  var seq=bizSeq('cli');
+  var id='CLI-'+String(seq).padStart(4,'0');
+  var obj={id:id,cliNo:id,name:reqData.name||'',email:reqData.email||'',phone:reqData.phone||'',
+    address:reqData.address||'',source:'website',status:'Active',onboardedAt:new Date().toISOString(),ts:Date.now()};
+  bizSet('cli_'+id,obj);
+  console.log('[ClientLink] New client onboarded from website:',id,obj.name);
+  return obj;
+}
+
+/* Client search widget used in modals — renders dropdown list */
+function cliSearchWidget(inputId,resultId,onSelectFn){
+  var inp=document.getElementById(inputId);
+  var res=document.getElementById(resultId);
+  if(!inp||!res)return;
+  inp.addEventListener('input',function(){
+    var q=inp.value;
+    var found=cliFind(q);
+    if(!found.length){res.innerHTML='';return;}
+    res.innerHTML=found.slice(0,8).map(function(c){
+      return '<div class="cli-search-item" onclick="('+onSelectFn+')(\''+c.id+'\',\''+esc(c.name)+'\');document.getElementById(\''+resultId+'\').innerHTML=\'\'">'
+        +esc(c.name)+(c.email?' · '+esc(c.email):'')+' <small>'+(c.source||'manual')+'</small></div>';
+    }).join('');
+  });
+}
+
+/* Hub rendering triggers */
+function hubRenderers(){
+  var hub=localStorage.getItem('biz_hub_active');
+  if(hub==='hub-jobs')jobRender();
+  else if(hub==='hub-coc')cocRender();
+  else if(hub==='hub-poe')poeRender();
+  else if(hub==='hub-projects')projRender();
+  else if(hub==='hub-hs'){hsShow('hs-risk');}
+  else if(hub==='hub-tests'){tstShow('tst-elec');}
+  else if(hub==='hub-hr'){hrShow('hr-emp');}
+  else if(hub==='hub-sops')sopRender();
+  else if(hub==='hub-ecsa')ecsaRender();
+}
+
+/* Hook into existing hubShow to trigger renders */
+(function(){
+  var orig=window.hubShow;
+  window.hubShow=function(id){
+    if(typeof orig==='function')orig(id);
+    localStorage.setItem('biz_hub_active',id);
+    setTimeout(function(){
+      if(id==='hub-jobs')jobRender();
+      else if(id==='hub-coc')cocRender();
+      else if(id==='hub-poe')poeRender();
+      else if(id==='hub-projects')projRender();
+      else if(id==='hub-hs'){hsShow('hs-risk');}
+      else if(id==='hub-tests'){tstShow('tst-elec');}
+      else if(id==='hub-hr'){hrShow('hr-emp');}
+      else if(id==='hub-sops')sopRender();
+      else if(id==='hub-ecsa')ecsaRender();
+    },50);
+  };
+})();
 
 </script>
 
