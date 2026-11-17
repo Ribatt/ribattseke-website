@@ -5374,8 +5374,7 @@ function jobPrint(id){
     +'<br><table><tr><th style="width:50%">Technician Signature</th><th>Client Signature</th></tr>'
     +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr>'
     +'<tr><td>Date: __________</td><td>Date: __________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 function cocFromJob(jobId){
@@ -5477,8 +5476,7 @@ function cocPrint(id){
     +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr>'
     +'<tr><td>Date: __________</td><td>Date: __________</td></tr></table>'
     +'<p style="font-size:11px;color:#666">Valid for 3 years from date of issue. Issued under SANS 10142-1.</p>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 function poeFromCoc(cocId){
@@ -5598,8 +5596,7 @@ function poePrint(id){
     +'<h3>Additional Notes</h3><p style="white-space:pre-wrap">'+esc(p.notes||'—')+'</p>'
     +'<br><table><tr><th>Inspector Signature</th><th>Client Signature</th></tr>'
     +'<tr><td style="height:60px">___________________</td><td>___________________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -5687,8 +5684,7 @@ function projPrint(id){
     +'<tr><th>Status</th><td>'+esc(p.status||'—')+'</td><th>ECSA Outcomes</th><td>'+esc(p.ecsaOutcomes||'—')+'</td></tr>'
     +'<tr><th>Description</th><td colspan="3" style="white-space:pre-wrap">'+esc(p.desc||'—')+'</td></tr></table>'
     +(miles.length?'<h3>Milestones</h3><table><thead><tr><th>Milestone</th><th>Due Date</th><th>Status</th></tr></thead><tbody>'+mileRows+'</tbody></table>':'')
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 function mileModal(projId){
@@ -5839,8 +5835,7 @@ function riskPrint(id){
     +'<p style="margin-top:16px"><b>Overall Risk Rating: '+r.rating+'</b> '+(r.rating>=15?'<span style="color:red">HIGH RISK</span>':r.rating>=9?'<span style="color:orange">MEDIUM RISK</span>':'<span style="color:green">LOW RISK</span>')+'</p>'
     +'<p style="font-size:11px">L=Likelihood(1-5), S=Severity(1-5), RPN=L×S. High≥15, Medium≥9, Low&lt;9</p>'
     +'<br><table><tr><th style="width:50%">Assessor Signature</th><th>Reviewer Signature</th></tr><tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -5902,8 +5897,7 @@ function msPrint(id){
     +'<h3>Emergency Procedure</h3><pre>'+esc(m.emerg||'Call emergency services: 10111 / 10177')+'</pre>'
     +'<br><table><tr><th style="width:50%">Responsible Person</th><th>Reviewed By</th></tr>'
     +'<tr><td style="height:50px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -5976,8 +5970,7 @@ function ptwPrint(id){
     +'<tr><td style="height:60px">___________________<br>Date/Time: __________</td>'
     +'<td>___________________<br>Date/Time: __________</td>'
     +'<td>___________________<br>Date/Time: __________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6047,8 +6040,7 @@ function incPrint(id){
     +'<tr><th>Reported To</th><td colspan="3">'+esc(i.reported||'—')+'</td></tr></table>'
     +'<br><table><tr><th style="width:50%">Reporter Signature</th><th>Supervisor Signature</th></tr>'
     +'<tr><td style="height:60px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6169,8 +6161,7 @@ function tstPrint(id){
     +'<br><table><tr><th>Inspector Signature</th><th>Client Acceptance</th></tr>'
     +'<tr><td style="height:50px">___________________<br>Date: __________</td><td>___________________<br>Date: __________</td></tr></table>'
     +'<p style="font-size:11px">Tested per SANS 10142-1. IR≥1MΩ, RCD trip ≤300ms.</p>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6276,8 +6267,7 @@ function pvtPrint(id){
     +'<br><table><tr><th>Inspector Signature</th><th>Client Acceptance</th></tr>'
     +'<tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
     +'<p style="font-size:11px">PV testing per SANS 61215 / IEC 62446. SANS 10142-1 applies to AC wiring.</p>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6487,8 +6477,7 @@ function payPrint(id){
     +'</div>'
     +(p.notes?'<p><i>'+esc(p.notes)+'</i></p>':'')
     +'<p style="font-size:11px;color:#666">UIF: Employer also contributes 1% (R '+fmt((p.basic||0)*0.01)+'). Total UIF = R '+fmt((p.basic||0)*0.02)+'.<br>PAYE: Not applicable (earnings below threshold or Director loan arrangement).</p>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6593,8 +6582,7 @@ function kpiPrint(id){
     +'<h2 style="margin-top:16px">Overall Score: '+Math.round(k.score||0)+'%</h2>'
     +'<br><table><tr><th>Employee Signature</th><th>Manager Signature</th></tr>'
     +'<tr><td style="height:50px">___________________</td><td>___________________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6753,8 +6741,7 @@ function sopPrint(id){
     +'<th style="border:1px solid #ccc;padding:8px">Approved By</th></tr>'
     +'<tr><td style="border:1px solid #ccc;padding:8px;height:60px">___________________<br>Date: __________</td>'
     +'<td style="border:1px solid #ccc;padding:8px">___________________<br>Date: __________</td></tr></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
@@ -6875,8 +6862,7 @@ function ecsaPrint(){
       return '<tr><td>'+o.no+'</td><td>'+esc(o.label)+'</td><td>'+h+'</td></tr>';
     }).join('')
     +'</tbody></table>'
-    +'
-</body></html>');
+    +'</body></html>');
   w.document.close();w.print();
 }
 
