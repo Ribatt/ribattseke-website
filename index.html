@@ -131,7 +131,18 @@
 .admin-stat{background:var(--bg-alt);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--fg2);}
 .admin-stat strong{display:block;font-size:18px;color:var(--fg);font-weight:700;}
 .admin-pin-setup{font-size:12px;color:var(--fg3);margin-top:8px;text-align:center;}
-</style></head><body>
+</style>
+<!-- Google Analytics 4 — replace GA_MEASUREMENT_ID with your real ID from analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','GA_MEASUREMENT_ID',{page_title:document.title,send_page_view:true});
+  // Track tab switches
+  window._gtagTab=function(name){gtag('event','tab_view',{tab_name:name});}
+</script>
+</head><body>
 <title>Tseke Riba</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231E8540'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3ETR%3C/text%3E%3C/svg%3E">
@@ -2398,6 +2409,7 @@ function showTab(name, skipPush){
     if(location.hash!==newHash) history.pushState({tab:name},'',newHash);
   }
   window._currentTab=name;
+  if(window._gtagTab) window._gtagTab(name);
 }
 window.addEventListener('popstate',function(e){
   var hash=(location.hash||'').replace('#','');
@@ -3820,11 +3832,16 @@ function lmsOpenAdmin(){
       snap.forEach(function(doc){
         var d=doc.data();
         var joinedStr=d.joinedAt&&d.joinedAt.toDate?d.joinedAt.toDate().toLocaleDateString('en-ZA'):'';
-        rows.push('<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;">'
-          +'<strong>'+d.username+'</strong>'
-          +(joinedStr?' <span style="color:var(--fg3);font-size:11px;">'+joinedStr+'</span>':'')
-          +'<br><span style="color:var(--fg2);">'+d.phone+'</span>'
-          +(d.email?' &middot; <span style="color:var(--fg2);">'+d.email+'</span>':'')
+        var safeName=d.username.replace(/[^a-z0-9_-]/gi,'');
+        rows.push('<div id="pend-row-'+safeName+'" style="padding:10px 0;border-bottom:1px solid var(--border);">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;">'
+          +'<div><strong style="font-size:13px;">'+d.username+'</strong>'
+          +(joinedStr?' <span style="color:var(--fg3);font-size:11px;">'+joinedStr+'</span>':'')+'</div>'
+          +'<button onclick="admShowSendKey(''+safeName+'',''+d.phone+'',''+(d.email||'')+'',''+d.username+'')" '
+          +'style="background:var(--amb);color:#fff;border:none;border-radius:6px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">Send Key</button>'
+          +'</div>'
+          +'<div style="font-size:12px;color:var(--fg2);">'+d.phone+(d.email?' &middot; '+d.email:'')+'</div>'
+          +'<div id="pend-send-'+safeName+'" style="display:none;margin-top:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:10px;"></div>'
           +'</div>');
       });
       pendList.innerHTML=rows.join('');
@@ -3836,6 +3853,123 @@ function lmsOpenAdmin(){
   }
 
   lmsShowView('lms-admin');
+}
+
+function admShowSendKey(safeId, phone, email, username){
+  var box=document.getElementById('pend-send-'+safeId);
+  if(!box) return;
+  if(box.style.display==='block'){box.style.display='none';return;}
+
+  // Build list of available keys across all tiers
+  var availableKeys=[];
+  var allTiers=[
+    {label:'R50 Trial',keys:TRIAL_KEYS},
+    {label:'Videos + Quizzes',keys:VQ_KEYS},
+    {label:'Africa TVET',keys:COHORT_KEYS},
+    {label:'Study Guide Pack',keys:PAID_KEYS}
+  ];
+  allTiers.forEach(function(t){
+    t.keys.forEach(function(k){
+      if(!lmsIssuedKey(k)) availableKeys.push({k:k,label:t.label});
+    });
+  });
+
+  if(!availableKeys.length){
+    box.innerHTML='<p style="font-size:12px;color:#c00;">No available keys. All keys have been issued.</p>';
+    box.style.display='block';
+    return;
+  }
+
+  var opts=availableKeys.map(function(o,i){
+    return '<option value="'+i+'">'+o.k+' ('+o.label+')</option>';
+  }).join('');
+
+  box.innerHTML=
+    '<div style="font-size:11.5px;font-weight:700;margin-bottom:6px;">Select key to send to '+username+'</div>'
+    +'<select id="adm-key-sel-'+safeId+'" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);font-size:12px;margin-bottom:8px;">'
+    +opts+'</select>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    +'<button onclick="admDoSendKey(''+safeId+'',''+phone+'',''+email+'',''+username+'')" '
+    +'style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
+    +(email?'<button onclick="admDoSendEmail(''+safeId+'',''+email+'',''+username+'')" '
+    +'style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
+    +'</div>';
+  box.style.display='block';
+}
+
+function admGetSelectedKey(safeId){
+  var sel=document.getElementById('adm-key-sel-'+safeId);
+  if(!sel) return null;
+  var allTiers=[
+    {label:'R50 Trial',keys:TRIAL_KEYS},
+    {label:'Videos + Quizzes',keys:VQ_KEYS},
+    {label:'Africa TVET',keys:COHORT_KEYS},
+    {label:'Study Guide Pack',keys:PAID_KEYS}
+  ];
+  var availableKeys=[];
+  allTiers.forEach(function(t){
+    t.keys.forEach(function(k){if(!lmsIssuedKey(k)) availableKeys.push(k);});
+  });
+  return availableKeys[parseInt(sel.value,10)]||null;
+}
+
+function admDoSendKey(safeId, phone, email, username){
+  var key=admGetSelectedKey(safeId);
+  if(!key){alert('No key selected.');return;}
+  // Mark as issued
+  try{localStorage.setItem(ADM_NS+'k_'+key, username+' ('+phone+')');}catch(e){}
+  // Build WhatsApp message
+  var msg='Hi '+username+',
+
+Your Installation Rules LMS access key is:
+
+*'+key+'*
+
+'
+    +'Steps to activate:
+1. Go to ribattseke.co.za
+2. Click Study tab
+3. Sign in with your username and PIN
+4. Enter the key above when prompted
+
+'
+    +'For support WhatsApp Tseke: 072 474 8888';
+  var num=phone.replace(/\s/g,'').replace(/^0/,'27').replace(/^\+/,'');
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+  // Update Firebase
+  if(_lmsFbDb){
+    try{
+      _lmsFbDb.collection('keys').doc(key).set({claimed:true,claimedBy:username,claimedPhone:phone,claimedEmail:email,claimedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      _lmsFbDb.collection('users').doc(username).update({keyReserved:key,keyReservedAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(function(){});
+    }catch(e){}
+  }
+  // Refresh admin
+  setTimeout(lmsOpenAdmin, 500);
+}
+
+function admDoSendEmail(safeId, email, username){
+  var key=admGetSelectedKey(safeId);
+  if(!key){alert('No key selected.');return;}
+  var subj='Your Installation Rules LMS Access Key';
+  var body='Hi '+username+',
+
+Your Installation Rules LMS access key is:
+
+'+key+'
+
+'
+    +'Steps to activate:
+1. Go to ribattseke.co.za
+2. Click Study tab
+3. Sign in with your username and PIN
+4. Enter the key above when prompted
+
+'
+    +'For support contact Tseke: 072 474 8888 or ribatt3@gmail.com
+
+Regards,
+Tseke Riba';
+  window.location.href='mailto:'+email+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
 }
 
 /* ===== FIREBASE INTEGRATION ===== */
