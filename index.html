@@ -2090,7 +2090,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <div id="lms-admin" class="lms-view">
         <div class="lms-admin-hdr">
           <h3>Key Admin</h3>
-          <button class="lms-logout" onclick="lmsShowView('lms-login')">Exit</button>
+          <button class="lms-logout" onclick="typeof lmsShowDash==='function'?lmsShowDash():lmsShowView('lms-login')">Exit</button>
         </div>
         <div class="admin-stats">
           <div class="admin-stat" id="adm-pend-stat" style="color:#c05000;"><strong id="adm-pend-ct">0</strong>Pending</div>
@@ -2411,6 +2411,14 @@ function showTab(name, skipPush){
   if(window._gtagTab) window._gtagTab(name);
 }
 window.addEventListener('popstate',function(e){
+  /* If LMS is open in a non-login view, back = go to login rather than leaving Study tab */
+  var activeView=document.querySelector('.lms-view.active');
+  if(activeView && activeView.id && activeView.id!=='lms-login'){
+    if(typeof lmsShowView==='function') lmsShowView('lms-login');
+    /* restore hash to #study so the URL stays consistent */
+    if(history.replaceState) history.replaceState({tab:'study'},'','#study');
+    return;
+  }
   var hash=(location.hash||'').replace('#','');
   if(!hash && e.state && e.state.tab) hash=e.state.tab;
   if(hash) showTab(hash,true);
