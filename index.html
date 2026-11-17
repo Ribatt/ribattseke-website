@@ -4319,9 +4319,8 @@ function admShowSendKey(safeId, phone, email, username){
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
     +'<button data-sid="'+safeId+'" data-phone="'+phone+'" data-email="'+email+'" data-uname="'+username+'" onclick="admDoSendKey(this.dataset.sid,this.dataset.phone,this.dataset.email,this.dataset.uname)" style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
     +(email?'<button data-sid2="'+safeId+'" data-email2="'+email+'" data-uname2="'+username+'" onclick="admDoSendEmail(this.dataset.sid2,this.dataset.email2,this.dataset.uname2)" style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
-
-
-
+    +'</div></div>';
+  box.style.display='block';
 }
 
 function admGetSelectedKey(safeId){
