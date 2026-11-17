@@ -3159,12 +3159,10 @@ function lmsCheckKey(key){
   return null;
 }
 // Returns true if the trial key has been active for more than 4 months
+var TRIAL_EXPIRY_DATE = new Date('2026-11-30T23:59:59+02:00').getTime();
 function lmsTrialExpired(progress){
   if(!progress || progress.tier !== 'trial') return false;
-  var activatedAt = progress.activatedAt;
-  if(!activatedAt) return false;
-  var FOUR_MONTHS = 4 * 30 * 24 * 60 * 60 * 1000;
-  return (Date.now() - activatedAt) > FOUR_MONTHS;
+  return Date.now() > TRIAL_EXPIRY_DATE;
 }
 
 
@@ -3217,7 +3215,7 @@ function lmsSignin(){
   var existing=_lmsLoad(u,p);
   if(existing){
     if(lmsTrialExpired(existing)){
-      err.textContent='Your 4-month R50 trial has expired. Contact Tseke on 072 474 8888 to upgrade your access.';
+      err.textContent='Your trial access expired on 30 November 2026. Contact Tseke on 072 474 8888 to upgrade.';
       return;
     }
     _lmsUser=u; _lmsKey=p; _lmsProgress=existing;
@@ -3414,10 +3412,10 @@ function lmsShowDash(){
   // Trial expiry warning
   var expWarn=document.getElementById('lms-trial-warn');
   if(expWarn){
-    if(tier==='trial'&&_lmsProgress.activatedAt){
-      var daysLeft=Math.max(0,Math.round(((4*30*24*60*60*1000)-(Date.now()-_lmsProgress.activatedAt))/(24*60*60*1000)));
-      expWarn.style.display=daysLeft<=30?'block':'none';
-      expWarn.textContent='Trial access expires in '+daysLeft+' day'+(daysLeft===1?'':''+'s')+'. WhatsApp Tseke on 072 474 8888 to upgrade.';
+    if(tier==='trial'){
+      var daysLeft=Math.max(0,Math.round((TRIAL_EXPIRY_DATE-Date.now())/(24*60*60*1000)));
+      expWarn.style.display=daysLeft<=14?'block':'none';
+      expWarn.textContent='Trial access expires 30 November 2026 ('+daysLeft+' day'+(daysLeft===1?'':'s')+' left). WhatsApp Tseke on 072 474 8888 to upgrade.';
     } else {
       expWarn.style.display='none';
     }
