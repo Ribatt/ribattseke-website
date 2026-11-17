@@ -1799,6 +1799,73 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         </div>
       </div>
     </div>
+
+    <!-- BOOKING FORM -->
+    <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+      <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin:0 0 6px;">Book a Service</h3>
+      <p style="font-size:13.5px;color:var(--fg2);margin:0 0 18px;line-height:1.6;">Fill in the form below and your request goes straight to Tseke via WhatsApp. No account needed.</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:14px;">
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">YOUR NAME <span style="color:#e55;">*</span></label>
+          <input id="bk-name" type="text" placeholder="Full name" autocomplete="name"
+            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">PHONE / WHATSAPP <span style="color:#e55;">*</span></label>
+          <input id="bk-phone" type="tel" placeholder="e.g. 072 474 8888" autocomplete="tel"
+            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">SERVICE NEEDED <span style="color:#e55;">*</span></label>
+          <select id="bk-service"
+            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;">
+            <option value="">-- Select a service --</option>
+            <option value="Certificate of Compliance (CoC) issuance">CoC Issuance</option>
+            <option value="Electrical Compliance Inspection">Electrical Compliance Inspection</option>
+            <option value="Solar PV installation or consultation">Solar PV Installation / Consultation</option>
+            <option value="Distribution board upgrade or new installation">Distribution Board Upgrade / New Installation</option>
+            <option value="General electrical installation or repair">General Electrical Installation / Repair</option>
+            <option value="Electrical contracting (project or sub-contract)">Electrical Contracting</option>
+            <option value="Electrician trade test preparation">Trade Test Preparation</option>
+            <option value="Installation Rules tutoring or mentorship">Installation Rules Tutoring / Mentorship</option>
+            <option value="Technical consultation">Technical Consultation</option>
+            <option value="EWSETA training panel construction">EWSETA Training Panel Construction</option>
+            <option value="Other (described in notes)">Other</option>
+          </select>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">LOCATION / AREA</label>
+          <input id="bk-location" type="text" placeholder="e.g. Sandton, Johannesburg"
+            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">PREFERRED DATE AND TIME</label>
+          <input id="bk-datetime" type="text" placeholder="e.g. Friday 22 Nov, morning"
+            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">ADDITIONAL NOTES</label>
+          <textarea id="bk-notes" rows="3" placeholder="Describe the job, site conditions, or any other details..."
+            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;resize:vertical;font-family:inherit;"></textarea>
+        </div>
+
+        <p id="bk-err" style="color:#e55;font-size:12.5px;margin:0;min-height:16px;"></p>
+
+        <button onclick="submitBooking()"
+          style="background:var(--amb);color:#fff;border:none;border-radius:9px;padding:12px 20px;font-size:14px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 2C6.477 2 2 6.477 2 12c0 1.785.47 3.457 1.29 4.909L2 22l5.235-1.273A9.953 9.953 0 0 0 11.998 22C17.52 22 22 17.523 22 12S17.52 2 11.998 2z"/></svg>
+          Send Booking Request via WhatsApp
+        </button>
+        <p style="font-size:11.5px;color:var(--fg3);text-align:center;margin:0;line-height:1.5;">This opens WhatsApp with your request pre-filled. No data is stored on this site.</p>
+      </div>
+    </div>
+
   </section>
 
 <section class="tab-panel" id="tab-study" hidden>
@@ -2233,6 +2300,29 @@ function prepOrd(bid,bname){
   res.querySelector('.ord-msg').textContent=msg;
   res.hidden=false;
 }
+function submitBooking(){
+  var name=(document.getElementById('bk-name').value||'').trim();
+  var phone=(document.getElementById('bk-phone').value||'').trim();
+  var service=(document.getElementById('bk-service').value||'').trim();
+  var location=(document.getElementById('bk-location').value||'').trim();
+  var datetime=(document.getElementById('bk-datetime').value||'').trim();
+  var notes=(document.getElementById('bk-notes').value||'').trim();
+  var err=document.getElementById('bk-err');
+  if(!name){err.textContent='Please enter your name.';return;}
+  if(!phone){err.textContent='Please enter your phone number.';return;}
+  if(!service){err.textContent='Please select a service.';return;}
+  err.textContent='';
+  var msg='*BOOKING REQUEST — ribattseke.co.za*\n\n'
+    +'*Name:* '+name+'\n'
+    +'*Phone:* '+phone+'\n'
+    +'*Service:* '+service+'\n'
+    +(location?'*Location:* '+location+'\n':'')
+    +(datetime?'*Preferred date/time:* '+datetime+'\n':'')
+    +(notes?'*Notes:* '+notes+'\n':'')
+    +'\n_Sent via ribattseke.co.za booking form_';
+  window.open('https://wa.me/27724748888?text='+encodeURIComponent(msg),'_blank');
+}
+
 function openSvcForm(sid){
   // close all panels first
   document.querySelectorAll('.svc-form-panel').forEach(function(p){p.classList.remove('open');});
