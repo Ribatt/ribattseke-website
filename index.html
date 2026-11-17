@@ -3735,23 +3735,47 @@ document.addEventListener('keydown',function(e){
 /* ===== ADMIN PANEL ===== */
 var ADM_NS='lms4_adm_';
 var ADM_PIN_KEY=ADM_NS+'pin';
+var ADM_CORRECT=btoa('20171125');
+var ADM_EMAIL='ribattseke@gmail.com';
 
 function lmsAdminEntry(){
-  var stored=null;
-  try{stored=localStorage.getItem(ADM_PIN_KEY);}catch(e){}
-  if(!stored){
-    var pin=prompt('Set an admin PIN (you will need this every time):');
-    if(!pin||pin.length<3){alert('PIN too short. Admin not opened.');return;}
-    var pin2=prompt('Confirm admin PIN:');
-    if(pin!==pin2){alert('PINs do not match.');return;}
-    try{localStorage.setItem(ADM_PIN_KEY,btoa(pin));}catch(e){}
-    lmsOpenAdmin();
-  } else {
-    var entered=prompt('Admin PIN:');
-    if(!entered){return;}
-    if(btoa(entered)!==stored){alert('Wrong PIN.');return;}
-    lmsOpenAdmin();
-  }
+  /* Show inline PIN prompt inside the LMS panel — no browser dialog */
+  var wrap=document.getElementById('lms-views');
+  if(!wrap) return;
+  /* remove any stale overlay */
+  var old=document.getElementById('lms-adm-pin-overlay');
+  if(old) old.parentNode.removeChild(old);
+  var ov=document.createElement('div');
+  ov.id='lms-adm-pin-overlay';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  ov.innerHTML='<div style="background:#1a1a1a;border:1px solid #444;border-radius:12px;padding:28px 24px;width:280px;text-align:center;">'
+    +'<p style="color:#ccc;margin:0 0 16px;font-size:15px;">Admin Access</p>'
+    +'<input id="lms-adm-pin-inp" type="password" placeholder="Enter admin PIN" autocomplete="off" '
+    +'style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid #555;background:#111;color:#fff;font-size:16px;text-align:center;letter-spacing:4px;" />'
+    +'<p id="lms-adm-pin-err" style="color:#e55;font-size:12px;margin:8px 0 0;min-height:16px;"></p>'
+    +'<div style="display:flex;gap:10px;margin-top:16px;">'
+    +'<button onclick="document.getElementById(\'lms-adm-pin-overlay\').remove()" '
+    +'style="flex:1;padding:9px;border-radius:8px;border:1px solid #555;background:#222;color:#aaa;cursor:pointer;">Cancel</button>'
+    +'<button onclick="lmsAdmPinSubmit()" '
+    +'style="flex:1;padding:9px;border-radius:8px;border:none;background:#2a7a4b;color:#fff;cursor:pointer;font-weight:600;">Enter</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  setTimeout(function(){ var inp=document.getElementById('lms-adm-pin-inp'); if(inp) inp.focus(); },80);
+  /* allow Enter key */
+  var inp2=document.getElementById('lms-adm-pin-inp');
+  if(inp2) inp2.addEventListener('keydown',function(e){ if(e.key==='Enter') lmsAdmPinSubmit(); });
+}
+
+function lmsAdmPinSubmit(){
+  var inp=document.getElementById('lms-adm-pin-inp');
+  var err=document.getElementById('lms-adm-pin-err');
+  if(!inp) return;
+  var val=(inp.value||'').trim();
+  if(!val){ if(err) err.textContent='Please enter the PIN.'; return; }
+  if(btoa(val)!==ADM_CORRECT){ if(err) err.textContent='Incorrect PIN. Try again.'; inp.value=''; inp.focus(); return; }
+  var ov=document.getElementById('lms-adm-pin-overlay');
+  if(ov) ov.remove();
+  lmsOpenAdmin();
 }
 
 function lmsIssuedKey(k){
@@ -3760,13 +3784,38 @@ function lmsIssuedKey(k){
 
 function lmsToggleIssued(k){
   if(lmsIssuedKey(k)){
-    if(!confirm('Mark '+k+' as UN-issued (available)?')) return;
+    /* un-issue — just do it, no confirm dialog */
     try{localStorage.removeItem(ADM_NS+'k_'+k);}catch(e){}
+    lmsOpenAdmin();
   } else {
-    var who=prompt('Issue '+k+' to (enter student name or cell):');
-    if(!who) return;
-    try{localStorage.setItem(ADM_NS+'k_'+k,who);}catch(e){}
+    /* show inline note input instead of prompt() */
+    var noteId='adm-note-'+k.replace(/[^a-zA-Z0-9]/g,'_');
+    var row=document.getElementById('adm-row-'+k.replace(/[^a-zA-Z0-9]/g,'_'));
+    if(row){
+      var existing=document.getElementById(noteId);
+      if(existing){ existing.parentNode.removeChild(existing); return; }
+      var inp=document.createElement('div');
+      inp.id=noteId;
+      inp.style.cssText='margin-top:6px;display:flex;gap:6px;';
+      inp.innerHTML='<input id="'+noteId+'-val" type="text" placeholder="Student name or cell" '
+        +'style="flex:1;padding:6px 8px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font-size:13px;" />'
+        +'<button onclick="lmsConfirmIssue(\''+k+'\')" style="padding:6px 10px;border-radius:6px;border:none;background:#2a7a4b;color:#fff;cursor:pointer;font-size:12px;">OK</button>'
+        +'<button onclick="document.getElementById(\''+noteId+'\').remove()" style="padding:6px 8px;border-radius:6px;border:1px solid #555;background:#222;color:#aaa;cursor:pointer;font-size:12px;">X</button>';
+      row.appendChild(inp);
+      setTimeout(function(){ var v=document.getElementById(noteId+'-val'); if(v) v.focus(); },40);
+    } else {
+      /* fallback: mark issued with no note */
+      try{localStorage.setItem(ADM_NS+'k_'+k,'(issued)');}catch(e){}
+      lmsOpenAdmin();
+    }
   }
+}
+
+function lmsConfirmIssue(k){
+  var noteId='adm-note-'+k.replace(/[^a-zA-Z0-9]/g,'_');
+  var inp=document.getElementById(noteId+'-val');
+  var who=(inp&&inp.value.trim())||'(issued)';
+  try{localStorage.setItem(ADM_NS+'k_'+k,who);}catch(e){}
   lmsOpenAdmin();
 }
 
@@ -3789,7 +3838,8 @@ function lmsRenderAdmList(containerId, keys){
   var rows=keys.map(function(k){
     var who=null; try{who=localStorage.getItem(ADM_NS+'k_'+k);}catch(e){}
     var isIssued=!!who; if(isIssued) issued++;
-    return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;">'
+    var rowId='adm-row-'+k.replace(/[^a-zA-Z0-9]/g,'_');
+    return '<div id="'+rowId+'" style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;flex-wrap:wrap;">'
       +'<code style="flex:1;font-size:12px;">'+k+'</code>'
       +(isIssued?'<span style="color:var(--amb);font-size:11px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+who+'</span>':'<span style="color:var(--fg3);font-size:11px;flex:1;">available</span>')
       +'<button data-k=\"'+k+'\" onclick=\"admCopy(this.dataset.k)\" style=\"font-size:10px;padding:2px 7px;border:1px solid var(--border);background:var(--bg-alt);border-radius:4px;cursor:pointer;\">Copy</button>'
