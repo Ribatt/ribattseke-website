@@ -1818,14 +1818,18 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <!-- SIGN UP VIEW -->
       <div id="lms-signup" class="lms-view">
         <div class="lms-card">
-          <h3>Create account</h3>
-          <p>You will need an access key from Tseke to complete registration. No key yet? <a href="#" onclick="lmsShowView('lms-paywall');return false;" style="color:var(--amb);">Get one here.</a></p>
+          <h3>Create your account</h3>
+          <p style="font-size:12.5px;color:var(--fg2);margin-bottom:14px;">Register now. Tseke will send your access key via WhatsApp once your account is confirmed. Already have a key? You will activate it after signing in.</p>
           <label class="lms-label">Choose a username</label>
           <input class="lms-input" id="lms-su-u" type="text" placeholder="e.g. john123" autocomplete="username" autocapitalize="none">
+          <label class="lms-label" style="margin-top:10px;">Cell number (Tseke will WhatsApp your key here)</label>
+          <input class="lms-input" id="lms-su-cell" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
+          <label class="lms-label" style="margin-top:10px;">Email address (optional, for recovery)</label>
+          <input class="lms-input" id="lms-su-email" type="email" placeholder="e.g. student@gmail.com" autocomplete="email">
           <label class="lms-label" style="margin-top:10px;">Choose a PIN (letters, numbers, anything)</label>
           <input class="lms-input" id="lms-su-p" type="text" placeholder="e.g. Riba2026 or 7749" autocomplete="new-password">
           <div class="lms-err" id="lms-signup-err"></div>
-          <button class="lms-btn" onclick="lmsDoSignup()">Next &mdash; Enter Access Key</button>
+          <button class="lms-btn" onclick="lmsDoSignup()">Register</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
         </div>
       </div>
@@ -1845,6 +1849,42 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         </div>
       </div>
 
+
+      <!-- AWAITING KEY VIEW (registered but no key yet) -->
+      <div id="lms-awaiting" class="lms-view">
+        <div class="lms-card" style="text-align:center;">
+          <div style="font-size:40px;margin-bottom:8px;">&#128242;</div>
+          <h3>Registration received!</h3>
+          <p id="lms-await-msg" style="margin-bottom:16px;color:var(--fg2);font-size:13.5px;"></p>
+          <div style="background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:left;margin-bottom:16px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">Your sign-in details</div>
+            <div style="font-size:13px;color:var(--fg2);line-height:1.8;">
+              Username: <strong id="lms-await-u" style="color:var(--fg);"></strong><br>
+              PIN: <strong id="lms-await-p" style="color:var(--fg);"></strong>
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--fg3);margin-bottom:16px;">Screenshot this screen. You will sign in with these details once you receive your key.</p>
+          <button class="lms-btn" onclick="lmsShowView('lms-login')">OK, I will come back with my key</button>
+        </div>
+      </div>
+
+      <!-- KEY ACTIVATION VIEW (signed in but no key yet) -->
+      <div id="lms-activate" class="lms-view">
+        <div class="lms-card">
+          <h3>Activate your access</h3>
+          <p style="font-size:12.5px;color:var(--fg2);margin-bottom:14px;">Enter the key Tseke sent you via WhatsApp. If you do not have one yet, choose a tier below.</p>
+          <label class="lms-label">Cell number (the one Tseke has for you)</label>
+          <input class="lms-input" id="lms-act-phone" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
+          <label class="lms-label" style="margin-top:10px;">Email address (recovery backup)</label>
+          <input class="lms-input" id="lms-act-email" type="email" placeholder="e.g. student@gmail.com" autocomplete="email">
+          <label class="lms-label" style="margin-top:10px;">Access key</label>
+          <input class="lms-input" id="lms-act-key" type="text" placeholder="e.g. VQ-A001 or RIBA-A001" autocapitalize="characters">
+          <div class="lms-err" id="lms-act-err"></div>
+          <button class="lms-btn" onclick="lmsActivateKey()">Activate</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')">I do not have a key yet</button>
+          <button class="lms-btn-sec" onclick="lmsSignOut()">Sign out</button>
+        </div>
+      </div>
 
       <!-- WELCOME VIEW -->
       <div id="lms-welcome" class="lms-view">
@@ -2043,20 +2083,30 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <button class="lms-logout" onclick="lmsShowView('lms-login')">Exit</button>
         </div>
         <div class="admin-stats">
-          <div class="admin-stat"><strong id="adm-vq-av">-</strong>VQ available</div>
-          <div class="admin-stat"><strong id="adm-sg-av">-</strong>SG available</div>
-          <div class="admin-stat"><strong id="adm-tot-is">-</strong>Total issued</div>
+          <div class="admin-stat" id="adm-pend-stat" style="color:#c05000;"><strong id="adm-pend-ct">0</strong>Pending</div>
+          <div class="admin-stat"><strong id="adm-trial-av">-</strong>Trial avail</div>
+          <div class="admin-stat"><strong id="adm-vq-av">-</strong>VQ avail</div>
+          <div class="admin-stat"><strong id="adm-sg-av">-</strong>SG avail</div>
+          <div class="admin-stat"><strong id="adm-tot-is">-</strong>Issued</div>
+        </div>
+        <div class="admin-tier-block" id="adm-pending-block" style="display:none;">
+          <div class="admin-tier-title" style="color:#c05000;">Pending Registrations (waiting for key)</div>
+          <div id="adm-pending-list"></div>
         </div>
         <div class="admin-tier-block">
-          <div class="admin-tier-title">Tier 1 — Videos + Quizzes (VQ)</div>
+          <div class="admin-tier-title">R50 Trial Keys (TRIAL)</div>
+          <div id="adm-trial-list"></div>
+        </div>
+        <div class="admin-tier-block">
+          <div class="admin-tier-title">Videos + Quizzes (VQ)</div>
           <div id="adm-vq-list"></div>
         </div>
         <div class="admin-tier-block">
-          <div class="admin-tier-title">Tier 2 — Africa TVET College (Cohort)</div>
+          <div class="admin-tier-title">Africa TVET College (Cohort)</div>
           <div id="adm-cohort-list"></div>
         </div>
         <div class="admin-tier-block">
-          <div class="admin-tier-title">Tier 3 — Study Guide Pack (Paid)</div>
+          <div class="admin-tier-title">Study Guide Pack (Paid)</div>
           <div id="adm-sg-list"></div>
         </div>
       </div>
@@ -3141,11 +3191,20 @@ function lmsSignin(){
   var existing=_lmsLoad(u,p);
   if(existing){
     if(lmsTrialExpired(existing)){
-      err.textContent='Your 4-month R50 trial has expired. Contact Tseke to upgrade your access.';
+      err.textContent='Your 4-month R50 trial has expired. Contact Tseke on 072 474 8888 to upgrade your access.';
       return;
     }
     _lmsUser=u; _lmsKey=p; _lmsProgress=existing;
-    lmsShowDash();
+    if(existing.tier==='pending'||!existing.tier){
+      // Registered but no key yet — go to activation screen
+      _lmsPhone=existing.phone||'';
+      _lmsEmail=existing.email||'';
+      var actEl=document.getElementById('lms-act-phone');
+      if(actEl&&_lmsPhone) actEl.value=_lmsPhone;
+      lmsShowView('lms-activate');
+    } else {
+      lmsShowDash();
+    }
   } else if(_lmsUserExists(u)){
     err.textContent='Wrong PIN. Try again or use Forgot PIN to reset.';
   } else {
@@ -3157,17 +3216,41 @@ function lmsSignup(){lmsSignin();}
 
 function lmsDoSignup(){
   var u=(document.getElementById('lms-su-u').value||'').trim();
+  var cell=(document.getElementById('lms-su-cell').value||'').trim();
+  var email=(document.getElementById('lms-su-email').value||'').trim();
   var p=(document.getElementById('lms-su-p').value||'').trim();
   var err=document.getElementById('lms-signup-err');
   err.textContent='';
   if(!u){err.textContent='Please choose a username.';return;}
   if(u.length<3){err.textContent='Username must be at least 3 characters.';return;}
+  if(!cell){err.textContent='Please enter your cell number so Tseke can WhatsApp your key.';return;}
   if(!p||p.length<3){err.textContent='PIN must be at least 3 characters.';return;}
   if(_lmsUserExists(u)){err.textContent='That username is already taken. Choose a different one.';return;}
+  // Save account as pending (no tier/key yet)
   _lmsPendingU=u; _lmsPendingK=p;
-  document.getElementById('lms-access-key').value='';
-  document.getElementById('lms-access-err').textContent='';
-  lmsShowView('lms-access');
+  _lmsPhone=cell; _lmsEmail=email;
+  _lmsProgress={tier:'pending',p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},activatedAt:null};
+  _lmsUser=u; _lmsKey=p;
+  _lmsStore();
+  // Register in Firebase as pending
+  if(_lmsFbDb){
+    try{
+      _lmsFbDb.collection('users').doc(u).set({
+        username:u, phone:cell, email:email, tier:'pending', key:'',
+        joinedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        lastSeen:firebase.firestore.FieldValue.serverTimestamp(),
+        sessionsPassed:0, status:'awaiting_key'
+      },{merge:true});
+    }catch(e){}
+  }
+  // Show awaiting screen with credentials to screenshot
+  var am=document.getElementById('lms-await-msg');
+  var au=document.getElementById('lms-await-u');
+  var ap=document.getElementById('lms-await-p');
+  if(am) am.textContent='Account created for '+u+'. Tseke will WhatsApp '+cell+' with your access key. Come back and sign in once you receive it.';
+  if(au) au.textContent=u;
+  if(ap) ap.textContent=p;
+  lmsShowView('lms-awaiting');
 }
 
 function lmsSubmitKey(){
@@ -3198,6 +3281,31 @@ function lmsSubmitKey(){
   if(wm) wm.textContent='Welcome to the Installation Rules LMS, '+_lmsPendingU+'. Your account is active.';
   if(wu) wu.textContent=_lmsPendingU;
   if(wp) wp.textContent=_lmsPendingK;
+  lmsShowView('lms-welcome');
+}
+
+function lmsActivateKey(){
+  var phone=(document.getElementById('lms-act-phone').value||'').trim();
+  var email=(document.getElementById('lms-act-email').value||'').trim();
+  var key=(document.getElementById('lms-act-key').value||'').trim().toUpperCase();
+  var err=document.getElementById('lms-act-err');
+  err.textContent='';
+  if(!phone){err.textContent='Please enter your cell number.';return;}
+  if(!key){err.textContent='Please enter your access key.';return;}
+  var tier=lmsCheckKey(key);
+  if(!tier){err.textContent='Key not recognised. Check the key Tseke sent you.';return;}
+  _lmsPhone=phone; _lmsEmail=email;
+  _lmsProgress.tier=tier;
+  _lmsProgress.activatedAt=Date.now();
+  _lmsStore();
+  lmsFirebaseRegister(_lmsUser, phone, email, tier, key);
+  // Show welcome screen
+  var wm=document.getElementById('lms-welcome-msg');
+  var wu=document.getElementById('lms-welcome-u');
+  var wp=document.getElementById('lms-welcome-p');
+  if(wm) wm.textContent='Access activated! Welcome to the Installation Rules LMS, '+_lmsUser+'.';
+  if(wu) wu.textContent=_lmsUser;
+  if(wp) wp.textContent=_lmsKey;
   lmsShowView('lms-welcome');
 }
 
@@ -3611,6 +3719,124 @@ document.addEventListener('keydown',function(e){
     e.preventDefault();
   }
 });
+
+/* ===== ADMIN PANEL ===== */
+var ADM_NS='lms4_adm_';
+var ADM_PIN_KEY=ADM_NS+'pin';
+
+function lmsAdminEntry(){
+  var stored=null;
+  try{stored=localStorage.getItem(ADM_PIN_KEY);}catch(e){}
+  if(!stored){
+    var pin=prompt('Set an admin PIN (you will need this every time):');
+    if(!pin||pin.length<3){alert('PIN too short. Admin not opened.');return;}
+    var pin2=prompt('Confirm admin PIN:');
+    if(pin!==pin2){alert('PINs do not match.');return;}
+    try{localStorage.setItem(ADM_PIN_KEY,btoa(pin));}catch(e){}
+    lmsOpenAdmin();
+  } else {
+    var entered=prompt('Admin PIN:');
+    if(!entered){return;}
+    if(btoa(entered)!==stored){alert('Wrong PIN.');return;}
+    lmsOpenAdmin();
+  }
+}
+
+function lmsIssuedKey(k){
+  try{return !!localStorage.getItem(ADM_NS+'k_'+k);}catch(e){return false;}
+}
+
+function lmsToggleIssued(k){
+  if(lmsIssuedKey(k)){
+    if(!confirm('Mark '+k+' as UN-issued (available)?')) return;
+    try{localStorage.removeItem(ADM_NS+'k_'+k);}catch(e){}
+  } else {
+    var who=prompt('Issue '+k+' to (enter student name or cell):');
+    if(!who) return;
+    try{localStorage.setItem(ADM_NS+'k_'+k,who);}catch(e){}
+  }
+  lmsOpenAdmin();
+}
+
+function admCopy(k){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(k).then(function(){
+      var el=document.getElementById('adm-copy-'+k);
+      if(el){var old=el.textContent;el.textContent='Copied';setTimeout(function(){el.textContent=old;},1500);}
+    }).catch(function(){
+      var el=document.getElementById('adm-copy-'+k);
+      if(el){el.select&&el.select();}
+    });
+  }
+}
+
+function lmsRenderAdmList(containerId, keys){
+  var el=document.getElementById(containerId);
+  if(!el) return;
+  var issued=0;
+  var rows=keys.map(function(k){
+    var who=null; try{who=localStorage.getItem(ADM_NS+'k_'+k);}catch(e){}
+    var isIssued=!!who; if(isIssued) issued++;
+    return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;">'
+      +'<code style="flex:1;font-size:12px;">'+k+'</code>'
+      +(isIssued?'<span style="color:var(--amb);font-size:11px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+who+'</span>':'<span style="color:var(--fg3);font-size:11px;flex:1;">available</span>')
+      +'<button data-k=\"'+k+'\" onclick=\"admCopy(this.dataset.k)\" style=\"font-size:10px;padding:2px 7px;border:1px solid var(--border);background:var(--bg-alt);border-radius:4px;cursor:pointer;\">Copy</button>'
+      +'<button data-k2=\"'+k+'\" onclick=\"lmsToggleIssued(this.dataset.k2)\" style=\"font-size:10px;padding:2px 7px;border:1px solid var(--border);background:var(--bg-alt);border-radius:4px;cursor:pointer;\">'+(isIssued?'Unissue':'Issue')+'</button>'
+      +'</div>';
+  }).join('');
+  el.innerHTML=rows||'<p style="font-size:12px;color:var(--fg3);">No keys in this tier.</p>';
+  return {total:keys.length, issued:issued, available:keys.length-issued};
+}
+
+function lmsOpenAdmin(){
+  // Render all tiers
+  var trialStats=lmsRenderAdmList('adm-trial-list',TRIAL_KEYS);
+  var vqStats=lmsRenderAdmList('adm-vq-list',VQ_KEYS);
+  lmsRenderAdmList('adm-cohort-list',COHORT_KEYS);
+  var sgStats=lmsRenderAdmList('adm-sg-list',PAID_KEYS);
+
+  // Update counts
+  var el=function(id){return document.getElementById(id);};
+  if(el('adm-trial-av')) el('adm-trial-av').textContent=(trialStats?trialStats.available:'-');
+  if(el('adm-vq-av')) el('adm-vq-av').textContent=(vqStats?vqStats.available:'-');
+  if(el('adm-sg-av')) el('adm-sg-av').textContent=(sgStats?sgStats.available:'-');
+  var totalIssued=(trialStats?trialStats.issued:0)+(vqStats?vqStats.issued:0)+(sgStats?sgStats.issued:0);
+  if(el('adm-tot-is')) el('adm-tot-is').textContent=totalIssued;
+
+  // Pending registrations from Firebase
+  var pendBlock=el('adm-pending-block');
+  var pendList=el('adm-pending-list');
+  var pendCt=el('adm-pend-ct');
+  if(pendBlock&&pendList&&_lmsFbDb){
+    _lmsFbDb.collection('users').where('tier','==','pending').get().then(function(snap){
+      if(snap.empty){
+        pendBlock.style.display='none';
+        if(pendCt) pendCt.textContent='0';
+        return;
+      }
+      pendBlock.style.display='block';
+      if(pendCt) pendCt.textContent=snap.size;
+      var rows=[];
+      snap.forEach(function(doc){
+        var d=doc.data();
+        var joinedStr=d.joinedAt&&d.joinedAt.toDate?d.joinedAt.toDate().toLocaleDateString('en-ZA'):'';
+        rows.push('<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:12.5px;">'
+          +'<strong>'+d.username+'</strong>'
+          +(joinedStr?' <span style="color:var(--fg3);font-size:11px;">'+joinedStr+'</span>':'')
+          +'<br><span style="color:var(--fg2);">'+d.phone+'</span>'
+          +(d.email?' &middot; <span style="color:var(--fg2);">'+d.email+'</span>':'')
+          +'</div>');
+      });
+      pendList.innerHTML=rows.join('');
+    }).catch(function(){
+      pendBlock.style.display='none';
+    });
+  } else if(pendBlock){
+    pendBlock.style.display='none';
+  }
+
+  lmsShowView('lms-admin');
+}
 
 /* ===== FIREBASE INTEGRATION ===== */
 var _lmsPhone = null;
