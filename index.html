@@ -2431,6 +2431,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <button class="hub-nav-btn" onclick="hubShow('hub-clients',this)">Clients</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-quotes',this)">Quotes</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-loi',this)">LOI / NTP</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-agr',this)">&#128203; Agreements</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-invoices',this)">Invoices</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-jobs',this)">Job Cards</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-coc',this)">CoC Register</button>
@@ -2501,6 +2502,16 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
             <button class="biz-btn biz-btn-primary" onclick="loiNew()">+ New LOI / NTP</button>
           </div>
           <div id="loi-list"></div>
+        </div>
+
+        <!-- ===== HUB: AGREEMENTS ===== -->
+        <div id="hub-agr" class="hub-section" style="display:none;">
+          <div class="biz-toolbar">
+            <input class="biz-search" id="agr-search" placeholder="Search agreements..." oninput="agrRender()">
+            <button class="biz-btn biz-btn-primary" onclick="agrNew()">+ New Agreement</button>
+          </div>
+          <div style="font-size:12px;color:var(--fg3);margin-bottom:10px;padding:0 2px;">Works Agreements sit between LOI / NTP and the first invoice. They define scope, maintenance terms, call-out fees and insurance obligations. Create one from an LOI using the <strong>&#128203; Agreement</strong> button on any LOI card.</div>
+          <div id="agr-list"></div>
         </div>
 
         <!-- ===== HUB: INVOICES ===== -->
@@ -4999,6 +5010,7 @@ function hubShow(id,btn){
   if(id==='hub-clients') clRender();
   if(id==='hub-quotes') qtRender();
   if(id==='hub-loi') loiRender();
+  if(id==='hub-agr') agrRender();
   if(id==='hub-invoices') invRender();
 }
 
@@ -5677,6 +5689,7 @@ function loiRender(){
       +'<div class="biz-card-actions">'
       +'<button class="biz-btn biz-btn-secondary" onclick="loiEdit(\''+l.id+'\')">Edit</button>'
       +'<button class="biz-btn biz-btn-primary" onclick="loiPrint(\''+l.id+'\')">Print / PDF</button>'
+      +'<button class="biz-btn biz-btn-secondary" style="background:#e8f4ed;color:#1E8540;border-color:#1E8540;" onclick="agrFromLoi(\''+l.id+'\')">&#128203; Agreement</button>'
       +'<button class="biz-btn biz-btn-danger" onclick="bizDelConfirm(\'loi_'+l.id+'\',loiRender)">Del</button>'
       +'</div></div>';
   }).join('');
@@ -5817,6 +5830,588 @@ function loiPrint(id){
     +'<div style="margin-top:16px;font-size:10.5px;color:#999;text-align:center;">Riba T Tseke &middot; Gauteng, South Africa &middot; ribattseke.co.za</div>'
     +'</div>';
   doPrintDoc(html,'LOI-'+padN(l.seq,4));
+}
+
+/* ===========================================
+   WORKS AGREEMENTS
+   =========================================== */
+
+var AGR_TEMPLATES = {
+  solar: {
+    name: 'Solar PV Installation',
+    serviceType: 'Solar PV Installation',
+    scope: `Supply, install, commission and hand over a grid-tied / hybrid solar PV system as per the accepted quotation, including:
+• PV modules (monocrystalline / polycrystalline — specification per quotation)
+• Inverter (string / hybrid / off-grid as quoted)
+• Battery storage and BMS (if included in quotation)
+• DC distribution / combiner board where applicable
+• AC integration into client's existing distribution board
+• DC and AC wiring, conduit, trunking and cable management (SANS 10142-1 compliant)
+• Type 2 surge protection device (SPD) on DC and AC sides
+• Earthing, bonding and equipotential connections to SANS 10142-1 Section 6
+• CT / energy monitoring meter where applicable
+• All DB modifications, additional breakers and labelling required for safe integration
+• System labelling and signage throughout (arc-flash, DC warning, isolation points)
+• Commissioning test report and performance data sheet
+• System handover, full documentation package and user training session`,
+    plannedMaint: `Annual Planned Maintenance (every 12 months from commissioning date):
+1. Visual inspection of all PV modules — check for cracking, delamination, discolouration, soiling and shading
+2. Panel cleaning (dry or wet clean depending on soiling level and manufacturer requirements)
+3. Re-torque all DC and AC electrical terminations to manufacturer's specification
+4. Infrared (IR) thermographic scan of all connections, MC4 connectors, terminals and panels
+5. Inverter: firmware update (if available); check and clear fault logs; verify settings and time
+6. Battery (if applicable): state-of-health (SoH) test; terminal and BMS inspection
+7. Earth continuity and insulation resistance test on all DC strings
+8. AC side: check RCD, MCB, SPD status and DB labelling
+9. Performance review: compare actual vs. design energy yield; flag degradation if > 10%
+10. Surge protection device (SPD) status indicator check on DC and AC SPDs
+11. Roof penetration / mounting check: flashings, rail torque, bird deterrent (if installed)
+12. Issue of written maintenance report with photographs, test results and recommendations
+
+Call-out charges apply for the annual maintenance visit at the Standard rate — see Clause 4. The visit must be pre-booked at least 5 business days in advance.`,
+    unplannedMaint: `Unplanned / Reactive Maintenance Response Times:
+• Priority 1 — Total system shutdown / safety risk (sparking, burning, shock hazard): response within 1 business day from notification
+• Priority 2 — Partial generation loss / inverter fault / grid export tripped: response within 2 business days
+• Priority 3 — Minor fault / monitoring alert / advisory: response within 5 business days
+
+Response is measured from the time a written notification (WhatsApp or email) is received during business hours (Mon–Fri, 07:00–17:00). Notifications received after 17:00 or on weekends are actioned on the next business day unless the client elects after-hours emergency response (additional charges apply — see Clause 4).
+
+Client obligations for unplanned fault response:
+• Notify Riba T Tseke in writing as soon as a fault is observed
+• Do not attempt to bypass, reset or modify the system without written authorisation
+• Isolate the system at the main AC and DC isolators if a safety risk is present and await instruction
+
+Riba T Tseke shall not be held liable for loss of generation, consequential losses or property damage arising from: grid outages, lightning or surge events, physical damage by third parties, wildlife / vermin damage, or failure of client to report faults timeously. Damage caused by lightning or surge that is not covered by the client's insurance (see Clause 5) is charged at full materials and labour rates.`,
+    calloutFees: `Call-out / Fallout Fees (effective from date of agreement, subject to annual CPI adjustment):
+
+Standard (Mon–Fri, 07:00–17:00):         R850 per visit + labour at IE hourly rate
+Extended hours (Mon–Fri, 17:01–20:00):   R1,200 per visit + labour at 1.5× IE rate
+Weekend / Public holiday (08:00–17:00):  R1,800 per visit + labour at 2.0× IE rate
+After-hours emergency (20:01–06:59):     R2,400 per visit + labour at 2.5× IE rate
+
+The call-out fee is payable regardless of whether a fault is found to be warranty-related. If a fault is confirmed as a workmanship defect within the warranty period, the call-out fee will be credited against future work (not refunded).
+
+Parts and materials are quoted and charged at cost price plus a 15% handling and procurement margin. Travel beyond 30 km from Riba T Tseke's registered base will attract an additional travel charge at the prevailing SARS deemed rate per km.
+
+The AA / SARS deemed rate used for travel recovery is updated annually. Rates in force at the time of each visit apply.`,
+    insuranceReqs: `Client Insurance Obligations — these are a condition of the warranty and ongoing service relationship:
+
+1. The client must, at their own cost, maintain a valid comprehensive homeowner's or commercial property insurance policy that:
+   a) Lists the solar PV system as a declared item at full replacement value
+   b) Covers fire, lightning, surge, theft, vandalism and malicious damage
+   c) Includes public liability cover of not less than R5,000,000 (five million rand)
+
+2. Proof of current insurance (certificate or schedule page) must be supplied to Riba T Tseke:
+   • Within 30 days of this agreement being signed
+   • Within 30 days of each annual policy renewal thereafter
+
+3. Any lapse in insurance coverage must be reported to Riba T Tseke immediately (within 24 hours of becoming aware). Riba T Tseke reserves the right to suspend warranty obligations and decline unplanned call-outs during any period of uninsured risk.
+
+4. In the event of an insurance claim involving the installed system, the client must:
+   • Notify Riba T Tseke within 48 hours
+   • Allow Riba T Tseke to inspect and document the damage before any repairs or removals
+   • Provide Riba T Tseke's contact details to the insurer's assessor
+
+5. Failure to maintain insurance does not relieve the client of payment obligations under this agreement.`,
+    paymentTerms: `1. The contract value and payment schedule are as set out in the accepted quotation and LOI / NTP
+2. The deposit (as specified in the LOI) is non-refundable once materials have been procured or ordered — typically within 3 business days of receipt
+3. Progress payments (where applicable) are due within 7 days of the milestone invoice date
+4. Final payment is due before final sign-off, CoC issue and system handover documentation are released
+5. Invoices unpaid after 30 days attract interest at the prime lending rate plus 2% per month, calculated daily from the due date
+6. Riba T Tseke reserves the right to retain the commissioning report, CoC and performance data until payment is received in full
+7. All prices are exclusive of VAT unless stated otherwise; VAT will be added at the prevailing rate`,
+    warranty: `1. Workmanship warranty: 12 months from commissioning date, covering defects in installation workmanship only
+2. Materials and equipment warranty: as per each manufacturer's warranty terms:
+   • PV panels: typically 10-year product warranty and 25-year performance guarantee
+   • Inverters: typically 2–10 years (extended warranty available from most manufacturers)
+   • Batteries: typically 2–5 years or cycle-count based (exact terms per quotation)
+3. Warranty is void or limited if:
+   a) The installation is modified, extended or interfered with by any party other than Riba T Tseke without prior written consent
+   b) The client fails to maintain their insurance as required in Clause 5
+   c) Physical damage (lightning, surge, theft, impact, vermin) occurs and is not reported within 48 hours
+   d) The system is operated outside the parameters and limits set at commissioning
+   e) Annual maintenance (Clause 2) is not performed by Riba T Tseke within 15 months of the previous service
+4. Warranty claims must be submitted in writing with a description of the fault and photographs where possible`,
+    generalConditions: `1. This agreement is governed by and construed in accordance with the laws of the Republic of South Africa
+2. Riba T Tseke is a registered Installation Electrician (DoEL) and all work is performed in full compliance with SANS 10142-1 (latest edition), the SRWP Regulations and any applicable municipal bylaws
+3. The client must provide safe, unimpeded access to the installation site for all maintenance, repair and inspection visits; a failure to provide access within an agreed time window forfeits the visit fee and the client will be invoiced accordingly
+4. Riba T Tseke shall not be liable for indirect, consequential, economic or punitive losses arising from system downtime, grid outages, delayed parts supply or force majeure events
+5. Any dispute arising from this agreement shall first be referred to good-faith mediation before legal proceedings are initiated
+6. This agreement, together with the accepted quotation and LOI, constitutes the entire agreement between the parties and supersedes all prior verbal or written representations relating to the scope herein
+7. Amendments to this agreement require the written consent of both parties and take effect only upon signature by both`
+  },
+
+  electrical: {
+    name: 'Electrical Installation / Repair',
+    serviceType: 'Electrical Installation',
+    scope: `Supply, install and commission the electrical works as per the accepted quotation. All work to comply with SANS 10142-1 (Ed 3.3) and the SRWP Regulations, including:
+• All wiring, cabling, conduit and cable management as specified
+• Distribution board (DB) work: new circuits, breaker replacement or additions
+• Earth leakage protection (RCCB/ELCB) where required by regulation
+• Surge protection (SPD) where quoted
+• Light fittings, switch plates and socket outlets as specified
+• Earthing and bonding of metallic structures and services
+• All DB labelling: circuit identifications, warning labels, arc-flash labels
+• Insulation resistance and earth continuity testing on all new circuits
+• Certificate of Compliance (CoC) issued on satisfactory completion
+• As-built circuit schedule (where scope warrants)`,
+    plannedMaint: `Recommended Annual Electrical Inspection:
+1. Visual inspection of all accessible wiring, fittings, conduit and cable management
+2. Distribution board inspection: breaker condition, loose terminations, correct labelling, earth bar connections
+3. Insulation resistance test on all circuits (500V DC)
+4. Earth continuity test from DB earth bar to furthest outlet on each circuit
+5. RCD / ELCB function test (trip time measured; replace if > 300ms)
+6. SPD status indicator check
+7. Visual check for signs of overheating: discolouration, burning odours, melted insulation
+8. Inspection report issued with pass/fail status and any recommended remedial actions
+
+Residential: re-inspection every 5 years recommended. Commercial / industrial: every 3 years or as required by occupancy insurance.`,
+    unplannedMaint: `Fault Response Times:
+• Safety risk (shock hazard, sparking, burning smell, exposed live conductors): same business day if reported by 12:00; next business day otherwise
+• Partial circuit failure (lights off, sockets dead, single circuit tripped): within 2 business days
+• Advisory / non-urgent fault: within 5 business days
+
+All fault reports must be made in writing (WhatsApp or email). Where a fault constitutes an immediate danger to life or property, the client must isolate the affected circuit(s) at the DB immediately and await instruction from Riba T Tseke.
+
+Riba T Tseke is not liable for damage to appliances or property resulting from power quality issues, grid fluctuations, load-shedding, lightning events, or modifications made by any unauthorised party.`,
+    calloutFees: `Call-out / Fallout Fees (subject to annual CPI adjustment):
+
+Standard (Mon–Fri, 07:00–17:00):         R750 per visit + labour at IE hourly rate
+Extended hours (Mon–Fri, 17:01–20:00):   R1,100 per visit + labour at 1.5× IE rate
+Weekend / Public holiday (08:00–17:00):  R1,600 per visit + labour at 2.0× IE rate
+After-hours emergency (20:01–06:59):     R2,200 per visit + labour at 2.5× IE rate
+
+Parts and materials charged at cost plus 15% handling margin. Travel beyond 30 km charged at the prevailing SARS deemed rate per km. Minimum 1 hour labour per call-out.`,
+    insuranceReqs: `Client Insurance Obligations:
+1. The client must maintain a valid homeowner's or commercial property insurance policy covering the electrical installation against fire, surge, theft and malicious damage
+2. Any modifications to the electrical installation by an unregistered or unqualified person automatically invalidates the CoC issued by Riba T Tseke and may void the workmanship warranty
+3. The client must notify Riba T Tseke within 48 hours of any fire, lightning strike, flood or surge event that may have affected the installation
+4. It is the client's responsibility to ensure that any additional loads or circuits added after the CoC date are covered by a new CoC from a registered electrician`,
+    paymentTerms: `1. Payment terms as per accepted quotation
+2. Certificate of Compliance (CoC) is issued only after full payment has been confirmed
+3. Invoices unpaid after 30 days attract interest at the prime lending rate plus 2% per month
+4. Deposit (where required) is non-refundable once materials have been procured`,
+    warranty: `1. Workmanship warranty: 12 months from date of CoC issue, covering defects in installation workmanship
+2. Component and materials warranty: as per manufacturer's terms
+3. Warranty is void if the installation is modified or interfered with by any other party without written consent from Riba T Tseke, or if physical damage occurs and is not reported within 48 hours`,
+    generalConditions: `1. All work performed in accordance with SANS 10142-1 (Ed 3.3) and the SRWP Regulations
+2. The client must ensure safe, clear access to all work areas before work commences; delays caused by inaccessibility are charged at the hourly rate
+3. Supply interruptions will occur during installation / DB work — the client must plan accordingly and isolate sensitive equipment
+4. Riba T Tseke is not liable for indirect or consequential losses arising from installation downtime
+5. This agreement is governed by the laws of the Republic of South Africa`
+  },
+
+  coc: {
+    name: 'CoC Inspection',
+    serviceType: 'CoC Electrical Inspection',
+    scope: `Electrical installation inspection and testing for the purpose of issuing a Certificate of Compliance (CoC) as required by the SRWP Regulations and SANS 10142-1.
+
+Scope includes:
+• Full visual inspection of all accessible wiring, fittings, conduit and cable management
+• Distribution board inspection: breaker sizing, labelling, earthing, incoming protection
+• Insulation resistance test on all circuits (500V DC)
+• Earth continuity test from DB earth bar to all outlets and metalwork
+• RCD / ELCB function test (trip time recorded)
+• SPD status check (where present)
+• Earth electrode resistance test (where applicable)
+• Verification of circuit labelling accuracy and completeness
+• Certificate of Compliance issued if all tests pass and no visible deviations are found
+• Deviation Report issued if defects are found that must be remedied before CoC issue; each fault and required corrective action is specified`,
+    plannedMaint: `CoC Validity and Re-inspection Recommendations:
+A Certificate of Compliance remains valid for the installation as described at the time of issue. The CoC becomes invalid when the electrical installation is altered, extended or rewired (even partially), or when a new fixed appliance or dedicated circuit is added.
+
+The CoC is also required when the property is sold or transferred (a valid CoC is a legal requirement for the property seller).
+
+Riba T Tseke recommends re-inspection intervals:
+• Residential property: every 5 years, or on any ownership change
+• Commercial / light industrial: every 3 years, or as required by occupancy insurance
+• High-load or industrial installations: annually or as specified by SANS 10142-1 Section 8`,
+    unplannedMaint: `A re-inspection is required whenever the electrical installation is altered or extended in any way, when a new appliance requiring dedicated wiring is installed (geyser, stove, air conditioner, EV charger, solar PV system), when the property changes ownership, or when an insurance claim is made relating to the electrical installation.
+
+Re-inspections are treated as new engagements and standard inspection rates apply. If remedial work is required, Riba T Tseke will quote separately for the corrective work and a re-inspection fee applies after completion.`,
+    calloutFees: `Inspection Fees:
+• Standard residential inspection (up to 4-bedroom property): as per accepted quotation
+• Re-inspection after client-performed remedial work: 50% of original inspection fee
+• Additional boards or outbuildings not on the original scope: quoted and invoiced separately
+• Additional circuits discovered beyond original count: R125 per circuit tested
+• Travel (> 30 km from Riba T Tseke base): AA deemed rate per km additional
+
+A re-inspection within 30 days for the same fault is covered. Re-inspections beyond 30 days are charged at the re-inspection rate.`,
+    insuranceReqs: `The client acknowledges that:
+1. It is the homeowner's / occupant's legal obligation to maintain the electrical installation in a safe and compliant condition at all times
+2. Any modifications after CoC issue not covered by a new CoC create a legal liability for the property owner
+3. Concealed or inaccessible wiring that cannot be safely tested without damage may be excluded from the CoC scope and will be noted in the CoC or deviation report
+4. The client must disclose any known defects or prior modifications before the inspection commences`,
+    paymentTerms: `Payment is due on the day of inspection, before the CoC document is released. The CoC is not released until payment is confirmed. Acceptable payment methods: EFT (proof of payment on day) or cash.`,
+    warranty: `A CoC is a sworn statement of the installation's compliance at the date and time of test. If a fault present at the time of inspection is discovered within 30 days of CoC issue and was reasonably accessible, Riba T Tseke will re-inspect at no additional cost. Riba T Tseke is not liable for faults that develop after the inspection date due to normal aging, additional loads or external interference.`,
+    generalConditions: `1. The property owner or a duly authorised representative must be present during the inspection
+2. Riba T Tseke must have safe, unimpeded access to all distribution boards, sub-boards, circuits and fittings; inaccessible areas will be excluded from the CoC scope
+3. The client must disclose all known faults, modifications or additions before the inspection starts
+4. This agreement is governed by the laws of the Republic of South Africa`
+  },
+
+  db: {
+    name: 'Distribution Board Upgrade',
+    serviceType: 'DB Upgrade / Replacement',
+    scope: `Supply and install a new / upgraded distribution board (DB) as per the accepted quotation, including:
+• New DB enclosure (DIN-rail, correct IP rating for the installation environment)
+• Correctly sized main incomer MCB or MCCB with appropriate fault rating
+• Circuit breakers (MCBs) correctly rated for each circuit per SANS 10142-1 Section 7
+• Earth leakage protection (ELCB / RCCB) on all circuits as required by SANS 10142-1
+• Type 2 surge protection device (SPD) where quoted — with separate fused back-up
+• Copper earth bar and neutral bar, correctly sized and bonded
+• Incoming earth electrode connection and supplementary earthing if required
+• All circuit terminations neatly dressed and torqued to specification
+• Full and accurate circuit labelling (permanent, legible, printed or engraved)
+• Arc-flash / danger warning labels on all doors and covers
+• CoC issued on successful completion of all tests
+• As-built circuit schedule left at the DB on completion`,
+    plannedMaint: `Recommended Annual DB Inspection:
+1. Visual check of all breakers: signs of overheating, discolouration, trip indicators
+2. Terminal re-torque: all circuit terminations, earth bar lugs, main incomer terminations
+3. Confirm all circuit labelling is current, accurate and legible
+4. SPD status indicator check — replace if indicator shows fault
+5. RCD / ELCB function test (trip time and sensitivity measured)
+6. Earth continuity from DB earth bar to furthest outlet on each circuit
+7. Insulation resistance test on all circuits (selective — based on age and fault history)
+8. Check DB enclosure door alignment, locking mechanism and weatherseal
+9. Brief inspection report noting any breakers to be replaced or concerns identified`,
+    unplannedMaint: `Fault Response Times:
+• Tripping / nuisance tripping / loss of circuits: within 1–2 business days
+• Total DB failure / main incomer fault: same business day if reported by 12:00; next business day otherwise
+• SPD fault indicator / advisory: within 5 business days
+
+Notify Riba T Tseke in writing (WhatsApp or email) with a description of the fault and any relevant photographs. Do not attempt to bypass a tripped breaker repeatedly if it re-trips — this indicates a fault that requires investigation.`,
+    calloutFees: `DB Fault / Advisory Visit Fees:
+
+Standard (Mon–Fri, 07:00–17:00):         R750 per visit + labour at IE hourly rate
+Extended hours (Mon–Fri, 17:01–20:00):   R1,100 per visit + labour at 1.5× IE rate
+Weekend / Public holiday (08:00–17:00):  R1,600 per visit + labour at 2.0× IE rate
+After-hours emergency (20:01–06:59):     R2,200 per visit + labour at 2.5× IE rate
+
+Parts charged at cost plus 15% handling margin. Replacement breakers, terminals and SPDs are invoiced separately.`,
+    insuranceReqs: `The client must ensure the DB installation is not modified by any party other than a registered electrician. Specifically:
+1. No additional circuits, breakers or loads may be added without prior notification to Riba T Tseke
+2. The DB must remain accessible (not blocked by furniture, shelving or other obstructions) at all times
+3. Any modifications not sanctioned by Riba T Tseke void the CoC and workmanship warranty
+4. The client's property insurance must cover the DB and associated wiring; the client must notify their insurer of the DB upgrade to ensure adequate cover`,
+    paymentTerms: `1. Payment terms as per accepted quotation
+2. Certificate of Compliance (CoC) is issued only after full payment is confirmed
+3. Invoices unpaid after 30 days attract interest at the prime rate plus 2% per month`,
+    warranty: `1. Workmanship warranty: 12 months from CoC issue date, covering installation defects
+2. Component warranty: as per manufacturer's terms for breakers, SPD and enclosure
+3. Warranty is void if the DB is opened, modified or interfered with by any party other than Riba T Tseke
+4. Lightning and surge damage are excluded unless an SPD is installed and maintained`,
+    generalConditions: `1. All work performed to SANS 10142-1 (Ed 3.3) and the SRWP Regulations
+2. The client must isolate all sensitive equipment (computers, servers, medical, AV systems) before DB work commences — Riba T Tseke will not be liable for equipment damage during power interruptions
+3. Supply to the installation will be interrupted during installation — the client must plan accordingly
+4. This agreement is governed by the laws of the Republic of South Africa`
+  },
+
+  maintenance: {
+    name: 'Ongoing Maintenance Contract',
+    serviceType: 'Maintenance Contract',
+    scope: `Ongoing planned and reactive maintenance contract for the client's electrical installation and / or solar PV system as specified in the agreed schedule. This agreement defines the scope of planned maintenance visits, response obligations for unplanned faults, applicable call-out fees and the respective obligations of both parties.
+
+Systems covered under this contract: [specify at commencement — e.g. "3-phase electrical installation including DB and all circuits" / "10 kW solar PV system with 15 kWh battery storage"]
+
+This contract is in addition to and does not replace the original installation warranty. Where warranty terms apply, they take precedence.`,
+    plannedMaint: `Planned Maintenance Schedule (confirmed and scheduled at commencement):
+
+Quarterly visit (every 3 months):
+• Visual inspection of DB, all accessible wiring and solar PV system (if applicable)
+• DB termination re-torque and breaker check
+• Solar: inverter log review, quick panel visual inspection
+• Issue of brief visit report
+
+Annual full inspection (every 12 months):
+• Full electrical inspection as per the CoC scope
+• Complete solar PV service (if applicable): panel cleaning, IR scan, battery SoH, firmware update
+• Earth continuity and insulation resistance testing
+• SPD and RCD function testing
+• Comprehensive maintenance report with photographs and test results
+
+All planned visits must be pre-scheduled at least 5 business days in advance. Cancellations within 48 hours are charged at 50% of the visit fee.`,
+    unplannedMaint: `Reactive / Unplanned Fault Response (included allowance as specified):
+
+Included call-outs per 12-month contract period: [specify at commencement, e.g. 3]
+Included call-outs are at the reduced contract rate — see Clause 4.
+Call-outs beyond the included allowance are charged at full standard rates.
+
+Response time commitments:
+• Priority 1 (safety risk): same business day if reported by 12:00; next business day otherwise
+• Priority 2 (system or circuit down): within 2 business days
+• Priority 3 (advisory / non-urgent): within 5 business days
+
+All fault reports must be made in writing (WhatsApp or email). Include photographs and a description of the fault where possible.`,
+    calloutFees: `Contract Call-out Rates (reduced contract pricing):
+
+Included call-outs (up to [X] per year):
+  Standard hours (Mon–Fri, 07:00–17:00):   R[X] per visit + labour at contract IE rate
+  After-hours / weekend (included):         Negotiated at contract commencement
+
+Additional / excess call-outs:
+  Standard (Mon–Fri, 07:00–17:00):         R750 per visit + labour at IE hourly rate
+  Extended hours (Mon–Fri, 17:01–20:00):   R1,100 per visit + labour at 1.5× IE rate
+  Weekend / Public holiday (08:00–17:00):  R1,600 per visit + labour at 2.0× IE rate
+  After-hours emergency (20:01–06:59):     R2,200 per visit + labour at 2.5× IE rate
+
+Planned maintenance visits are included in the monthly retainer. Labour and parts for reactive fault repairs are charged in addition to the call-out fee. Parts at cost plus 15% handling margin.`,
+    insuranceReqs: `The client must maintain comprehensive insurance covering all systems under this contract and must supply updated proof of insurance to Riba T Tseke annually. Solar PV systems must be declared as a named item at full replacement value. Any lapse in insurance must be reported immediately. Riba T Tseke reserves the right to suspend reactive maintenance obligations during any period of uninsured risk.`,
+    paymentTerms: `1. Monthly retainer invoiced on the 1st of each month, payable within 7 days of invoice date
+2. Annual CPI adjustment applies on the anniversary of this contract — 30 days' written notice will be given
+3. Invoices unpaid after 30 days attract interest at the prime lending rate plus 2% per month
+4. Additional work (repairs, parts, excess call-outs) invoiced separately and payable within 14 days`,
+    warranty: `All workmanship performed under reactive and planned maintenance visits carries a 90-day workmanship warranty from the date of that visit. Parts and materials are covered by manufacturer warranty terms. The contract does not cover pre-existing faults unless identified and quoted during a maintenance visit.`,
+    generalConditions: `1. This contract has an initial term of 12 months from the commencement date and renews automatically unless either party provides 30 days' written notice of non-renewal
+2. Either party may cancel with 30 days' written notice; a pro-rata refund of any prepaid retainer applies
+3. This contract does not cover damage caused by lightning, surge, theft, vandalism or acts of God unless a specific SPD / surge clause is added by written addendum
+4. Riba T Tseke is not liable for consequential, economic or business interruption losses arising from system downtime
+5. The client must provide safe, unimpeded access for all visits; failure to provide access within an agreed window forfeits the visit fee
+6. This agreement is governed by the laws of the Republic of South Africa`
+  }
+};
+
+function agrRender(){
+  var q=(document.getElementById('agr-search')||{}).value||'';
+  var list=bizList('agr_');
+  if(q) list=list.filter(function(x){ return (x.agreementNo+''+x.clientName+x.serviceType).toLowerCase().indexOf(q.toLowerCase())>-1; });
+  var el=document.getElementById('agr-list');
+  if(!el) return;
+  if(!list.length){ el.innerHTML='<p style="font-size:13px;color:var(--fg3);text-align:center;padding:20px 0;">No agreements yet. Create one from an LOI using the &#128203; Agreement button on any LOI card.</p>'; return; }
+  el.innerHTML=list.map(function(a){
+    var sb={'draft':'biz-badge-orange','active':'biz-badge-green','expired':'biz-badge-grey','cancelled':'biz-badge-red'}[a.status]||'biz-badge-grey';
+    return '<div class="biz-card">'
+      +'<div class="biz-card-row">'
+      +'<div><div class="biz-card-title">AGR-'+padN(a.seq,4)+' &mdash; '+esc(a.clientName||'')+'</div>'
+      +'<div class="biz-card-sub">'+esc(a.serviceType||'')+(a.siteAddress?' &middot; '+esc(a.siteAddress):'')+'</div>'
+      +'<div class="biz-card-sub">'+bizDateStr(a.createdAt)+(a.contractValue?' &middot; <strong>R'+fmtMoney(a.contractValue)+'</strong>':'')+(a.loiRef?' &middot; '+esc(a.loiRef):'')+'</div></div>'
+      +'<span class="biz-badge '+sb+'">'+a.status+'</span>'
+      +'</div>'
+      +'<div class="biz-card-actions">'
+      +'<button class="biz-btn biz-btn-secondary" onclick="agrEdit(\''+a.id+'\')">Edit</button>'
+      +'<button class="biz-btn biz-btn-primary" onclick="agrPrint(\''+a.id+'\')">Print / PDF</button>'
+      +'<button class="biz-btn biz-btn-danger" onclick="bizDelConfirm(\'agr_'+a.id+'\',agrRender)">Del</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+function agrNew(preClientId,preLoiId){
+  var clients=bizList('cl_');
+  var clOpts=clients.map(function(c){ return '<option value="'+c.id+'"'+(preClientId===c.id?' selected':'')+'>'+esc(c.name)+(c.company?' ('+esc(c.company)+')':'')+'</option>'; }).join('');
+  var seq=bizNextSeq('agr');
+  var preLoi=preLoiId?bizGet('loi_'+preLoiId):null;
+  var tplOpts=Object.keys(AGR_TEMPLATES).map(function(k){ return '<option value="'+k+'">'+AGR_TEMPLATES[k].name+'</option>'; }).join('');
+  var ov=document.createElement('div');
+  ov.className='biz-modal-bg';
+  ov.id='agr-modal';
+  ov.innerHTML='<div class="biz-modal" style="max-width:720px;">'
+    +'<h4>New Works Agreement &mdash; AGR-'+padN(seq,4)+'</h4>'
+    +'<p style="font-size:12.5px;color:var(--fg3);margin:0 0 14px;">A Works Agreement formalises the scope, maintenance terms, fees and insurance obligations for each job. It follows the LOI / NTP and is signed before work commences.</p>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div class="biz-field"><label class="biz-label">Client *</label>'
+    +'<select class="biz-input" id="agr-f-client">'+(clOpts||'<option value="">-- Add a client first --</option>')+'</select></div>'
+    +'<div class="biz-field"><label class="biz-label">Service Template</label>'
+    +'<select class="biz-input" id="agr-f-tpl" onchange="agrTplLoad(this.value)">'
+    +'<option value="">-- Select to pre-fill --</option>'+tplOpts+'</select></div>'
+    +'<div class="biz-field"><label class="biz-label">Service Type *</label><input class="biz-input" id="agr-f-svc" placeholder="e.g. Solar PV Installation"></div>'
+    +'<div class="biz-field"><label class="biz-label">Site Address</label><input class="biz-input" id="agr-f-site" placeholder="Installation address"></div>'
+    +'<div class="biz-field"><label class="biz-label">LOI Reference</label><input class="biz-input" id="agr-f-loiref"></div>'
+    +'<div class="biz-field"><label class="biz-label">Quote Reference</label><input class="biz-input" id="agr-f-qtref"></div>'
+    +'<div class="biz-field"><label class="biz-label">Contract Value (R)</label><input class="biz-input" id="agr-f-value" type="number" placeholder="0"></div>'
+    +'<div class="biz-field"><label class="biz-label">Start Date</label><input class="biz-input" id="agr-f-start" type="date"></div>'
+    +'</div>'
+    +'<div style="margin:16px 0 6px;font-size:13px;font-weight:700;color:var(--amb);">&#128218; Agreement Sections <span style="font-size:11px;font-weight:400;color:var(--fg3);">&mdash; select a template above then customise each section for the job</span></div>'
+    +'<div class="biz-field"><label class="biz-label">1. Scope of Works</label><textarea class="biz-textarea" id="agr-f-scope" rows="5" placeholder="Detailed description of all work to be performed..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">2. Planned Maintenance</label><textarea class="biz-textarea" id="agr-f-maint-p" rows="4" placeholder="Schedule and content of planned maintenance visits..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">3. Unplanned / Reactive Maintenance</label><textarea class="biz-textarea" id="agr-f-maint-u" rows="4" placeholder="Response times and conditions for unplanned fault response..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">4. Call-out / Fallout Fees</label><textarea class="biz-textarea" id="agr-f-fees" rows="4" placeholder="Call-out fee schedule with business hours vs after-hours rates..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">5. Client Insurance Obligations</label><textarea class="biz-textarea" id="agr-f-ins" rows="3" placeholder="Insurance cover the client must maintain and keep updated..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">6. Payment Terms</label><textarea class="biz-textarea" id="agr-f-pay" rows="3" placeholder="Payment schedule, due dates, late payment penalties..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">7. Warranty</label><textarea class="biz-textarea" id="agr-f-warranty" rows="3" placeholder="Workmanship and materials warranty terms..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">8. General Conditions</label><textarea class="biz-textarea" id="agr-f-gc" rows="4" placeholder="Governing law, access requirements, liability limitations..."></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">Status</label>'
+    +'<select class="biz-input" id="agr-f-status"><option value="draft">Draft</option><option value="active">Active / Signed</option><option value="expired">Expired</option><option value="cancelled">Cancelled</option></select></div>'
+    +'<p id="agr-modal-err" style="color:#e55;font-size:12px;min-height:14px;"></p>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="agrSave(null,'+seq+(preLoi?',\''+preLoi.clientId+'\'':',null')+')">Save Agreement</button>'
+    +'<button class="biz-btn biz-btn-secondary" onclick="document.getElementById(\'agr-modal\').remove()">Cancel</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  if(preClientId){ var sel=document.getElementById('agr-f-client'); if(sel) sel.value=preClientId; }
+  if(preLoi){
+    var f=document.getElementById('agr-f-loiref'); if(f) f.value=preLoi.loiNo||'';
+    var r=document.getElementById('agr-f-qtref'); if(r) r.value=preLoi.quoteRef||'';
+    var v=document.getElementById('agr-f-value'); if(v) v.value=preLoi.value||'';
+    var s=document.getElementById('agr-f-start'); if(s) s.value=preLoi.startDate||'';
+    var t=document.getElementById('agr-f-svc'); if(t&&!t.value) t.value=preLoi.project||'';
+  }
+}
+
+function agrTplLoad(key){
+  var t=AGR_TEMPLATES[key];
+  if(!t) return;
+  var map={'agr-f-svc':t.serviceType,'agr-f-scope':t.scope,'agr-f-maint-p':t.plannedMaint,'agr-f-maint-u':t.unplannedMaint,'agr-f-fees':t.calloutFees,'agr-f-ins':t.insuranceReqs,'agr-f-pay':t.paymentTerms,'agr-f-warranty':t.warranty,'agr-f-gc':t.generalConditions};
+  Object.keys(map).forEach(function(id){ var el=document.getElementById(id); if(el&&!el.value) el.value=map[id]||''; });
+}
+
+function agrEdit(id){
+  var a=bizGet('agr_'+id);
+  if(!a) return;
+  var clients=bizList('cl_');
+  var clOpts=clients.map(function(c){ return '<option value="'+c.id+'"'+(a.clientId===c.id?' selected':'')+'>'+esc(c.name)+(c.company?' ('+esc(c.company)+')':'')+'</option>'; }).join('');
+  var tplOpts=Object.keys(AGR_TEMPLATES).map(function(k){ return '<option value="'+k+'">'+AGR_TEMPLATES[k].name+'</option>'; }).join('');
+  var ov=document.createElement('div');
+  ov.className='biz-modal-bg';
+  ov.id='agr-modal';
+  ov.innerHTML='<div class="biz-modal" style="max-width:720px;">'
+    +'<h4>Edit Agreement &mdash; AGR-'+padN(a.seq,4)+'</h4>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'
+    +'<div class="biz-field"><label class="biz-label">Client</label><select class="biz-input" id="agr-f-client">'+clOpts+'</select></div>'
+    +'<div class="biz-field"><label class="biz-label">Re-load Template</label>'
+    +'<select class="biz-input" id="agr-f-tpl" onchange="agrTplLoad(this.value)">'
+    +'<option value="">-- Overwrites empty fields only --</option>'+tplOpts+'</select></div>'
+    +'<div class="biz-field"><label class="biz-label">Service Type</label><input class="biz-input" id="agr-f-svc"></div>'
+    +'<div class="biz-field"><label class="biz-label">Site Address</label><input class="biz-input" id="agr-f-site"></div>'
+    +'<div class="biz-field"><label class="biz-label">LOI Reference</label><input class="biz-input" id="agr-f-loiref"></div>'
+    +'<div class="biz-field"><label class="biz-label">Quote Reference</label><input class="biz-input" id="agr-f-qtref"></div>'
+    +'<div class="biz-field"><label class="biz-label">Contract Value (R)</label><input class="biz-input" id="agr-f-value" type="number"></div>'
+    +'<div class="biz-field"><label class="biz-label">Start Date</label><input class="biz-input" id="agr-f-start" type="date"></div>'
+    +'</div>'
+    +'<div class="biz-field"><label class="biz-label">1. Scope of Works</label><textarea class="biz-textarea" id="agr-f-scope" rows="5"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">2. Planned Maintenance</label><textarea class="biz-textarea" id="agr-f-maint-p" rows="4"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">3. Unplanned / Reactive Maintenance</label><textarea class="biz-textarea" id="agr-f-maint-u" rows="4"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">4. Call-out / Fallout Fees</label><textarea class="biz-textarea" id="agr-f-fees" rows="4"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">5. Client Insurance Obligations</label><textarea class="biz-textarea" id="agr-f-ins" rows="3"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">6. Payment Terms</label><textarea class="biz-textarea" id="agr-f-pay" rows="3"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">7. Warranty</label><textarea class="biz-textarea" id="agr-f-warranty" rows="3"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">8. General Conditions</label><textarea class="biz-textarea" id="agr-f-gc" rows="4"></textarea></div>'
+    +'<div class="biz-field"><label class="biz-label">Status</label>'
+    +'<select class="biz-input" id="agr-f-status">'
+    +['draft','active','expired','cancelled'].map(function(s){ return '<option value="'+s+'"'+(a.status===s?' selected':'')+'>'+s+'</option>'; }).join('')
+    +'</select></div>'
+    +'<p id="agr-modal-err" style="color:#e55;font-size:12px;min-height:14px;"></p>'
+    +'<div class="biz-modal-actions">'
+    +'<button class="biz-btn biz-btn-primary" onclick="agrSave(\''+id+'\','+a.seq+',\''+a.clientId+'\')">Save</button>'
+    +'<button class="biz-btn biz-btn-secondary" onclick="document.getElementById(\'agr-modal\').remove()">Cancel</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  var vals={'agr-f-svc':a.serviceType||'','agr-f-site':a.siteAddress||'','agr-f-loiref':a.loiRef||'','agr-f-qtref':a.qtRef||'','agr-f-value':a.contractValue||'','agr-f-start':a.startDate||'','agr-f-scope':a.scope||'','agr-f-maint-p':a.plannedMaint||'','agr-f-maint-u':a.unplannedMaint||'','agr-f-fees':a.calloutFees||'','agr-f-ins':a.insuranceReqs||'','agr-f-pay':a.paymentTerms||'','agr-f-warranty':a.warranty||'','agr-f-gc':a.generalConditions||''};
+  Object.keys(vals).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=vals[id]; });
+}
+
+function agrSave(id,seq,preClientId){
+  var svc=(document.getElementById('agr-f-svc').value||'').trim();
+  if(!svc){ document.getElementById('agr-modal-err').textContent='Service type is required.'; return; }
+  var clientId=(document.getElementById('agr-f-client')||{}).value||preClientId||'';
+  var client=bizGet('cl_'+clientId)||{};
+  var aid=id||('agr_'+Date.now());
+  var existing=bizGet('agr_'+aid)||{createdAt:Date.now()};
+  var rec=Object.assign(existing,{
+    id:aid,seq:seq,agreementNo:'AGR-'+padN(seq,4),
+    clientId:clientId,clientName:client.name||'',
+    serviceType:svc,
+    siteAddress:(document.getElementById('agr-f-site').value||'').trim(),
+    loiRef:(document.getElementById('agr-f-loiref').value||'').trim(),
+    qtRef:(document.getElementById('agr-f-qtref').value||'').trim(),
+    contractValue:parseFloat(document.getElementById('agr-f-value').value)||0,
+    startDate:(document.getElementById('agr-f-start').value||''),
+    scope:(document.getElementById('agr-f-scope').value||'').trim(),
+    plannedMaint:(document.getElementById('agr-f-maint-p').value||'').trim(),
+    unplannedMaint:(document.getElementById('agr-f-maint-u').value||'').trim(),
+    calloutFees:(document.getElementById('agr-f-fees').value||'').trim(),
+    insuranceReqs:(document.getElementById('agr-f-ins').value||'').trim(),
+    paymentTerms:(document.getElementById('agr-f-pay').value||'').trim(),
+    warranty:(document.getElementById('agr-f-warranty').value||'').trim(),
+    generalConditions:(document.getElementById('agr-f-gc').value||'').trim(),
+    status:(document.getElementById('agr-f-status').value||'draft')
+  });
+  bizSet('agr_'+aid,rec);
+  document.getElementById('agr-modal').remove();
+  agrRender();
+}
+
+function agrFromLoi(loiId){
+  var l=bizGet('loi_'+loiId);
+  if(!l) return;
+  hubShow('hub-agr',document.querySelector('.hub-nav-btn[onclick*="hub-agr"]'));
+  agrNew(l.clientId,loiId);
+}
+
+function agrPrint(id){
+  var a=bizGet('agr_'+id);
+  if(!a) return;
+  var client=bizGet('cl_'+a.clientId)||{};
+  function agrSec(num,title,content){
+    if(!content) return '';
+    return '<div style="margin-bottom:22px;page-break-inside:avoid;">'
+      +'<div style="font-size:11px;font-weight:800;color:#1E8540;text-transform:uppercase;letter-spacing:.07em;border-bottom:2px solid #1E8540;padding-bottom:4px;margin-bottom:9px;">Section '+num+' &mdash; '+title+'</div>'
+      +'<div style="font-size:12.5px;line-height:1.8;white-space:pre-line;color:#222;">'+esc(content)+'</div>'
+      +'</div>';
+  }
+  var statusCol={'draft':'#e67e22','active':'#1E8540','expired':'#888','cancelled':'#c0392b'}[a.status]||'#888';
+  var html='<div style="font-family:Arial,sans-serif;max-width:720px;margin:0 auto;padding:30px 24px;color:#222;">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid #1E8540;">'
+    +'<div><div style="font-size:24px;font-weight:900;color:#1E8540;letter-spacing:-.5px;">RIBA T TSEKE</div>'
+    +'<div style="font-size:11px;color:#555;margin-top:3px;">Installation Electrician (DoEL) &middot; CoC Issuer &middot; Solar PV Installer</div>'
+    +'<div style="font-size:11px;color:#555;">072 474 8888 &middot; ribattseke@gmail.com &middot; ribattseke.co.za</div></div>'
+    +'<div style="text-align:right;">'
+    +'<div style="font-size:20px;font-weight:900;color:#1E8540;">WORKS AGREEMENT</div>'
+    +'<div style="font-size:14px;font-weight:800;margin-top:2px;">AGR-'+padN(a.seq,4)+'</div>'
+    +'<div style="font-size:11px;color:#666;margin-top:2px;">Date: '+bizDateStr(a.createdAt)+'</div>'
+    +'<div style="font-size:11px;font-weight:800;color:'+statusCol+';margin-top:3px;letter-spacing:.05em;">'+a.status.toUpperCase()+'</div>'
+    +'</div></div>'
+    +'<div style="background:#f8f8f8;border:1px solid #ddd;border-radius:6px;padding:14px 16px;margin-bottom:22px;">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;">'
+    +'<div><div style="font-size:10px;font-weight:800;letter-spacing:.08em;color:#888;margin-bottom:4px;">PROVIDER</div>'
+    +'<div style="font-size:13px;font-weight:800;">Riba T Tseke</div>'
+    +'<div style="font-size:11.5px;color:#555;">Installation Electrician (DoEL)</div>'
+    +'<div style="font-size:11.5px;color:#555;">ECASA Member &middot; Reg. Electrician</div>'
+    +'<div style="font-size:11.5px;color:#555;">Gauteng, South Africa</div></div>'
+    +'<div><div style="font-size:10px;font-weight:800;letter-spacing:.08em;color:#888;margin-bottom:4px;">CLIENT</div>'
+    +'<div style="font-size:13px;font-weight:800;">'+esc(client.name||a.clientName||'')+'</div>'
+    +(client.company?'<div style="font-size:11.5px;color:#555;">'+esc(client.company)+'</div>':'')
+    +(client.address?'<div style="font-size:11.5px;color:#555;white-space:pre-line;">'+esc(client.address)+'</div>':'')
+    +(client.phone?'<div style="font-size:11.5px;color:#555;">'+esc(client.phone)+'</div>':'')
+    +'</div></div>'
+    +'<div style="border-top:1px solid #ddd;padding-top:10px;display:flex;flex-wrap:wrap;gap:16px;">'
+    +(a.siteAddress?'<div><div style="font-size:9.5px;font-weight:700;color:#888;letter-spacing:.05em;">SITE ADDRESS</div><div style="font-size:11.5px;font-weight:700;">'+esc(a.siteAddress)+'</div></div>':'')
+    +'<div><div style="font-size:9.5px;font-weight:700;color:#888;letter-spacing:.05em;">SERVICE</div><div style="font-size:11.5px;font-weight:700;">'+esc(a.serviceType||'')+'</div></div>'
+    +(a.loiRef?'<div><div style="font-size:9.5px;font-weight:700;color:#888;letter-spacing:.05em;">LOI REF</div><div style="font-size:11.5px;font-weight:700;">'+esc(a.loiRef)+'</div></div>':'')
+    +(a.qtRef?'<div><div style="font-size:9.5px;font-weight:700;color:#888;letter-spacing:.05em;">QUOTE REF</div><div style="font-size:11.5px;font-weight:700;">'+esc(a.qtRef)+'</div></div>':'')
+    +(a.contractValue?'<div><div style="font-size:9.5px;font-weight:700;color:#888;letter-spacing:.05em;">CONTRACT VALUE</div><div style="font-size:11.5px;font-weight:700;color:#1E8540;">R '+fmtMoney(a.contractValue)+'</div></div>':'')
+    +(a.startDate?'<div><div style="font-size:9.5px;font-weight:700;color:#888;letter-spacing:.05em;">START DATE</div><div style="font-size:11.5px;font-weight:700;">'+esc(a.startDate)+'</div></div>':'')
+    +'</div></div>'
+    +'<p style="font-size:12.5px;line-height:1.75;margin-bottom:22px;color:#333;">This Works Agreement ("<strong>Agreement</strong>") is entered into between <strong>Riba T Tseke</strong> ("<strong>Provider</strong>") and <strong>'+esc(client.name||a.clientName||'the Client')+'</strong> ("<strong>Client</strong>"), effective from the date of signature by both parties. The Agreement sets out the scope of works, maintenance obligations, fees, insurance requirements and general conditions governing the services described below.</p>'
+    +agrSec('1','Scope of Works',a.scope)
+    +agrSec('2','Planned Maintenance',a.plannedMaint)
+    +agrSec('3','Unplanned / Reactive Maintenance',a.unplannedMaint)
+    +agrSec('4','Call-out / Fallout Fees',a.calloutFees)
+    +agrSec('5','Client Insurance Obligations',a.insuranceReqs)
+    +agrSec('6','Payment Terms',a.paymentTerms)
+    +agrSec('7','Warranty',a.warranty)
+    +agrSec('8','General Conditions',a.generalConditions)
+    +'<div style="margin-top:30px;border-top:2px solid #1E8540;padding-top:20px;">'
+    +'<div style="font-size:11px;font-weight:800;color:#1E8540;text-transform:uppercase;letter-spacing:.07em;margin-bottom:18px;">Signatures &mdash; Both parties confirm they have read, understood and accept all terms of this Works Agreement</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">'
+    +'<div>'
+    +'<div style="font-size:10.5px;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:28px;">For Riba T Tseke</div>'
+    +'<div style="border-top:1px solid #999;width:240px;margin-bottom:5px;"></div>'
+    +'<div style="font-size:11px;color:#444;">Name: Tseke Riba</div>'
+    +'<div style="font-size:11px;color:#444;margin-top:3px;">Designation: Installation Electrician (DoEL)</div>'
+    +'<div style="font-size:11px;color:#444;margin-top:3px;">Date: ___________________________</div>'
+    +'</div>'
+    +'<div>'
+    +'<div style="font-size:10.5px;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:28px;">Client Signature</div>'
+    +'<div style="border-top:1px solid #999;width:240px;margin-bottom:5px;"></div>'
+    +'<div style="font-size:11px;color:#444;">Name: ___________________________</div>'
+    +'<div style="font-size:11px;color:#444;margin-top:3px;">ID / Reg No: ___________________________</div>'
+    +'<div style="font-size:11px;color:#444;margin-top:3px;">Capacity: ___________________________</div>'
+    +'<div style="font-size:11px;color:#444;margin-top:3px;">Date: ___________________________</div>'
+    +'</div></div>'
+    +'<div style="margin-top:12px;font-size:10px;color:#aaa;border-top:1px solid #eee;padding-top:8px;">This document is confidential. Riba T Tseke &middot; Gauteng, South Africa &middot; ribattseke.co.za &middot; AGR-'+padN(a.seq,4)+'</div>'
+    +'</div></div>';
+  doPrintDoc(html,'AGR-'+padN(a.seq,4));
 }
 
 /* ===========================================
