@@ -2442,6 +2442,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <button class="hub-nav-btn" onclick="hubShow('hub-sops',this)">SOPs</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">ECSA CPD</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-mentor',this)">&#128172; Mentoring</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-rates',this)">&#128204; Rate Card</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -2671,6 +2672,14 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
             <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px;">WEEKLY QUIZ BANK (tap to preview &amp; send)</div>
             <div id="mentor-quiz-bank"></div>
           </div>
+        </div>
+
+        <div id="hub-rates" class="hub-section" style="display:none;">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:4px;">&#128204; Rate Card</div>
+            <div style="font-size:12px;color:var(--fg3);">These rates are used automatically in the ⚡ Quick Add panel when building quotes. All changes save instantly to your device.</div>
+          </div>
+          <div id="rates-panel"></div>
         </div>
 
       <!-- PRINT AREA (hidden, shown on print only) -->
@@ -3344,7 +3353,7 @@ const LMS_DATA={p1:[
 {q:'SANS 10142-1 Section 6.7 covers equipotential bonding. Main protective bonding conductors shall connect:',a:'Only the water supply pipe to the main earthing terminal',b:'All extraneous conductive parts including metallic water supply pipes, gas pipes, heating and air conditioning system pipes, and exposed structural steel to the main earthing terminal',c:'Only the electrical installation earthing system to the building structure',d:'Only the lightning down conductors to the earth electrode',ans:'B',ref:'Section 6.7 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.7 — Supplementary bonding conductors in special locations (bathrooms, kitchens) shall connect:',a:'Only the socket outlets to earth',b:'All extraneous and exposed conductive parts within the special location to each other and to the local protective conductor',c:'Only metallic pipe fittings to the nearest socket outlet earth pin',d:'Only the bath or shower tray to earth',ans:'B',ref:'Section 6.7 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.7 — The minimum cross-sectional area of the main protective bonding conductor shall be:',a:'Equal to the cross-sectional area of the neutral conductor',b:'As determined by Table 6.9 of SANS 10142-1 (minimum 6 mm² and not exceeding 25 mm²)',c:'At least 10 mm² for all installations',d:'As large as the phase conductor of the main supply',ans:'B',ref:'Section 6.7, Table 6.9 — SANS 10142-1'},
-{q:'SANS 10142-1 Section 6.6 — The minimum cross-sectional area of a protective conductor shall be determined from:',a:'The diameter of the phase conductor only',b:'Table 6.8 of Section 6.6, using the cross-sectional area of the associated phase conductor',c:'50% of the neutral conductor cross-sectional area',d:'Always 4 mm² regardless of the phase conductor size',ans:'B',ref:'Section 6.6, Table 6.8 — SANS 10142-1'},
+{q:'SANS 10142-1 Section 6.6 — The minimum cross-sectional area of a protective conductor shall be determined from:',a:'The diameter of the phase conductor only',b:'Table 6.25 of Section 6.6, using the cross-sectional area of the associated phase conductor',c:'50% of the neutral conductor cross-sectional area',d:'Always 4 mm² regardless of the phase conductor size',ans:'B',ref:'Section 6.6, Table 6.25 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.7 — Supplementary bonding is required in locations such as bathrooms. The purpose is to:',a:'Increase the fault current for faster protective device operation',b:'Reduce the potential difference between all conductive parts that could simultaneously be touched, to below the touch voltage limit',c:'Create a Faraday cage around the bathroom',d:'Connect the geyser thermostat to earth',ans:'B',ref:'Section 6.7 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.6 — In a TT earthing system, the earth electrode resistance shall be:',a:'Less than 1 Ω',b:'As specified in this standard to ensure the residual current device (RCD) will operate within the required time',c:'Between 10 Ω and 100 Ω only',d:'Exactly 100 Ω for all TT installations',ans:'B',ref:'Section 6.6 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.7 — An extraneous conductive part is defined as:',a:'Any metallic enclosure of electrical equipment',b:'A conductive part not forming part of the electrical installation, which may introduce a potential, usually earth potential, into the building (e.g., water pipes, gas pipes, structural steel)',c:'The protective conductor within a cable',d:'Any conductor that is not a live conductor',ans:'B',ref:'Section 6.7 — SANS 10142-1'},
@@ -3353,11 +3362,11 @@ const LMS_DATA={p1:[
 {q:'SANS 10142-1 Section 6.6 — In a TN-S system, what is the relationship between the neutral conductor (N) and the protective earth conductor (PE)?',a:'They are combined into a single PEN conductor throughout',b:'They are separate conductors throughout the entire system',c:'They are combined from the transformer to the first distribution board only',d:'The PE conductor uses the neutral conductor as its return path',ans:'B',ref:'Section 6.6 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.7 — The main protective bonding shall be connected as close as practicable to:',a:'The furthest point from the main distribution board',b:'The point of entry of the extraneous conductive part into the building, before the first branch point',c:'The point of use of the extraneous conductive service',d:'The earth electrode directly',ans:'B',ref:'Section 6.7 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.6 — What is the purpose of the earth electrode in an electrical installation?',a:'To provide a physical connection to the earth for lightning protection only',b:'To provide the electrical connection between the installation\'s earthing system and the general mass of the earth',c:'To measure the earth fault current',d:'To connect the neutral conductor to earth at the final subcircuit level',ans:'B',ref:'Section 6.6 — SANS 10142-1'},
-{q:'SANS 10142-1 Section 6.6, Table 6.8 — For a 10 mm² phase conductor, what is the minimum cross-sectional area of the protective conductor?',a:'2.5 mm²',b:'4 mm²',c:'6 mm²',d:'10 mm²',ans:'D',ref:'Section 6.6, Table 6.8 (PE = phase CSA when phase ≤ 16 mm²) — SANS 10142-1'},
-{q:'SANS 10142-1 Section 6.6, Table 6.8 — For a 50 mm² phase conductor, what is the minimum cross-sectional area of the associated protective conductor?',a:'10 mm²',b:'25 mm²',c:'35 mm²',d:'50 mm²',ans:'B',ref:'Section 6.6, Table 6.8 (PE = 0.5 × phase CSA when phase > 35 mm²) — SANS 10142-1'},
+{q:'SANS 10142-1 Section 6.6, Table 6.25 — For a 10 mm² phase conductor, what is the minimum cross-sectional area of the protective conductor?',a:'2.5 mm²',b:'4 mm²',c:'6 mm²',d:'10 mm²',ans:'D',ref:'Section 6.6, Table 6.25 (PE = phase CSA when phase ≤ 16 mm²) — SANS 10142-1'},
+{q:'SANS 10142-1 Section 6.6, Table 6.25 — For a 50 mm² phase conductor, what is the minimum cross-sectional area of the associated protective conductor?',a:'10 mm²',b:'25 mm²',c:'35 mm²',d:'50 mm²',ans:'B',ref:'Section 6.6, Table 6.25 (PE = S/2 when 35 < S ≤ 400 mm²; 50/2 = 25 mm²) — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.6 — The main protective bonding shall be connected to the main earthing terminal. The main earthing terminal shall be:',a:'Inside the main distribution board only',b:'Accessible and identifiable, located at or near the main distribution board',c:'Concealed within the wall for protection from mechanical damage',d:'At the same location as the earth electrode',ans:'B',ref:'Section 6.6 — SANS 10142-1'},
 {q:'SANS 10142-1 Section 6.7 — Protective bonding conductors shall be connected to the:',a:'Phase conductors for immediate overcurrent protection',b:'Main earthing terminal or to the protective conductor of the circuit near the main distribution board',c:'Consumer unit directly without passing through the distribution board',d:'Earth electrode directly without routing through the distribution board',ans:'B',ref:'Section 6.7 — SANS 10142-1'},
-{q:'SANS 10142-1 Section 6.6 — The minimum cross-sectional area of a protective conductor that is part of a cable or is in the same conduit as the phase conductors, for a phase conductor of 25 mm²:',a:'10 mm²',b:'16 mm²',c:'25 mm²',d:'35 mm²',ans:'B',ref:'Section 6.6, Table 6.8 (PE = phase/2 = 12.5 → round up to 16 mm² when phase > 16mm²) — SANS 10142-1'},
+{q:'SANS 10142-1 Section 6.6 — The minimum cross-sectional area of a protective conductor that is part of a cable or is in the same conduit as the phase conductors, for a phase conductor of 25 mm²:',a:'10 mm²',b:'16 mm²',c:'25 mm²',d:'35 mm²',ans:'B',ref:'Section 6.6, Table 6.25 (16 < S ≤ 35 mm² → PE = 16 mm²; 25 mm² phase falls in this range) — SANS 10142-1'},
 ]},
 {title:'ELV, Special Circuits and Switching (Sections 6.9–6.11)',pool:[
 {q:'SANS 10142-1 Section 6.9 covers functional extra low voltage (FELV) circuits. FELV differs from PELV in that:',a:'FELV operates at higher voltages than PELV',b:'FELV does not meet all the requirements for PELV — it uses ELV for functional reasons only, without full protective separation, so the same shock protection as the primary circuit must be maintained',c:'FELV is used only for signalling systems',d:'FELV requires complete isolation from the supply network',ans:'B',ref:'Section 6.9 — SANS 10142-1'},
@@ -5116,6 +5125,270 @@ var QT_TEMPLATES = {
   ]}
 };
 
+/* ===========================================
+   RATE CARD DATA + HELPERS
+   =========================================== */
+var BIZ_RATE_DEFAULTS = {
+  labour: [
+    {id:'ie',    role:'Installation Electrician (IE)',   hourly:420},
+    {id:'senior',role:'Senior IE / Charge Hand',         hourly:520},
+    {id:'appr',  role:'Apprentice / Learner',            hourly:220},
+    {id:'pm',    role:'Project Manager',                 hourly:580},
+    {id:'admin', role:'Admin / Report Compilation',      hourly:280},
+    {id:'safety',role:'Safety Officer / Supervisor',     hourly:350}
+  ],
+  travel: { aaRatePerKm:4.84, margin:1.20 },
+  books: [
+    {id:'10142-hc', name:'SANS 10142-1 (Ed 3.3) Hardcopy',    sellPrice:1350, paystack:'https://paystack.com/buy/sans-10142-1-2026-edition-33-hardcopy-levwkw'},
+    {id:'10142-sc', name:'SANS 10142-1 (Ed 3.3) Softcopy PDF', sellPrice:900,  paystack:'https://paystack.com/buy/sans-10142-1-2026-edition-303-softcopy-pdf-tviglk'},
+    {id:'10292',    name:'SANS 10292',                         sellPrice:650,  paystack:''},
+    {id:'10198-1',  name:'SANS 10198-1',                       sellPrice:600,  paystack:''},
+    {id:'10198-2',  name:'SANS 10198-2',                       sellPrice:600,  paystack:''}
+  ],
+  report:   { compilationHourly:280 },
+  insurance:{ ratePercent:2.5 },
+  overhead: { projectAlloc:85, monthlyBreakdown:'Claude AI R500 + Memberships R150 + Software R200 = R850/month ÷ ~10 jobs' }
+};
+function bizGetRates(){
+  try{ var s=bizGet('rates_v1'); if(s&&s.labour) return s; }catch(e){}
+  return JSON.parse(JSON.stringify(BIZ_RATE_DEFAULTS));
+}
+function bizSaveRates(r){ bizSet('rates_v1',r); }
+
+function qtQaToggle(){
+  var p=document.getElementById('qt-qa-panel');
+  if(!p) return;
+  p.style.display=(p.style.display==='none'||!p.style.display?'block':'none');
+}
+function qtQaPanelHtml(){
+  return '<div style="font-size:12px;font-weight:700;color:#1E8540;margin-bottom:8px;">⚡ Quick Add from Rate Card</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">'
+    +'<div><label style="font-size:11px;color:#666;display:block;margin-bottom:3px;">Category</label>'
+    +'<select id="qt-qa-cat" class="biz-input" style="min-width:150px;font-size:12px;" onchange="qtQaCatChg()">'
+    +'<option value="">Select...</option>'
+    +'<option value="labour">Labour</option>'
+    +'<option value="travel">Travel (AA Rate)</option>'
+    +'<option value="tolls">Toll Gates</option>'
+    +'<option value="book">Books / Study Material</option>'
+    +'<option value="report">Report Compilation</option>'
+    +'<option value="insurance">Insurance Provision</option>'
+    +'<option value="overhead">Overhead Allocation</option>'
+    +'<option value="consumable">Consumable / Material</option>'
+    +'</select></div>'
+    +'<div id="qt-qa-fields" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;"></div>'
+    +'</div>'
+    +'<div id="qt-qa-preview" style="font-size:11px;color:#1E8540;font-style:italic;margin:6px 0 2px;min-height:16px;"></div>'
+    +'<div style="display:flex;gap:6px;margin-top:6px;">'
+    +'<button class="biz-btn biz-btn-primary" style="font-size:11px;" onclick="qtQaAdd()">+ Add to Quote</button>'
+    +'<button class="biz-btn biz-btn-secondary" style="font-size:11px;" onclick="qtQaToggle()">Close</button>'
+    +'</div>';
+}
+function qtQaCatChg(){
+  var cat=(document.getElementById('qt-qa-cat')||{}).value||'';
+  var R=bizGetRates();
+  var f=document.getElementById('qt-qa-fields');
+  if(!f) return;
+  function lbl(t){ return '<label style="font-size:11px;color:#666;display:block;margin-bottom:2px;">'+t+'</label>'; }
+  var html='';
+  if(cat==='labour'){
+    var roleOpts=R.labour.map(function(r){ return '<option value="'+r.id+'">'+r.role+'</option>'; }).join('');
+    html='<div>'+lbl('Role')+'<select id="qt-qa-role" class="biz-input" style="font-size:12px;" onchange="qtQaPreview()">'+roleOpts+'</select></div>'
+      +'<div>'+lbl('Hours')+'<input id="qt-qa-hours" class="biz-input" type="number" value="4" min="0.5" step="0.5" style="width:70px;" oninput="qtQaPreview()"></div>'
+      +'<div>'+lbl('Workers')+'<input id="qt-qa-workers" class="biz-input" type="number" value="1" min="1" style="width:60px;" oninput="qtQaPreview()"></div>';
+  } else if(cat==='travel'){
+    html='<div>'+lbl('Distance km (one-way)')+'<input id="qt-qa-km" class="biz-input" type="number" value="0" min="0" style="width:80px;" oninput="qtQaPreview()"></div>'
+      +'<div>'+lbl('Trips (2=return)')+'<input id="qt-qa-trips" class="biz-input" type="number" value="2" min="1" style="width:60px;" oninput="qtQaPreview()"></div>';
+  } else if(cat==='tolls'){
+    html='<div>'+lbl('Route description')+'<input id="qt-qa-tollroute" class="biz-input" value="" placeholder="e.g. N1 Allandale return" style="width:200px;"></div>'
+      +'<div>'+lbl('Toll amount (R)')+'<input id="qt-qa-tollamt" class="biz-input" type="number" value="0" min="0" style="width:80px;" oninput="qtQaPreview()"></div>';
+  } else if(cat==='book'){
+    var bookOpts=R.books.map(function(b){ return '<option value="'+b.id+'">'+b.name+' — R'+b.sellPrice+'</option>'; }).join('');
+    html='<div>'+lbl('Title')+'<select id="qt-qa-book" class="biz-input" style="font-size:12px;" onchange="qtQaPreview()">'+bookOpts+'</select></div>'
+      +'<div>'+lbl('Qty')+'<input id="qt-qa-bookqty" class="biz-input" type="number" value="1" min="1" style="width:60px;" oninput="qtQaPreview()"></div>';
+  } else if(cat==='report'){
+    html='<div>'+lbl('Hours')+'<input id="qt-qa-rephours" class="biz-input" type="number" value="2" min="0.5" step="0.5" style="width:80px;" oninput="qtQaPreview()"></div>'
+      +'<div>'+lbl('Description')+'<input id="qt-qa-repdesc" class="biz-input" value="Report Compilation &amp; Submission" style="width:200px;"></div>';
+  } else if(cat==='insurance'){
+    html='<div>'+lbl('Project subtotal (R)')+'<input id="qt-qa-insbase" class="biz-input" type="number" value="0" min="0" style="width:100px;" oninput="qtQaPreview()"></div>'
+      +'<div>'+lbl('Rate (%)')+'<input id="qt-qa-insrate" class="biz-input" type="number" value="'+R.insurance.ratePercent+'" min="0.1" step="0.1" style="width:70px;" oninput="qtQaPreview()"></div>';
+  } else if(cat==='overhead'){
+    html='<div style="font-size:11px;color:#555;max-width:280px;">Adds project overhead: R'+R.overhead.projectAlloc+'/project<br><span style="color:#888;font-size:10px;">'+esc(R.overhead.monthlyBreakdown)+'</span></div>';
+  } else if(cat==='consumable'){
+    html='<div>'+lbl('Description')+'<input id="qt-qa-consdesc" class="biz-input" placeholder="e.g. 2.5mm² XLPE cable" style="width:180px;"></div>'
+      +'<div>'+lbl('Qty')+'<input id="qt-qa-consqty" class="biz-input" type="number" value="1" min="0" step="any" style="width:70px;"></div>'
+      +'<div>'+lbl('Unit')+'<input id="qt-qa-consunit" class="biz-input" value="m" style="width:60px;"></div>'
+      +'<div>'+lbl('Rate (R)')+'<input id="qt-qa-consrate" class="biz-input" type="number" value="0" min="0" style="width:80px;" oninput="qtQaPreview()"></div>';
+  }
+  f.innerHTML=html;
+  qtQaPreview();
+}
+function qtQaPreview(){
+  var cat=(document.getElementById('qt-qa-cat')||{}).value||'';
+  var R=bizGetRates();
+  var prev=document.getElementById('qt-qa-preview');
+  if(!prev) return;
+  var txt='';
+  try{
+    if(cat==='labour'){
+      var rid=(document.getElementById('qt-qa-role')||{}).value;
+      var ro=R.labour.filter(function(r){return r.id===rid;})[0]||R.labour[0];
+      var h=parseFloat((document.getElementById('qt-qa-hours')||{}).value)||0;
+      var w=parseInt((document.getElementById('qt-qa-workers')||{}).value)||1;
+      txt=ro.role+': '+w+' × '+h+'h × R'+ro.hourly+'/h = R'+fmtMoney(h*ro.hourly*w);
+    } else if(cat==='travel'){
+      var km=parseFloat((document.getElementById('qt-qa-km')||{}).value)||0;
+      var tr2=parseInt((document.getElementById('qt-qa-trips')||{}).value)||1;
+      var tkm=km*tr2;
+      var rk=Math.round(R.travel.aaRatePerKm*R.travel.margin*100)/100;
+      txt=tkm+'km ('+km+'×'+tr2+' trips) × R'+R.travel.aaRatePerKm+'/km × '+R.travel.margin+' = R'+fmtMoney(tkm*rk);
+    } else if(cat==='tolls'){
+      var ta=parseFloat((document.getElementById('qt-qa-tollamt')||{}).value)||0;
+      txt='Toll: R'+fmtMoney(ta)+' (actual cost — no margin)';
+    } else if(cat==='book'){
+      var bid=(document.getElementById('qt-qa-book')||{}).value;
+      var bo=R.books.filter(function(b){return b.id===bid;})[0]||R.books[0];
+      var bq=parseInt((document.getElementById('qt-qa-bookqty')||{}).value)||1;
+      txt=bo.name+' × '+bq+' = R'+fmtMoney(bo.sellPrice*bq);
+    } else if(cat==='report'){
+      var rh=parseFloat((document.getElementById('qt-qa-rephours')||{}).value)||0;
+      txt='Report: '+rh+'h × R'+R.report.compilationHourly+'/h = R'+fmtMoney(rh*R.report.compilationHourly);
+    } else if(cat==='insurance'){
+      var ib=parseFloat((document.getElementById('qt-qa-insbase')||{}).value)||0;
+      var ip=parseFloat((document.getElementById('qt-qa-insrate')||{}).value)||R.insurance.ratePercent;
+      txt='Insurance: R'+fmtMoney(ib)+' × '+ip+'% = R'+fmtMoney(ib*ip/100);
+    } else if(cat==='overhead'){
+      txt='Overhead: R'+R.overhead.projectAlloc+'/project (AI + memberships + software)';
+    } else if(cat==='consumable'){
+      var cq=parseFloat((document.getElementById('qt-qa-consqty')||{}).value)||1;
+      var cr=parseFloat((document.getElementById('qt-qa-consrate')||{}).value)||0;
+      txt='Total: R'+fmtMoney(cq*cr);
+    }
+  }catch(e){}
+  prev.textContent=txt;
+}
+function qtQaAdd(){
+  var cat=(document.getElementById('qt-qa-cat')||{}).value||'';
+  if(!cat) return;
+  var R=bizGetRates();
+  var item=null;
+  try{
+    if(cat==='labour'){
+      var rid=(document.getElementById('qt-qa-role')||{}).value;
+      var ro=R.labour.filter(function(r){return r.id===rid;})[0]||R.labour[0];
+      var h=parseFloat((document.getElementById('qt-qa-hours')||{}).value)||1;
+      var w=parseInt((document.getElementById('qt-qa-workers')||{}).value)||1;
+      item={desc:'Labour — '+ro.role+(w>1?' (×'+w+' workers)':''),qty:h,unit:'Hours',rate:ro.hourly*w,
+            basis:w+' worker(s) × '+h+'h × R'+ro.hourly+'/h (DoL/ECA rate + margin)'};
+    } else if(cat==='travel'){
+      var km=parseFloat((document.getElementById('qt-qa-km')||{}).value)||0;
+      var trips=parseInt((document.getElementById('qt-qa-trips')||{}).value)||1;
+      var tkm=km*trips;
+      var rk=Math.round(R.travel.aaRatePerKm*R.travel.margin*100)/100;
+      item={desc:'Travel — '+tkm+'km ('+km+'km × '+trips+' trip'+(trips>1?'s':'')+' return)',qty:tkm,unit:'km',rate:rk,
+            basis:'SARS 2024/25 AA rate R'+R.travel.aaRatePerKm+'/km × '+R.travel.margin+' margin = R'+rk+'/km; covers fuel, wear & depreciation'};
+    } else if(cat==='tolls'){
+      var route=(document.getElementById('qt-qa-tollroute')||{}).value||'Tolls';
+      var ta=parseFloat((document.getElementById('qt-qa-tollamt')||{}).value)||0;
+      item={desc:'Toll Gates — '+route,qty:1,unit:'Allow',rate:ta,basis:'Actual toll cost — no margin applied'};
+    } else if(cat==='book'){
+      var bid=(document.getElementById('qt-qa-book')||{}).value;
+      var bo=R.books.filter(function(b){return b.id===bid;})[0]||R.books[0];
+      var bq=parseInt((document.getElementById('qt-qa-bookqty')||{}).value)||1;
+      item={desc:'Study Material — '+bo.name,qty:bq,unit:'Each',rate:bo.sellPrice,
+            basis:'Paystack sell price R'+bo.sellPrice+(bo.paystack?' — order via: '+bo.paystack:'')};
+    } else if(cat==='report'){
+      var rh=parseFloat((document.getElementById('qt-qa-rephours')||{}).value)||1;
+      var rd=(document.getElementById('qt-qa-repdesc')||{}).value||'Report Compilation & Submission';
+      item={desc:rd,qty:rh,unit:'Hours',rate:R.report.compilationHourly,
+            basis:rh+'h × R'+R.report.compilationHourly+'/h (AI-assisted, reviewed & signed off by IE — covers Claude AI + professional time)'};
+    } else if(cat==='insurance'){
+      var ib=parseFloat((document.getElementById('qt-qa-insbase')||{}).value)||0;
+      var ip=parseFloat((document.getElementById('qt-qa-insrate')||{}).value)||R.insurance.ratePercent;
+      var iamt=Math.round(ib*ip/100*100)/100;
+      item={desc:'Professional Indemnity & Liability Insurance',qty:1,unit:'Allow',rate:iamt,
+            basis:'PI + PL insurance: '+ip+'% of R'+fmtMoney(ib)+' project value (annual premium allocation)'};
+    } else if(cat==='overhead'){
+      item={desc:'Overhead Allocation (AI, Memberships, Software)',qty:1,unit:'Allow',rate:R.overhead.projectAlloc,
+            basis:R.overhead.monthlyBreakdown};
+    } else if(cat==='consumable'){
+      var cd=(document.getElementById('qt-qa-consdesc')||{}).value||'Consumable';
+      var cq=parseFloat((document.getElementById('qt-qa-consqty')||{}).value)||1;
+      var cu=(document.getElementById('qt-qa-consunit')||{}).value||'Each';
+      var cr=parseFloat((document.getElementById('qt-qa-consrate')||{}).value)||0;
+      item={desc:cd,qty:cq,unit:cu,rate:cr,basis:'Voltex / Liteglo / Key Electrical pricing'};
+    }
+  }catch(e){}
+  if(item){ qtAddRow(item); }
+}
+
+/* ===========================================
+   RATE CARD ADMIN
+   =========================================== */
+function ratesRender(){
+  var el=document.getElementById('rates-panel');
+  if(!el) return;
+  var R=bizGetRates();
+  var labRows=R.labour.map(function(r,i){
+    return '<tr><td style="padding:4px 8px;font-size:12px;">'+esc(r.role)+'</td>'
+      +'<td style="padding:4px 8px;"><input type="number" value="'+r.hourly+'" min="0" step="10" style="width:80px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesUpdateLabour('+i+',this.value)"></td>'
+      +'<td style="padding:4px 8px;font-size:11px;color:var(--fg3);">R/hour</td></tr>';
+  }).join('');
+  var bookRows=R.books.map(function(b,i){
+    return '<tr><td style="padding:4px 8px;font-size:12px;">'+esc(b.name)+'</td>'
+      +'<td style="padding:4px 8px;"><input type="number" value="'+b.sellPrice+'" min="0" step="50" style="width:90px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesUpdateBook('+i+',this.value)"></td>'
+      +'<td style="padding:4px 8px;">'+(b.paystack?'<a href="'+b.paystack+'" target="_blank" style="color:var(--amb);font-size:11px;text-decoration:none;">Paystack ↗</a>':'-')+'</td></tr>';
+  }).join('');
+  el.innerHTML='<div style="display:flex;gap:18px;flex-wrap:wrap;">'
+    +'<div style="flex:1;min-width:260px;">'
+    +'<div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--amb);">Labour Rates</div>'
+    +'<table style="border-collapse:collapse;width:100%;"><thead><tr>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">Role</th>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">R/h</th>'
+    +'<th></th></tr></thead><tbody>'+labRows+'</tbody></table>'
+    +'<div style="margin-top:12px;">'
+    +'<div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--amb);">Travel (AA Rate)</div>'
+    +'<div style="font-size:12px;display:flex;gap:12px;flex-wrap:wrap;">'
+    +'<div>R/km: <input type="number" id="rates-aa-km" value="'+R.travel.aaRatePerKm+'" step="0.01" min="0" style="width:70px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'<div>Margin ×: <input type="number" id="rates-aa-margin" value="'+R.travel.margin+'" step="0.05" min="1" style="width:70px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'</div><div style="font-size:11px;color:var(--fg3);margin-top:4px;">AA rate covers petrol, wear &amp; depreciation — no separate fuel line needed.</div>'
+    +'</div>'
+    +'<div style="margin-top:12px;">'
+    +'<div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--amb);">Report / Admin &amp; Overhead</div>'
+    +'<div style="font-size:12px;display:flex;gap:12px;flex-wrap:wrap;">'
+    +'<div>Report R/h: <input type="number" id="rates-rep-hr" value="'+R.report.compilationHourly+'" step="10" min="0" style="width:80px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'<div>Insurance %: <input type="number" id="rates-ins-pct" value="'+R.insurance.ratePercent+'" step="0.5" min="0" style="width:70px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'<div>Overhead/job R: <input type="number" id="rates-oh-job" value="'+R.overhead.projectAlloc+'" step="10" min="0" style="width:70px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'</div><div style="font-size:11px;color:var(--fg3);margin-top:4px;">'+esc(R.overhead.monthlyBreakdown)+'</div>'
+    +'</div>'
+    +'</div>'
+    +'<div style="flex:1;min-width:260px;">'
+    +'<div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--amb);">Books / Study Material</div>'
+    +'<table style="border-collapse:collapse;width:100%;"><thead><tr>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">Title</th>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">Sell Price</th>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">Order Link</th>'
+    +'</tr></thead><tbody>'+bookRows+'</tbody></table>'
+    +'<div style="margin-top:12px;font-size:11px;color:var(--fg3);">Changes auto-save instantly. These rates power the ⚡ Quick Add panel when building quotes.</div>'
+    +'</div>'
+    +'</div>';
+}
+function ratesUpdateLabour(i,val){
+  var R=bizGetRates(); if(R.labour[i]) R.labour[i].hourly=parseFloat(val)||0; bizSaveRates(R);
+}
+function ratesUpdateBook(i,val){
+  var R=bizGetRates(); if(R.books[i]) R.books[i].sellPrice=parseFloat(val)||0; bizSaveRates(R);
+}
+function ratesSave(){
+  var R=bizGetRates();
+  var v=function(id,def){ var el=document.getElementById(id); return el?parseFloat(el.value)||def:def; };
+  R.travel.aaRatePerKm=v('rates-aa-km',4.84);
+  R.travel.margin=v('rates-aa-margin',1.20);
+  R.report.compilationHourly=v('rates-rep-hr',280);
+  R.insurance.ratePercent=v('rates-ins-pct',2.5);
+  R.overhead.projectAlloc=v('rates-oh-job',85);
+  bizSaveRates(R);
+}
+
 function qtRender(){
   var q=(document.getElementById('qt-search')||{}).value||'';
   var list=bizList('qt_');
@@ -5163,7 +5436,13 @@ function qtNew(preClientId){
     +'<table class="li-table" id="qt-li-table">'
     +'<thead><tr><th style="width:40%">Description</th><th style="width:10%">Qty</th><th style="width:14%">Unit</th><th style="width:16%">Rate (R)</th><th style="width:14%">Amount</th><th></th></tr></thead>'
     +'<tbody id="qt-li-body"></tbody></table>'
-    +'<button class="biz-btn biz-btn-secondary" style="margin-top:5px;font-size:11px;" onclick="qtAddRow()">+ Add Row</button></div>'
+    +'<div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap;">'
+    +'<button class="biz-btn biz-btn-secondary" style="font-size:11px;" onclick="qtAddRow()">+ Row</button>'
+    +'<button class="biz-btn biz-btn-secondary" style="font-size:11px;background:#e8f4ed;color:#1E8540;border-color:#1E8540;" onclick="qtQaToggle()">⚡ Quick Add</button>'
+    +'</div>'
+    +'<div id="qt-qa-panel" style="display:none;background:#f0f7f3;border:1px solid #c3dfc9;border-radius:8px;padding:12px;margin-top:8px;">'
+    +qtQaPanelHtml()
+    +'</div></div>'
     +'<div class="li-totals" id="qt-totals"></div>'
     +'<div class="biz-field"><label class="biz-label">VAT</label>'
     +'<select class="biz-input" id="qt-f-vat" onchange="qtCalc()"><option value="0">No VAT (0%)</option><option value="15">Include VAT (15%)</option></select></div>'
@@ -5198,7 +5477,13 @@ function qtEdit(id){
     +'<table class="li-table" id="qt-li-table">'
     +'<thead><tr><th style="width:40%">Description</th><th style="width:10%">Qty</th><th style="width:14%">Unit</th><th style="width:16%">Rate (R)</th><th style="width:14%">Amount</th><th></th></tr></thead>'
     +'<tbody id="qt-li-body"></tbody></table>'
-    +'<button class="biz-btn biz-btn-secondary" style="margin-top:5px;font-size:11px;" onclick="qtAddRow()">+ Add Row</button></div>'
+    +'<div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap;">'
+    +'<button class="biz-btn biz-btn-secondary" style="font-size:11px;" onclick="qtAddRow()">+ Row</button>'
+    +'<button class="biz-btn biz-btn-secondary" style="font-size:11px;background:#e8f4ed;color:#1E8540;border-color:#1E8540;" onclick="qtQaToggle()">⚡ Quick Add</button>'
+    +'</div>'
+    +'<div id="qt-qa-panel" style="display:none;background:#f0f7f3;border:1px solid #c3dfc9;border-radius:8px;padding:12px;margin-top:8px;">'
+    +qtQaPanelHtml()
+    +'</div></div>'
     +'<div class="li-totals" id="qt-totals"></div>'
     +'<div class="biz-field"><label class="biz-label">VAT</label>'
     +'<select class="biz-input" id="qt-f-vat" onchange="qtCalc()"><option value="0"'+((!q.vatRate||q.vatRate===0)?' selected':'')+'>No VAT (0%)</option><option value="15"'+(q.vatRate===15?' selected':'')+'>Include VAT (15%)</option></select></div>'
@@ -5229,11 +5514,13 @@ function qtLoadTmpl(){
 }
 
 function qtAddRow(it){
-  it=it||{desc:'',qty:1,unit:'Each',rate:0};
+  it=it||{desc:'',qty:1,unit:'Each',rate:0,basis:''};
   var tbody=document.getElementById('qt-li-body');
   if(!tbody) return;
   var tr=document.createElement('tr');
-  tr.innerHTML='<td><input value="'+esc(it.desc)+'" onchange="qtCalc()" oninput="qtCalc()"></td>'
+  var bDiv=it.basis?'<div style="font-size:10px;color:#888;font-style:italic;padding:1px 0 0 1px;">'+esc(it.basis)+'</div>':'';
+  tr.innerHTML='<td><input value="'+esc(it.desc)+'" onchange="qtCalc()" oninput="qtCalc()">'+bDiv
+    +'<input type="hidden" class="qt-basis-data" value="'+esc(it.basis||'')+'"></td>'
     +'<td><input type="number" value="'+it.qty+'" min="0" step="any" onchange="qtCalc()" oninput="qtCalc()" style="text-align:right;"></td>'
     +'<td><input value="'+esc(it.unit||'Each')+'" ></td>'
     +'<td><input type="number" value="'+it.rate+'" min="0" step="any" onchange="qtCalc()" oninput="qtCalc()" style="text-align:right;"></td>'
@@ -5269,8 +5556,9 @@ function qtGetItems(){
   if(!tbody) return [];
   var items=[];
   tbody.querySelectorAll('tr').forEach(function(tr){
-    var inputs=tr.querySelectorAll('input');
-    items.push({desc:inputs[0].value,qty:parseFloat(inputs[1].value)||0,unit:inputs[2].value,rate:parseFloat(inputs[3].value)||0});
+    var inputs=tr.querySelectorAll('input:not([type=hidden])');
+    var basisEl=tr.querySelector('.qt-basis-data');
+    items.push({desc:inputs[0].value,qty:parseFloat(inputs[1].value)||0,unit:inputs[2].value,rate:parseFloat(inputs[3].value)||0,basis:basisEl?basisEl.value:''});
   });
   return items;
 }
@@ -5309,7 +5597,7 @@ function qtPrint(id){
   var rows=(q.items||[]).map(function(it,i){
     return '<tr style="border-bottom:1px solid #e0d8cc;">'
       +'<td style="padding:5px 8px;font-size:12px;">'+(i+1)+'</td>'
-      +'<td style="padding:5px 8px;font-size:12px;">'+esc(it.desc)+'</td>'
+      +'<td style="padding:5px 8px;font-size:12px;">'+esc(it.desc)+(it.basis?'<div style="font-size:10px;color:#888;font-style:italic;margin-top:1px;">'+esc(it.basis)+'</div>':'')+'</td>'
       +'<td style="padding:5px 8px;font-size:12px;text-align:right;">'+it.qty+'</td>'
       +'<td style="padding:5px 8px;font-size:12px;">'+esc(it.unit||'')+'</td>'
       +'<td style="padding:5px 8px;font-size:12px;text-align:right;">R '+fmtMoney(it.rate)+'</td>'
@@ -7680,10 +7968,10 @@ var MENTOR_QUIZ_BANK = [
   },
   {
     id:'q6', week:6,
-    question:'According to SANS 10142-1 Table 8, when the phase conductor is 25 mm², what is the minimum required cross-sectional area of the protective (earth) conductor?',
+    question:'According to SANS 10142-1 Table 6.25, when the phase conductor is 25 mm², what is the minimum required cross-sectional area of the protective (earth) conductor?',
     options:['A) 2.5 mm²','B) 10 mm²','C) 25 mm²','D) 16 mm²'],
     answer:'D) 16 mm²',
-    reference:'SANS 10142-1 Table 8 — phase 16–35 mm² → PE = 16 mm²'
+    reference:'SANS 10142-1 Table 6.25 — 16 < S ≤ 35 mm² → PE = 16 mm² (25 mm² phase falls in this range)'
   },
   {
     id:'q7', week:7,
@@ -8037,6 +8325,7 @@ function hubRenderers(){
       else if(id==='hub-sops')sopRender();
       else if(id==='hub-ecsa')ecsaRender();
       else if(id==='hub-mentor')mentorRender();
+      else if(id==='hub-rates')ratesRender();
     },50);
   };
 })();
