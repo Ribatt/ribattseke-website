@@ -1,4 +1,6 @@
-<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Riba T Tseke — Installation Electrician, Installation Rules lecturer, and COC specialist based in Gauteng, South Africa. Practice quizzes, study resources, and professional services."><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+<!doctype html><html lang="en"><head><meta charset=utf8>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23c07a00'/%3E%3Cpath d='M20 3l-8 14h6l-4 12 12-16h-7z' fill='%23fff'/%3E%3C/svg%3E">
+<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Riba T Tseke — Installation Electrician, Installation Rules lecturer, and COC specialist based in Gauteng, South Africa. Practice quizzes, study resources, and professional services."><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
 /* ===== LMS ===== */
 /* ===== LMS STYLES v2 ===== */
 .lms-wrap{max-width:720px;margin:0 auto;}
@@ -121,6 +123,13 @@
 .lms-admin-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .lms-admin-hdr h3{margin:0;font-size:16px;}
 .admin-tier-block{margin-bottom:20px;}
+/* ===== ENGAGEMENT POPUPS ===== */
+.engage-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;display:flex;align-items:flex-end;justify-content:center;padding:0 0 24px;}
+.engage-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:400px;width:calc(100% - 32px);padding:22px 20px 18px;box-shadow:0 8px 32px rgba(0,0,0,.18);position:relative;}
+.engage-card h4{margin:0 0 8px;font-family:'Playfair Display',serif;font-size:17px;color:var(--fg);}
+.engage-card p{margin:0 0 14px;font-size:13px;color:var(--fg2);line-height:1.55;}
+.engage-card .engage-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.engage-card .engage-close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:20px;color:var(--fg3);cursor:pointer;padding:0;line-height:1;}
 .admin-tier-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px;}
 .admin-key-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:var(--bg-alt);border:1px solid var(--border);margin-bottom:5px;}
 .admin-key-row.issued{opacity:.45;}
@@ -746,12 +755,12 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 
   <section class="tab-panel" id="tab-resources" hidden>
     <p class="sec-label">Study Resources</p>
-    <h2 class="sec-title">Study Guide and SANS Books</h2>
+    <h2 class="sec-title">Companion Packs and SANS Books</h2>
 
     <div class="res-wrap">
       <div class="res-left">
         <span class="res-badge avail">Available Now</span>
-        <h3>Installation Rules Study Guide</h3>
+        <h3>Installation Rules Companion</h3>
         <p>A decade of past question papers with worked solutions, session study notes, and video walkthroughs linked directly inside the pack. Covers both Paper 1 and Paper 2. Prepared by the same person who runs the Tuesday and Thursday sessions.</p>
         <ul class="res-inc">
           <li>Past papers, Paper 1 and Paper 2, the last 10 years, each with worked model answers</li>
@@ -2189,7 +2198,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
             <!-- PDF Study Guide (any amount — pay what you can) -->
             <div class="lms-tier-box" style="margin-bottom:12px;border-color:var(--amb);">
               <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span class="tier-tag paid">Study Guide PDF</span>
+                <span class="tier-tag paid">Companion PDF</span>
                 <div style="text-align:right;"><span style="font-weight:700;font-size:17px;color:var(--amb);">Any amount</span> <span style="font-size:11px;color:var(--fg3);">R10 — R1&thinsp;000+</span></div>
               </div>
               <h4 style="margin:8px 0 4px;">Full study guide PDF — pay what you can</h4>
@@ -2595,7 +2604,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
             <div id="adm-cohort-list"></div>
           </div>
           <div class="admin-tier-block">
-            <div class="admin-tier-title">Study Guide Pack (Paid)</div>
+            <div class="admin-tier-title">Companion Pack (Paid)</div>
             <div id="adm-sg-list"></div>
           </div>
         </div>
@@ -4464,6 +4473,7 @@ function lmsShowDash(){
   _buildModList('s10292',_d3s10292,'lms-s10292-mods');
   _buildModList('s10313',_d3s10313,'lms-s10313-mods');
   lmsShowView('lms-dash');
+  setTimeout(engageCheckPopups, 500);
 }
 
 var _SESSION_VIDEOS={
@@ -7018,6 +7028,92 @@ function bizDelConfirm(storageKey,cb){
 /* ═══════════════════════════════════════════════════════════
    PHASE 2 — JOB CARDS
    ═══════════════════════════════════════════════════════════ */
+/* ===================================================
+   ENGAGEMENT POPUPS — Google Review + Donate
+   =================================================== */
+var GOOGLE_REVIEW_URL='https://search.google.com/local/writereview?placeid=ChIJ_ribattseke'; // UPDATE with real Place ID
+var PAYFAST_DONATE_URL='https://www.payfast.co.za/donate/go/ribattseke'; // UPDATE with real PayFast link
+var LMS_ENGAGE_NS='lms_engage_';
+
+function engageCheckPopups(){
+  // Don't interrupt login or quiz flow — only on the dashboard
+  var isDash=document.getElementById('lms-dash')&&document.getElementById('lms-dash').classList.contains('active');
+  if(!isDash) return;
+  // Google review: show once per device (not shown if already dismissed with "Done")
+  var reviewed=false;
+  try{reviewed=!!localStorage.getItem(LMS_ENGAGE_NS+'reviewed');}catch(e){}
+  if(!reviewed){
+    var lastAskTs=0;
+    try{lastAskTs=parseInt(localStorage.getItem(LMS_ENGAGE_NS+'review_asked_ts')||'0');}catch(e){}
+    // Show after 3 visits or if never shown; then every 7 days max until they click "Done"
+    var visitCount=0;
+    try{visitCount=parseInt(localStorage.getItem(LMS_ENGAGE_NS+'visit_count')||'0');}catch(e){}
+    visitCount++;
+    try{localStorage.setItem(LMS_ENGAGE_NS+'visit_count',String(visitCount));}catch(e){}
+    var daysSinceLast=(Date.now()-lastAskTs)/(24*60*60*1000);
+    if(visitCount>=3 && (lastAskTs===0 || daysSinceLast>=7)){
+      try{localStorage.setItem(LMS_ENGAGE_NS+'review_asked_ts',String(Date.now()));}catch(e){}
+      setTimeout(function(){ engageShowReview(); },4000);
+      return;
+    }
+  }
+  // Donate: show every 5 visits, with a 2-day cool-down
+  var lastDonateTs=0;
+  try{lastDonateTs=parseInt(localStorage.getItem(LMS_ENGAGE_NS+'donate_ts')||'0');}catch(e){}
+  var visitCount2=0;
+  try{visitCount2=parseInt(localStorage.getItem(LMS_ENGAGE_NS+'visit_count')||'0');}catch(e){}
+  var daysSinceDonate=(Date.now()-lastDonateTs)/(24*60*60*1000);
+  if(visitCount2>0 && visitCount2%5===0 && daysSinceDonate>=2){
+    try{localStorage.setItem(LMS_ENGAGE_NS+'donate_ts',String(Date.now()));}catch(e){}
+    setTimeout(function(){ engageShowDonate(); },6000);
+  }
+}
+
+function engageShowReview(){
+  if(document.getElementById('engage-review-overlay')) return;
+  var el=document.createElement('div');
+  el.id='engage-review-overlay';
+  el.className='engage-overlay';
+  el.innerHTML='<div class="engage-card">'
+    +'<button class="engage-close" onclick="engageDismiss('review')">×</button>'
+    +'<h4>⭐ Enjoying the content?</h4>'
+    +'<p>Your Google review helps more electricians and learners find these free study resources. It takes 30 seconds and means a lot.</p>'
+    +'<div class="engage-actions">'
+    +'<a href="'+GOOGLE_REVIEW_URL+'" target="_blank" rel="noopener" class="biz-btn biz-btn-primary" onclick="engageMarkReviewed()" style="text-decoration:none;">Rate us on Google</a>'
+    +'<button class="biz-btn" onclick="engageDismiss('review')">Maybe later</button>'
+    +'</div></div>';
+  document.body.appendChild(el);
+}
+
+function engageMarkReviewed(){
+  try{localStorage.setItem(LMS_ENGAGE_NS+'reviewed','1');}catch(e){}
+  engageDismiss('review');
+}
+
+function engageShowDonate(){
+  if(document.getElementById('engage-donate-overlay')) return;
+  var el=document.createElement('div');
+  el.id='engage-donate-overlay';
+  el.className='engage-overlay';
+  el.innerHTML='<div class="engage-card">'
+    +'<button class="engage-close" onclick="engageDismiss('donate')">×</button>'
+    +'<h4>💛 Support the next learner</h4>'
+    +'<p>These resources are free because people like you care about the trade. A small donation keeps the platform running and helps the next learner who can't afford to pay.</p>'
+    +'<div style="font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;">'
+    +'EFT: <strong>T T Riba</strong><br>Bank: First National Bank<br>Acc: <strong>62912345678</strong><br>Ref: <strong>DONATE</strong>'
+    +'</div>'
+    +'<div class="engage-actions">'
+    +'<a href="'+PAYFAST_DONATE_URL+'" target="_blank" rel="noopener" class="biz-btn biz-btn-primary" onclick="engageDismiss('donate')" style="text-decoration:none;">Donate via PayFast</a>'
+    +'<button class="biz-btn" onclick="engageDismiss('donate')">Close</button>'
+    +'</div></div>';
+  document.body.appendChild(el);
+}
+
+function engageDismiss(type){
+  var el=document.getElementById('engage-'+type+'-overlay');
+  if(el) el.remove();
+}
+
 // Photo capture state for job modal
 var _jmPhotos=[];
 
