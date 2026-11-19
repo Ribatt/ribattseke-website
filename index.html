@@ -5434,7 +5434,16 @@ var BIZ_RATE_DEFAULTS = {
   ],
   report:   { compilationHourly:280 },
   insurance:{ ratePercent:2.5 },
-  overhead: { projectAlloc:85, monthlyBreakdown:'Claude AI R500 + Memberships R150 + Software R200 = R850/month ÷ ~10 jobs' }
+  overhead: { projectAlloc:85, monthlyBreakdown:'Claude AI R500 + Memberships R150 + Software R200 = R850/month ÷ ~10 jobs' },
+  nbcei: {
+    headElectrician:  { wage:160.59, description:'Head Electrician (NBCEI Wage)' },
+    assistant:        { wage:74.95,  description:'Electrical Assistant (NBCEI Wage)' }
+  },
+  coc: {
+    fee:        2500,
+    teamDayRate:6206.95,
+    teamNote:   'Team of 4 (Head Elec + 3 Assistants) × 8h day — includes NBCEI wages + overhead'
+  }
 };
 function bizGetRates(){
   try{ var s=bizGet('rates_v1'); if(s&&s.labour) return s; }catch(e){}
@@ -5460,6 +5469,8 @@ function qtQaPanelHtml(){
     +'<option value="report">Report Compilation</option>'
     +'<option value="insurance">Insurance Provision</option>'
     +'<option value="overhead">Overhead Allocation</option>'
+    +'<option value="nbcei">NBCEI Labour (wage rate)</option>'
+    +'<option value="coc">COC Fee</option>'
     +'<option value="consumable">Consumable / Material</option>'
     +'</select></div>'
     +'<div id="qt-qa-fields" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;"></div>'
@@ -5500,6 +5511,22 @@ function qtQaCatChg(){
       +'<div>'+lbl('Rate (%)')+'<input id="qt-qa-insrate" class="biz-input" type="number" value="'+R.insurance.ratePercent+'" min="0.1" step="0.1" style="width:70px;" oninput="qtQaPreview()"></div>';
   } else if(cat==='overhead'){
     html='<div style="font-size:11px;color:#555;max-width:280px;">Adds project overhead: R'+R.overhead.projectAlloc+'/project<br><span style="color:#888;font-size:10px;">'+esc(R.overhead.monthlyBreakdown)+'</span></div>';
+  } else if(cat==='nbcei'){
+    var nb=R.nbcei||BIZ_RATE_DEFAULTS.nbcei;
+    html='<div>'+lbl('Role')+'<select id="qt-qa-nrole" class="biz-input" style="font-size:12px;" onchange="qtQaPreview()">'
+      +'<option value="he">Head Electrician (R'+nb.headElectrician.wage+'/h)</option>'
+      +'<option value="asst">Assistant (R'+nb.assistant.wage+'/h)</option>'
+      +'</select></div>'
+      +'<div>'+lbl('Hours')+'<input id="qt-qa-nhours" class="biz-input" type="number" value="8" min="1" step="0.5" style="width:70px;" oninput="qtQaPreview()"></div>'
+      +'<div>'+lbl('Workers')+'<input id="qt-qa-nworkers" class="biz-input" type="number" value="1" min="1" style="width:60px;" oninput="qtQaPreview()"></div>';
+  } else if(cat==='coc'){
+    var cc=R.coc||BIZ_RATE_DEFAULTS.coc;
+    html='<div style="font-size:11px;color:#555;max-width:300px;">COC issuance fee: <strong>R'+fmtMoney(cc.fee)+'</strong><br>Team day rate: <strong>R'+fmtMoney(cc.teamDayRate)+'</strong><br><span style="color:#888;font-size:10px;">'+esc(cc.teamNote)+'</span></div>'
+      +'<div>'+lbl('Use')+'<select id="qt-qa-coctype" class="biz-input" style="font-size:12px;" onchange="qtQaPreview()">'
+      +'<option value="fee">COC Fee only</option>'
+      +'<option value="day">Team Day Rate</option>'
+      +'</select></div>'
+      +'<div id="qt-qa-cocdays-wrap">'+lbl('Days')+'<input id="qt-qa-cocdays" class="biz-input" type="number" value="1" min="1" style="width:60px;" oninput="qtQaPreview()"></div>';
   } else if(cat==='consumable'){
     html='<div>'+lbl('Description')+'<input id="qt-qa-consdesc" class="biz-input" placeholder="e.g. 2.5mm² XLPE cable" style="width:180px;"></div>'
       +'<div>'+lbl('Qty')+'<input id="qt-qa-consqty" class="biz-input" type="number" value="1" min="0" step="any" style="width:70px;"></div>'
@@ -5545,6 +5572,23 @@ function qtQaPreview(){
       txt='Insurance: R'+fmtMoney(ib)+' × '+ip+'% = R'+fmtMoney(ib*ip/100);
     } else if(cat==='overhead'){
       txt='Overhead: R'+R.overhead.projectAlloc+'/project (AI + memberships + software)';
+    } else if(cat==='nbcei'){
+      var nb=R.nbcei||BIZ_RATE_DEFAULTS.nbcei;
+      var nr=(document.getElementById('qt-qa-nrole')||{}).value||'he';
+      var nw=parseFloat((document.getElementById('qt-qa-nhours')||{}).value)||8;
+      var nwk=parseInt((document.getElementById('qt-qa-nworkers')||{}).value)||1;
+      var nrate=nr==='he'?nb.headElectrician.wage:nb.assistant.wage;
+      var nrole=nr==='he'?'Head Electrician':'Assistant';
+      txt='NBCEI '+nrole+': '+nwk+'×'+nw+'h × R'+nrate+'/h = R'+fmtMoney(nw*nrate*nwk);
+    } else if(cat==='coc'){
+      var cc=R.coc||BIZ_RATE_DEFAULTS.coc;
+      var ctype=(document.getElementById('qt-qa-coctype')||{}).value||'fee';
+      if(ctype==='fee'){
+        txt='COC Fee: R'+fmtMoney(cc.fee)+' (disbursement)';
+      } else {
+        var days=parseFloat((document.getElementById('qt-qa-cocdays')||{}).value)||1;
+        txt='Team Day Rate × '+days+' day(s) = R'+fmtMoney(cc.teamDayRate*days);
+      }
     } else if(cat==='consumable'){
       var cq=parseFloat((document.getElementById('qt-qa-consqty')||{}).value)||1;
       var cr=parseFloat((document.getElementById('qt-qa-consrate')||{}).value)||0;
@@ -5597,6 +5641,26 @@ function qtQaAdd(){
     } else if(cat==='overhead'){
       item={desc:'Overhead Allocation (AI, Memberships, Software)',qty:1,unit:'Allow',rate:R.overhead.projectAlloc,
             basis:R.overhead.monthlyBreakdown};
+    } else if(cat==='nbcei'){
+      var nb=R.nbcei||BIZ_RATE_DEFAULTS.nbcei;
+      var nr=(document.getElementById('qt-qa-nrole')||{}).value||'he';
+      var nh=parseFloat((document.getElementById('qt-qa-nhours')||{}).value)||8;
+      var nwk=parseInt((document.getElementById('qt-qa-nworkers')||{}).value)||1;
+      var nrate=nr==='he'?nb.headElectrician.wage:nb.assistant.wage;
+      var nrole=nr==='he'?nb.headElectrician.description:nb.assistant.description;
+      item={desc:'Labour (NBCEI) — '+nrole+(nwk>1?' ×'+nwk:''),qty:nh,unit:'Hours',rate:nrate*nwk,
+            basis:nwk+' × '+nh+'h × R'+nrate+'/h (NBCEI minimum wage — NBCEI gazette rate)'};
+    } else if(cat==='coc'){
+      var cc=R.coc||BIZ_RATE_DEFAULTS.coc;
+      var ctype=(document.getElementById('qt-qa-coctype')||{}).value||'fee';
+      if(ctype==='fee'){
+        item={desc:'Certificate of Compliance (COC) — Issuance Fee',qty:1,unit:'Allow',rate:cc.fee,
+              basis:'DOL/SANS 10142-1 COC registration & issuance fee (disbursement)'};
+      } else {
+        var days=parseFloat((document.getElementById('qt-qa-cocdays')||{}).value)||1;
+        item={desc:'COC Inspection — Team Day Rate',qty:days,unit:'Day',rate:cc.teamDayRate,
+              basis:cc.teamNote};
+      }
     } else if(cat==='consumable'){
       var cd=(document.getElementById('qt-qa-consdesc')||{}).value||'Consumable';
       var cq=parseFloat((document.getElementById('qt-qa-consqty')||{}).value)||1;
@@ -5657,6 +5721,38 @@ function ratesRender(){
     +'</tr></thead><tbody>'+bookRows+'</tbody></table>'
     +'<div style="margin-top:12px;font-size:11px;color:var(--fg3);">Changes auto-save instantly. These rates power the ⚡ Quick Add panel when building quotes.</div>'
     +'</div>'
+    +'</div>'
+    +'<div style="margin-top:18px;border-top:1px solid var(--border);padding-top:14px;display:flex;gap:18px;flex-wrap:wrap;">'
+    +'<div style="flex:1;min-width:260px;">'
+    +'<div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--amb);">NBCEI Wage Rates</div>'
+    +'<table style="border-collapse:collapse;width:100%;"><thead><tr>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">Role</th>'
+    +'<th style="text-align:left;font-size:11px;color:var(--fg3);padding:3px 8px;">R/h (wage)</th>'
+    +'<th></th></tr></thead><tbody>'
+    +'<tr><td style="padding:4px 8px;font-size:12px;">'+esc(R.nbcei.headElectrician.description)+'</td>'
+    +'<td style="padding:4px 8px;"><input type="number" id="rates-nbcei-he" value="'+R.nbcei.headElectrician.wage+'" min="0" step="0.01" style="width:90px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></td>'
+    +'<td style="padding:4px 8px;font-size:11px;color:var(--fg3);">NBCEI minimum</td></tr>'
+    +'<tr><td style="padding:4px 8px;font-size:12px;">'+esc(R.nbcei.assistant.description)+'</td>'
+    +'<td style="padding:4px 8px;"><input type="number" id="rates-nbcei-asst" value="'+R.nbcei.assistant.wage+'" min="0" step="0.01" style="width:90px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></td>'
+    +'<td style="padding:4px 8px;font-size:11px;color:var(--fg3);">NBCEI minimum</td></tr>'
+    +'</tbody></table>'
+    +'<div style="font-size:11px;color:var(--fg3);margin-top:6px;">NBCEI = National Bargaining Council for Electrical Industry. These are legislated minimum wages — update each year after NBCEI gazette.</div>'
+    +'</div>'
+    +'<div style="flex:1;min-width:260px;">'
+    +'<div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--amb);">COC &amp; Team Pricing</div>'
+    +'<div style="font-size:12px;display:flex;gap:12px;flex-wrap:wrap;">'
+    +'<div>COC Fee (R): <input type="number" id="rates-coc-fee" value="'+R.coc.fee+'" min="0" step="50" style="width:90px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'<div>Team Day Rate (R): <input type="number" id="rates-coc-tdr" value="'+R.coc.teamDayRate+'" min="0" step="10" style="width:110px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;background:var(--bg);color:var(--fg);" onchange="ratesSave()"></div>'
+    +'</div>'
+    +'<div style="font-size:11px;color:var(--fg3);margin-top:6px;">'+esc(R.coc.teamNote)+'</div>'
+    +'<div style="margin-top:10px;padding:8px 10px;background:var(--bg2,rgba(30,133,64,0.08));border-radius:6px;border:1px solid var(--border);">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--amb);margin-bottom:4px;">COC Team Day Breakdown</div>'
+    +'<div style="font-size:11px;color:var(--fg2);">Head Electrician (8h): R'+(R.nbcei.headElectrician.wage*8).toFixed(2)+'</div>'
+    +'<div style="font-size:11px;color:var(--fg2);">3 × Assistants (8h): R'+(R.nbcei.assistant.wage*8*3).toFixed(2)+'</div>'
+    +'<div style="font-size:11px;color:var(--fg2);">COC Fee (disbursement): R'+fmtMoney(R.coc.fee)+'</div>'
+    +'<div style="font-size:11px;font-weight:700;color:var(--amb);margin-top:4px;border-top:1px solid var(--border);padding-top:4px;">Team Day Rate: R'+fmtMoney(R.coc.teamDayRate)+'</div>'
+    +'</div>'
+    +'</div>'
     +'</div>';
 }
 function ratesUpdateLabour(i,val){
@@ -5673,6 +5769,12 @@ function ratesSave(){
   R.report.compilationHourly=v('rates-rep-hr',280);
   R.insurance.ratePercent=v('rates-ins-pct',2.5);
   R.overhead.projectAlloc=v('rates-oh-job',85);
+  if(!R.nbcei) R.nbcei=JSON.parse(JSON.stringify(BIZ_RATE_DEFAULTS.nbcei));
+  if(!R.coc)   R.coc  =JSON.parse(JSON.stringify(BIZ_RATE_DEFAULTS.coc));
+  R.nbcei.headElectrician.wage=v('rates-nbcei-he',160.59);
+  R.nbcei.assistant.wage=v('rates-nbcei-asst',74.95);
+  R.coc.fee=v('rates-coc-fee',2500);
+  R.coc.teamDayRate=v('rates-coc-tdr',6206.95);
   bizSaveRates(R);
 }
 
