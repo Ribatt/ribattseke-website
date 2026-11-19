@@ -3179,8 +3179,8 @@ function showTab(name, skipPush){
     a.classList.toggle('active',a.getAttribute('data-tab')===name);
   });
   if(!skipPush && history.pushState){
-    var newPath='/'+name;
-    if(location.pathname!==newPath) history.pushState({tab:name},'',newPath);
+    var newHash='#'+name;
+    if(location.hash!==newHash) history.pushState({tab:name},'',newHash);
   }
   window._currentTab=name;
   if(window._gtagTab) window._gtagTab(name);
@@ -3191,13 +3191,20 @@ window.addEventListener('popstate',function(e){
   if(activeView && activeView.id && activeView.id!=='lms-login'){
     if(typeof lmsShowView==='function') lmsShowView('lms-login');
     /* restore hash to #study so the URL stays consistent */
-    if(history.replaceState) history.replaceState({tab:'study'},'','/study');
+    if(history.replaceState) history.replaceState({tab:'study'},'','#study');
     return;
   }
-  var hash=(location.pathname||'/').replace(/^[/]/,'');
+  var hash=location.hash.replace('#','');
   if(!hash && e.state && e.state.tab) hash=e.state.tab;
   if(hash) showTab(hash,true);
-});
+})
+// Init: show tab from URL hash on load
+(function(){
+  var h = location.hash.replace('#','');
+  var valid=['about','sessions','resources','projects','study'];
+  showTab(valid.indexOf(h)!==-1 ? h : 'about', true);
+})();
+;
 (function(){
   var init=(location.pathname||'/').replace(/^[/]/,'');
   showTab(init||'about',true);
