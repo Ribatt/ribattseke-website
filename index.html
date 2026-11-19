@@ -3198,16 +3198,11 @@ window.addEventListener('popstate',function(e){
   if(!hash && e.state && e.state.tab) hash=e.state.tab;
   if(hash) showTab(hash,true);
 })
-// Init: show tab from URL hash on load
-(function(){
-  var h = location.hash.replace('#','');
-  var valid=['about','sessions','resources','projects','study'];
-  showTab(valid.indexOf(h)!==-1 ? h : 'about', true);
-})();
 ;
 (function(){
-  var init=(location.pathname||'/').replace(/^[/]/,'');
-  showTab(init||'about',true);
+  var h=(location.hash||'').replace('#','');
+  var valid=['about','sessions','resources','projects','study'];
+  showTab(valid.indexOf(h)!==-1?h:'about',true);
 })();
 
 const LMS_DATA={p1:[
