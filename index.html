@@ -1409,6 +1409,12 @@ window.addEventListener('popstate',function(e){
   showTab(tab,true);
 })();
 
+// Stub — real implementation loads with tab-study.html
+function engageShowDonate(){
+  if(typeof _engageShowDonateFull==='function'){_engageShowDonateFull();return;}
+  showTab('study');
+}
+
 // Admin panel loaded on demand
 function _loadAdmin(){
   if(window._adminLoaded)return;
