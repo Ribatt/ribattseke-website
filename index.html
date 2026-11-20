@@ -834,7 +834,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <div class="proj-cats"><span class="proj-cat">ECSA</span><span class="proj-cat">Mentorship</span></div>
           <p class="proj-name">ECSA Registration Guidance</p>
           <p class="proj-where">Gauteng · Humphrey Thekwane Nkadimeng</p>
-          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the ECSA registration process — both Candidate Engineer (Cand. Eng) enrolment and the full Professional Registration journey to Pr. Eng or Pr. Tech Eng. Guidance covers recording competencies against ECSA outcomes, structuring experience documentation, and preparing for the professional review. Also advising on Engineering Reports: reviewing Training Experience Reports (TERs) and Training Experience Outcomes (TEOs), ensuring they meet ECSA's submission standards before lodging.</p>
+          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the ECSA registration process, covering both Candidate Engineer (Cand. Eng) enrolment and the full Professional Registration journey to Pr. Tech Eng or Pr. Eng. Guidance covers recording competencies against ECSA outcomes, structuring experience documentation, and preparing for the professional review interview. Also advising on Engineering Reports: reviewing Training Experience Reports (TERs) and Training Experience Outcomes (TEOs) to ensure they meet ECSA submission standards before lodging.</p>
         </div>
       </div>
 
@@ -947,31 +947,17 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         </ul>
       </div>
       <div class="pcard">
-        <h3>Registrations</h3>
+        <h3>Registrations &amp; Memberships</h3>
         <ul class="plist">
-          <li>Installation Electrician (DOeL)</li>
+          <li>Installation Electrician (DOeL, Wireman&#8217;s Licence)</li>
           <li>EWSETA Registered Assessor</li>
-          <li>NAMB Registered Assessor and Moderator</li>
-        </ul>
-      </div>
-      <div class="pcard">
-        <h3>Khosithi Training Institute</h3>
-        <ul class="plist">
-          <li>Appointed Trade Test Assessor (NAMB-A/2020) · Conducts formal NAMB summative trade test assessments for the Occupational Certificate: Electrician (QCTO 671101, NQF Level 5)</li>
-          <li>Appointed Internal Moderator (NAMB-M/2021) · Independently reviews and verifies summative assessments conducted by other assessors, producing formal moderation reports</li>
-          <li>Technical Facilitator · Delivers specialist upskilling sessions to facilitators covering PLC systems, motor control, electronics, and electrical installation</li>
-          <li>Nelspruit, Mpumalanga · Part-time · July 2020 to present</li>
-        </ul>
-      </div>
-      <div class="pcard">
-        <h3>Memberships</h3>
-        <ul class="plist">
+          <li>NAMB Registered Assessor (NAMB-A/2020) and Moderator (NAMB-M/2021)</li>
+          <li>South African Institute of Electrical Engineers (SAIEE) · Associate Member No. 125138</li>
+          <li>Electrical Contractors Association South Africa (ECA(SA))</li>
           <li>Association for Renewable Energy Practitioners (AREP)</li>
           <li>South African Photovoltaic Industry Association (SAPVIA)</li>
           <li>Southern African Energy Efficiency Confederation (SAEEC) · No. SAEEC2009</li>
           <li>Chamber of Engineering Technology (CET) · No. 8100848</li>
-          <li>South African Institute of Electrical Engineers (SAIEE), Associate Member No. 125138</li>
-          <li>Electrical Contractors Association South Africa (ECA(SA))</li>
         </ul>
       </div>
     </div>
@@ -1122,13 +1108,13 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
   <span>Donate<span class="donate-sub">keep us going</span></span>
 </a>
-<button class="companion-btn" id="companion-btn" onclick="companionToggle()" aria-label="Companion chat">
+<button class="companion-btn" id="companion-btn" onclick="companionToggle()" aria-label="Tseke's Companion chat">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  Companion
+  Tseke&#8217;s Companion
 </button>
 <div id="companion-panel" hidden>
   <div id="companion-head">
-    <span id="companion-head-title">Companion</span>
+    <span id="companion-head-title">Tseke's Companion</span>
     <div id="companion-langs">
       <button class="companion-lang-btn active" onclick="companionLang('en')">EN</button>
       <button class="companion-lang-btn" onclick="companionLang('nso')">Sepedi</button>
@@ -1485,22 +1471,27 @@ function _loadAdmin(){
 
   var T={
     en:{
-      greeting:"Chat to us! 👋 How can we help you today?",
-      faqs:["How do I get a key?","R50 vs R1,000","What standards are covered?","Banking / Donate","Contact Tseke"],
+      greeting:"Tseke's Companion 👋 — Ask me anything about the IE exam, SANS standards, study packs, or how to register with ECA(SA), AREP, or DOeL.",
+      faqs:["How do I get a study key?","Trial (R50) vs IR Companion (R1,000)","Standards covered","When are the IE exams?","ECA(SA) membership","AREP registration","DOeL / Wireman's licence","YouTube channel","Banking / Donate","Contact Tseke"],
       answers:{
-        "How do I get a key?":"To get a study key, go to the Study tab and choose your plan. Contact Tseke directly on WhatsApp to arrange payment and key issuance.",
-        "R50 vs R1,000":"R50 gives you 4-month access (custom duration on request) — all quizzes, session notes P1 & P2, and worked examples. R1,000 is lifetime access and adds the full PDF study guide (SANS 10142-1 P1 & P2), past 10 years papers with solutions, and direct WhatsApp support from Tseke.",
-        "What standards are covered?":"The LMS covers the full IE syllabus: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, and the OHS Act including Electrical Installation Regulations and Construction Regulations.",
-        "Banking / Donate":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference.",
-        "Contact Tseke":"WhatsApp Tseke directly on 072 474 8888 for support, key requests, or any questions."
+        "How do I get a study key?":"Go to the Study tab and select your plan — Trial (R50) for 4-month access or IR Companion (R1,000) for lifetime access. WhatsApp Tseke on 072 474 8888 to arrange payment and your key will be issued.",
+        "Trial (R50) vs IR Companion (R1,000)":"Trial (R50): 4-month access (custom duration on request) — all quizzes at 90% pass mark, session study notes P1 & P2, worked examples. Can upgrade to IR Companion anytime by paying the difference.\n\nIR Companion (R1,000): Lifetime access — everything in Trial plus the full PDF study guide (SANS 10142-1 P1 & P2), past 10 years papers with worked solutions, and direct WhatsApp support from Tseke.",
+        "Standards covered":"Full IE syllabus: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, and the OHS Act including Electrical Installation Regulations and Construction Regulations.",
+        "When are the IE exams?":"Installation Rules exams (Paper 1 & Paper 2) are conducted by the Department of Employment and Labour (DOeL). Dates vary by province. Contact your nearest DOeL Labour Centre or Africa TVET College for exam dates and registration. Tseke can also advise — WhatsApp 072 474 8888.",
+        "ECA(SA) membership":"ECA(SA) is the Electrical Contractors Association of South Africa. Membership is open to registered electrical contractors and Installation Electricians. Benefits include industry representation, technical updates, and access to training. Visit ecasa.co.za or contact your provincial ECA(SA) office to apply.",
+        "AREP registration":"AREP (Association for Renewable Energy Practitioners) is a professional body for renewable energy practitioners including solar PV installers. Registration supports professional credibility and ongoing CPD. Visit arep.co.za for membership details.",
+        "DOeL / Wireman's licence":"The Wireman's Licence (Installation Electrician) is issued by the Department of Employment and Labour (DOeL) under the Electrical Installation Regulations. You must pass both Paper 1 and Paper 2 of the Installation Rules exam and have your practical experience certified. Contact your nearest DOeL Labour Centre. Tseke can guide you through the process — WhatsApp 072 474 8888.",
+        "YouTube channel":"Tseke runs YouTube live sessions covering SANS 10142-1 Installation Rules — Paper 1 and Paper 2. Sessions are free and open to all learners. Search 'Riba T Tseke' on YouTube or use the YouTube link in the Sessions tab.",
+        "Banking / Donate":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference.\nTap the yellow Donate button at the bottom of the page.",
+        "Contact Tseke":"WhatsApp: 072 474 8888\nEmail: ribattseke@gmail.com\nFor study keys, mentoring, consultation, or general questions — WhatsApp is the fastest way."
       },
       wa:"Chat on WhatsApp"
     },
     nso:{
       greeting:"Bolela le rena! 👋 Re ka go thuša ka eng?",
-      faqs:["Ke kgona bjang ho fumana konopo?","R50 kgahlano le R1,000","Di-standard tše di akaretšwago ke tšefe?","Ditsela tša go duela","Ikopanya le Tseke"],
+      faqs:["Ke kgona bjang ho fumana konopo?","Trial (R50) kgahlano le IR Companion (R1,000)","Di-standard tše di akaretšwago","Ke leng dihlahlobo tša IE?","Tshedimošo ya ECA(SA)","Boikarabelo bja AREP","Laesense ya DOeL","Moaneltšane wa YouTube","Ditsela tša go duela","Ikopanya le Tseke"],
       answers:{
-        "Ke kgona bjang ho fumana konopo?":"Go fumana konopo ya thuto, ya Study tab mme o kgethe lenaneo la gago. Ikopanya le Tseke ka go retelwa ka WhatsApp go laetša tefo le go fiwa konopo.",
+        "Ke kgona bjang ho fumana konopo?":"Ya Study tab mme o kgethe lenaneo la gago. Ikopanya le Tseke ka WhatsApp 072 474 8888 go laetša tefo — konopo e tla fiwa morago ga tefo.","Ke leng dihlahlobo tša IE?":"Dihlahlobo tša Installation Rules di tšewa ke DOeL. Tseke a ka go thuša ka tshedimošo — WhatsApp 072 474 8888.","Tshedimošo ya ECA(SA)":"ECA(SA) ke kgobokano ya balefuri ba motlakase. Tsekela ecasa.co.za go diragatša.","Boikarabelo bja AREP":"AREP ke kgobokano ya bagwebi ba phihlelelo ya maatla a go lokologišwa. Tsekela arep.co.za.","Laesense ya DOeL":"Laesense ya Wireman e fiwa ke DOeL. O swanetše go pasa Pepa 1 le 2 ya Installation Rules. Ikopanya le ofisi ya DOeL ya ge o lego gona gona.","Moaneltšane wa YouTube":"Tseke o phetha ditirišo tša go laiwa ka YouTube ka SANS 10142-1. Nyaka 'Riba T Tseke' YouTube.",
         "R50 kgahlano le R1,000":"R50 e go fa phihlelo ya dikgwedi tše 4 — diquiz ka moka, diqoute P1 le P2, le dika. R1,000 ke phihlelo ya bophelo ka moka mme e oketša go diriša PDF ya thuto ka botlalo, dipampiri tša mengwaga ye 10 e fetilego ka diphetolo, le thekgo ya ya WhatsApp ka go ya go Tseke.",
         "Di-standard tše di akaretšwago ke tšefe?":"LMS e akaretša: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, le Molao wa OHS go akaretšwa Melao ya Diphetho tša Mohlagase le Melao ya Kago.",
         "Ditsela tša go duela":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Ak 2605150883, Lekala 470010\nDiriša leina la gago le nomoro ya sellefounou.",
@@ -1510,9 +1501,9 @@ function _loadAdmin(){
     },
     af:{
       greeting:"Gesels met ons! 👋 Hoe kan ons jou vandag help?",
-      faqs:["Hoe kry ek 'n sleutel?","R50 teen R1,000","Watter standaarde word gedek?","Bankbesonderhede / Skenk","Kontak Tseke"],
+      faqs:["Hoe kry ek 'n sleutelkode?","Trial (R50) vs IR Companion (R1,000)","Watter standaarde word gedek?","Wanneer is IE-eksamens?","ECA(SA)-lidmaatskap","AREP-registrasie","DOeL / Wireman se lisensie","YouTube-kanaal","Bankbesonderhede / Skenk","Kontak Tseke"],
       answers:{
-        "Hoe kry ek 'n sleutel?":"Gaan na die Studie-oortjie en kies jou plan. Kontak Tseke direk op WhatsApp om betaling en sleuteluitreiking te reël.",
+        "Hoe kry ek 'n sleutelkode?":"Gaan na die Studie-oortjie en kies jou plan. WhatsApp Tseke op 072 474 8888 om betaling te reël — jou sleutel word na betaling uitgereik.","Wanneer is IE-eksamens?":"IE-eksamens word deur DOeL gehou. Datums wissel per provinsie. Kontak jou naaste DOeL Labour Centre of Africa TVET College vir eksamendata.","ECA(SA)-lidmaatskap":"ECA(SA) is die Electrical Contractors Association of South Africa. Besoek ecasa.co.za of kontak jou provinsiale ECA(SA)-kantoor.","AREP-registrasie":"AREP is vir hernubare energie-praktisyns. Besoek arep.co.za vir lidmaatskapsbesonderhede.","DOeL / Wireman se lisensie":"Die Wireman se lisensie word deur DOeL uitgereik. Jy moet Papier 1 en 2 van die Installation Rules-eksamen slaag. Tseke kan jou deur die proses lei — WhatsApp 072 474 8888.","YouTube-kanaal":"Tseke hou gratis YouTube-sessies oor SANS 10142-1 Installation Rules. Soek 'Riba T Tseke' op YouTube.",
         "R50 teen R1,000":"R50 gee 4 maande toegang (aangepaste duur op versoek) — alle vasvra's, sessie-notas P1 en P2, en gewerkte voorbeelde. R1,000 is lewenslange toegang en sluit in die volledige PDF-studiegids (SANS 10142-1 P1 en P2), afgelope 10 jaar se vraestelle met oplossings, en direkte WhatsApp-ondersteuning van Tseke.",
         "Watter standaarde word gedek?":"Die LMS dek: SANS 10142-1 (P1 en P2), SANS 10198-1 en 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, en die OHS-wet insluitend Elektriese Installasieregulasies en Bou-regulasies.",
         "Bankbesonderhede / Skenk":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Rek 2605150883, Tak 470010\nGebruik jou naam en selnommer as verwysing.",
@@ -1522,7 +1513,7 @@ function _loadAdmin(){
     },
     zu:{
       greeting:"Khuluma nathi! 👋 Singakusiza kanjani namuhla?",
-      faqs:["Ngithole kanjani ukhiye?","R50 vs R1,000","Yimiphi imigangatho efihlakele?","Imininingwane yebhange / Qopha","Xhumana noTseke"],
+      faqs:["Ngithole kanjani ukhiye?","Trial (R50) vs IR Companion (R1,000)","Yimiphi imigangatho?","Nini izivivinyo ze-IE?","Ubulungu be-ECA(SA)","Ukubhalisa kwe-AREP","Ilayisense ye-DOeL","Isiteshi se-YouTube","Ibhange / Qopha","Xhumana noTseke"],
       answers:{
         "Ngithole kanjani ukhiye?":"Hamba ku-Study tab bese ukhetha uhlelo lwakho. Xhumana noTseke ngqo ku-WhatsApp ukuze ulungise inkokhelo nokukhishelwa ukhiye.",
         "R50 vs R1,000":"R50 ikunika ukufinyelela izinyanga ezingu-4 (isikhathi esikhethekile ngomcelo) — wonke amakulithi, amanothi esifundo P1 no-P2, nezibonelo ezikhiqiziwe. R1,000 ukufinyelela kwesikhathi sonke futhi yengeza umhlahlandlela wokufunda we-PDF ophelele (SANS 10142-1 P1 no-P2), amaphepha emisuka iminyaka eyi-10 edlule nezixazululo, kanye nokusekela kwe-WhatsApp ngqo evela kuTseke.",
@@ -1534,7 +1525,7 @@ function _loadAdmin(){
     },
     sn:{
       greeting:"Taura nesu! 👋 Tingakubatsira sei nhasi?",
-      faqs:["Ndinoiwana sei kiyi?","R50 vs R1,000","Mitemo ipi inofukidzwa?","Ruzivo rweBhangi / Shandira","Bata Tseke"],
+      faqs:["Ndinoiwana sei kiyi?","Trial (R50) vs IR Companion (R1,000)","Mitemo ipi?","Nguva dzekuedza IE?","Nhengo ye-ECA(SA)","Kunyoresa kwe-AREP","Revheseni ye-DOeL","Chiteshi che-YouTube","Ruzivo rweBhangi","Bata Tseke"],
       answers:{
         "Ndinoiwana sei kiyi?":"Enda kuStudy tab uye usarudze chirongwa chako. Bata Tseke zvakanangana paWhatsApp kugadzirira kubhadhara uye kupiwa kiyi.",
         "R50 vs R1,000":"R50 inokupa mvumo yemwedzi mina (nguva yakasarudzwa paichemo) — mabhvunzwa ose, manotsi esession P1 ne P2, uye mienzaniso yakashanda. R1,000 ndiyo mvumo yehupenyu hwose uye inowedzera gwaro rakakwana rePDF rezvidzidzo (SANS 10142-1 P1 ne P2), mapepa emakore gumi apfuura nemhinduro, uye rubatsiro rwakanangana rweWhatsApp kubva kuTseke.",

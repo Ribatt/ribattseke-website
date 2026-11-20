@@ -167,7 +167,7 @@
             <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin-bottom:8px;">Session recordings are <strong>free on YouTube</strong>. These tiers add quizzes, study notes and worked examples on the platform. Tseke will WhatsApp your personal key once confirmed.</p>
             <div class="lms-tier-box" style="margin-bottom:12px;cursor:pointer;" onclick="lmsRegularTier('trial')">
               <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span class="tier-tag" style="background:rgba(120,60,180,.12);color:#783cb4;">Trial</span>
+                <span class="tier-tag" style="background:rgba(120,60,180,.12);color:#783cb4;">R50 Trial</span>
                 <span style="font-weight:700;font-size:17px;color:var(--amb);">R50</span>
               </div>
               <h4 style="margin:8px 0 4px;">Quizzes &amp; study notes — 4 months</h4>
@@ -175,7 +175,7 @@
             </div>
             <div class="lms-tier-box" style="cursor:pointer;" onclick="lmsRegularTier('full')">
               <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span class="tier-tag paid">Full Access</span>
+                <span class="tier-tag paid">IR Companion</span>
                 <span style="font-weight:700;font-size:17px;color:var(--amb);">R1&thinsp;000</span>
               </div>
               <h4 style="margin:8px 0 4px;">Full study pack — lifetime access</h4>
@@ -287,8 +287,8 @@
 
           <!-- Tier 2: R50 Trial -->
           <div class="lms-tier-box">
-            <span class="tier-tag" style="background:rgba(120,60,180,.12);color:#783cb4;">Trial Access</span>
-            <h4 style="margin:8px 0 4px;">4-month access — <span style="color:#783cb4;">R50</span></h4>
+            <span class="tier-tag" style="background:rgba(120,60,180,.12);color:#783cb4;">Trial Access · R50</span>
+            <h4 style="margin:8px 0 4px;">Trial Access — <span style="color:#783cb4;">R50</span></h4>
             <p style="margin:0 0 6px;">Everything you need to study for the exam, beyond the free recordings.</p>
             <ul style="font-size:12.5px;color:var(--fg2);margin:6px 0 0;padding-left:18px;line-height:1.7;">
               <li>All practice quizzes (90% pass mark, tracked progress)</li>
@@ -302,7 +302,7 @@
 
           <!-- Tier 3: R1000 Lifetime -->
           <div class="lms-tier-box">
-            <span class="tier-tag paid">Lifetime Access</span>
+            <span class="tier-tag paid">IR Companion · R1,000</span>
             <h4 style="margin:8px 0 4px;">Full study pack — <span style="color:#b68900;">R1&#8201;000</span></h4>
             <p style="margin:0 0 6px;">Everything you need to pass the IE exam, once-off payment for lifetime access.</p>
             <ul style="font-size:12.5px;color:var(--fg2);margin:6px 0 0;padding-left:18px;line-height:1.7;">
@@ -311,7 +311,7 @@
               <li>All quizzes, session study notes, worked examples</li>
               <li>Lifetime platform access — no expiry</li>
               <li>WhatsApp support from Tseke after purchase</li>
-              <li style="color:var(--amb);font-weight:600;">Already on Trial? Keep your key — just top up to R1 000 total</li>
+              <li style="color:var(--amb);font-weight:600;">Already on R50 Trial? Keep your key and top up to R1,000 for full IR Companion access</li>
             </ul>
             <p style="margin-top:8px;font-size:12.5px;"><strong>EFT payment details on request — WhatsApp:</strong> 072 474 8888</p>
           </div>
@@ -502,7 +502,7 @@
             <div id="adm-cohort-list"></div>
           </div>
           <div class="admin-tier-block">
-            <div class="admin-tier-title">Companion Pack (Paid)</div>
+            <div class="admin-tier-title">IR Companion Keys (R1,000)</div>
             <div id="adm-sg-list"></div>
           </div>
         </div>
@@ -2007,7 +2007,7 @@ function lmsShowDash(){
   }
   document.getElementById('lms-dash-name').textContent='Welcome, '+_lmsUser;
   var tier=(_lmsProgress||{}).tier||'';
-  var tierLabels={trial:'R50 Trial',vq:'Videos + Quizzes',cohort:'Africa TVET College',paid:'Study Guide Pack'};
+  var tierLabels={trial:'R50 Trial',vq:'Videos + Quizzes',cohort:'Africa TVET College',paid:'IR Companion (R1,000)'};
   var tierEl=document.getElementById('lms-tier-badge');
   if(tierEl){
     tierEl.textContent=tierLabels[tier]||tier;
