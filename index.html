@@ -613,13 +613,11 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <div class="exam-card">
         <p class="exam-card-label">November Sitting</p>
         <p class="exam-name">Paper 1</p>
-        <p class="exam-date-str">Tuesday 24 November 2026</p>
         <div class="exam-num" id="cd1"><span class="exam-unit">days to go</span></div>
       </div>
       <div class="exam-card">
         <p class="exam-card-label">November Sitting</p>
         <p class="exam-name">Paper 2</p>
-        <p class="exam-date-str">Monday 30 November 2026</p>
         <div class="exam-num" id="cd2"><span class="exam-unit">days to go</span></div>
       </div>
     </div>
@@ -678,6 +676,11 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="snum done">9</div>
         <div><div class="stopic">SANS 10292: Earthing of Low-Voltage Distribution Systems</div><div class="ssub">LV earthing arrangements, MEN systems, TN/TT systems, bonding requirements</div></div>
         <div class="sright"><span class="stag done">Done</span></div>
+      </div>
+      <div class="sched-row">
+        <div class="snum done">10</div>
+        <div><div class="stopic">Paper 1 Exam Practice and Revision</div><div class="ssub">Past papers, worked examples, exam technique and time management for Paper 1</div></div>
+        <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
       </div>
 
       <div class="sched-group-hdr">
@@ -797,7 +800,6 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <p class="proj-name">Electrical Training Panels</p>
           <p class="proj-where">Vanderbijlpark, Gauteng · Effective Engineering Institute</p>
           <p class="proj-desc">Built and commissioned practical electrical training panels for the Vanderbijlpark learnership programme. Wired to EWSETA and QCTO apprenticeship standards, these panels are used for hands-on trade test preparation with live circuits.</p>
-          <p class="proj-photo-note">Photos available on request.</p>
         </div>
       </div>
 
@@ -834,7 +836,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
           <div class="proj-cats"><span class="proj-cat">ECSA</span><span class="proj-cat">Mentorship</span></div>
           <p class="proj-name">ECSA Registration Guidance</p>
           <p class="proj-where">Gauteng · Humphrey Thekwane Nkadimeng</p>
-          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the ECSA registration process, covering both Candidate Engineer (Cand. Eng) enrolment and the full Professional Registration journey to Pr. Tech Eng or Pr. Eng. Guidance covers recording competencies against ECSA outcomes, structuring experience documentation, and preparing for the professional review interview. Also advising on Engineering Reports: reviewing Training Experience Reports (TERs) and Training Experience Outcomes (TEOs) to ensure they meet ECSA submission standards before lodging.</p>
+          <p class="proj-desc">Mentoring Humphrey Thekwane Nkadimeng through the full Professional Registration journey to Pr. Tech Eng with ECSA. Guidance covers recording competencies against ECSA outcomes, structuring experience documentation, and preparing for the professional review interview. Also guiding on Engineering Reports: reviewing Training Experience Reports (TERs) and Training Experience Outcomes (TEOs) to ensure they meet ECSA submission standards before lodging.</p>
         </div>
       </div>
 
@@ -1121,6 +1123,10 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <button class="companion-lang-btn" onclick="companionLang('af')">Afrikaans</button>
       <button class="companion-lang-btn" onclick="companionLang('zu')">IsiZulu</button>
       <button class="companion-lang-btn" onclick="companionLang('sn')">Shona</button>
+      <button class="companion-lang-btn" onclick="companionLang('sw')">Swahili</button>
+      <button class="companion-lang-btn" onclick="companionLang('ar')">عربي</button>
+      <button class="companion-lang-btn" onclick="companionLang('sw')">Swahili</button>
+      <button class="companion-lang-btn" onclick="companionLang('ar')">عربي</button>
     </div>
     <button id="companion-close-btn" onclick="companionToggle()">×</button>
   </div>
@@ -1535,10 +1541,47 @@ function _loadAdmin(){
       },
       wa:"Taura paWhatsApp"
     }
+  ,
+    sw:{
+      greeting:"Tseke's Companion 👋 — Niulize chochote kuhusu mtihani wa IE, viwango vya SANS, vifurushi vya kusoma, au jinsi ya kusajiliwa na ECA(SA), AREP, au DOeL.",
+      faqs:["Ninavyopata ufunguo wa kujifunza?","Majaribio (R50) dhidi ya IR Companion (R1,000)","Viwango vilivyofunikwa","Mitihani ya IE iko lini?","Uanachama wa ECA(SA)","Usajili wa AREP","DOeL / Leseni ya Fundi","Kituo cha YouTube","Benki / Changia","Wasiliana na Tseke"],
+      answers:{
+        "Ninavyopata ufunguo wa kujifunza?":"Nenda kwa kichupo cha Soma na uchague mpango wako — R50 (Ufikiaji wa Majaribio) au R1,000 (IR Companion). Lipa kwa PayShap au EFT, tuma uthibitisho kwa WhatsApp 072 474 8888 na jina lako, naye Tseke atatoa ufunguo wako.",
+        "Majaribio (R50) dhidi ya IR Companion (R1,000)":"R50: Ufikiaji wa miezi 4 — maswali yote kwa alama ya kufaulu ya 90%, maelezo ya vikao P1 na P2, mifano iliyofanyika. R1,000: Ufikiaji wa maisha yote — kila kitu katika Majaribio pamoja na mwongozo kamili wa PDF wa kujifunza (SANS 10142-1 P1 na P2), karatasi za miaka 10 iliyopita na suluhisho, na msaada wa moja kwa moja wa WhatsApp kutoka kwa Tseke.",
+        "Viwango vilivyofunikwa":"Mtaala kamili wa IE: SANS 10142-1 (P1 na P2), SANS 10198-1 na 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, na Sheria ya OHS ikijumuisha Kanuni za Usimamizi wa Umeme na Kanuni za Ujenzi.",
+        "Mitihani ya IE iko lini?":"Mitihani ya Sheria za Usakinishaji hufanywa na Idara ya Ajira na Kazi (DOeL). Tarehe zinatofautiana kwa mkoa. Wasiliana na Kituo chako cha DOeL Labour au Africa TVET College karibu nawe kwa tarehe za mtihani.",
+        "Uanachama wa ECA(SA)":"ECA(SA) ni Chama cha Wakandarasi wa Umeme Afrika Kusini. Kujiandikisha kunakupa haki za kisheria kufanya kazi kama mkandarasi wa umeme, ufikiaji wa mafunzo ya tasnia, na uwakilishi. WhatsApp Tseke kwa mwongozo.",
+        "Usajili wa AREP":"AREP (Chama cha Wataalamu wa Nishati Mbadala) ni kwa wafundi na wahandisi wanaofanya kazi katika uwanja wa nishati mbadala na ufanisi wa nishati. WhatsApp Tseke kwa maelezo.",
+        "DOeL / Leseni ya Fundi":"Leseni ya Fundi (Mfundi wa Usakinishaji) hutolewa na Idara ya Ajira na Kazi (DOeL). Lazima upite P1 na P2 na uzoefu wako wa vitendo uthibitishwe.",
+        "Kituo cha YouTube":"Tseke anaendesha vikao vya moja kwa moja vya YouTube vinavyofunika Sheria za Usakinishaji — Karatasi 1 na 2. Vikao ni bure. Tafuta 'Riba T Tseke' kwenye YouTube.",
+        "Benki / Changia":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Akaunti 2605150883, Tawi 470010\nTuma jina lako na nambari ya simu kama kumbukumbu.",
+        "Wasiliana na Tseke":"WhatsApp Tseke moja kwa moja kwa 072 474 8888 kwa msaada, maombi ya ufunguo, au maswali yoyote."
+      },
+      wa:"Piga gumzo kwenye WhatsApp"
+    },
+    ar:{
+      greeting:"مرافق تسيكي 👋 — اسألني أي شيء عن امتحان IE، ومعايير SANS، وحزم الدراسة، أو كيفية التسجيل في ECA(SA) أو AREP أو DOeL.",
+      faqs:["كيف أحصل على مفتاح الدراسة؟","الفرق بين R50 و R1,000","المعايير المشمولة","مواعيد امتحانات IE","عضوية ECA(SA)","تسجيل AREP","DOeL / رخصة الكهربائي","قناة يوتيوب","البنك / التبرع","التواصل مع تسيكي"],
+      answers:{
+        "كيف أحصل على مفتاح الدراسة؟":"انتقل إلى تبويب الدراسة واختر خطتك — R50 (وصول تجريبي) أو R1,000 (IR Companion). ادفع عبر PayShap أو EFT، وأرسل إيصال الدفع عبر واتساب 072 474 8888 مع اسمك، وسيرسل إليك تسيكي مفتاحك.",
+        "الفرق بين R50 و R1,000":"R50: وصول لمدة 4 أشهر — جميع الاختبارات بنسبة نجاح 90%، ملاحظات الجلسات P1 و P2، أمثلة محلولة. R1,000: وصول مدى الحياة — كل شيء في الخطة التجريبية بالإضافة إلى دليل الدراسة PDF الكامل (SANS 10142-1 P1 و P2)، أوراق السنوات العشر الماضية مع الحلول، ودعم واتساب مباشر من تسيكي.",
+        "المعايير المشمولة":"المنهج الكامل لـ IE: SANS 10142-1 (P1 و P2)، SANS 10198-1 و 10198-2، SANS 1507-1، SANS 10292، SANS 10313، SANS 1973-3، وقانون الصحة والسلامة المهنية بما في ذلك لوائح التركيبات الكهربائية ولوائح البناء.",
+        "مواعيد امتحانات IE":"تُجرى امتحانات قواعد التركيب من قِبل وزارة التوظيف والعمل (DOeL). تختلف المواعيد حسب المقاطعة. تواصل مع مركز DOeL Labour أو Africa TVET College الأقرب إليك للحصول على مواعيد الامتحانات.",
+        "عضوية ECA(SA)":"ECA(SA) هي جمعية مقاولي الكهرباء في جنوب أفريقيا. التسجيل يمنحك الحق القانوني للعمل كمقاول كهربائي، والوصول إلى تدريب الصناعة، والتمثيل. تواصل مع تسيكي عبر واتساب للإرشاد.",
+        "تسجيل AREP":"AREP (رابطة ممارسي الطاقة المتجددة) للفنيين والمهندسين العاملين في مجال الطاقة المتجددة وكفاءة الطاقة. تواصل مع تسيكي عبر واتساب للتفاصيل.",
+        "DOeL / رخصة الكهربائي":"رخصة الكهربائي (كهربائي التركيبات) تُصدر من قِبل وزارة التوظيف والعمل (DOeL). يجب أن تجتاز P1 و P2 ويُعتمد خبرتك العملية.",
+        "قناة يوتيوب":"يُدير تسيكي جلسات مباشرة على يوتيوب تغطي قواعد التركيب — الورقة 1 و 2. الجلسات مجانية للجميع. ابحث عن 'Riba T Tseke' على يوتيوب.",
+        "البنك / التبرع":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank، حساب 2605150883، رمز الفرع 470010\nأرسل اسمك ورقم هاتفك كمرجع.",
+        "التواصل مع تسيكي":"تواصل مع تسيكي مباشرة عبر واتساب على 072 474 8888 للدعم أو طلبات المفاتيح أو الاستفسارات."
+      },
+      wa:"تحدث عبر واتساب"
+    }
   };
 
   window.companionLang=function(l){
     _lang=l;
+    var _rtlPanel=document.getElementById('companion-panel');
+    if(_rtlPanel){_rtlPanel.setAttribute('dir',l==='ar'?'rtl':'ltr');}
     document.querySelectorAll('.companion-lang-btn').forEach(function(b){b.classList.remove('active');});
     var active=document.querySelector('.companion-lang-btn[onclick*="\''+l+'\'"]');
     if(active)active.classList.add('active');
