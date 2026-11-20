@@ -4641,6 +4641,9 @@ function hubRenderers(){
     },50);
   };
 })();
+window.lmsAdminEntry=lmsAdminEntry;
+window._engageShowDonateFull=function(){if(typeof lmsAdminEntry==="function")lmsAdminEntry();};
+
 
 </script>
 

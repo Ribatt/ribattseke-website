@@ -361,6 +361,14 @@ section:last-child{border-bottom:none;}
 .rec-link{font-size:11px;color:var(--amb);text-decoration:none;}
 .rec-link:hover{text-decoration:underline;}
 .sched-note{margin-top:12px;padding:11px 14px;background:var(--surf-alt);border:1px solid var(--border);border-radius:7px;font-size:13px;color:var(--fg2);}
+.sched-acc-hdr{display:flex;align-items:center;gap:10px;padding:8px 2px 6px;border-bottom:1px solid var(--border);margin-bottom:5px;margin-top:12px;cursor:pointer;user-select:none;}
+.sched-acc-hdr:first-child{margin-top:0;}
+.sched-acc-hdr .sched-group-name{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amb);}
+.sched-acc-hdr .sched-group-sub{font-size:12px;color:var(--fg3);flex:1;}
+.sched-acc-chevron{font-size:16px;color:var(--amb);transition:transform .25s;flex-shrink:0;}
+.sched-acc-hdr[aria-expanded="true"] .sched-acc-chevron{transform:rotate(180deg);}
+.sched-acc-body{display:flex;flex-direction:column;gap:5px;overflow:hidden;}
+.sched-acc-body[hidden]{display:none!important;}
 
 /* RESOURCES */
 .res-wrap{background:var(--surf-alt);border:1px solid var(--border);border-radius:14px;padding:28px 30px;display:grid;grid-template-columns:1fr 180px;gap:28px;align-items:start;}
@@ -457,6 +465,7 @@ section:last-child{border-bottom:none;}
 #companion-faqs{padding:10px 10px 10px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--border);flex-shrink:0;}
 .comp-faq-chip{background:var(--bg);border:1px solid var(--border);border-radius:14px;font-size:11.5px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:background .15s;}
 .comp-faq-chip:hover{background:var(--amb);color:#fff;border-color:var(--amb);}
+#companion-ask{flex-shrink:0;border-top:1px solid var(--border);}
 #companion-wa{padding:8px 10px 10px;flex-shrink:0;}
 #companion-wa-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px;border-radius:9px;text-decoration:none;border:none;cursor:pointer;}
 .float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;width:60px;height:68px;border-radius:30px;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:box-shadow .2s,transform .15s;}
@@ -502,7 +511,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 .proj-cats{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px;}
 .proj-cat{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);background:rgba(30,133,64,.1);border:1px solid rgba(30,133,64,.2);padding:2px 8px;border-radius:12px;}
 .proj-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;margin:0 0 4px;line-height:1.3;}
-.proj-where{font-size:11.5px;color:var(--fg3);margin:0 0 9px;}
+.proj-where{font-size:11.5px;color:var(--fg3);margin:0 0 4px;}.proj-year{font-size:11px;color:var(--fg3);opacity:.75;margin:0 0 8px;font-style:italic;}
 .proj-desc{font-size:13px;color:var(--fg2);line-height:1.65;margin:0;flex:1;}
 .proj-yr{font-size:11px;color:var(--fg3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
 .proj-photo-note{font-size:11px;color:var(--amb);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
@@ -631,10 +640,12 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 
     <div class="schedule">
 
-      <div class="sched-group-hdr">
+      <div class="sched-acc-hdr" aria-expanded="false" aria-controls="acc-p1" onclick="(function(h){var b=document.getElementById(h.getAttribute('aria-controls'));var open=h.getAttribute('aria-expanded')==='true';h.setAttribute('aria-expanded',open?'false':'true');b.hidden=open;})(this)">
         <span class="sched-group-name">Paper 1</span>
         <span class="sched-group-sub">OHS Act · SANS 10142-1 Sections 1, 2, 3, 4, 5, 7 · SANS 10198 · SANS 10292</span>
+        <span class="sched-acc-chevron">&#8964;</span>
       </div>
+      <div class="sched-acc-body" id="acc-p1" hidden>
 
       <div class="sched-row">
         <div class="snum done">1</div>
@@ -687,10 +698,14 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="sright"><span class="stag done">Done</span><a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" class="rec-link">▶ Recording</a></div>
       </div>
 
-      <div class="sched-group-hdr">
+      </div><!-- /acc-p1 -->
+
+      <div class="sched-acc-hdr" aria-expanded="false" aria-controls="acc-p2" onclick="(function(h){var b=document.getElementById(h.getAttribute('aria-controls'));var open=h.getAttribute('aria-expanded')==='true';h.setAttribute('aria-expanded',open?'false':'true');b.hidden=open;})(this)">
         <span class="sched-group-name">Paper 2</span>
         <span class="sched-group-sub">SANS 10142-1 Sections 6 and 8 · SANS 10313 · SANS 1973-3</span>
+        <span class="sched-acc-chevron">&#8964;</span>
       </div>
+      <div class="sched-acc-body" id="acc-p2" hidden>
 
       <div class="sched-row">
         <div class="snum done">1</div>
@@ -742,6 +757,8 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div><div class="stopic">SANS 1973-3: Low-Voltage Switchgear and Controlgear Assemblies Part 3: Safety of assemblies with a rated prospective short-circuit current of up to and including 10 kA</div></div>
         <div class="sright"><span class="stag upcoming">Upcoming</span></div>
       </div>
+
+      </div><!-- /acc-p2 -->
 
     </div>
 
@@ -802,6 +819,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="proj-body">
           <div class="proj-cats"><span class="proj-cat">Training</span><span class="proj-cat">Panel Build</span></div>
           <p class="proj-name">Electrical Training Panels</p>
+          <p class="proj-year">Completed 2021</p>
           <p class="proj-where">Vanderbijlpark, Gauteng · Effective Engineering Institute</p>
           <p class="proj-desc">Built and commissioned practical electrical training panels for the Vanderbijlpark learnership programme. Wired to EWSETA and QCTO apprenticeship standards, these panels are used for hands-on trade test preparation with live circuits.</p>
         </div>
@@ -814,6 +832,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="proj-body">
           <div class="proj-cats"><span class="proj-cat">Lecturing</span><span class="proj-cat">Invigilation</span></div>
           <p class="proj-name">Installation Rules Facilitation</p>
+          <p class="proj-year">Completed 2020</p>
           <p class="proj-where">Limpopo · Africa TVET College</p>
           <p class="proj-desc">Facilitated and invigilated Paper 1 and Paper 2 Installation Rules sessions and written examinations for Africa TVET College students.</p>
         </div>
@@ -826,6 +845,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="proj-body">
           <div class="proj-cats"><span class="proj-cat">EWSETA</span><span class="proj-cat">Assessment</span></div>
           <p class="proj-name">Electrical Learnership Facilitation</p>
+          <p class="proj-year">Completed 2017</p>
           <p class="proj-where">Kgosi Mampuru II Correctional Centre, Pretoria</p>
           <p class="proj-desc">Facilitated and assessed the EWSETA Electrical Learnership programme for incarcerated learners. Practical skills development work inside a correctional services facility.</p>
           <p class="proj-yr">2021</p>
@@ -851,6 +871,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
         <div class="proj-body">
           <div class="proj-cats"><span class="proj-cat">Training</span><span class="proj-cat">Instruments</span></div>
           <p class="proj-name">Compliance Instrument Training</p>
+          <p class="proj-year">Completed 2020</p>
           <p class="proj-where">Gauteng · On-site and online</p>
           <p class="proj-desc">Practical training on the correct use of compliance test instruments: loop impedance, earth resistance, insulation resistance, ELCB and clamp meters. Covers setup, test procedure, reading interpretation, and documentation.</p>
         </div>
@@ -1095,6 +1116,15 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   </div>
   <div id="companion-msgs"></div>
   <div id="companion-faqs"></div>
+  <div id="companion-ask">
+    <div style="display:flex;gap:6px;padding:8px 10px 2px;">
+      <input id="companion-ask-input" type="text" placeholder="Ask anything…" autocomplete="off"
+        style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--fg);font-size:13px;outline:none;"
+        onkeydown="if(event.key==='Enter'){companionAsk(this.value);this.value='';}" />
+      <button onclick="var i=document.getElementById('companion-ask-input');companionAsk(i.value);i.value='';"
+        style="background:var(--amb);color:#fff;border:none;border-radius:8px;padding:0 12px;font-size:18px;cursor:pointer;font-weight:700;">&#10148;</button>
+    </div>
+  </div>
   <div id="companion-wa"><a id="companion-wa-btn" href="https://wa.me/27724748888" target="_blank" rel="noopener">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.012.496 3.912 1.371 5.588L0 24l6.549-1.339A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 01-5.001-1.375l-.359-.214-3.885.794.828-3.78-.234-.38A9.773 9.773 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.429 0 9.818 4.388 9.818 9.818 0 5.429-4.389 9.818-9.818 9.818z"/></svg>
     Chat on WhatsApp
@@ -1469,7 +1499,7 @@ function _loadAdmin(){
   if(window._adminLoaded||window._adminLoading)return;
   window._adminLoading=true;
   var s=document.createElement('script');
-  s.src='/admin.js?v=4';
+  s.src='/admin.js?v=6';
   s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
   s.onerror=function(){window._adminLoading=false;window._donateLoading=false;_showDonateInline();};
   document.head.appendChild(s);
@@ -1695,7 +1725,60 @@ function _loadAdmin(){
     });
   }
 
-  window.companionToggle=function(){
+  
+window.companionAsk=function(q){
+  q=(q||'').trim();
+  if(!q)return;
+  var msgs=document.getElementById('companion-msgs');
+  if(!msgs)return;
+  // Show user message
+  var um=document.createElement('div');
+  um.style.cssText='background:var(--amb);color:#fff;border-radius:12px 12px 4px 12px;padding:8px 11px;font-size:13px;align-self:flex-end;max-width:85%;word-break:break-word;';
+  um.textContent=q;
+  msgs.appendChild(um);
+  // Find best matching FAQ answer
+  var t=T[_lang]||T['en'];
+  var faqs=t.faqs||[];
+  var answers=t.answers||t;
+  var ql=q.toLowerCase();
+  var best=null,bestScore=0;
+  faqs.forEach(function(faq){
+    var fl=faq.toLowerCase();
+    var score=0;
+    // Exact substring match
+    if(fl.indexOf(ql)>=0||ql.indexOf(fl)>=0) score=10;
+    else {
+      // Word overlap
+      var qw=ql.split(/\s+/);
+      var fw=fl.split(/\s+/);
+      qw.forEach(function(w){if(w.length>2&&fw.some(function(f){return f.indexOf(w)>=0||w.indexOf(f)>=0;}))score++;});
+    }
+    if(score>bestScore){bestScore=score;best=faq;}
+  });
+  var reply;
+  if(best&&bestScore>0){
+    reply=answers[best]||'';
+  }
+  if(!reply){
+    // Fallback: search all answer text for keywords
+    Object.keys(answers).forEach(function(k){
+      var av=(answers[k]||'').toLowerCase();
+      var score=0;
+      ql.split(/\s+/).forEach(function(w){if(w.length>3&&av.indexOf(w)>=0)score++;});
+      if(score>bestScore){bestScore=score;best=k;reply=answers[k];}
+    });
+  }
+  var rm=document.createElement('div');
+  rm.style.cssText='background:var(--surface2,#f5f5f5);color:var(--fg);border-radius:12px 12px 12px 4px;padding:8px 11px;font-size:13px;align-self:flex-start;max-width:90%;white-space:pre-wrap;word-break:break-word;border:1px solid var(--border);';
+  if(reply&&bestScore>0){
+    rm.textContent=reply;
+  } else {
+    rm.innerHTML='I don\u2019t have a specific answer for that. <a href="https://wa.me/27724748888" target="_blank" style="color:var(--amb);font-weight:700;">Ask Tseke on WhatsApp →</a>';
+  }
+  msgs.appendChild(rm);
+  msgs.scrollTop=msgs.scrollHeight;
+};
+window.companionToggle=function(){
     _open=!_open;
     var panel=document.getElementById('companion-panel');
     if(panel){
