@@ -441,9 +441,9 @@ section:last-child{border-bottom:none;}
 .pay-shap-note{font-size:11px;color:#717171;margin-top:3px;}
 .pay-instructions{font-size:12px;color:var(--fg3);margin-top:12px;line-height:1.5;}
 
-.companion-btn{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:var(--amb);color:#fff;width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center;transition:box-shadow .2s,transform .15s;}
+.companion-btn{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:var(--amb);color:#fff;width:60px;height:68px;border-radius:30px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:box-shadow .2s,transform .15s;}
 .companion-btn:hover{box-shadow:0 6px 24px rgba(0,0,0,.3);transform:translateY(-2px);}
-#companion-panel{position:fixed;bottom:calc(148px + env(safe-area-inset-bottom,0px));right:calc(12px + env(safe-area-inset-right,0px));width:min(360px,calc(100vw - 24px));max-height:70vh;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.22);z-index:201;display:flex;flex-direction:column;overflow:hidden;}
+#companion-panel{position:fixed;bottom:calc(172px + env(safe-area-inset-bottom,0px));right:calc(12px + env(safe-area-inset-right,0px));width:min(360px,calc(100vw - 24px));max-height:70vh;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.22);z-index:201;display:flex;flex-direction:column;overflow:hidden;}
 #companion-head{background:var(--amb);color:#fff;padding:11px 14px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
 #companion-head-title{font-weight:700;font-size:14px;flex:1;}
 #companion-langs{display:flex;gap:4px;flex-wrap:wrap;}
@@ -459,9 +459,17 @@ section:last-child{border-bottom:none;}
 .comp-faq-chip:hover{background:var(--amb);color:#fff;border-color:var(--amb);}
 #companion-wa{padding:8px 10px 10px;flex-shrink:0;}
 #companion-wa-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px;border-radius:9px;text-decoration:none;border:none;cursor:pointer;}
-.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;width:56px;height:56px;border-radius:50%;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:flex;align-items:center;justify-content:center;transition:box-shadow .2s,transform .15s;}
+.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;width:60px;height:68px;border-radius:30px;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:box-shadow .2s,transform .15s;}
 .float-pay:hover{box-shadow:0 6px 26px rgba(30,133,64,.6);transform:translateY(-2px);}
-.donate-sub{display:block;font-size:9px;font-weight:500;opacity:.85;letter-spacing:.04em;text-transform:lowercase;}
+.float-label{display:block;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1;opacity:.92;}
+.wisdom-strip{padding:22px 0 18px;border-top:1px solid var(--border);text-align:center;}
+.wisdom-strip-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:780px;margin:0 auto;}
+@media(max-width:600px){.wisdom-strip-inner{grid-template-columns:1fr;}}
+.wisdom-item{padding:14px 20px;position:relative;}
+.wisdom-item+.wisdom-item::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border);}
+@media(max-width:600px){.wisdom-item+.wisdom-item::before{display:none;}.wisdom-item{border-top:1px solid var(--border);}}
+.wisdom-quote-text{font-style:italic;font-size:12.5px;line-height:1.65;color:var(--fg2);margin:0 0 5px;}
+.wisdom-cite{font-size:10px;color:var(--fg3);font-style:normal;letter-spacing:.05em;text-transform:uppercase;}
 
 footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 /* Services */
@@ -1031,69 +1039,6 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       </div>
     </div>
 
-    <!-- BOOKING FORM -->
-    <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
-      <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin:0 0 6px;">Book a Service</h3>
-      <p style="font-size:13.5px;color:var(--fg2);margin:0 0 18px;line-height:1.6;">Fill in the form below and your request goes straight to Tseke via WhatsApp. No account needed.</p>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:14px;">
-
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">YOUR NAME <span style="color:#e55;">*</span></label>
-          <input id="bk-name" type="text" placeholder="Full name" autocomplete="name"
-            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">PHONE / WHATSAPP <span style="color:#e55;">*</span></label>
-          <input id="bk-phone" type="tel" placeholder="e.g. 072 474 8888" autocomplete="tel"
-            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">SERVICE NEEDED <span style="color:#e55;">*</span></label>
-          <select id="bk-service"
-            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;">
-            <option value="">-- Select a service --</option>
-            <option value="Electrical Compliance Inspection">Electrical Compliance Inspection</option>
-
-            <option value="General electrical installation or repair">General Electrical Installation / Repair</option>
-            <option value="Electrical contracting (project or sub-contract)">Electrical Contracting</option>
-            <option value="Electrician trade test preparation">Trade Test Preparation</option>
-            <option value="Installation Rules tutoring or mentorship">Installation Rules Tutoring / Mentorship</option>
-            <option value="Technical consultation">Technical Consultation</option>
-            <option value="EWSETA training panel construction">EWSETA Training Panel Construction</option>
-            <option value="Other (described in notes)">Other</option>
-          </select>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">LOCATION / AREA</label>
-          <input id="bk-location" type="text" placeholder="e.g. Sandton, Johannesburg"
-            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">PREFERRED DATE AND TIME</label>
-          <input id="bk-datetime" type="text" placeholder="e.g. Friday 22 Nov, morning"
-            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;">
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <label style="font-size:12px;font-weight:600;color:var(--fg2);letter-spacing:.03em;">ADDITIONAL NOTES</label>
-          <textarea id="bk-notes" rows="3" placeholder="Describe the job, site conditions, or any other details..."
-            style="padding:10px 13px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt,var(--surface));color:var(--fg);font-size:14px;outline:none;width:100%;box-sizing:border-box;resize:vertical;font-family:inherit;"></textarea>
-        </div>
-
-        <p id="bk-err" style="color:#e55;font-size:12.5px;margin:0;min-height:16px;"></p>
-
-        <button onclick="submitBooking()"
-          style="background:var(--amb);color:#fff;border:none;border-radius:9px;padding:12px 20px;font-size:14px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 2C6.477 2 2 6.477 2 12c0 1.785.47 3.457 1.29 4.909L2 22l5.235-1.273A9.953 9.953 0 0 0 11.998 22C17.52 22 22 17.523 22 12S17.52 2 11.998 2z"/></svg>
-          Send Booking Request via WhatsApp
-        </button>
-        <p style="font-size:11.5px;color:var(--fg3);text-align:center;margin:0;line-height:1.5;">This opens WhatsApp with your request pre-filled. No data is stored on this site.</p>
-      </div>
-    </div>
 
   </section>
 
@@ -1104,15 +1049,36 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 
 </main>
 
+<section class="wisdom-strip">
+  <div class="wrap">
+    <div class="wisdom-strip-inner">
+      <div class="wisdom-item">
+        <p class="wisdom-quote-text">"Read in the name of your Lord who created."</p>
+        <span class="wisdom-cite">Surah Al-'Alaq 96:1 · The Holy Quran</span>
+      </div>
+      <div class="wisdom-item">
+        <p class="wisdom-quote-text">"Wisdom is the principal thing; therefore get wisdom: and with all thy getting get understanding."</p>
+        <span class="wisdom-cite">Proverbs 4:7 · The Holy Bible</span>
+      </div>
+      <div class="wisdom-item">
+        <p class="wisdom-quote-text">"There is nothing on earth as purifying as knowledge."</p>
+        <span class="wisdom-cite">Bhagavad Gita 4:38 · The Vedas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="wrap">Tseke Riba · ribattseke.co.za · Installation Rules Lecturer · Gauteng</div>
+  <div class="wrap">Tseke Riba · ribattseke.co.za · Registered Person · South Africa</div>
 </footer>
 
 <a href="#" onclick="engageShowDonate();return false;" class="float-pay" aria-label="Donate to keep us going" title="Donate — keep us going">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
+  <span class="float-label">Donate</span>
 </a>
 <button class="companion-btn" id="companion-btn" onclick="companionToggle()" aria-label="Tseke's Companion chat" title="Tseke's Companion">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span class="float-label">Chat</span>
 </button>
 <div id="companion-panel" hidden>
   <div id="companion-head">
@@ -1123,10 +1089,8 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <button class="companion-lang-btn" onclick="companionLang('af')">Afrikaans</button>
       <button class="companion-lang-btn" onclick="companionLang('zu')">IsiZulu</button>
       <button class="companion-lang-btn" onclick="companionLang('sn')">Shona</button>
-      <button class="companion-lang-btn" onclick="companionLang('sw')">Swahili</button>
-      <button class="companion-lang-btn" onclick="companionLang('ar')">عربي</button>
-      <button class="companion-lang-btn" onclick="companionLang('sw')">Swahili</button>
-      <button class="companion-lang-btn" onclick="companionLang('ar')">عربي</button>
+      <button class="companion-lang-btn" onclick="companionLang('xh')">IsiXhosa</button>
+      <button class="companion-lang-btn" onclick="companionLang('nr')">isiNdebele</button>
     </div>
     <button id="companion-close-btn" onclick="companionToggle()">×</button>
   </div>
@@ -1403,8 +1367,7 @@ function _activateTab(name,skipPush){
     a.classList.toggle('active',a.getAttribute('data-tab')===name);
   });
   if(!skipPush&&history.pushState){
-    var np='/'+name;
-    if(location.pathname!==np)history.pushState({tab:name},'',np);
+    try{var np='/'+name;if(location.pathname!==np)history.pushState({tab:name},'',np);}catch(e){}
   }
   window._currentTab=name;
   try{sessionStorage.setItem('biz_tab',name);}catch(e){}
@@ -1459,6 +1422,32 @@ window.addEventListener('popstate',function(e){
   showTab(tab,true);
 })();
 
+// Inline donate fallback — shown when admin.js is unavailable
+function _showDonateInline(){
+  if(document.getElementById('_dnt_ov'))return;
+  var o=document.createElement('div');
+  o.id='_dnt_ov';
+  o.setAttribute('style','position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;');
+  o.onclick=function(e){if(e.target===o)o.remove();};
+  o.innerHTML='<div style="background:var(--surface,#1f1f1f);border-radius:16px;padding:22px 20px;max-width:400px;width:100%;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.35);">'
+    +'<button onclick="document.getElementById(\'_dnt_ov\').remove()" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:22px;line-height:1;cursor:pointer;color:var(--fg2,#aaa);">×</button>'
+    +'<h4 style="margin:0 0 6px;font-size:17px;color:var(--fg,#fff);">💛 Support the next learner</h4>'
+    +'<p style="font-size:12.5px;color:var(--fg2,#aaa);margin:0 0 14px;line-height:1.6;">These resources are free because people like you care about the trade. Any amount helps keep the platform running.</p>'
+    +'<div style="background:#1E8540;border-radius:10px;padding:14px;margin-bottom:10px;text-align:center;">'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.8);margin-bottom:3px;">PayShap · Works with any SA bank</div>'
+    +'<div style="font-size:26px;font-weight:700;color:#fff;letter-spacing:.03em;font-family:\'Playfair Display\',Georgia,serif;">072 474 8888</div>'
+    +'<div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;">Riba T Tseke</div>'
+    +'</div>'
+    +'<details style="margin-bottom:14px;">'
+    +'<summary style="cursor:pointer;font-size:11px;color:var(--fg3,#888);">EFT bank details</summary>'
+    +'<div style="margin-top:7px;line-height:2;background:var(--bg,#111);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--fg,#eee);">'
+    +'Name: <strong>Riba T Tseke</strong><br>Bank: Capitec Bank<br>Account: <strong style="color:#34A853;">2605150883</strong><br>Branch: 470010 · Savings<br>Ref: DONATE'
+    +'</div></details>'
+    +'<button onclick="document.getElementById(\'_dnt_ov\').remove()" style="background:#1E8540;color:#fff;border:none;border-radius:9px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">Close</button>'
+    +'</div>';
+  document.body.appendChild(o);
+}
+
 // Donate — loads admin.js (which redefines this function with full banking overlay)
 function engageShowDonate(){
   if(typeof _engageShowDonateFull==='function'){_engageShowDonateFull();return;}
@@ -1469,7 +1458,7 @@ function engageShowDonate(){
   (function _w(){
     if(window._adminLoaded){window._donateLoading=false;setTimeout(function(){window.engageShowDonate();},0);}
     else if(_t++<40){setTimeout(_w,100);}
-    else{window._donateLoading=false;}
+    else{window._donateLoading=false;_showDonateInline();}
   })();
 }
 
@@ -1478,9 +1467,9 @@ function _loadAdmin(){
   if(window._adminLoaded||window._adminLoading)return;
   window._adminLoading=true;
   var s=document.createElement('script');
-  s.src='/admin.js?v=3';
+  s.src='/admin.js?v=4';
   s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
-  s.onerror=function(){window._adminLoading=false;console.error('admin.js failed to load');};
+  s.onerror=function(){window._adminLoading=false;window._donateLoading=false;_showDonateInline();};
   document.head.appendChild(s);
 }
 
@@ -1583,46 +1572,46 @@ function _loadAdmin(){
       wa:"Taura paWhatsApp"
     }
   ,
-    sw:{
-      greeting:"Tseke's Companion 👋 — Niulize chochote kuhusu mtihani wa IE, viwango vya SANS, vifurushi vya kusoma, au jinsi ya kusajiliwa na ECA(SA), AREP, au DOeL.",
-      faqs:["Ninavyopata ufunguo wa kujifunza?","Majaribio (R50) dhidi ya IR Companion (R1,000)","Viwango vilivyofunikwa","Mitihani ya IE iko lini?","Uanachama wa ECA(SA)","Usajili wa AREP","DOeL / Leseni ya Fundi","Kituo cha YouTube","Benki / Changia","Wasiliana na Tseke"],
+    xh:{
+      greeting:"Tseke's Companion 👋 — Buza nantoni na malunga nomviwo we-IE, imigangatho ye-SANS, amapakiti okufunda, okanye indlela yokubhalisela ne-ECA(SA), AREP, okanye DOeL.",
+      faqs:["Ndifumana njani isitshixo sokufunda?","Umahluko phakathi kwe-R50 ne-R1,000","Imigangatho eqinisekisiweyo","Xa zibanjelwa iimviwo ze-IE?","Iphumelela ngamagama angakanani?","Unikezelo lwesitshixo","Ubudlelwane be-ECA(SA)","Ubhaliso lwe-AREP","Itshanel ye-YouTube","Iinkcukacha zebhanki / Ukufaka imali","Qhagamshelana noTseke"],
       answers:{
-        "Ninavyopata ufunguo wa kujifunza?":"Nenda kwa kichupo cha Soma na uchague mpango wako — R50 (Ufikiaji wa Majaribio) au R1,000 (IR Companion). Lipa kwa PayShap au EFT, tuma uthibitisho kwa WhatsApp 072 474 8888 na jina lako, naye Tseke atatoa ufunguo wako.",
-        "Majaribio (R50) dhidi ya IR Companion (R1,000)":"R50: Ufikiaji wa miezi 4 — maswali yote kwa alama ya kufaulu ya 90%, maelezo ya vikao P1 na P2, mifano iliyofanyika. R1,000: Ufikiaji wa maisha yote — kila kitu katika Majaribio pamoja na mwongozo kamili wa PDF wa kujifunza (SANS 10142-1 P1 na P2), karatasi za miaka 10 iliyopita na suluhisho, na msaada wa moja kwa moja wa WhatsApp kutoka kwa Tseke.",
-        "Viwango vilivyofunikwa":"Mtaala kamili wa IE: SANS 10142-1 (P1 na P2), SANS 10198-1 na 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, na Sheria ya OHS ikijumuisha Kanuni za Usimamizi wa Umeme na Kanuni za Ujenzi.",
-        "Mitihani ya IE iko lini?":"Mitihani ya Sheria za Usakinishaji hufanywa na Idara ya Ajira na Kazi (DOeL). Tarehe zinatofautiana kwa mkoa. Wasiliana na Kituo chako cha DOeL Labour au Africa TVET College karibu nawe kwa tarehe za mtihani.",
-        "Uanachama wa ECA(SA)":"ECA(SA) ni Chama cha Wakandarasi wa Umeme Afrika Kusini. Kujiandikisha kunakupa haki za kisheria kufanya kazi kama mkandarasi wa umeme, ufikiaji wa mafunzo ya tasnia, na uwakilishi. WhatsApp Tseke kwa mwongozo.",
-        "Usajili wa AREP":"AREP (Chama cha Wataalamu wa Nishati Mbadala) ni kwa wafundi na wahandisi wanaofanya kazi katika uwanja wa nishati mbadala na ufanisi wa nishati. WhatsApp Tseke kwa maelezo.",
-        "DOeL / Leseni ya Fundi":"Leseni ya Fundi (Mfundi wa Usakinishaji) hutolewa na Idara ya Ajira na Kazi (DOeL). Lazima upite P1 na P2 na uzoefu wako wa vitendo uthibitishwe.",
-        "Kituo cha YouTube":"Tseke anaendesha vikao vya moja kwa moja vya YouTube vinavyofunika Sheria za Usakinishaji — Karatasi 1 na 2. Vikao ni bure. Tafuta 'Riba T Tseke' kwenye YouTube.",
-        "Benki / Changia":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Akaunti 2605150883, Tawi 470010\nTuma jina lako na nambari ya simu kama kumbukumbu.",
-        "Wasiliana na Tseke":"WhatsApp Tseke moja kwa moja kwa 072 474 8888 kwa msaada, maombi ya ufunguo, au maswali yoyote."
+        "Ndifumana njani isitshixo sokufunda?":"Yiya kwi-tab yokufunda ukhethe iplani yakho — R50 (ufikelelo lwetrayo yezinyanga ezi-4) okanye R1,000 (IR Companion ufikelelo lwawo wonke umhlaba). Khokha nge-PayShap okanye nge-EFT, uthumele isiqinisekiso nge-WhatsApp ku-072 474 8888 negama lakho, bese uTseke anikelela isitshixo sakho.",
+        "Umahluko phakathi kwe-R50 ne-R1,000":"R50: Ufikelelo lwezinyanga ezi-4 — yonke imibuzo ngo-90%, amanqaku esifundo P1 no-P2, imizekelo esebenzisiwe. R1,000: Ufikelelo lwawo wonke umhlaba — konke ku-trayo kanye nesikhokelo esipheleleyo se-PDF (SANS 10142-1 P1 & P2), amaphepha eminyaka elishumi edlulileyo nezixazululo, nosekelo lwe-WhatsApp ngqo evela kuTseke.",
+        "Imigangatho eqinisekisiweyo":"Umxholo opheleleyo we-IE: SANS 10142-1 (P1 no-P2), SANS 10198-1 no-10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, ne-OHS Act equkethe iMithetho ye-EIR ne-CR.",
+        "Xa zibanjelwa iimviwo ze-IE?":"Iimviwo zeMigangatho yoFakelo zibanjelwa yiCandelo leMisebenzi (DOeL). Iintsuku ziyahluka ngokweephondo. Tsalela ifoni iDOeL Labour Centre okanye iAfrica TVET College ekufutshane nawe.",
+        "Iphumelela ngamagama angakanani?":"Uphumelela ngo-50%. Kudingeka uphumelele zombili uP1 no-P2 ukuthole uMthendeleko we-DOeL.",
+        "Unikezelo lwesitshixo":"Ngemuva kokuqinisekiswa kokukhokha, isitshixo sinikwa ngaphakathi kwamahora angu-24 (rhoqo ngokukhawuleza). Thumela isiqinisekiso sakho nge-WhatsApp ku-072 474 8888 negama lakho.",
+        "Ubudlelwane be-ECA(SA)":"I-ECA(SA) yiElectrical Contractors Association of South Africa. Ukubhaliswa kunikezela amalungelo omthetho ukusebenza njengeContractor kagesi, ukufinyelela kuqeqesho lweshishini, noma umelelo.",
+        "Ubhaliso lwe-AREP":"I-AREP (Association of Renewable Energy Practitioners) yabo bonke abasebenzi nabajongene namandla agcweleyo. Tsalela uTseke nge-WhatsApp ukuze ufumane iinkcukacha.",
+        "Itshanel ye-YouTube":"UTseke wenza iiseshoni ezihlala ziphilayo ze-YouTube ezigubungela iMigangatho yoFakelo — Iphepha 1 no-2. Iiseshoni zikhululekile. Khangela 'Riba T Tseke' kwi-YouTube.",
+        "Iinkcukacha zebhanki / Ukufaka imali":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Account 2605150883, Branch 470010\nThumela igama lakho nenombolo yocingo njengegama lokukhangela.",
+        "Qhagamshelana noTseke":"Tsalela uTseke nge-WhatsApp ku-072 474 8888 ukuze ufumane inkxaso, izikhungo zesitshixo, okanye nantoni na enokubuza."
       },
-      wa:"Piga gumzo kwenye WhatsApp"
+      wa:"Thetha nge-WhatsApp"
     },
-    ar:{
-      greeting:"مرافق تسيكي 👋 — اسألني أي شيء عن امتحان IE، ومعايير SANS، وحزم الدراسة، أو كيفية التسجيل في ECA(SA) أو AREP أو DOeL.",
-      faqs:["كيف أحصل على مفتاح الدراسة؟","الفرق بين R50 و R1,000","المعايير المشمولة","مواعيد امتحانات IE","عضوية ECA(SA)","تسجيل AREP","DOeL / رخصة الكهربائي","قناة يوتيوب","البنك / التبرع","التواصل مع تسيكي"],
+    nr:{
+      greeting:"Tseke's Companion 👋 — Buza noma yini mayelana nesihlolo se-IE, imigangatho ye-SANS, amaphakheji okufunda, noma indlela yokubhalisela ne-ECA(SA), AREP, noma DOeL.",
+      faqs:["Ngithola njani isihluthulelo sokufunda?","Umahluko phakathi kwe-R50 ne-R1,000","Imigangatho eshiwo","Izilolongo ze-IE zinini?","Izinga lokuphumelela","Ukulethwa kwesihluthulelo","Ubunga be-ECA(SA)","Ubhaliso lwe-AREP","Isiteshi se-YouTube","Ibhanki / Umnikelo","Xhumana noTseke"],
       answers:{
-        "كيف أحصل على مفتاح الدراسة؟":"انتقل إلى تبويب الدراسة واختر خطتك — R50 (وصول تجريبي) أو R1,000 (IR Companion). ادفع عبر PayShap أو EFT، وأرسل إيصال الدفع عبر واتساب 072 474 8888 مع اسمك، وسيرسل إليك تسيكي مفتاحك.",
-        "الفرق بين R50 و R1,000":"R50: وصول لمدة 4 أشهر — جميع الاختبارات بنسبة نجاح 90%، ملاحظات الجلسات P1 و P2، أمثلة محلولة. R1,000: وصول مدى الحياة — كل شيء في الخطة التجريبية بالإضافة إلى دليل الدراسة PDF الكامل (SANS 10142-1 P1 و P2)، أوراق السنوات العشر الماضية مع الحلول، ودعم واتساب مباشر من تسيكي.",
-        "المعايير المشمولة":"المنهج الكامل لـ IE: SANS 10142-1 (P1 و P2)، SANS 10198-1 و 10198-2، SANS 1507-1، SANS 10292، SANS 10313، SANS 1973-3، وقانون الصحة والسلامة المهنية بما في ذلك لوائح التركيبات الكهربائية ولوائح البناء.",
-        "مواعيد امتحانات IE":"تُجرى امتحانات قواعد التركيب من قِبل وزارة التوظيف والعمل (DOeL). تختلف المواعيد حسب المقاطعة. تواصل مع مركز DOeL Labour أو Africa TVET College الأقرب إليك للحصول على مواعيد الامتحانات.",
-        "عضوية ECA(SA)":"ECA(SA) هي جمعية مقاولي الكهرباء في جنوب أفريقيا. التسجيل يمنحك الحق القانوني للعمل كمقاول كهربائي، والوصول إلى تدريب الصناعة، والتمثيل. تواصل مع تسيكي عبر واتساب للإرشاد.",
-        "تسجيل AREP":"AREP (رابطة ممارسي الطاقة المتجددة) للفنيين والمهندسين العاملين في مجال الطاقة المتجددة وكفاءة الطاقة. تواصل مع تسيكي عبر واتساب للتفاصيل.",
-        "DOeL / رخصة الكهربائي":"رخصة الكهربائي (كهربائي التركيبات) تُصدر من قِبل وزارة التوظيف والعمل (DOeL). يجب أن تجتاز P1 و P2 ويُعتمد خبرتك العملية.",
-        "قناة يوتيوب":"يُدير تسيكي جلسات مباشرة على يوتيوب تغطي قواعد التركيب — الورقة 1 و 2. الجلسات مجانية للجميع. ابحث عن 'Riba T Tseke' على يوتيوب.",
-        "البنك / التبرع":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank، حساب 2605150883، رمز الفرع 470010\nأرسل اسمك ورقم هاتفك كمرجع.",
-        "التواصل مع تسيكي":"تواصل مع تسيكي مباشرة عبر واتساب على 072 474 8888 للدعم أو طلبات المفاتيح أو الاستفسارات."
+        "Ngithola njani isihluthulelo sokufunda?":"Yiya ku-tab yokufunda ukhethe iplani yakho — R50 (ukufinyelela kwesikhathi sezinyanga ezi-4) noma R1,000 (IR Companion ukufinyelela ngokuphila). Khokha nge-PayShap noma nge-EFT, uthumele iqinisekiso nge-WhatsApp ku-072 474 8888 negama lakho, bese uTseke anikelela isihluthulelo sakho.",
+        "Umahluko phakathi kwe-R50 ne-R1,000":"R50: Ukufinyelela kwezinyanga ezi-4 — yonke imibuzo ngo-90%, amanothi esifundo P1 no-P2, imizekelo esebenzisiwe. R1,000: Ukufinyelela kwaphakade — konke ku-trayo kanye nesikhokelo esipheleleyo se-PDF (SANS 10142-1 P1 no-P2), amaphepha eminyaka elishumi nezixazululo, nesekelo le-WhatsApp ngqo evela kuTseke.",
+        "Imigangatho eshiwo":"Umxholo opheleleyo we-IE: SANS 10142-1 (P1 no-P2), SANS 10198-1 no-10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, ne-OHS Act iqukethe imithetho ye-EIR ne-CR.",
+        "Izilolongo ze-IE zinini?":"Izilolongo zeMithetho yokuFakela zibanjelwa yiCandelo leMisebenzi (DOeL). Izinsuku zihluka ngokwezifunda. Xhumana ne-DOeL Labour Centre noma i-Africa TVET College eduze nawe.",
+        "Izinga lokuphumelela":"Iphumelela ngo-50%. Kudingeka uphumelele zombili uP1 no-P2 ukuthole Isitifiketi se-DOeL.",
+        "Ukulethwa kwesihluthulelo":"Ngemuva kokuqinisekiswa kokukhokha, isihluthulelo sinikwa ngaphakathi kwamahora angu-24 (ngokuvamile ngokushesha). Thumela iqinisekiso lakho nge-WhatsApp ku-072 474 8888 negama lakho.",
+        "Ubunga be-ECA(SA)":"I-ECA(SA) yiElectrical Contractors Association of South Africa. Ukubhaliswa kukunika amalungelo omthetho ukusebenza njengeContractor kagesi, ukufinyelela ekuqeqesheni kwezimboni, noma umelelo.",
+        "Ubhaliso lwe-AREP":"I-AREP (Association of Renewable Energy Practitioners) yabo bonke abasebenzi nabajongene namandla agcweleyo. Xhumana noTseke nge-WhatsApp ukuze uthole imininingwane.",
+        "Isiteshi se-YouTube":"UTseke wenza izifundo ezihlala ziphila ze-YouTube ezimboza iMithetho yokuFakela — Iphepha 1 no-2. Izifundo zikhululekile. Funa 'Riba T Tseke' ku-YouTube.",
+        "Ibhanki / Umnikelo":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Account 2605150883, Branch 470010\nThumela igama lakho nenombolo yefoni njengesiqondiso.",
+        "Xhumana noTseke":"Xhumana noTseke ngqo nge-WhatsApp ku-072 474 8888 ukuze uthole usizo, izicelo zesihluthulelo, noma imibuzo yonke."
       },
-      wa:"تحدث عبر واتساب"
+      wa:"Khuluma nge-WhatsApp"
     }
   };
 
   window.companionLang=function(l){
     _lang=l;
-    var _rtlPanel=document.getElementById('companion-panel');
-    if(_rtlPanel){_rtlPanel.setAttribute('dir',l==='ar'?'rtl':'ltr');}
     document.querySelectorAll('.companion-lang-btn').forEach(function(b){b.classList.remove('active');});
     var active=document.querySelector('.companion-lang-btn[onclick*="\''+l+'\'"]');
     if(active)active.classList.add('active');
