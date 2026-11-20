@@ -611,13 +611,15 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 
     <div class="exam-row">
       <div class="exam-card">
-        <p class="exam-card-label">November Sitting</p>
+        <p class="exam-card-label" id="exam-label-p1">November Sitting</p>
         <p class="exam-name">Paper 1</p>
+        <p class="exam-date-str" id="exam-date-p1">Tuesday 24 November 2026</p>
         <div class="exam-num" id="cd1"><span class="exam-unit">days to go</span></div>
       </div>
       <div class="exam-card">
-        <p class="exam-card-label">November Sitting</p>
+        <p class="exam-card-label" id="exam-label-p2">November Sitting</p>
         <p class="exam-name">Paper 2</p>
+        <p class="exam-date-str" id="exam-date-p2">Monday 30 November 2026</p>
         <div class="exam-num" id="cd2"><span class="exam-unit">days to go</span></div>
       </div>
     </div>
@@ -1156,8 +1158,23 @@ function renderCountdown(id,iso){
   else if(d===0){el.innerHTML='TODAY';el.style.color='#34A853';}
   else{el.innerHTML=d+'<span class="exam-unit">days to go</span>';}
 }
-renderCountdown('cd1','2026-11-24');
-renderCountdown('cd2','2026-11-30');
+(function(){
+  var sched=[
+    {label:'November 2026',p1:{str:'Tuesday 24 November 2026',iso:'2026-11-24'},p2:{str:'Monday 30 November 2026',iso:'2026-11-30'}},
+    {label:'April 2027',p1:{str:'Tuesday 15 April 2027',iso:'2027-04-15'},p2:{str:'Monday 22 April 2027',iso:'2027-04-22'}},
+    {label:'August 2027',p1:{str:'Tuesday 19 August 2027',iso:'2027-08-19'},p2:{str:'Monday 25 August 2027',iso:'2027-08-25'}},
+    {label:'November 2027',p1:{str:'Tuesday 24 November 2027',iso:'2027-11-24'},p2:{str:'Monday 30 November 2027',iso:'2027-11-30'}}
+  ];
+  var today=new Date();today.setHours(0,0,0,0);
+  var sit=sched[sched.length-1];
+  for(var i=0;i<sched.length;i++){if(new Date(sched[i].p2.iso+'T00:00:00')>=today){sit=sched[i];break;}}
+  var l1=document.getElementById('exam-label-p1');if(l1)l1.textContent=sit.label+' Sitting';
+  var l2=document.getElementById('exam-label-p2');if(l2)l2.textContent=sit.label+' Sitting';
+  var d1=document.getElementById('exam-date-p1');if(d1)d1.textContent=sit.p1.str;
+  var d2=document.getElementById('exam-date-p2');if(d2)d2.textContent=sit.p2.str;
+  renderCountdown('cd1',sit.p1.iso);
+  renderCountdown('cd2',sit.p2.iso);
+})();
 
 function updateCounter(){
   var done=document.querySelectorAll('.snum.done').length;
@@ -1478,7 +1495,7 @@ function _loadAdmin(){
   var T={
     en:{
       greeting:"Tseke's Companion 👋 — Ask me anything about the IE exam, SANS standards, study packs, or how to register with ECA(SA), AREP, or DOeL.",
-      faqs:["How do I get a study key?","Trial (R50) vs IR Companion (R1,000)","Standards covered","When are the IE exams?","ECA(SA) membership","AREP registration","DOeL / Wireman's licence","YouTube channel","Banking / Donate","Contact Tseke"],
+      faqs:["How do I get a study key?","Trial (R50) vs IR Companion (R1,000)","Standards covered","When are the IE exams?","ECA(SA) membership","AREP registration","DOeL / Wireman's licence","YouTube channel","Banking / Donate","Contact Tseke","What services does Tseke offer?","How much is a quote?"],
       answers:{
         "How do I get a study key?":"Go to the Study tab and select your plan — Trial (R50) for 4-month access or IR Companion (R1,000) for lifetime access. WhatsApp Tseke on 072 474 8888 to arrange payment and your key will be issued.",
         "Trial (R50) vs IR Companion (R1,000)":"Trial (R50): 4-month access (custom duration on request) — all quizzes at 90% pass mark, session study notes P1 & P2, worked examples. Can upgrade to IR Companion anytime by paying the difference.\n\nIR Companion (R1,000): Lifetime access — everything in Trial plus the full PDF study guide (SANS 10142-1 P1 & P2), past 10 years papers with worked solutions, and direct WhatsApp support from Tseke.",
@@ -1489,21 +1506,30 @@ function _loadAdmin(){
         "DOeL / Wireman's licence":"The Wireman's Licence (Installation Electrician) is issued by the Department of Employment and Labour (DOeL) under the Electrical Installation Regulations. You must pass both Paper 1 and Paper 2 of the Installation Rules exam and have your practical experience certified. Contact your nearest DOeL Labour Centre. Tseke can guide you through the process — WhatsApp 072 474 8888.",
         "YouTube channel":"Tseke runs YouTube live sessions covering SANS 10142-1 Installation Rules — Paper 1 and Paper 2. Sessions are free and open to all learners. Search 'Riba T Tseke' on YouTube or use the YouTube link in the Sessions tab.",
         "Banking / Donate":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference.\nTap the yellow Donate button at the bottom of the page.",
-        "Contact Tseke":"WhatsApp: 072 474 8888\nEmail: ribattseke@gmail.com\nFor study keys, mentoring, consultation, or general questions — WhatsApp is the fastest way."
+        "Contact Tseke":"WhatsApp: 072 474 8888\nEmail: ribattseke@gmail.com\nFor study keys, mentoring, consultation, or general questions — WhatsApp is the fastest way.",
+        "What services does Tseke offer?":"Tseke offers: Training panel manufacturing (EWSETA-aligned, single and three phase), Installation Rules exam coaching (Paper 1 & 2), ECSA professional registration mentoring (Pr. Tech Eng pathway), and electrical consulting. WhatsApp 072 474 8888 to discuss your needs.",
+        "How much is a quote?":"Quote pricing depends on the type of work, scope, and your location. WhatsApp Tseke on 072 474 8888 with your location and what you need — a free no-obligation discussion can be arranged."
       },
       wa:"Chat on WhatsApp"
     },
     nso:{
-      greeting:"Bolela le rena! 👋 Re ka go thuša ka eng?",
-      faqs:["Ke kgona bjang ho fumana konopo?","Trial (R50) kgahlano le IR Companion (R1,000)","Di-standard tše di akaretšwago","Ke leng dihlahlobo tša IE?","Tshedimošo ya ECA(SA)","Boikarabelo bja AREP","Laesense ya DOeL","Moaneltšane wa YouTube","Ditsela tša go duela","Ikopanya le Tseke"],
+      greeting:"Tseke's Companion 👋 — Nkotšiše ka se sengwe ka ga tlhahlobo ya IE, divaestandarte tša SANS, dipaketla tša thuto, goba go ngwadiša ka ECA(SA), AREP goba DOeL.",
+      faqs:["Ke kgona bjang go hwetša konopo ya thuto?","Trial (R50) kgahlano le IR Companion (R1,000)","Di-standard tše di akaretšwago","Ke leng dihlahlobo tša IE?","Tshedimošo ya ECA(SA)","Boikarabelo bja AREP","Laesense ya DOeL","Moaneltšane wa YouTube","Ditsela tša go duela","Ikopanya le Tseke","Tseke o dira ditirelo dife?","Ke bokae ats'ha?"],
       answers:{
-        "Ke kgona bjang ho fumana konopo?":"Ya Study tab mme o kgethe lenaneo la gago. Ikopanya le Tseke ka WhatsApp 072 474 8888 go laetša tefo — konopo e tla fiwa morago ga tefo.","Ke leng dihlahlobo tša IE?":"Dihlahlobo tša Installation Rules di tšewa ke DOeL. Tseke a ka go thuša ka tshedimošo — WhatsApp 072 474 8888.","Tshedimošo ya ECA(SA)":"ECA(SA) ke kgobokano ya balefuri ba motlakase. Tsekela ecasa.co.za go diragatša.","Boikarabelo bja AREP":"AREP ke kgobokano ya bagwebi ba phihlelelo ya maatla a go lokologišwa. Tsekela arep.co.za.","Laesense ya DOeL":"Laesense ya Wireman e fiwa ke DOeL. O swanetše go pasa Pepa 1 le 2 ya Installation Rules. Ikopanya le ofisi ya DOeL ya ge o lego gona gona.","Moaneltšane wa YouTube":"Tseke o phetha ditirišo tša go laiwa ka YouTube ka SANS 10142-1. Nyaka 'Riba T Tseke' YouTube.",
-        "R50 kgahlano le R1,000":"R50 e go fa phihlelo ya dikgwedi tše 4 — diquiz ka moka, diqoute P1 le P2, le dika. R1,000 ke phihlelo ya bophelo ka moka mme e oketša go diriša PDF ya thuto ka botlalo, dipampiri tša mengwaga ye 10 e fetilego ka diphetolo, le thekgo ya ya WhatsApp ka go ya go Tseke.",
-        "Di-standard tše di akaretšwago ke tšefe?":"LMS e akaretša: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, le Molao wa OHS go akaretšwa Melao ya Diphetho tša Mohlagase le Melao ya Kago.",
+        "Ke kgona bjang go hwetša konopo ya thuto?":"Ya Study tab mme o kgethe lenaneo la gago. Ikopanya le Tseke ka WhatsApp 072 474 8888 go laetša tefo — konopo e tla fiwa morago ga tefo.",
+        "Trial (R50) kgahlano le IR Companion (R1,000)":"R50 e go fa phihlelo ya dikgwedi tše 4 — diquiz ka moka, dinotse tša dikgetho P1 le P2, le dikakanyo tše di šomilego. R1,000 ke phihlelo ya bophelo ka moka mme e oketša PDF ya thuto ka botlalo, dipampiri tša mengwaga ye 10 e fetilego ka diphetolo, le thekgo ya WhatsApp ka go ya go Tseke.",
+        "Di-standard tše di akaretšwago":"LMS e akaretša: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, le Molao wa OHS go akaretšwa Melao ya Diphetho tša Mohlagase le Melao ya Kago.",
+        "Ke leng dihlahlobo tša IE?":"Dihlahlobo tša Installation Rules di tšewa ke DOeL. Tseke a ka go thuša ka tshedimošo — WhatsApp 072 474 8888.",
+        "Tshedimošo ya ECA(SA)":"ECA(SA) ke kgobokano ya balefuri ba motlakase. Tsekela ecasa.co.za go diragatša.",
+        "Boikarabelo bja AREP":"AREP ke kgobokano ya bagwebi ba phihlelelo ya maatla a go lokologišwa. Tsekela arep.co.za.",
+        "Laesense ya DOeL":"Laesense ya Wireman e fiwa ke DOeL. O swanetše go pasa Pepa 1 le 2 ya Installation Rules. Ikopanya le ofisi ya DOeL ya ge o lego gona.",
+        "Moaneltšane wa YouTube":"Tseke o phetha ditirišo tša go laiwa ka YouTube ka SANS 10142-1. Nyaka 'Riba T Tseke' YouTube.",
         "Ditsela tša go duela":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Ak 2605150883, Lekala 470010\nDiriša leina la gago le nomoro ya sellefounou.",
-        "Ikopanya le Tseke":"Romela Tseke molaetša ka WhatsApp go 072 474 8888 go thekgo, dikgopelo tša konopo, goba dipotšišo."
+        "Ikopanya le Tseke":"Romela Tseke molaetša ka WhatsApp go 072 474 8888 go thekgo, dikgopelo tša konopo, goba dipotšišo.",
+        "Tseke o dira ditirelo dife?":"Tseke o dira: go agwa ga mabokose a thuto (go ya ka EWSETA, ya phêisi e tee le ya maphêisi a mararo), go ruta dihlahlobo tša IE (Pepa 1 le 2), go thuša ka ngwalo wa ECSA (Pr. Tech Eng), le dikhomšente tša mohlagase. WhatsApp 072 474 8888 go bua ka ditirelo.",
+        "Ke bokae ats'ha?":"Pereisi ya ats'ha e fapana ke go ya le ka mofuta wa tiro le bogolo bja yona, le gore o dula kae. Bolela le Tseke ka WhatsApp 072 474 8888 gore o re botše o dula kae le gore o nyaka go kgona eng — re ka go fa ats'ha ya mahala."
       },
-      wa:"Bua ka WhatsApp"
+      wa:"Bua le rena ka WhatsApp"
     },
     af:{
       greeting:"Gesels met ons! 👋 Hoe kan ons jou vandag help?",
