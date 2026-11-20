@@ -2298,11 +2298,11 @@ function engageShowDonate(){
     +'</div>'
     +'<div style="font-size:11px;color:var(--fg3);text-align:center;margin-bottom:8px;">Open your banking app → PayShap / Instant Pay → enter the number above</div>'
     +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px;">'
-    +'<a href="https://www.fnb.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>FNB</span></a>'
-    +'<a href="https://www.capitecbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Capitec</span></a>'
-    +'<a href="https://www.absa.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>ABSA</span></a>'
-    +'<a href="https://www.standardbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Std Bank</span></a>'
-    +'<a href="https://www.nedbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Nedbank</span></a>'
+    +'<button onclick="engageBankApp(\'fnb\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>FNB</span></button>'
+    +'<button onclick="engageBankApp(\'capitec\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>Capitec</span></button>'
+    +'<button onclick="engageBankApp(\'absa\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>ABSA</span></button>'
+    +'<button onclick="engageBankApp(\'standardbank\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>Std Bank</span></button>'
+    +'<button onclick="engageBankApp(\'nedbank\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>Nedbank</span></button>'
     +'</div>'
     +'<details style="font-size:12px;color:var(--fg2);margin-bottom:10px;">'
     +'<summary style="cursor:pointer;color:var(--fg3);font-size:11px;">EFT bank details</summary>'
@@ -2321,6 +2321,32 @@ function engageShowDonate(){
 function engageDismiss(type){
   var el=document.getElementById('engage-'+type+'-overlay');
   if(el) el.remove();
+}
+
+function engageBankApp(bank){
+  // Try deep-link to banking app; falls back gracefully if app not installed
+  var schemes={
+    fnb:'fnbmobilebanking://',
+    capitec:'capitecbankapp://',
+    absa:'absabankingapp://',
+    standardbank:'standardbankapp://',
+    nedbank:'nedbankapp://'
+  };
+  var scheme=schemes[bank];
+  if(scheme){
+    // Copy PayShap number first so user has it ready
+    try{navigator.clipboard.writeText('0724748888');}catch(e){}
+    // Try to open app via scheme link; browsers may block non-registered schemes silently
+    var a=document.createElement('a');
+    a.href=scheme;
+    a.click();
+    // Show instruction toast
+    var t=document.createElement('div');
+    t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:9px 16px;border-radius:8px;font-size:12.5px;z-index:9999;text-align:center;max-width:280px;line-height:1.5;';
+    t.textContent='Number copied! Open your '+bank.charAt(0).toUpperCase()+bank.slice(1)+' app → PayShap / Instant Pay → paste 072 474 8888';
+    document.body.appendChild(t);
+    setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},4500);
+  }
 }
 
 // Photo capture state for job modal

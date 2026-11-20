@@ -441,6 +441,24 @@ section:last-child{border-bottom:none;}
 .pay-shap-note{font-size:11px;color:#717171;margin-top:3px;}
 .pay-instructions{font-size:12px;color:var(--fg3);margin-top:12px;line-height:1.5;}
 
+.companion-btn{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:var(--amb);color:#fff;font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:24px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);display:inline-flex;align-items:center;gap:7px;transition:box-shadow .2s,transform .15s;line-height:1.1;}
+.companion-btn:hover{box-shadow:0 6px 24px rgba(0,0,0,.3);transform:translateY(-1px);}
+#companion-panel{position:fixed;bottom:calc(130px + env(safe-area-inset-bottom,0px));right:calc(12px + env(safe-area-inset-right,0px));width:min(360px,calc(100vw - 24px));max-height:70vh;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.22);z-index:201;display:flex;flex-direction:column;overflow:hidden;}
+#companion-head{background:var(--amb);color:#fff;padding:11px 14px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+#companion-head-title{font-weight:700;font-size:14px;flex:1;}
+#companion-langs{display:flex;gap:4px;flex-wrap:wrap;}
+.companion-lang-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-size:10px;font-weight:700;padding:3px 7px;cursor:pointer;white-space:nowrap;}
+.companion-lang-btn.active{background:rgba(255,255,255,.95);color:var(--amb);}
+#companion-close-btn{background:none;border:none;color:rgba(255,255,255,.8);font-size:20px;cursor:pointer;padding:0 2px;line-height:1;}
+#companion-msgs{flex:1;overflow-y:auto;padding:12px 12px 0;display:flex;flex-direction:column;gap:8px;min-height:60px;}
+.comp-msg{padding:9px 11px;border-radius:10px;font-size:13px;line-height:1.5;max-width:94%;white-space:pre-wrap;}
+.comp-msg-bot{background:var(--bg);border:1px solid var(--border);align-self:flex-start;}
+.comp-msg-user{background:var(--amb);color:#fff;align-self:flex-end;border-radius:10px 10px 2px 10px;}
+#companion-faqs{padding:10px 10px 10px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--border);flex-shrink:0;}
+.comp-faq-chip{background:var(--bg);border:1px solid var(--border);border-radius:14px;font-size:11.5px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.comp-faq-chip:hover{background:var(--amb);color:#fff;border-color:var(--amb);}
+#companion-wa{padding:8px 10px 10px;flex-shrink:0;}
+#companion-wa-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px;border-radius:9px;text-decoration:none;border:none;cursor:pointer;}
 .float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;font-size:12.5px;font-weight:700;padding:10px 16px;border-radius:24px;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:inline-flex;align-items:center;gap:8px;transition:box-shadow .2s,transform .15s;line-height:1.1;}
 .float-pay:hover{box-shadow:0 6px 26px rgba(30,133,64,.6);transform:translateY(-1px);}
 .donate-sub{display:block;font-size:9px;font-weight:500;opacity:.85;letter-spacing:.04em;text-transform:lowercase;}
@@ -909,7 +927,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <p style="margin:0 0 10px;font-size:15px;font-weight:600;color:var(--fg);">What is ribattseke.co.za?</p>
       <p style="margin:0 0 10px;font-size:14px;color:var(--fg2);">This site is a one-stop platform for South African electricians and trade students — built and run by a practising electrician and registered assessor. It brings together everything you need to pass your trade test, stay compliant, and grow your practice.</p>
       <ul style="margin:0;padding-left:18px;font-size:13.5px;color:var(--fg2);line-height:1.8;">
-        <li><strong>LMS (Learning Management System)</strong> — structured study sessions on SANS 10142-1, EIR 1992, Construction Regulations 2003, SANS 10198-1/2, SANS 10292, SANS 1973-3, and SANS 10313 Lightning Protection, each ending in a timed quiz.</li>
+        <li><strong>LMS (Learning Management System)</strong> — structured study sessions covering the full IE syllabus: SANS 10142-1 (P1 and P2), SANS 10198-1 and 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, and the OHS Act including the Electrical Installation Regulations and Construction Regulations, each ending in a timed quiz.</li>
         <li><strong>Services</strong> — Training panel construction, NAMB trade test prep, and more.</li>
         <li><strong>Study Packs &amp; Tools</strong> — curated SANS and reference downloads, professional electricians toolkits, and stationery combos — everything a student needs on the bench.</li>
         <li><strong>Projects</strong> — a portfolio of completed electrical and renewable energy installations for reference and credibility.</li>
@@ -1104,6 +1122,29 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
   <span>Donate<span class="donate-sub">keep us going</span></span>
 </a>
+<button class="companion-btn" id="companion-btn" onclick="companionToggle()" aria-label="Companion chat">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  Companion
+</button>
+<div id="companion-panel" hidden>
+  <div id="companion-head">
+    <span id="companion-head-title">Companion</span>
+    <div id="companion-langs">
+      <button class="companion-lang-btn active" onclick="companionLang('en')">EN</button>
+      <button class="companion-lang-btn" onclick="companionLang('nso')">Sepedi</button>
+      <button class="companion-lang-btn" onclick="companionLang('af')">Afrikaans</button>
+      <button class="companion-lang-btn" onclick="companionLang('zu')">IsiZulu</button>
+      <button class="companion-lang-btn" onclick="companionLang('sn')">Shona</button>
+    </div>
+    <button id="companion-close-btn" onclick="companionToggle()">×</button>
+  </div>
+  <div id="companion-msgs"></div>
+  <div id="companion-faqs"></div>
+  <div id="companion-wa"><a id="companion-wa-btn" href="https://wa.me/27724748888" target="_blank" rel="noopener">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.012.496 3.912 1.371 5.588L0 24l6.549-1.339A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 01-5.001-1.375l-.359-.214-3.885.794.828-3.78-.234-.38A9.773 9.773 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.429 0 9.818 4.388 9.818 9.818 0 5.429-4.389 9.818-9.818 9.818z"/></svg>
+    Chat on WhatsApp
+  </a></div>
+</div>
 
 <!-- Firebase loaded lazily on first Study tab visit -->
 <script>
@@ -1359,6 +1400,7 @@ function _activateTab(name,skipPush){
     if(location.pathname!==np)history.pushState({tab:name},'',np);
   }
   window._currentTab=name;
+  try{sessionStorage.setItem('biz_tab',name);}catch(e){}
   if(window._gtagTab)window._gtagTab(name);
   if(name==='study'&&typeof _loadFirebase==='function')_loadFirebase();
 }
@@ -1405,24 +1447,167 @@ window.addEventListener('popstate',function(e){
   var valid=['about','sessions','resources','projects','study'];
   var path=location.pathname.replace(/^\//,'').split('/')[0];
   var hash=location.hash.replace('#','');
-  var tab=valid.indexOf(path)!==-1 ? path : (valid.indexOf(hash)!==-1 ? hash : 'about');
+  var saved='';try{saved=sessionStorage.getItem('biz_tab')||'';}catch(e){}
+  var tab=valid.indexOf(path)!==-1 ? path : (valid.indexOf(saved)!==-1 ? saved : (valid.indexOf(hash)!==-1 ? hash : 'about'));
   showTab(tab,true);
 })();
 
-// Stub — real implementation loads with tab-study.html
+// Donate — loads admin.js (which redefines this function with full banking overlay)
 function engageShowDonate(){
   if(typeof _engageShowDonateFull==='function'){_engageShowDonateFull();return;}
-  showTab('study');
+  if(window._donateLoading)return;
+  window._donateLoading=true;
+  _loadAdmin();
+  var _t=0;
+  (function _w(){
+    if(window._adminLoaded){window._donateLoading=false;setTimeout(function(){window.engageShowDonate();},0);}
+    else if(_t++<40){setTimeout(_w,100);}
+    else{window._donateLoading=false;}
+  })();
 }
 
 // Admin panel loaded on demand
 function _loadAdmin(){
-  if(window._adminLoaded)return;
-  window._adminLoaded=true;
+  if(window._adminLoaded||window._adminLoading)return;
+  window._adminLoading=true;
   var s=document.createElement('script');
   s.src='/admin.js?v=2';
-  s.onerror=function(){window._adminLoaded=false;console.error('admin.js failed to load');};
+  s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
+  s.onerror=function(){window._adminLoading=false;console.error('admin.js failed to load');};
   document.head.appendChild(s);
 }
+
+// ── Companion Chat ──────────────────────────────────────────────────
+(function(){
+  var _lang='en';
+  var _open=false;
+  var _greeted=false;
+
+  var T={
+    en:{
+      greeting:"Chat to us! 👋 How can we help you today?",
+      faqs:["How do I get a key?","R50 vs R1,000","What standards are covered?","Banking / Donate","Contact Tseke"],
+      answers:{
+        "How do I get a key?":"To get a study key, go to the Study tab and choose your plan. Contact Tseke directly on WhatsApp to arrange payment and key issuance.",
+        "R50 vs R1,000":"R50 gives you 4-month access (custom duration on request) — all quizzes, session notes P1 & P2, and worked examples. R1,000 is lifetime access and adds the full PDF study guide (SANS 10142-1 P1 & P2), past 10 years papers with solutions, and direct WhatsApp support from Tseke.",
+        "What standards are covered?":"The LMS covers the full IE syllabus: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, and the OHS Act including Electrical Installation Regulations and Construction Regulations.",
+        "Banking / Donate":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference.",
+        "Contact Tseke":"WhatsApp Tseke directly on 072 474 8888 for support, key requests, or any questions."
+      },
+      wa:"Chat on WhatsApp"
+    },
+    nso:{
+      greeting:"Bolela le rena! 👋 Re ka go thuša ka eng?",
+      faqs:["Ke kgona bjang ho fumana konopo?","R50 kgahlano le R1,000","Di-standard tše di akaretšwago ke tšefe?","Ditsela tša go duela","Ikopanya le Tseke"],
+      answers:{
+        "Ke kgona bjang ho fumana konopo?":"Go fumana konopo ya thuto, ya Study tab mme o kgethe lenaneo la gago. Ikopanya le Tseke ka go retelwa ka WhatsApp go laetša tefo le go fiwa konopo.",
+        "R50 kgahlano le R1,000":"R50 e go fa phihlelo ya dikgwedi tše 4 — diquiz ka moka, diqoute P1 le P2, le dika. R1,000 ke phihlelo ya bophelo ka moka mme e oketša go diriša PDF ya thuto ka botlalo, dipampiri tša mengwaga ye 10 e fetilego ka diphetolo, le thekgo ya ya WhatsApp ka go ya go Tseke.",
+        "Di-standard tše di akaretšwago ke tšefe?":"LMS e akaretša: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, le Molao wa OHS go akaretšwa Melao ya Diphetho tša Mohlagase le Melao ya Kago.",
+        "Ditsela tša go duela":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Ak 2605150883, Lekala 470010\nDiriša leina la gago le nomoro ya sellefounou.",
+        "Ikopanya le Tseke":"Romela Tseke molaetša ka WhatsApp go 072 474 8888 go thekgo, dikgopelo tša konopo, goba dipotšišo."
+      },
+      wa:"Bua ka WhatsApp"
+    },
+    af:{
+      greeting:"Gesels met ons! 👋 Hoe kan ons jou vandag help?",
+      faqs:["Hoe kry ek 'n sleutel?","R50 teen R1,000","Watter standaarde word gedek?","Bankbesonderhede / Skenk","Kontak Tseke"],
+      answers:{
+        "Hoe kry ek 'n sleutel?":"Gaan na die Studie-oortjie en kies jou plan. Kontak Tseke direk op WhatsApp om betaling en sleuteluitreiking te reël.",
+        "R50 teen R1,000":"R50 gee 4 maande toegang (aangepaste duur op versoek) — alle vasvra's, sessie-notas P1 en P2, en gewerkte voorbeelde. R1,000 is lewenslange toegang en sluit in die volledige PDF-studiegids (SANS 10142-1 P1 en P2), afgelope 10 jaar se vraestelle met oplossings, en direkte WhatsApp-ondersteuning van Tseke.",
+        "Watter standaarde word gedek?":"Die LMS dek: SANS 10142-1 (P1 en P2), SANS 10198-1 en 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, en die OHS-wet insluitend Elektriese Installasieregulasies en Bou-regulasies.",
+        "Bankbesonderhede / Skenk":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Rek 2605150883, Tak 470010\nGebruik jou naam en selnommer as verwysing.",
+        "Kontak Tseke":"WhatsApp Tseke direk op 072 474 8888 vir ondersteuning, sleutelversoeke, of enige vrae."
+      },
+      wa:"Gesels op WhatsApp"
+    },
+    zu:{
+      greeting:"Khuluma nathi! 👋 Singakusiza kanjani namuhla?",
+      faqs:["Ngithole kanjani ukhiye?","R50 vs R1,000","Yimiphi imigangatho efihlakele?","Imininingwane yebhange / Qopha","Xhumana noTseke"],
+      answers:{
+        "Ngithole kanjani ukhiye?":"Hamba ku-Study tab bese ukhetha uhlelo lwakho. Xhumana noTseke ngqo ku-WhatsApp ukuze ulungise inkokhelo nokukhishelwa ukhiye.",
+        "R50 vs R1,000":"R50 ikunika ukufinyelela izinyanga ezingu-4 (isikhathi esikhethekile ngomcelo) — wonke amakulithi, amanothi esifundo P1 no-P2, nezibonelo ezikhiqiziwe. R1,000 ukufinyelela kwesikhathi sonke futhi yengeza umhlahlandlela wokufunda we-PDF ophelele (SANS 10142-1 P1 no-P2), amaphepha emisuka iminyaka eyi-10 edlule nezixazululo, kanye nokusekela kwe-WhatsApp ngqo evela kuTseke.",
+        "Yimiphi imigangatho efihlakele?":"I-LMS ikhuluma nge: SANS 10142-1 (P1 no-P2), SANS 10198-1 no-10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, ne-OHS Act efaka i-Electrical Installation Regulations ne-Construction Regulations.",
+        "Imininingwane yebhange / Qopha":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Akhawunti 2605150883, Igatsha 470010\nSebenzisa igama lakho nenombolo yeselula njengereference.",
+        "Xhumana noTseke":"WhatsApp uTseke ngqo ku-072 474 8888 ukuze uthole usizo, izicelo zokhiye, noma imibuzo."
+      },
+      wa:"Xhumana ku-WhatsApp"
+    },
+    sn:{
+      greeting:"Taura nesu! 👋 Tingakubatsira sei nhasi?",
+      faqs:["Ndinoiwana sei kiyi?","R50 vs R1,000","Mitemo ipi inofukidzwa?","Ruzivo rweBhangi / Shandira","Bata Tseke"],
+      answers:{
+        "Ndinoiwana sei kiyi?":"Enda kuStudy tab uye usarudze chirongwa chako. Bata Tseke zvakanangana paWhatsApp kugadzirira kubhadhara uye kupiwa kiyi.",
+        "R50 vs R1,000":"R50 inokupa mvumo yemwedzi mina (nguva yakasarudzwa paichemo) — mabhvunzwa ose, manotsi esession P1 ne P2, uye mienzaniso yakashanda. R1,000 ndiyo mvumo yehupenyu hwose uye inowedzera gwaro rakakwana rePDF rezvidzidzo (SANS 10142-1 P1 ne P2), mapepa emakore gumi apfuura nemhinduro, uye rubatsiro rwakanangana rweWhatsApp kubva kuTseke.",
+        "Mitemo ipi inofukidzwa?":"LMS inofukidza: SANS 10142-1 (P1 ne P2), SANS 10198-1 ne 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, uye OHS Act ine Electrical Installation Regulations neConstruction Regulations.",
+        "Ruzivo rweBhangi / Shandira":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Akhawunti 2605150883, Bhanchi 470010\nShandisa zita rako uye nambari yefoni sechibvumirano.",
+        "Bata Tseke":"WhatsApp Tseke zvakanangana pa-072 474 8888 kune rubatsiro, zvikumbiro zvekiyi, kana mibvunzo."
+      },
+      wa:"Taura paWhatsApp"
+    }
+  };
+
+  window.companionLang=function(l){
+    _lang=l;
+    document.querySelectorAll('.companion-lang-btn').forEach(function(b){b.classList.remove('active');});
+    var active=document.querySelector('.companion-lang-btn[onclick*="\''+l+'\'"]');
+    if(active)active.classList.add('active');
+    _greeted=false;
+    var msgs=document.getElementById('companion-msgs');
+    if(msgs)msgs.innerHTML='';
+    _companionGreet();
+    _renderFaqs();
+  };
+
+  function _companionGreet(){
+    if(_greeted)return;
+    _greeted=true;
+    _addMsg(T[_lang].greeting,'bot');
+  }
+
+  function _addMsg(text,who){
+    var msgs=document.getElementById('companion-msgs');
+    if(!msgs)return;
+    var d=document.createElement('div');
+    d.className='comp-msg comp-msg-'+who;
+    d.textContent=text;
+    msgs.appendChild(d);
+    msgs.scrollTop=msgs.scrollHeight;
+  }
+
+  function _renderFaqs(){
+    var el=document.getElementById('companion-faqs');
+    if(!el)return;
+    el.innerHTML='';
+    T[_lang].faqs.forEach(function(q){
+      var b=document.createElement('button');
+      b.className='comp-faq-chip';
+      b.textContent=q;
+      b.onclick=function(){
+        _addMsg(q,'user');
+        var ans=T[_lang].answers[q]||'Please message Tseke directly on WhatsApp for more details.';
+        setTimeout(function(){_addMsg(ans,'bot');},180);
+      };
+      el.appendChild(b);
+    });
+  }
+
+  window.companionToggle=function(){
+    _open=!_open;
+    var panel=document.getElementById('companion-panel');
+    if(panel){
+      panel.hidden=!_open;
+      if(_open){
+        _companionGreet();
+        _renderFaqs();
+        var wa=document.getElementById('companion-wa-btn');
+        if(wa)wa.textContent='';
+        var waEl=document.getElementById('companion-wa-btn');
+        if(waEl){
+          waEl.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.012.496 3.912 1.371 5.588L0 24l6.549-1.339A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 01-5.001-1.375l-.359-.214-3.885.794.828-3.78-.234-.38A9.773 9.773 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.429 0 9.818 4.388 9.818 9.818 0 5.429-4.389 9.818-9.818 9.818z"/></svg> '+T[_lang].wa;
+        }
+      }
+    }
+  };
+})();
 </script>
 </body></html>
