@@ -1,0 +1,26 @@
+# ribattseke.co.za
+
+> Riba T Tseke — Installation Electrician (Wireman's Licence, NQF 6) with 10+ years in renewable energy operations, quality leadership, and accredited trade assessment. Based in Gauteng, South Africa.
+
+This site serves South African electricians and trade students preparing for the NAMB Electrical Trade Test. It provides structured LMS study sessions on SANS 10142-1 (Installation Rules), practice quizzes, professional services, and study resources.
+
+## Services
+
+- [Sessions](/sessions): Installation Rules (SANS 10142-1) structured study sessions and trade test preparation
+- [Resources](/resources): Study packs, SANS books, compliance instruments, and stationery
+- [Projects](/projects): Technical consultation, training panel builds, Installation Rules facilitation, and compliance instrument training
+- [Study](/study): LMS with timed quizzes covering SANS 10142-1, EIR 1992, Construction Regulations, and related standards
+
+## About
+
+- [About](/about): Qualifications, registrations, memberships, contact, and professional background
+
+## Contact
+
+- WhatsApp / calls: 072 474 8888
+- Email: ribattseke@gmail.com
+- Location: Gauteng, South Africa
+
+## Optional
+
+- [robots.txt](https://ribattseke.co.za/robots.txt)

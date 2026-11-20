@@ -1,0 +1,41 @@
+{
+  "$schema": "https://agentrd.org/schema/v1",
+  "name": "ribattseke.co.za",
+  "description": "South African electrical trade test preparation platform and professional services by Riba T Tseke, Installation Electrician (NQF 6, Wireman's Licence).",
+  "url": "https://ribattseke.co.za/",
+  "locale": "en-ZA",
+  "contact": {
+    "name": "Riba T Tseke",
+    "phone": "+27724748888",
+    "email": "ribattseke@gmail.com",
+    "region": "Gauteng, South Africa"
+  },
+  "resources": [
+    {
+      "type": "text/plain",
+      "url": "https://ribattseke.co.za/llms.txt",
+      "description": "Site overview for AI agents"
+    },
+    {
+      "type": "text/plain",
+      "url": "https://ribattseke.co.za/robots.txt",
+      "description": "Crawl directives"
+    }
+  ],
+  "capabilities": [
+    "lms",
+    "quiz",
+    "study-materials",
+    "professional-services",
+    "trade-test-preparation"
+  ],
+  "topics": [
+    "SANS 10142-1",
+    "Installation Rules",
+    "South African electrical trade test",
+    "NAMB",
+    "electrical installation",
+    "renewable energy",
+    "trade test preparation"
+  ]
+}
