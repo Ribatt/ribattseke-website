@@ -6877,18 +6877,18 @@ function showCompanionOrder(){
   el.id='companion-order-overlay';
   el.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;';
   el.innerHTML='<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;max-width:380px;width:100%;padding:22px 20px 18px;box-shadow:0 8px 32px rgba(0,0,0,.18);position:relative;">'
-    +'<button onclick="document.getElementById('companion-order-overlay').remove()" style="position:absolute;top:10px;right:12px;background:none;border:none;font-size:20px;color:var(--fg3);cursor:pointer;line-height:1;">×</button>'
-    +'<h4 style="margin:0 0 4px;font-family:'Playfair Display',serif;font-size:17px;color:var(--fg);">Order: Installation Rules Companion</h4>'
+    +'<button onclick="document.getElementById(\'companion-order-overlay\').remove()" style="position:absolute;top:10px;right:12px;background:none;border:none;font-size:20px;color:var(--fg3);cursor:pointer;line-height:1;">×</button>'
+    +'<h4 style="margin:0 0 4px;font-family:\'Playfair Display\',serif;font-size:17px;color:var(--fg);">Order: Installation Rules Companion</h4>'
     +'<p style="font-size:12px;color:var(--fg3);margin:0 0 14px;">Enter your details. Tseke will confirm and send your quote before anything is processed.</p>'
     +'<label style="font-size:11.5px;font-weight:700;color:var(--fg2);display:block;margin-bottom:3px;">Full Name</label>'
     +'<input id="co-name" type="text" placeholder="Your full name" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;background:var(--bg);color:var(--fg);margin-bottom:10px;">'
     +'<label style="font-size:11.5px;font-weight:700;color:var(--fg2);display:block;margin-bottom:3px;">Cell Number</label>'
     +'<input id="co-cell" type="tel" placeholder="e.g. 072 123 4567" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;background:var(--bg);color:var(--fg);margin-bottom:10px;">'
-    +'<label style="font-size:11.5px;font-weight:700;color:var(--fg2);display:block;margin-bottom:3px;">Delivery Address (or "Digital / WhatsApp delivery")</label>'
-    +'<textarea id="co-addr" rows="2" placeholder="Street, suburb, city — or type: Digital delivery" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;background:var(--bg);color:var(--fg);resize:vertical;margin-bottom:12px;"></textarea>'
+    +'<label style="font-size:11.5px;font-weight:700;color:var(--fg2);display:block;margin-bottom:3px;">Delivery Address (or Digital / WhatsApp delivery)</label>'
+    +'<textarea id="co-addr" rows="2" placeholder="Street, suburb, city - or type: Digital delivery" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;background:var(--bg);color:var(--fg);resize:vertical;margin-bottom:12px;"></textarea>'
     +'<div id="co-err" style="color:#c00;font-size:12px;margin-bottom:6px;"></div>'
     +'<button onclick="submitCompanionOrder()" style="width:100%;padding:11px;background:var(--amb);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:6px;">Send Order Request</button>'
-    +'<button onclick="document.getElementById('companion-order-overlay').remove()" style="width:100%;padding:9px;background:none;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--fg2);cursor:pointer;">Cancel</button>'
+    +'<button onclick="document.getElementById(\'companion-order-overlay\').remove()" style="width:100%;padding:9px;background:none;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--fg2);cursor:pointer;">Cancel</button>'
     +'</div>';
   document.body.appendChild(el);
 }
@@ -6953,12 +6953,12 @@ function engageShowReview(){
   el.id='engage-review-overlay';
   el.className='engage-overlay';
   el.innerHTML='<div class="engage-card">'
-    +'<button class="engage-close" onclick="engageDismiss('review')">×</button>'
+    +'<button class="engage-close" onclick="engageDismiss(\'review\')">×</button>'
     +'<h4>⭐ Enjoying the content?</h4>'
     +'<p>Your Google review helps more electricians and learners find these free study resources. It takes 30 seconds and means a lot.</p>'
     +'<div class="engage-actions">'
     +'<a href="'+GOOGLE_REVIEW_URL+'" target="_blank" rel="noopener" class="biz-btn biz-btn-primary" onclick="engageMarkReviewed()" style="text-decoration:none;">Rate us on Google</a>'
-    +'<button class="biz-btn" onclick="engageDismiss('review')">Maybe later</button>'
+    +'<button class="biz-btn" onclick="engageDismiss(\'review\')">Maybe later</button>'
     +'</div></div>';
   document.body.appendChild(el);
 }
@@ -6977,22 +6977,22 @@ function engageShowDonate(){
   el.id='engage-donate-overlay';
   el.className='engage-overlay';
   el.innerHTML='<div class="engage-card" style="max-width:420px;">'
-    +'<button class="engage-close" onclick="engageDismiss('donate')">×</button>'
+    +'<button class="engage-close" onclick="engageDismiss(\'donate\')">×</button>'
     +'<h4>💛 Support the next learner</h4>'
     +'<p style="font-size:12.5px;color:var(--fg2);margin:0 0 12px;">These resources are free because people like you care about the trade. Any amount helps keep the platform running.</p>'
     +'<div style="background:var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:10px;text-align:center;">'
     +'<div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:4px;">PayShap · Works with any SA bank</div>'
-    +'<div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:.04em;">072 474 8888</div>'
+    +'<div style="font-family:\'Playfair Display\',serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:.04em;">072 474 8888</div>'
     +'<div style="font-size:11px;color:rgba(255,255,255,.85);margin:2px 0 8px;">Riba T Tseke</div>'
-    +'<button onclick="engageCopyText('0724748888',this)" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 14px;font-size:12px;cursor:pointer;">Copy</button>'
+    +'<button onclick="engageCopyText(\'0724748888\',this)" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 14px;font-size:12px;cursor:pointer;">Copy</button>'
     +'</div>'
     +'<div style="font-size:11px;color:var(--fg3);text-align:center;margin-bottom:8px;">Open your banking app → PayShap / Instant Pay → enter the number above</div>'
     +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px;">'
-    +'<a href="https://www.fnb.co.za/" target="_blank" rel="noopener" onclick="engageDismiss('donate')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>FNB</span></a>'
-    +'<a href="https://www.capitecbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss('donate')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Capitec</span></a>'
-    +'<a href="https://www.absa.co.za/" target="_blank" rel="noopener" onclick="engageDismiss('donate')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>ABSA</span></a>'
-    +'<a href="https://www.standardbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss('donate')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Std Bank</span></a>'
-    +'<a href="https://www.nedbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss('donate')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Nedbank</span></a>'
+    +'<a href="https://www.fnb.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>FNB</span></a>'
+    +'<a href="https://www.capitecbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Capitec</span></a>'
+    +'<a href="https://www.absa.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>ABSA</span></a>'
+    +'<a href="https://www.standardbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Std Bank</span></a>'
+    +'<a href="https://www.nedbank.co.za/" target="_blank" rel="noopener" onclick="engageDismiss(\'donate\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;text-decoration:none;font-size:9.5px;color:var(--fg2);font-weight:600;">🏦<span>Nedbank</span></a>'
     +'</div>'
     +'<details style="font-size:12px;color:var(--fg2);margin-bottom:10px;">'
     +'<summary style="cursor:pointer;color:var(--fg3);font-size:11px;">EFT bank details</summary>'
@@ -7003,7 +7003,7 @@ function engageShowDonate(){
     +'<span style="color:var(--fg3);">Branch:</span> 470010 · Savings<br>'
     +'<span style="color:var(--fg3);">Ref:</span> DONATE'
     +'</div></details>'
-    +'<button class="biz-btn" onclick="engageDismiss('donate')" style="width:100%;">Close</button>'
+    +'<button class="biz-btn" onclick="engageDismiss(\'donate\')" style="width:100%;">Close</button>'
     +'</div></div>';
   document.body.appendChild(el);
 }
