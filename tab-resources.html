@@ -157,93 +157,77 @@ function submitYocoCheckout(){
 }
 document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if(e.target===this)closeYocoCheckout();});
 </script>
-<!-- ===== ATCHAR CHECKOUT MODAL ===== -->
+<!-- ===== ATCHAR ORDER MODAL ===== -->
 <div id="atchar-modal-bg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9000;align-items:center;justify-content:center;padding:16px;">
   <div style="background:var(--bg,#fff);border-radius:14px;padding:24px 22px;width:100%;max-width:400px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.35);">
-    <button onclick="closeAtcharCheckout()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--fg2);">&#10005;</button>
+    <button onclick="closeAtcharOrder()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--fg2);">&#10005;</button>
     <h3 style="margin:0 0 4px;font-size:17px;color:var(--fg);">Order Atchar</h3>
-    <p style="font-size:12.5px;color:var(--fg3);margin:0 0 16px;">Homemade in Gauteng &mdash; pay securely via Yoco. We deliver.</p>
+    <p style="font-size:12.5px;color:var(--fg3);margin:0 0 14px;">Homemade in Gauteng. We deliver. Tseke will confirm price, qty and delivery via WhatsApp.</p>
 
-    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:6px;">Select size &amp; price <span style="color:#c0392b;">*</span></label>
-    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
-      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#ddd);cursor:pointer;font-size:13px;color:var(--fg);" onclick="selectAtcharSize(this,'atchar-250','250 ml','R45')">
-        <input type="radio" name="atchar-size" value="atchar-250" style="accent-color:#1E8540;"> <span style="flex:1;">250 ml</span> <strong>R45</strong>
-      </label>
-      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#ddd);cursor:pointer;font-size:13px;color:var(--fg);" onclick="selectAtcharSize(this,'atchar-500','500 ml','R80')">
-        <input type="radio" name="atchar-size" value="atchar-500" style="accent-color:#1E8540;"> <span style="flex:1;">500 ml</span> <strong>R80</strong>
-      </label>
-      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#ddd);cursor:pointer;font-size:13px;color:var(--fg);" onclick="selectAtcharSize(this,'atchar-1l','1 L','R150')">
-        <input type="radio" name="atchar-size" value="atchar-1l" style="accent-color:#1E8540;"> <span style="flex:1;">1 L</span> <strong>R150</strong>
-      </label>
-      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#ddd);cursor:pointer;font-size:13px;color:var(--fg);" onclick="selectAtcharSize(this,'atchar-2l','2 L','R280')">
-        <input type="radio" name="atchar-size" value="atchar-2l" style="accent-color:#1E8540;"> <span style="flex:1;">2 L</span> <strong>R280</strong>
-      </label>
-      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#ddd);cursor:pointer;font-size:13px;color:var(--fg);" onclick="selectAtcharSize(this,'atchar-5l','5 L','R650')">
-        <input type="radio" name="atchar-size" value="atchar-5l" style="accent-color:#1E8540;"> <span style="flex:1;">5 L</span> <strong>R650</strong>
-      </label>
+    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:6px;">Size <span style="color:#c0392b;">*</span></label>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;" id="atchar-size-btns">
+      <button class="atchar-sz-sel" data-size="250 ml" data-price="R45" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">250 ml — R45</button>
+      <button class="atchar-sz-sel" data-size="500 ml" data-price="R80" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">500 ml — R80</button>
+      <button class="atchar-sz-sel" data-size="1 L" data-price="R150" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">1 L — R150</button>
+      <button class="atchar-sz-sel" data-size="2 L" data-price="R280" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">2 L — R280</button>
+      <button class="atchar-sz-sel" data-size="5 L" data-price="R650" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">5 L — R650</button>
     </div>
 
-    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:4px;">Your email address <span style="color:#c0392b;">*</span></label>
-    <input id="atchar-email" type="email" placeholder="you@example.com" style="width:100%;box-sizing:border-box;padding:9px 11px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg-alt,#f7f7f7);color:var(--fg);font-size:13px;margin-bottom:12px;">
+    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:4px;">Your name <span style="color:#c0392b;">*</span></label>
+    <input id="atchar-name" type="text" placeholder="Full name" style="width:100%;box-sizing:border-box;padding:9px 11px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg-alt,#f7f7f7);color:var(--fg);font-size:13px;margin-bottom:10px;">
+
+    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:4px;">Cell number <span style="color:#c0392b;">*</span></label>
+    <input id="atchar-cell" type="tel" placeholder="e.g. 072 123 4567" style="width:100%;box-sizing:border-box;padding:9px 11px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg-alt,#f7f7f7);color:var(--fg);font-size:13px;margin-bottom:10px;">
+
+    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:4px;">Delivery area / address</label>
+    <input id="atchar-addr" type="text" placeholder="Suburb or full address" style="width:100%;box-sizing:border-box;padding:9px 11px;border-radius:8px;border:1px solid var(--border,#ddd);background:var(--bg-alt,#f7f7f7);color:var(--fg);font-size:13px;margin-bottom:12px;">
 
     <div id="atchar-err" style="color:#c0392b;font-size:12px;margin-bottom:8px;display:none;"></div>
 
-    <button id="atchar-pay-btn" onclick="submitAtcharCheckout()" style="width:100%;padding:12px;background:#1E8540;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;">
-      &#128179; Pay via Yoco
+    <button id="atchar-order-btn" onclick="submitAtcharOrder()" style="width:100%;padding:12px;background:#1E8540;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;">
+      &#128204; Send Order via WhatsApp
     </button>
-    <div id="atchar-direct-link" style="display:none;text-align:center;margin-top:10px;">
-      <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="font-size:12.5px;color:#1E8540;font-weight:600;text-decoration:underline;">Or pay directly on Yoco &rarr;</a>
-    </div>
-    <p style="font-size:11px;color:var(--fg3);text-align:center;margin:10px 0 0;">Secure payment via <strong>Yoco</strong>. We will confirm your delivery details by WhatsApp after payment.</p>
+    <p style="font-size:11px;color:var(--fg3);text-align:center;margin:10px 0 0;">Your order goes to Tseke on WhatsApp. He will confirm qty, delivery cost and payment method.</p>
   </div>
 </div>
 <script>
-var _atcharItem=null;
-function openAtcharCheckout(){
-  _atcharItem=null;
-  document.querySelectorAll('input[name="atchar-size"]').forEach(function(r){r.checked=false;});
-  document.querySelectorAll('#atchar-modal-bg label').forEach(function(l){l.style.borderColor='var(--border,#ddd)';l.style.background='';});
-  document.getElementById('atchar-email').value='';
+var _atcharSelSize='';
+var _atcharSelPrice='';
+function openAtcharOrder(size,price){
+  _atcharSelSize=size||'';
+  _atcharSelPrice=price||'';
+  document.querySelectorAll('.atchar-sz-sel').forEach(function(b){
+    b.style.background='none';b.style.color='var(--fg2)';b.style.borderColor='var(--border,#ddd)';
+    if(size && b.dataset.size===size){b.style.background='#1E8540';b.style.color='#fff';b.style.borderColor='#1E8540';}
+  });
+  document.getElementById('atchar-name').value='';
+  document.getElementById('atchar-cell').value='';
+  document.getElementById('atchar-addr').value='';
   document.getElementById('atchar-err').style.display='none';
-  document.getElementById('atchar-direct-link').style.display='none';
-  var btn=document.getElementById('atchar-pay-btn');
-  btn.disabled=false;btn.textContent='💳 Pay via Yoco';
   document.getElementById('atchar-modal-bg').style.display='flex';
-  setTimeout(function(){document.getElementById('atchar-email').focus();},200);
+  setTimeout(function(){document.getElementById('atchar-name').focus();},100);
 }
-function closeAtcharCheckout(){document.getElementById('atchar-modal-bg').style.display='none';}
-function selectAtcharSize(lbl,item,label,price){
-  _atcharItem=item;
-  document.querySelectorAll('#atchar-modal-bg label').forEach(function(l){l.style.borderColor='var(--border,#ddd)';l.style.background='';});
-  lbl.style.borderColor='#1E8540';lbl.style.background='rgba(30,133,64,.06)';
+function closeAtcharOrder(){document.getElementById('atchar-modal-bg').style.display='none';}
+function pickAtcharSz(btn){
+  _atcharSelSize=btn.dataset.size;_atcharSelPrice=btn.dataset.price;
+  document.querySelectorAll('.atchar-sz-sel').forEach(function(b){b.style.background='none';b.style.color='var(--fg2)';b.style.borderColor='var(--border,#ddd)';});
+  btn.style.background='#1E8540';btn.style.color='#fff';btn.style.borderColor='#1E8540';
 }
-function submitAtcharCheckout(){
+function submitAtcharOrder(){
   var errEl=document.getElementById('atchar-err');
   errEl.style.display='none';
-  if(!_atcharItem){errEl.textContent='Please select a jar size.';errEl.style.display='block';return;}
-  var email=document.getElementById('atchar-email').value.trim();
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='Please enter a valid email address.';errEl.style.display='block';return;}
-  var btn=document.getElementById('atchar-pay-btn');
-  btn.disabled=true;btn.textContent='Connecting to Yoco…';
-  fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({item:_atcharItem,email:email})})
-    .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d};});})
-    .then(function(res){
-      if(!res.ok){
-        errEl.textContent=(res.data.error||'Payment setup failed. Try the direct link below or try again.');
-        errEl.style.display='block';
-        document.getElementById('atchar-direct-link').style.display='block';
-        btn.disabled=false;btn.textContent='💳 Pay via Yoco';return;
-      }
-      window.location.href=res.data.redirectUrl;
-    })
-    .catch(function(){
-      errEl.textContent='Could not reach payment server. Use the direct Yoco link below or try again.';
-      errEl.style.display='block';
-      document.getElementById('atchar-direct-link').style.display='block';
-      btn.disabled=false;btn.textContent='💳 Pay via Yoco';
-    });
+  if(!_atcharSelSize){errEl.textContent='Please select a jar size.';errEl.style.display='block';return;}
+  var name=document.getElementById('atchar-name').value.trim();
+  var cell=document.getElementById('atchar-cell').value.trim();
+  var addr=document.getElementById('atchar-addr').value.trim();
+  if(!name){errEl.textContent='Please enter your name.';errEl.style.display='block';return;}
+  if(!cell){errEl.textContent='Please enter your cell number.';errEl.style.display='block';return;}
+  var msg='Hi Tseke, I would like to order Atchar.\n\nSize: '+_atcharSelSize+' ('+_atcharSelPrice+')\nName: '+name+'\nCell: '+cell+(addr?'\nDelivery area: '+addr:'')+'\n\nPlease confirm availability and delivery.';
+  var url='https://wa.me/27724748888?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+  closeAtcharOrder();
 }
-document.getElementById('atchar-modal-bg').addEventListener('click',function(e){if(e.target===this)closeAtcharCheckout();});
+document.getElementById('atchar-modal-bg').addEventListener('click',function(e){if(e.target===this)closeAtcharOrder();});
 </script>
 
 </div><!-- /hub-packs -->
@@ -576,7 +560,7 @@ function submitBookCheckout() {
             <div class="svc-name">Materials Courier / Delivery</div>
             <div class="svc-tagline">We collect from you, deliver to your customer, family or office. Books, materials, documents, equipment and more.</div>
           </div>
-          <img src="https://cdn.pixabay.com/photo/2017/08/06/19/50/delivery-2596164_640.jpg" alt="Courier delivery service" loading="lazy" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">
+          <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=600&q=70" alt="Courier delivery service" loading="lazy" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">
           <div style="font-size:11.5px;color:var(--fg2);line-height:1.6;margin-bottom:6px;">Book online, we collect, we deliver doorstep. Standard and express options available across Gauteng.</div>
           <button class="svc-quote-btn" onclick="openSvcForm('courier')">Order / Enquire</button>
         </div>
@@ -596,9 +580,16 @@ function submitBookCheckout() {
           <div class="svc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2H6a1 1 0 0 0-1 1v18a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1zm-1 18H7V4h10v16z"/><path d="M9 7h6v2H9zm0 4h6v2H9zm0 4h4v2H9z"/></svg></div>
           <div>
             <div class="svc-name">Atchar</div>
-            <div class="svc-tagline">Homemade atchar in 250 ml · R45, 500 ml · R80, 1 L · R150, 2 L · R280, 5 L · R650. Pay securely via Yoco.</div>
+            <div class="svc-tagline">Homemade atchar — select a size and place an order:</div>
           </div>
-          <button class="svc-quote-btn" onclick="event.stopPropagation();openAtcharCheckout()">Order Atchar</button>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 2px;" onclick="event.stopPropagation()">
+            <button class="atchar-sz-btn" onclick="openAtcharOrder('250 ml','R45')" style="padding:6px 10px;border-radius:18px;border:1px solid var(--amb,#1E8540);background:none;color:var(--amb,#1E8540);font-size:12px;font-weight:600;cursor:pointer;">250 ml — R45</button>
+            <button class="atchar-sz-btn" onclick="openAtcharOrder('500 ml','R80')" style="padding:6px 10px;border-radius:18px;border:1px solid var(--amb,#1E8540);background:none;color:var(--amb,#1E8540);font-size:12px;font-weight:600;cursor:pointer;">500 ml — R80</button>
+            <button class="atchar-sz-btn" onclick="openAtcharOrder('1 L','R150')" style="padding:6px 10px;border-radius:18px;border:1px solid var(--amb,#1E8540);background:none;color:var(--amb,#1E8540);font-size:12px;font-weight:600;cursor:pointer;">1 L — R150</button>
+            <button class="atchar-sz-btn" onclick="openAtcharOrder('2 L','R280')" style="padding:6px 10px;border-radius:18px;border:1px solid var(--amb,#1E8540);background:none;color:var(--amb,#1E8540);font-size:12px;font-weight:600;cursor:pointer;">2 L — R280</button>
+            <button class="atchar-sz-btn" onclick="openAtcharOrder('5 L','R650')" style="padding:6px 10px;border-radius:18px;border:1px solid var(--amb,#1E8540);background:none;color:var(--amb,#1E8540);font-size:12px;font-weight:600;cursor:pointer;">5 L — R650</button>
+          </div>
+          <button class="svc-quote-btn" onclick="event.stopPropagation();openAtcharOrder('','')">Order Atchar</button>
         </div>
 
       </div>

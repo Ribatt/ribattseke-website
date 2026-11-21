@@ -469,9 +469,9 @@ section:last-child{border-bottom:none;}
 #companion-ask{flex-shrink:0;border-top:1px solid var(--border);}
 #companion-wa{padding:8px 10px 10px;flex-shrink:0;}
 #companion-wa-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:9px;border-radius:9px;text-decoration:none;border:none;cursor:pointer;}
-.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;width:76px;height:84px;border-radius:36px;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:box-shadow .2s,transform .15s;}
+.float-pay{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:linear-gradient(135deg,#1E8540 0%,#34A853 100%);color:#fff;padding:11px 20px;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px rgba(30,133,64,.45);display:flex;flex-direction:row;align-items:center;justify-content:center;gap:7px;transition:box-shadow .2s,transform .15s;white-space:nowrap;}
 .float-pay:hover{box-shadow:0 6px 26px rgba(30,133,64,.6);transform:translateY(-2px);}
-.float-label{display:block;font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;line-height:1.15;opacity:1;}
+.float-label{display:block;font-size:13px;font-weight:800;letter-spacing:.02em;line-height:1.2;}
 .wisdom-strip{padding:22px 0 18px;border-top:1px solid var(--border);text-align:center;}
 .wisdom-strip-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:780px;margin:0 auto;}
 @media(max-width:600px){.wisdom-strip-inner{grid-template-columns:1fr;}}
@@ -1078,9 +1078,9 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <div class="wrap">Tseke Riba · ribattseke.co.za · Registered Person · South Africa</div>
 </footer>
 
-<a href="#" onclick="engageShowDonate();return false;" class="float-pay" aria-label="Donate — keep us going" title="Donate — keep us going">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
-  <span class="float-label" style="font-size:8px;line-height:1.2;">Keep us<br>going</span>
+<a href="#" onclick="engageShowDonate();return false;" class="float-pay" aria-label="Donate - Keep us going" title="Donate - Keep us going">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
+  <span class="float-label">Donate - Keep us going</span>
 </a>
 <button class="companion-btn" id="companion-btn" onclick="companionToggle()" aria-label="Tseke's Companion chat" title="Tseke's Companion">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
