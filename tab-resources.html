@@ -1,3 +1,17 @@
+<nav class="hub-nav" id="res-hub-nav">
+  <button class="hub-nav-btn active" onclick="switchHub('hub-packs',this)">&#128218; Study Packs</button>
+  <button class="hub-nav-btn" onclick="switchHub('hub-books',this)">&#128214; Books &amp; Standards</button>
+  <button class="hub-nav-btn" onclick="switchHub('hub-services',this)">&#9881;&#65039; Services</button>
+</nav>
+<script>
+function switchHub(id,btn){
+  document.querySelectorAll('#res-hub-nav .hub-nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.hub-section').forEach(function(s){s.classList.remove('active');});
+  btn.classList.add('active');
+  var sec=document.getElementById(id);if(sec)sec.classList.add('active');
+}
+</script>
+<div class="hub-section active" id="hub-packs">
     <p class="sec-label">Study Resources</p>
     <h2 class="sec-title">Companion Packs and SANS Books</h2>
 
@@ -59,6 +73,8 @@
       </div>
     </div>
 
+</div><!-- /hub-packs -->
+<div class="hub-section" id="hub-books">
     <div class="res-books">
       <h3>Standards and Legislation</h3>
       <p>All standards and legislation referenced in both exam syllabi, sourced and supplied directly by Tseke. As an active Installation Rules lecturer and assessor, he confirms the correct current edition for your paper and delivers to your door. Enter your full name and delivery address and Tseke will confirm availability and send you a quote before anything is processed. No prices are shown here — you will receive a quote first.</p>
@@ -218,7 +234,9 @@
       <p class="books-note">Tseke confirms availability and pricing before any payment is required. Payment details shared on confirmation.</p>
       <p class="refund-note">Books are sourced to order on confirmed payment. Raise any concern with Tseke within 24 hours of receiving the book.</p>
     </div>
+</div><!-- /hub-books -->
 
+<div class="hub-section" id="hub-services">
     <div id="services-content">
     <h2 class="sec-title">Services</h2>
     <p style="font-size:13px;color:var(--fg2);margin:0 0 14px;">Select any service to request a quote or book directly.</p>
@@ -858,26 +876,124 @@
       </div>
 
       <div class="svc-form-panel" id="svcf-courier">
-        <p class="svc-form-ttl">Materials Courier / Delivery — Order</p>
+        <p class="svc-form-ttl">Materials Courier / Delivery — Dispatch Order</p>
+        <!-- SECTION 1: Recipient -->
+        <p style="font-weight:600;margin:8px 0 4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent,#e65c00)">Recipient Details</p>
         <label class="ord-lbl">Full Name *</label>
-        <input type="text" class="ord-input" id="sf-courier-name" placeholder="Your full name">
+        <input type="text" class="ord-input" id="sf-courier-name" placeholder="Recipient full name">
         <label class="ord-lbl">Cell Number *</label>
         <input type="tel" class="ord-input" id="sf-courier-cell" placeholder="e.g. 072 123 4567">
-        <label class="ord-lbl">Delivery Address *</label>
-        <textarea class="ord-input" id="sf-courier-addr" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-        <label class="ord-lbl">Items / materials to courier</label>
-        <textarea class="ord-input" id="sf-courier-items" rows="3" placeholder="Describe what needs to be delivered (e.g. study books, training materials, electrical components)"></textarea>
-        <label class="ord-lbl">Preferred delivery date</label>
+        <label class="ord-lbl">Email Address</label>
+        <input type="email" class="ord-input" id="sf-courier-email" placeholder="optional — for tracking notifications">
+        <label class="ord-lbl">On-Site Contact (if different)</label>
+        <input type="text" class="ord-input" id="sf-courier-contact" placeholder="Name &amp; cell of person accepting delivery">
+        <!-- SECTION 2: Delivery Location -->
+        <p style="font-weight:600;margin:12px 0 4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent,#e65c00)">Delivery Location</p>
+        <label class="ord-lbl">Location Type *</label>
+        <select class="ord-input" id="sf-courier-loctype">
+          <option value="">— select —</option>
+          <option value="Residential">Residential</option>
+          <option value="Business / Commercial">Business / Commercial</option>
+          <option value="Locker / PUDO Point">Locker / PUDO Point</option>
+        </select>
+        <label class="ord-lbl">Street Address *</label>
+        <input type="text" class="ord-input" id="sf-courier-street" placeholder="Unit/No, Street name">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label class="ord-lbl">Suburb *</label>
+            <input type="text" class="ord-input" id="sf-courier-suburb" placeholder="Suburb">
+          </div>
+          <div>
+            <label class="ord-lbl">Postal Code *</label>
+            <input type="text" class="ord-input" id="sf-courier-postal" placeholder="4-digit code" maxlength="4" inputmode="numeric">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label class="ord-lbl">City *</label>
+            <input type="text" class="ord-input" id="sf-courier-city" placeholder="City">
+          </div>
+          <div>
+            <label class="ord-lbl">Province *</label>
+            <select class="ord-input" id="sf-courier-province">
+              <option value="">— select —</option>
+              <option>Gauteng</option><option>Western Cape</option><option>KwaZulu-Natal</option>
+              <option>Eastern Cape</option><option>Limpopo</option><option>Mpumalanga</option>
+              <option>North West</option><option>Free State</option><option>Northern Cape</option>
+            </select>
+          </div>
+        </div>
+        <label class="ord-lbl">Access Notes</label>
+        <input type="text" class="ord-input" id="sf-courier-access" placeholder="e.g. Gate code, complex entrance, floor number">
+        <!-- SECTION 3: Items -->
+        <p style="font-weight:600;margin:12px 0 4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent,#e65c00)">Items to Courier</p>
+        <div id="sf-courier-item-list" style="display:flex;flex-direction:column;gap:6px"></div>
+        <button type="button" onclick="courierAddItem()" style="margin-top:6px;padding:5px 12px;background:transparent;border:1px dashed var(--accent,#e65c00);color:var(--accent,#e65c00);border-radius:6px;cursor:pointer;font-size:.82rem">+ Add Item</button>
+        <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:6px;font-size:.82rem;cursor:pointer">
+            <input type="checkbox" id="sf-courier-fragile"> Fragile / Special Handling Required
+          </label>
+        </div>
+        <!-- SECTION 4: Courier Preferences -->
+        <p style="font-weight:600;margin:12px 0 4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent,#e65c00)">Courier Preference</p>
+        <select class="ord-input" id="sf-courier-pref">
+          <option value="Best Available">Best Available (auto-select)</option>
+          <option value="The Courier Guy">The Courier Guy</option>
+          <option value="Aramex">Aramex</option>
+          <option value="Manual / Collect">Manual Arrangement / Client Collects</option>
+        </select>
+        <label class="ord-lbl">Service Tier</label>
+        <select class="ord-input" id="sf-courier-tier">
+          <option value="Economy">Economy (3–5 business days)</option>
+          <option value="Overnight Express">Overnight Express</option>
+          <option value="Locker/PUDO">Locker / PUDO Drop-off</option>
+        </select>
+        <label class="ord-lbl">Preferred Delivery Date</label>
         <input type="date" class="ord-input" id="sf-courier-date">
-        <label class="ord-lbl">Notes</label>
-        <textarea class="ord-input" id="sf-courier-notes" rows="2" placeholder="e.g. fragile items, collection point, special instructions"></textarea>
+        <label class="ord-lbl">Additional Notes</label>
+        <textarea class="ord-input" id="sf-courier-notes" rows="2" placeholder="Any special instructions, collection arrangements, etc."></textarea>
         <div class="ord-err" id="sf-courier-err"></div>
-        <div style="display:flex;gap:10px;margin-top:10px;">
-          <button class="btn-ord-go" onclick="prepSvcNew('courier','Materials Courier / Delivery')">Prepare Message</button>
-          <button class="btn-ord-x" onclick="closeSvcForm('courier')">Cancel</button>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+          <button class="btn-ord-go" onclick="prepSvcNew('courier','Materials Courier / Delivery')">📋 Prepare Dispatch Summary</button>
+          <button class="btn-ord-x" onclick="courierCancel()">Cancel</button>
         </div>
         <div class="ord-result" id="sf-courier-res" hidden></div>
       </div>
+      <script>
+      /* ---- Courier form helpers ---- */
+      var _courierDirty=false;
+      function _courierMark(){_courierDirty=true;}
+      (function(){
+        var ids=['sf-courier-name','sf-courier-cell','sf-courier-email','sf-courier-contact',
+          'sf-courier-loctype','sf-courier-street','sf-courier-suburb','sf-courier-postal',
+          'sf-courier-city','sf-courier-province','sf-courier-access','sf-courier-pref',
+          'sf-courier-tier','sf-courier-date','sf-courier-notes'];
+        ids.forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',_courierMark);});
+      })();
+      function courierAddItem(){
+        _courierDirty=true;
+        var list=document.getElementById('sf-courier-item-list');
+        var idx=list.children.length+1;
+        var row=document.createElement('div');
+        row.style.cssText='display:grid;grid-template-columns:2fr 60px 80px 100px 24px;gap:4px;align-items:center';
+        row.innerHTML='<input type="text" class="ord-input" placeholder="Item description" style="margin:0" oninput="_courierMark()">'
+          +'<input type="number" class="ord-input" placeholder="Qty" min="1" style="margin:0;text-align:center" oninput="_courierMark()">'
+          +'<input type="text" class="ord-input" placeholder="kg" style="margin:0;text-align:center" title="Weight (kg)" oninput="_courierMark()">'
+          +'<input type="text" class="ord-input" placeholder="LxWxH cm" style="margin:0;text-align:center" title="Dimensions LxWxH cm" oninput="_courierMark()">'
+          +'<button type="button" onclick="this.parentElement.remove();_courierMark()" style="background:none;border:none;color:#c00;cursor:pointer;font-size:1.1rem;padding:0">×</button>';
+        list.appendChild(row);
+      }
+      function courierCancel(){
+        if(_courierDirty&&!confirm('Discard your courier order details?'))return;
+        _courierDirty=false;
+        closeSvcForm('courier');
+        /* reset items */
+        var list=document.getElementById('sf-courier-item-list');
+        if(list)list.innerHTML='';
+      }
+      /* init with one item row */
+      document.addEventListener('DOMContentLoaded',function(){courierAddItem();_courierDirty=false;});
+      </script>
 
       <div class="svc-form-panel" id="svcf-water">
         <p class="svc-form-ttl">Still Water — Order</p>
@@ -952,4 +1068,4 @@
         <div class="ord-result" id="sf-atchar-res" hidden></div>
       </div>
 
-    </div>
+    </div></div><!-- /hub-services -->
