@@ -43,8 +43,13 @@ function lmsAdminEntry(){
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
   ov.innerHTML='<div style="background:#1a1a1a;border:1px solid #444;border-radius:12px;padding:28px 24px;width:280px;text-align:center;">'
     +'<p style="color:#ccc;margin:0 0 16px;font-size:15px;">Admin Access</p>'
+    +'<div style="position:relative;width:100%;">'
     +'<input id="lms-adm-pin-inp" type="password" placeholder="Enter admin PIN" autocomplete="off" '
-    +'style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid #555;background:#111;color:#fff;font-size:16px;text-align:center;letter-spacing:4px;" />'
+    +'style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border-radius:8px;border:1px solid #555;background:#111;color:#fff;font-size:16px;text-align:center;letter-spacing:4px;" />'
+    +'<button type="button" onclick="lmsTogglePinVis()" tabindex="-1" '
+    +'style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:4px;line-height:1;">'
+    +'<svg id="lms-pin-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+    +'</button></div>'
     +'<p id="lms-adm-pin-err" style="color:#e55;font-size:12px;margin:8px 0 0;min-height:16px;"></p>'
     +'<div style="display:flex;gap:10px;margin-top:16px;">'
     +'<button onclick="document.getElementById(\'lms-adm-pin-overlay\').remove()" '
@@ -56,7 +61,22 @@ function lmsAdminEntry(){
   setTimeout(function(){ var inp=document.getElementById('lms-adm-pin-inp'); if(inp) inp.focus(); },80);
   /* allow Enter key */
   var inp2=document.getElementById('lms-adm-pin-inp');
-  if(inp2) inp2.addEventListener('keydown',function(e){ if(e.key==='Enter') lmsAdmPinSubmit(); });
+  if(inp2){
+    inp2.addEventListener('keydown',function(e){ if(e.key==='Enter') lmsAdmPinSubmit(); });
+  }
+}
+
+function lmsTogglePinVis(){
+  var inp=document.getElementById('lms-adm-pin-inp');
+  var eye=document.getElementById('lms-pin-eye');
+  if(!inp) return;
+  if(inp.type==='password'){
+    inp.type='text';
+    if(eye) eye.innerHTML='<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  } else {
+    inp.type='password';
+    if(eye) eye.innerHTML='<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
 }
 
 function lmsAdmPinSubmit(){
