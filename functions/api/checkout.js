@@ -42,8 +42,8 @@ export async function onRequestPost(context) {
       amountInRand = TVET_TIERS[tier];
     } else if (customAmount) {
       const ca = parseInt(customAmount, 10);
-      if (isNaN(ca) || ca < 100 || ca > 1000) {
-        return new Response(JSON.stringify({ error: 'Custom amount must be R100–R1000.' }), { status: 400, headers: corsHeaders });
+      if (isNaN(ca) || ca < 10 || ca > 1000) {
+        return new Response(JSON.stringify({ error: 'Custom amount must be between R10 and R1000.' }), { status: 400, headers: corsHeaders });
       }
       amountInRand = ca;
     } else {
