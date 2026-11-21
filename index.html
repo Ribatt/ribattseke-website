@@ -457,7 +457,7 @@ section:last-child{border-bottom:none;}
 #companion-langs{display:flex;gap:4px;flex-wrap:wrap;}
 .companion-lang-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-size:10px;font-weight:700;padding:3px 7px;cursor:pointer;white-space:nowrap;}
 .companion-lang-btn.active{background:rgba(255,255,255,.95);color:var(--amb);}
-#companion-close-btn{background:none;border:none;color:rgba(255,255,255,.8);font-size:20px;cursor:pointer;padding:0 2px;line-height:1;}
+#companion-close-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:18px;cursor:pointer;padding:6px 10px;line-height:1;border-radius:8px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 #companion-msgs{flex:1;overflow-y:auto;padding:12px 12px 0;display:flex;flex-direction:column;gap:8px;min-height:80px;}
 .comp-msg{padding:9px 11px;border-radius:10px;font-size:13px;line-height:1.5;max-width:94%;white-space:pre-wrap;}
 .comp-msg-bot{background:var(--bg);border:1px solid var(--border);align-self:flex-start;}
@@ -1108,7 +1108,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <button class="companion-lang-btn" onclick="companionLang('sw')">Swahili</button>
       <button class="companion-lang-btn" onclick="companionLang('ar')" style="font-size:11px;">عربي</button>
     </div>
-    <button id="companion-close-btn" onclick="companionToggle()">×</button>
+    <button id="companion-close-btn" onclick="companionToggle()" aria-label="Close companion chat" title="Close">&#x2715;</button>
   </div>
   <div id="companion-msgs"></div>
   <div id="companion-faqs"></div>
