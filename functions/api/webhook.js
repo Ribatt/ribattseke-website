@@ -86,7 +86,13 @@ async function notifyTseke(env, { event, email, item, amountInCents, checkoutId,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email: 'ribattseke@gmail.com', name: 'Riba T Tseke' }] }],
+        personalizations: [{
+          to: [{ email: 'ribattseke@gmail.com', name: 'Riba T Tseke' }],
+          cc: [
+            { email: 'ribatt3@gmail.com', name: 'Riba T Tseke (secondary)' },
+            { email: '60523255@mylife.unisa.ac.za', name: 'Riba T Tseke (UNISA)' },
+          ],
+        }],
         from: { email: 'noreply@ribattseke.co.za', name: 'ribattseke.co.za Payments' },
         subject,
         content: [{ type: 'text/plain', value: body }],

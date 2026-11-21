@@ -429,6 +429,7 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-warranty',this)">Warranties</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">Reg &amp; Compliance</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-orders',this)">&#128722; Sales</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -786,6 +787,11 @@
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track warranty periods and defects liability for completed jobs.</p>
           <div id="hub-warranty-list" style="font-size:13px;color:var(--fg3);">No warranty records yet.</div>
           <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="warrantyAdd()">+ Log Warranty</button>
+        </div>
+
+        <div id="hub-orders" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">&#128722; Yoco Sales Dashboard</h3>
+          <div id="hub-orders-body" style="font-size:13px;color:var(--fg3);">Loading…</div>
         </div>
 
 

@@ -3,6 +3,7 @@ var ADM_NS='lms4_adm_';
 var ADM_PIN_KEY=ADM_NS+'pin';
 var ADM_CORRECT=btoa('20171125');
 var ADM_EMAIL='ribattseke@gmail.com';
+var ADM_EMAILS=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
 
 
 // Legacy IR keys pool (pre-new-format). Admin marks specific ones as issued via ADM_NS.
@@ -4708,6 +4709,7 @@ function hubRenderers(){
       else if(id==='hub-delivery')deliveryRender();
       else if(id==='hub-handover')handoverRender();
       else if(id==='hub-warranty')warrantyRender();
+      else if(id==='hub-orders')ordersRender();
     },50);
   };
 })();
@@ -5079,3 +5081,152 @@ function admDelItem(ns,id,cb){
   var el=document.getElementById('about-banner-img');
   if(el){el.style.backgroundImage='url(data:image/jpeg;base64,'+b64+')';}
 })();
+
+/* ===== YOCO SALES DASHBOARD ===== */
+var _ordersCache = null;
+var _ordersLoading = false;
+
+function ordersRender() {
+  var container = document.getElementById('hub-orders-body');
+  if (!container) return;
+
+  if (_ordersLoading) return;
+  _ordersLoading = true;
+  container.innerHTML = '<p style="color:var(--fg3);font-size:13px;padding:16px 0;">Loading orders from Yoco...</p>';
+
+  var pin = atob(ADM_CORRECT);
+  fetch('/api/orders', {
+    headers: { 'Authorization': 'Bearer ' + pin, 'Content-Type': 'application/json' }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    _ordersLoading = false;
+    if (data.error) {
+      container.innerHTML = '<p style="color:#e55;font-size:13px;padding:16px 0;">Error: ' + data.error + '</p>';
+      return;
+    }
+    _ordersCache = data;
+    ordersRenderData(data);
+  })
+  .catch(function(err) {
+    _ordersLoading = false;
+    container.innerHTML = '<p style="color:#e55;font-size:13px;padding:16px 0;">Could not load orders. KV may not be configured yet.</p>';
+  });
+}
+
+function ordersRenderData(data) {
+  var container = document.getElementById('hub-orders-body');
+  if (!container) return;
+  var s = data.summary || {};
+  var orders = data.orders || [];
+
+  var statusFilter = (document.getElementById('ord-filter-status') || {}).value || 'all';
+  var itemFilter = (document.getElementById('ord-filter-item') || {}).value || '';
+  var filtered = orders.filter(function(o) {
+    if (statusFilter !== 'all' && o.status !== statusFilter) return false;
+    if (itemFilter && o.item !== itemFilter) return false;
+    return true;
+  });
+
+  var fmt = function(cents) { return 'R ' + (cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+  var fmtDate = function(ts) {
+    if (!ts) return '';
+    var d = new Date(ts);
+    return d.toISOString().slice(0, 10) + ' ' + d.toTimeString().slice(0, 5);
+  };
+  var statusBadge = function(st) {
+    var col = st === 'fulfilled' ? '#1E8540' : st === 'refunded' ? '#c0392b' : '#c07a00';
+    return '<span style="display:inline-block;padding:2px 7px;border-radius:4px;background:' + col + '20;color:' + col + ';font-size:10.5px;font-weight:700;">' + st + '</span>';
+  };
+
+  // Summary cards
+  var byItemHtml = Object.keys(s.byItem || {}).map(function(lbl) {
+    var v = s.byItem[lbl];
+    return '<span style="display:inline-block;margin:3px 4px 3px 0;background:var(--bg-alt);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:11.5px;">'
+      + lbl + ': <strong>' + v.count + '</strong> &middot; ' + fmt(v.totalCents) + '</span>';
+  }).join('');
+
+  var csvRows = [['Date','Item','Amount','Email','Status','CheckoutID','DeliveryName','DeliveryCell','DeliveryAddress']];
+  filtered.forEach(function(o) {
+    csvRows.push([
+      fmtDate(o.createdAt), o.itemLabel || o.item, (o.amountInCents / 100).toFixed(2),
+      o.email || '', o.status || '', o.checkoutId || '',
+      o.deliveryName || '', o.deliveryCell || '', o.deliveryAddress || ''
+    ]);
+  });
+  var csvStr = csvRows.map(function(r) { return r.map(function(c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+
+  // Build unique item list for filter
+  var itemKeys = {};
+  orders.forEach(function(o) { if (o.item) itemKeys[o.item] = o.itemLabel || o.item; });
+  var itemOptions = Object.keys(itemKeys).map(function(k) { return '<option value="' + k + '">' + itemKeys[k] + '</option>'; }).join('');
+
+  var html = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">'
+    + '<div style="flex:1;min-width:110px;background:var(--bg-alt);border-radius:9px;padding:12px;text-align:center;">'
+    + '<div style="font-size:22px;font-weight:700;color:var(--amb);">' + s.total + '</div><div style="font-size:11px;color:var(--fg3);">Total orders</div></div>'
+    + '<div style="flex:1;min-width:110px;background:var(--bg-alt);border-radius:9px;padding:12px;text-align:center;">'
+    + '<div style="font-size:22px;font-weight:700;color:#1E8540;">' + s.fulfilled + '</div><div style="font-size:11px;color:var(--fg3);">Paid</div></div>'
+    + '<div style="flex:1;min-width:110px;background:var(--bg-alt);border-radius:9px;padding:12px;text-align:center;">'
+    + '<div style="font-size:22px;font-weight:700;color:var(--fg);">' + fmt(s.totalRevenueCents || 0) + '</div><div style="font-size:11px;color:var(--fg3);">Total revenue</div></div>'
+    + '</div>'
+    + '<div style="margin-bottom:8px;font-size:12px;color:var(--fg2);">By product (paid):</div>'
+    + '<div style="margin-bottom:14px;">' + (byItemHtml || '<span style="font-size:12px;color:var(--fg3);">No fulfilled orders yet.</span>') + '</div>'
+    // Filters
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">'
+    + '<select id="ord-filter-status" onchange="ordersRenderData(_ordersCache)" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--fg);font-size:12px;">'
+    + '<option value="all">All statuses</option><option value="fulfilled">Paid</option><option value="pending">Pending</option><option value="refunded">Refunded</option>'
+    + '</select>'
+    + '<select id="ord-filter-item" onchange="ordersRenderData(_ordersCache)" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--fg);font-size:12px;">'
+    + '<option value="">All products</option>' + itemOptions
+    + '</select>'
+    + '<button onclick="ordersRender()" style="padding:5px 11px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--fg);font-size:12px;cursor:pointer;">Refresh</button>'
+    + '<button onclick="ordersDownloadCsv()" style="padding:5px 11px;border-radius:6px;border:none;background:var(--amb);color:#fff;font-size:12px;cursor:pointer;">Export CSV</button>'
+    + '</div>';
+
+  if (!filtered.length) {
+    html += '<p style="font-size:12.5px;color:var(--fg3);">No orders match the selected filters.</p>';
+  } else {
+    html += '<div style="overflow-x:auto;">'
+      + '<table style="width:100%;border-collapse:collapse;font-size:12px;">'
+      + '<thead><tr>'
+      + ['Date','Product','Amount','Customer','Status','Delivery'].map(function(h) {
+          return '<th style="text-align:left;padding:7px 8px;border-bottom:2px solid var(--border);color:var(--fg2);font-size:11px;white-space:nowrap;">' + h + '</th>';
+        }).join('')
+      + '</tr></thead><tbody>';
+
+    filtered.forEach(function(o) {
+      var delivery = '';
+      if (o.deliveryName || o.deliveryAddress) {
+        delivery = '<span style="font-size:10.5px;color:var(--fg3);">'
+          + (o.deliveryName ? o.deliveryName + '<br>' : '')
+          + (o.deliveryCell ? o.deliveryCell + '<br>' : '')
+          + (o.deliveryAddress || '')
+          + '</span>';
+      }
+      html += '<tr style="border-bottom:1px solid var(--border);">'
+        + '<td style="padding:7px 8px;white-space:nowrap;color:var(--fg2);font-size:11px;">' + fmtDate(o.createdAt) + '</td>'
+        + '<td style="padding:7px 8px;">' + (o.itemLabel || o.item || '') + '</td>'
+        + '<td style="padding:7px 8px;white-space:nowrap;font-weight:600;">' + fmt(o.amountInCents || 0) + '</td>'
+        + '<td style="padding:7px 8px;font-size:11px;">' + (o.email || '') + '</td>'
+        + '<td style="padding:7px 8px;">' + statusBadge(o.status || 'unknown') + '</td>'
+        + '<td style="padding:7px 8px;">' + (delivery || '<span style="color:var(--fg3);font-size:11px;">PDF/digital</span>') + '</td>'
+        + '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  container.innerHTML = html;
+
+  // Stash CSV for export
+  container._csvStr = csvStr;
+}
+
+function ordersDownloadCsv() {
+  var container = document.getElementById('hub-orders-body');
+  if (!container || !container._csvStr) return;
+  var blob = new Blob([container._csvStr], { type: 'text/csv' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'ribattseke-orders.csv'; a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+}
