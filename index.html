@@ -1509,11 +1509,18 @@ function _loadAdmin(){
 
   var T={
     en:{
-      greeting:"Tseke's Companion 👋 — Ask me anything about the IE exam, SANS standards, study packs, or how to register with ECA(SA), AREP, or DOeL.",
-      faqs:["How do I get a study key?","Trial (R50) vs IR Companion (R1,000)","When are the IE exams?","IE exam pass mark","DOeL / Wireman's licence","ECSA registration process","Banking / Donate","Contact Tseke"],
+      greeting:"Tseke's Companion 👋 — Ask me anything about the IE exam, SANS standards, Installation Rules, or how to register with ECA(SA), AREP, or DOeL.",
+      faqs:["What is Installation Rules?","How do I get a study key?","IE exam pass mark","When are the IE exams?","DOeL / Wireman's licence","ECSA registration process","Banking / payment","Contact Tseke"],
       answers:{
-        "How do I get a study key?":"Go to the Study tab and select your plan — Trial (R50) for 4-month access or IR Companion (R1,000) for lifetime access. WhatsApp Tseke on 072 474 8888 to arrange payment and your key will be issued.",
-        "Trial (R50) vs IR Companion (R1,000)":"Trial (R50): 4-month access (custom duration on request) — all quizzes at 90% pass mark, session study notes P1 & P2, worked examples. Can upgrade to IR Companion anytime by paying the difference.\n\nIR Companion (R1,000): Lifetime access — everything in Trial plus the full PDF study guide (SANS 10142-1 P1 & P2), past 10 years papers with worked solutions, and direct WhatsApp support from Tseke.",
+        "What is Installation Rules?":"Installation Rules refers to SANS 10142-1 — the South African National Standard for the Wiring of Premises. It is the primary standard governing all low-voltage electrical installations in South Africa. The term 'Installation Rules' is also the name of the examination (the IE exam) that leads to the Wireman's Licence issued by the Department of Employment and Labour (DOeL). The exam is split into Paper 1 (T880) covering theory and compliance, and Paper 2 (T890) covering practical calculations and installation requirements. Both papers must be passed to qualify for the Wireman's Licence.",
+        "Why is Installation Rules important?":"The Installation Rules (SANS 10142-1) is the legal foundation for all low-voltage electrical work in South Africa. No electrical installation may legally be carried out, tested, or certified unless it complies with the Installation Rules. For electricians, passing the Installation Rules exam (IE exam) and obtaining the Wireman's Licence is a legal requirement to work as an Installation Electrician. It protects the public from unsafe installations, establishes minimum standards for materials and methods, and underpins every Certificate of Compliance issued in the country.",
+        "What does Paper 1 cover?":"Paper 1 (T880) of the Installation Rules exam covers the theory side: Scope and definitions (Sections 1 and 3), Compliance and applicable standards (Section 4), Fundamental requirements including safety, basic provisions and characteristics (Section 5), Special locations such as bathrooms and medical locations (Section 7), and the supporting standards — SANS 10198-1, SANS 10198-2, SANS 10292, and SABS 1507-1. Load calculations from Annexure C and Annexure D also appear in Paper 1.",
+        "What does Paper 2 cover?":"Paper 2 (T890) covers the practical installation requirements: Current-carrying capacity and cable selection (Section 6.1–6.2), Voltage drop calculations (Section 6.2.7 and Annexure D), Methods of installation and correction factors, Wiring systems, accessories and distribution boards (Sections 6.3–6.5), Protective earthing and bonding (Sections 6.6–6.8), Special circuits, ELV, and switching (Sections 6.9–6.11), Verification and certification (Section 8), SANS 1973-3 (LV switchgear assemblies), SANS 10313 (lightning protection), and Paper 2 calculations (Annexures B, D, and E).",
+        "What is the OHS Act?":"The Occupational Health and Safety Act (OHS Act) is South African law that governs workplace health and safety. For electricians, the most relevant regulations under the OHS Act are: Electrical Installation Regulations (EIR) — covering Certificate of Compliance requirements and registered persons; Construction Regulations (CR 2003) — covering electrical work on construction sites; and Electrical Machinery Regulations (EMR) — covering electrical machinery safety. These regulations always appear in Question 1 of the Installation Rules exam.",
+        "What SANS standards are covered?":"The Installation Rules exam covers: SANS 10142-1 (Installation Rules — Wiring of Premises, Paper 1 and Paper 2), SANS 10198-1 (Cable selection), SANS 10198-2 (Cable installation), SABS 1507-1 (Electric cables), SANS 10292 (Earthing systems), SANS 10313 (Lightning protection), SANS 1973-3 (Low-voltage switchgear assemblies), and the OHS Act regulations (EIR, CR 2003, EMR).",
+        "How do I get a study key?":"WhatsApp Tseke on 072 474 8888 to arrange payment. Pay via PayShap (072 474 8888) or EFT (Capitec, Acc 2605150883, Branch 470010) using your name and cell number as reference. Send your proof of payment on WhatsApp with your name and your key will be issued — usually within a few hours during business hours.",
+        "What does the IR Companion include?":"The Installation Rules Companion (R1,000 — lifetime access) includes: Full quiz bank covering all exam topics at 90% pass-mark threshold, Session study notes for Paper 1 and Paper 2, Worked examples and calculations, the full PDF study guide for SANS 10142-1 (Paper 1 and Paper 2), past 10 years of actual DOeL exam papers with Tseke's worked solutions, and direct WhatsApp support from Tseke.",
+        "What is the ECSA Companion?":"The ECSA Companion is for engineering graduates pursuing ECSA professional registration (Pr Eng, Pr Tech Eng, or Pr Techni Eng). It guides you through the full ECSA registration journey including TES, TEO, TERs, the Engineering Report, and the Professional Review Interview. Tseke mentors through the full process — WhatsApp 072 474 8888.",
         "Standards covered":"Full IE syllabus: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, and the OHS Act including Electrical Installation Regulations and Construction Regulations.",
         "When are the IE exams?":"Installation Rules exam dates are issued by DHET (Department of Higher Education and Training). Contact your nearest TVET college for dates on the specific trimester you intend on writing. Tseke can also advise — WhatsApp 072 474 8888.",
         "ECA(SA) membership":"ECA(SA) is the Electrical Contractors Association of South Africa. Membership is open to registered electrical contractors and Installation Electricians. Benefits include industry representation, technical updates, and access to training. Visit ecasa.co.za or contact your provincial ECA(SA) office to apply.",
@@ -1524,7 +1531,9 @@ function _loadAdmin(){
         "Contact Tseke":"WhatsApp: 072 474 8888\nEmail: ribattseke@gmail.com\nFor study keys, mentoring, consultation, or general questions — WhatsApp is the fastest way.",
         "What services does Tseke offer?":"Tseke offers: Training panel manufacturing (EWSETA-aligned, single and three phase), Installation Rules exam coaching (Paper 1 & 2), ECSA professional registration mentoring (Pr. Tech Eng pathway), and electrical consulting. WhatsApp 072 474 8888 to discuss your needs.",
         "How much is a quote?":"Quote pricing depends on the type of work, scope, and your location. WhatsApp Tseke on 072 474 8888 with your location and what you need — a free no-obligation discussion can be arranged.",
-        "IE exam pass mark":"Both Paper 1 and Paper 2 require a minimum of 60% to pass. Each paper is marked separately — you must pass both to qualify for the Wireman's Licence. Papers can be written in separate sittings.",
+        "IE exam pass mark":"Both Paper 1 (T880) and Paper 2 (T890) require a minimum of 60% to pass. Each paper is marked separately — you must pass both to qualify for the Wireman's Licence issued by DOeL. Papers can be written in separate sittings at different trimester exam sessions.",
+        "What is the pass mark?":"Both Paper 1 and Paper 2 of the Installation Rules exam require a minimum of 60% to pass. You must pass both papers to qualify for the Wireman's Licence.",
+        "Pass mark for this subject":"Both Paper 1 and Paper 2 require a minimum of 60% to pass. Each paper is marked separately and must be passed individually to qualify for the Wireman's Licence.",
         "Key delivery — how long?":"After WhatsApp confirmation and proof of payment, your study key is usually issued within a few hours during business hours. Send your payment proof to 072 474 8888 on WhatsApp with your name. If you haven't received your key within 24 hours, follow up on WhatsApp.",
         "Why use Tseke's sessions?":"Tseke's live sessions (Tuesday and Thursday, 18:00–20:00 SAST) cover the full IE syllabus in a structured, exam-focused way with live Q&A, worked examples, and exam technique coaching. Recordings go to YouTube free for everyone. The Study pack adds quizzes at 90% pass mark, session notes, and 10 years of past papers with worked solutions — far more effective than self-study from raw standards.",
         "Why pay R1,000 — not free downloads?":"SANS standards are commercially licensed documents — legitimate access costs thousands of rand. Unofficial PDFs circulating online are illegal copies. The IR Companion gives you: legal study material in exam-ready format, 10 years of actual DOeL past papers with Tseke's worked solutions (not available anywhere else for free), quizzes calibrated to the 60% pass mark, and direct WhatsApp support from an experienced practitioner. You are paying for the curation, the past papers, and the expert access.",
@@ -1608,7 +1617,7 @@ function _loadAdmin(){
         "Umahluko phakathi kwe-R50 ne-R1,000":"R50: Ufikelelo lwezinyanga ezi-4 — yonke imibuzo ngo-90%, amanqaku esifundo P1 no-P2, imizekelo esebenzisiwe. R1,000: Ufikelelo lwawo wonke umhlaba — konke ku-trayo kanye nesikhokelo esipheleleyo se-PDF (SANS 10142-1 P1 & P2), amaphepha eminyaka elishumi edlulileyo nezixazululo, nosekelo lwe-WhatsApp ngqo evela kuTseke.",
         "Imigangatho eqinisekisiweyo":"Umxholo opheleleyo we-IE: SANS 10142-1 (P1 no-P2), SANS 10198-1 no-10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, ne-OHS Act equkethe iMithetho ye-EIR ne-CR.",
         "Xa zibanjelwa iimviwo ze-IE?":"Iintsuku zeeViviso zeMigangatho yoFakelo zikhutshwa yi-DHET. Tsalela i-TVET College ekufutshane nawe ukuze ufumane iintsuku zethraymesta oyizimiseleyo ukubhala kuyo. UTseke naye angakunceda — WhatsApp 072 474 8888.",
-        "Iphumelela ngamagama angakanani?":"Uphumelela ngo-50%. Kudingeka uphumelele zombili uP1 no-P2 ukuthole uMthendeleko we-DOeL.",
+        "Iphumelela ngamagama angakanani?":"Uphumelela ngo-60%. Kudingeka uphumelele zombili uP1 no-P2 ukuthole iMthendeleko we-DOeL.",
         "Unikezelo lwesitshixo":"Ngemuva kokuqinisekiswa kokukhokha, isitshixo sinikwa ngaphakathi kwamahora angu-24 (rhoqo ngokukhawuleza). Thumela isiqinisekiso sakho nge-WhatsApp ku-072 474 8888 negama lakho.",
         "Ubudlelwane be-ECA(SA)":"I-ECA(SA) yiElectrical Contractors Association of South Africa. Ukubhaliswa kunikezela amalungelo omthetho ukusebenza njengeContractor kagesi, ukufinyelela kuqeqesho lweshishini, noma umelelo.",
         "Ubhaliso lwe-AREP":"I-AREP (Association of Renewable Energy Practitioners) yabo bonke abasebenzi nabajongene namandla agcweleyo. Tsalela uTseke nge-WhatsApp ukuze ufumane iinkcukacha.",
@@ -1626,7 +1635,7 @@ function _loadAdmin(){
         "Umahluko phakathi kwe-R50 ne-R1,000":"R50: Ukufinyelela kwezinyanga ezi-4 — yonke imibuzo ngo-90%, amanothi esifundo P1 no-P2, imizekelo esebenzisiwe. R1,000: Ukufinyelela kwaphakade — konke ku-trayo kanye nesikhokelo esipheleleyo se-PDF (SANS 10142-1 P1 no-P2), amaphepha eminyaka elishumi nezixazululo, nesekelo le-WhatsApp ngqo evela kuTseke.",
         "Imigangatho eshiwo":"Umxholo opheleleyo we-IE: SANS 10142-1 (P1 no-P2), SANS 10198-1 no-10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, ne-OHS Act iqukethe imithetho ye-EIR ne-CR.",
         "Izilolongo ze-IE zinini?":"Izinsuku zeZilolongo zeMithetho yokuFakela zikhishwa yi-DHET. Xhumana neKholeshi ye-TVET eduze nawe ukuze uthole izinsuku zethrimesta oyifisayo ukubhala kuyo. UTseke naye angakusiza — WhatsApp 072 474 8888.",
-        "Izinga lokuphumelela":"Iphumelela ngo-50%. Kudingeka uphumelele zombili uP1 no-P2 ukuthole Isitifiketi se-DOeL.",
+        "Izinga lokuphumelela":"Iphumelela ngo-60%. Kudingeka uphumelele zombili uP1 no-P2 ukuthole Isitifiketi se-DOeL.",
         "Ukulethwa kwesihluthulelo":"Ngemuva kokuqinisekiswa kokukhokha, isihluthulelo sinikwa ngaphakathi kwamahora angu-24 (ngokuvamile ngokushesha). Thumela iqinisekiso lakho nge-WhatsApp ku-072 474 8888 negama lakho.",
         "Ubunga be-ECA(SA)":"I-ECA(SA) yiElectrical Contractors Association of South Africa. Ukubhaliswa kukunika amalungelo omthetho ukusebenza njengeContractor kagesi, ukufinyelela ekuqeqesheni kwezimboni, noma umelelo.",
         "Ubhaliso lwe-AREP":"I-AREP (Association of Renewable Energy Practitioners) yabo bonke abasebenzi nabajongene namandla agcweleyo. Xhumana noTseke nge-WhatsApp ukuze uthole imininingwane.",
@@ -1645,7 +1654,7 @@ function _loadAdmin(){
         "Tofauti kati ya R50 na R1,000":"R50: Ufikiaji wa miezi 4 — maswali yote ya asilimia 90, maelezo ya P1 na P2, mifano ya vitendo. R1,000: Ufikiaji wa maisha yote — kila kitu katika mpango wa majaribio pamoja na mwongozo kamili wa PDF (SANS 10142-1 P1 na P2), karatasi za miaka kumi iliyopita na majibu, na usaidizi wa WhatsApp moja kwa moja kutoka kwa Tseke.",
         "Viwango vilivyofunikwa":"Maudhui kamili ya IE: SANS 10142-1 (P1 na P2), SANS 10198-1 na 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, na Sheria ya OHS inayojumuisha Kanuni za EIR na CR.",
         "Mitihani ya IE ni lini?":"Tarehe za Mitihani ya Sheria za Usakinishaji hutolewa na DHET. Wasiliana na chuo chako cha karibu cha TVET kwa tarehe za trimesta unayokusudia kuandika. Tseke anaweza pia kushauri — WhatsApp 072 474 8888.",
-        "Alama ya kufaulu mtihani wa IE":"Unafaulu kwa asilimia 50. Unahitaji kufaulu P1 na P2 ili kupata Cheti cha DOeL.",
+        "Alama ya kufaulu mtihani wa IE":"Unafaulu kwa asilimia 60. Unahitaji kufaulu P1 na P2 ili kupata Leseni ya DOeL (Wireman's Licence).",
         "Ufunguo unaotolewa lini?":"Baada ya uthibitisho wa malipo, ufunguo hutolewa ndani ya masaa 24 (mara nyingi haraka zaidi). Tuma uthibitisho wako kwa WhatsApp kwenye 072 474 8888 na jina lako.",
         "Uanachama wa ECA(SA)":"ECA(SA) ni Chama cha Wakandarasi wa Umeme cha Afrika Kusini. Usajili hutoa haki za kisheria za kufanya kazi kama Mkandarasi wa Umeme.",
         "Chaneli ya YouTube":"Tseke anaendesha vikao vya YouTube vilivyo hai vinavyofunika Sheria za Usakinishaji — Karatasi 1 na 2. Vikao ni bure. Tafuta 'Riba T Tseke' kwenye YouTube.",
@@ -1662,7 +1671,7 @@ function _loadAdmin(){
         "الفرق بين R50 و R1,000":"R50: وصول لمدة 4 أشهر — جميع الأسئلة بنسبة 90%، ملاحظات P1 وP2، أمثلة عملية. R1,000: وصول مدى الحياة — كل شيء في الخطة التجريبية بالإضافة إلى الدليل الكامل بصيغة PDF وأوراق امتحانات 10 سنوات مع الحلول، ودعم مباشر عبر WhatsApp من Tseke.",
         "المعايير المشمولة":"المحتوى الكامل لامتحان IE: SANS 10142-1 (P1 وP2)، SANS 10198-1 و10198-2، SANS 1507-1، SANS 10292، SANS 10313، SANS 1973-3، وقانون الصحة والسلامة المهنية.",
         "متى تُعقد امتحانات IE؟":"تُصدر مواعيد امتحانات قواعد التركيب من قِبَل DHET. تواصل مع كليتك القريبة TVET لمعرفة مواعيد الفصل الدراسي الذي تعتزم الكتابة فيه. يمكن أن يرشدك Tseke أيضًا — WhatsApp 072 474 8888.",
-        "درجة النجاح":"تنجح بنسبة 50%. يجب أن تنجح في P1 وP2 للحصول على شهادة DOeL.",
+        "درجة النجاح":"تنجح بنسبة 60%. يجب أن تنجح في P1 وP2 للحصول على رخصة DOeL (Wireman's Licence).",
         "تسليم المفتاح":"بعد تأكيد الدفع، يُسلَّم المفتاح خلال 24 ساعة (عادةً بشكل أسرع). أرسل إيصالك عبر WhatsApp إلى 072 474 8888 مع اسمك.",
         "عضوية ECA(SA)":"ECA(SA) هي جمعية المقاولين الكهربائيين في جنوب أفريقيا. التسجيل يمنح حقوقًا قانونية للعمل كمقاول كهربائي.",
         "قناة YouTube":"يُجري Tseke جلسات YouTube مباشرة تغطي قواعد التركيب — الورقة 1 والورقة 2. الجلسات مجانية. ابحث عن 'Riba T Tseke' على YouTube.",
@@ -1722,6 +1731,35 @@ function _loadAdmin(){
   }
 
   
+// Extended English knowledge base for natural-language questions
+var _KB_EN={
+  'installation rules':{k:['installation rules','install rules','what is ir','sans 10142','what are the installation rules'],a:'Installation Rules (SANS 10142-1) is the South African National Standard for the Wiring of Premises — the primary legal standard governing all low-voltage electrical installations in South Africa. It is also the name of the exam (IE exam) that leads to the Wireman\'s Licence. The exam has two papers: Paper 1 (T880) for theory and compliance, and Paper 2 (T890) for practical calculations and installation requirements.'},
+  'why important':{k:['why important','why study','importance of','significance','why is installation'],a:'The Installation Rules (SANS 10142-1) is the legal foundation for all low-voltage electrical work in South Africa. No installation may be carried out, tested, or certified without complying with it. For electricians, passing the IE exam and holding the Wireman\'s Licence is a legal requirement to work as an Installation Electrician. It underpins every Certificate of Compliance issued in the country and protects the public from unsafe electrical installations.'},
+  'pass mark':{k:['pass mark','pass rate','percentage','minimum mark','what mark','score needed','how much to pass','what do i need','60 percent','percentage to pass','pass this','pass the','pass for'],a:'Both Paper 1 (T880) and Paper 2 (T890) require a minimum of 60% to pass. Each paper is marked separately — you must pass both to qualify for the Wireman\'s Licence. Papers can be written in separate exam sittings.'},
+  'paper 1':{k:['paper 1','t880','first paper','paper one','p1 cover','p1 content','what is in paper 1'],a:'Paper 1 (T880) covers the theory of the Installation Rules: Scope and definitions (Sections 1 & 3), Compliance and applicable standards (Section 4), Fundamental safety and provision requirements (Section 5), Special locations including bathrooms and medical locations (Section 7), and load calculations from Annexure C and D. Supporting standards SANS 10198-1, SANS 10198-2, SANS 10292, and SABS 1507-1 also appear in Paper 1.'},
+  'paper 2':{k:['paper 2','t890','second paper','paper two','p2 cover','p2 content','what is in paper 2'],a:'Paper 2 (T890) covers practical installation requirements: Cable selection and current-carrying capacity (Section 6.1–6.2), voltage drop calculations (Section 6.2.7, Annexure D), methods of installation and correction factors, wiring systems and distribution boards (Sections 6.3–6.5), protective earthing and bonding (Sections 6.6–6.8), special circuits and switching (Sections 6.9–6.11), verification and certification (Section 8), SANS 1973-3 (LV switchgear), SANS 10313 (lightning protection), and Paper 2 calculations (Annexures B, D, E).'},
+  'ohs act':{k:['ohs act','health and safety','occupational health','eir','cr 2003','construction regulations','electrical machinery','emr','question 1','q1'],a:'The OHS Act (Occupational Health and Safety Act) includes three sets of regulations examined in the Installation Rules exam — all in Question 1 (Q1): Electrical Installation Regulations (EIR 1992): covers CoC requirements, registered persons, contractors, and fees. Construction Regulations (CR 2003): covers electrical work on construction sites, supervision, risk assessment. Electrical Machinery Regulations (EMR): covers electrical machinery safety. These three are always grouped in Q1 of the exam.'},
+  'coc':{k:['certificate of compliance','coc','compliance certificate','compliance'],a:'A Certificate of Compliance (CoC) is a legal document certifying that an electrical installation complies with the Electrical Installation Regulations and SANS 10142-1. It must be issued by a registered person holding a valid Wireman\'s Licence. The CoC is required when completing new installations, before selling a property, or after major alterations to an existing installation.'},
+  'sans 10142':{k:['sans 10142','10142-1','10142'],a:'SANS 10142-1 is the Installation Rules — the standard for the Wiring of Premises in South Africa. Sections: 1 (Scope), 3 (Definitions), 4 (Compliance and applicable standards), 5 (Fundamental requirements), 6 (Installation requirements — the calculation-heavy section, examined in Paper 2), 7 (Special locations), 8 (Verification and certification), and Annexures A, B, C, D, E.'},
+  'sans 10198':{k:['sans 10198','10198-1','10198-2','cable selection','cable sizing','cable'],a:'SANS 10198-1 covers the selection of cables for electrical installations — scope, types, insulation, and derating. SANS 10198-2 covers the installation of cables — laying, protection, and correction factors. These two standards are examined separately in the IE exam.'},
+  'sans 10292':{k:['sans 10292','10292','earthing','earth termination'],a:'SANS 10292 covers earthing of low-voltage electrical installations — earthing systems (TN, TT, IT), touch voltage, protective conductors, bonding, and earth electrodes. It underpins the protective earthing content in Paper 2 (Sections 6.6–6.8).'},
+  'sans 10313':{k:['sans 10313','10313','lightning','lightning protection','lpz'],a:'SANS 10313 covers protection against lightning for structures. It covers air termination systems, down conductors, earth termination, bonding, surge protection devices (SPDs), and maintenance. SANS 10313 appears in Paper 2 of the IE exam.'},
+  'voltage drop':{k:['voltage drop','voltage loss','drop calculation','annexure d'],a:'Voltage drop calculations appear in Paper 2 (Section 6.2.7 and Annexure D of SANS 10142-1). The standard sets maximum allowable voltage drops: typically 5% from the point of supply to the point of use. Annexure D provides the calculation tables and correction factors used in design.'},
+  'exam dates':{k:['exam dates','when is the exam','exam schedule','trimester','when are ie','next exam','when can i write'],a:'Installation Rules exam dates are issued by DHET (Department of Higher Education and Training). The exam runs in trimesters — typically March, July, and November. Contact your nearest TVET college for specific dates and registration. Tseke can also advise — WhatsApp 072 474 8888.'},
+  'wireman':{k:['wireman','wireman licence','wireman license','installation electrician','ie licence'],a:'The Wireman\'s Licence (Installation Electrician) is issued by the Department of Employment and Labour (DOeL) under the Electrical Installation Regulations. Requirements: pass both Paper 1 and Paper 2 of the Installation Rules exam with at least 60%, and have your practical experience certified. Contact your nearest DOeL Labour Centre. Tseke can guide you — WhatsApp 072 474 8888.'},
+  'ecasa':{k:['eca(sa)','ecasa','electrical contractors association','contractor association'],a:'ECA(SA) is the Electrical Contractors Association of South Africa — the professional body representing registered electrical contractors. Membership provides industry representation, access to technical updates and training, and business support. Visit ecasa.co.za. Note: ECA(SA) is different from ECSA (the Engineering Council of South Africa).'},
+  'ecsa':{k:['ecsa','professional registration','pr eng','pr tech','preng','engineering council','11 outcomes'],a:'ECSA (Engineering Council of South Africa) is the statutory body that registers engineers professionally. Categories: Pr Eng (requires BEng/BSc Eng), Pr Tech Eng (requires BTech or B.Eng Tech), Pr Techni Eng (requires National Diploma). Registration requires submitting experience documents (TES, TEO, TERs, Engineering Report) and passing a Professional Review Interview. Tseke mentors through the ECSA Pr Tech Eng process — WhatsApp 072 474 8888.'},
+  'study key':{k:['study key','get a key','how to get','lms access','how do i access','join','enrol'],a:'WhatsApp Tseke on 072 474 8888 to arrange a study key. Pay via PayShap (072 474 8888) or EFT (Capitec, Acc 2605150883, Branch 470010) using your name and cell number as reference. Send your proof of payment on WhatsApp with your name — your key is usually issued within a few hours during business hours.'},
+  'ir companion':{k:['ir companion','installation rules companion','r1000','r 1,000','r1 000','lifetime access','companion include','study pack'],a:'The Installation Rules Companion (R1,000 — lifetime access) includes: Full quiz bank covering all IE exam topics (90% pass-mark threshold), session study notes for Paper 1 and Paper 2, worked examples and calculations, the complete PDF study guide for SANS 10142-1 (P1 and P2), past 10 years of actual DOeL exam papers with Tseke\'s worked solutions, and direct WhatsApp support from Tseke.'},
+  'payment':{k:['payment','how to pay','banking','payshap','capitec','eft','donate','bank'],a:'Payment options:\nPayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference. Send proof of payment to 072 474 8888 on WhatsApp with your name.'},
+  'youtube':{k:['youtube','sessions','live session','recordings','video','channel','watch'],a:'Tseke runs live YouTube sessions covering the full Installation Rules syllabus — Paper 1 and Paper 2. Sessions are free and open to all. Recordings go to YouTube. Search \"Riba T Tseke\" on YouTube or use the Sessions tab on this site.'},
+  'arep':{k:['arep','renewable energy','solar','pv'],a:'AREP (Association for Renewable Energy Practitioners) is a professional body for renewable energy practitioners. Registration supports professional credibility and CPD. Visit arep.co.za for membership details.'},
+  'ewseta':{k:['ewseta','learnership','apprenticeship','seta','training authority'],a:'EWSETA (Electricity and Water Sector Education and Training Authority) funds learnerships and accredits training providers in the electricity sector. For funded learnerships in electrical installation, check ewseta.org.za. MERSETA also covers electrical engineering learnerships — see merseta.org.za.'},
+  'section 6':{k:['section 6','section six','6.1','6.2','6.3','installation requirements'],a:'Section 6 of SANS 10142-1 covers Installation Requirements and is the backbone of Paper 2. Key sub-sections: 6.1–6.2 (current-carrying capacity and cable selection), 6.2.7 (voltage drop), 6.2.4–6.2.9 (methods of installation and correction factors), 6.3–6.5 (wiring systems, accessories, distribution boards), 6.6–6.8 (protective earthing and bonding), 6.9–6.11 (ELV, special circuits, switching).'},
+  'doel':{k:['doel','department of employment','labour department','department of labour'],a:'DOeL (Department of Employment and Labour) administers the Electrical Installation Regulations and issues the Wireman\'s Licence. Contact your nearest DOeL Labour Centre for the application process. After passing both IE exam papers, you apply to DOeL with your results and practical experience certification.'},
+  'contact':{k:['contact','whatsapp','reach tseke','tseke number','phone','email'],a:'WhatsApp: 072 474 8888\nFor study keys, mentoring, consultation, or general questions — WhatsApp is the fastest route to Tseke.'}
+};
+
 window.companionAsk=function(q){
   q=(q||'').trim();
   if(!q)return;
@@ -1732,44 +1770,77 @@ window.companionAsk=function(q){
   um.style.cssText='background:var(--amb);color:#fff;border-radius:12px 12px 4px 12px;padding:8px 11px;font-size:13px;align-self:flex-end;max-width:85%;word-break:break-word;';
   um.textContent=q;
   msgs.appendChild(um);
-  // Find best matching FAQ answer
+
   var t=T[_lang]||T['en'];
-  var faqs=t.faqs||[];
-  var answers=t.answers||t;
-  var ql=q.toLowerCase();
-  var best=null,bestScore=0;
-  faqs.forEach(function(faq){
-    var fl=faq.toLowerCase();
-    var score=0;
-    // Exact substring match
-    if(fl.indexOf(ql)>=0||ql.indexOf(fl)>=0) score=10;
-    else {
-      // Word overlap
-      var qw=ql.split(/\s+/);
-      var fw=fl.split(/\s+/);
-      qw.forEach(function(w){if(w.length>2&&fw.some(function(f){return f.indexOf(w)>=0||w.indexOf(f)>=0;}))score++;});
-    }
-    if(score>bestScore){bestScore=score;best=faq;}
-  });
-  var reply;
-  if(best&&bestScore>0){
-    reply=answers[best]||'';
-  }
+  var answers=t.answers||{};
+  var ql=q.toLowerCase().replace(/[?!.,;:]/g,'');
+  var reply='';
+
+  // 1. Exact FAQ key match
+  if(answers[q]){reply=answers[q];}
+
+  // 2. Substring / word-overlap match against FAQ keys
   if(!reply){
-    // Fallback: search all answer text for keywords
-    Object.keys(answers).forEach(function(k){
-      var av=(answers[k]||'').toLowerCase();
+    var faqs=t.faqs||[];
+    var best=null,bestScore=0;
+    faqs.forEach(function(faq){
+      var fl=faq.toLowerCase();
       var score=0;
-      ql.split(/\s+/).forEach(function(w){if(w.length>3&&av.indexOf(w)>=0)score++;});
-      if(score>bestScore){bestScore=score;best=k;reply=answers[k];}
+      if(fl===ql||ql===fl) score=20;
+      else if(fl.indexOf(ql)>=0||ql.indexOf(fl)>=0) score=10;
+      else {
+        var qw=ql.split(/\s+/);
+        var fw=fl.split(/\s+/);
+        qw.forEach(function(w){if(w.length>2&&fw.some(function(f){return f.indexOf(w)>=0||w.indexOf(f)>=0;}))score++;});
+      }
+      if(score>bestScore){bestScore=score;best=faq;}
     });
+    if(best&&bestScore>0&&answers[best])reply=answers[best];
   }
+
+  // 3. Match against all answer keys (broader)
+  if(!reply){
+    var bestK=null,bestKS=0;
+    Object.keys(answers).forEach(function(k){
+      var fl=k.toLowerCase();
+      var score=0;
+      if(fl.indexOf(ql)>=0||ql.indexOf(fl)>=0) score=10;
+      else {
+        var qw=ql.split(/\s+/);
+        var fw=fl.split(/\s+/);
+        qw.forEach(function(w){if(w.length>2&&fw.some(function(f){return f.indexOf(w)>=0;}))score++;});
+      }
+      if(score>bestKS){bestKS=score;bestK=k;}
+    });
+    if(bestK&&bestKS>1&&answers[bestK])reply=answers[bestK];
+  }
+
+  // 4. English extended knowledge base -- intent/phrase matching
+  if(!reply&&_lang==='en'){
+    var kbBest=null,kbScore=0;
+    var qwords=ql.split(/\s+/).filter(function(w){return w.length>2;});
+    Object.keys(_KB_EN).forEach(function(key){
+      var entry=_KB_EN[key];
+      var score=0;
+      entry.k.forEach(function(phrase){
+        if(ql.indexOf(phrase)>=0) score+=5;
+        else {
+          phrase.split(/\s+/).forEach(function(pw){
+            if(pw.length>2&&qwords.some(function(qw){return qw.indexOf(pw)>=0||pw.indexOf(qw)>=0;})) score++;
+          });
+        }
+      });
+      if(score>kbScore){kbScore=score;kbBest=entry.a;}
+    });
+    if(kbBest&&kbScore>=2)reply=kbBest;
+  }
+
   var rm=document.createElement('div');
   rm.style.cssText='background:var(--surface2,#f5f5f5);color:var(--fg);border-radius:12px 12px 12px 4px;padding:8px 11px;font-size:13px;align-self:flex-start;max-width:90%;white-space:pre-wrap;word-break:break-word;border:1px solid var(--border);';
-  if(reply&&bestScore>0){
+  if(reply){
     rm.textContent=reply;
   } else {
-    rm.innerHTML='I don\u2019t have a specific answer for that. <a href="https://wa.me/27724748888" target="_blank" style="color:var(--amb);font-weight:700;">Ask Tseke on WhatsApp →</a>';
+    rm.innerHTML='I don\u2019t have a specific answer for that \u2014 that\u2019s a great question for Tseke directly as the subject matter expert. <a href="https://wa.me/27724748888" target="_blank" style="color:var(--amb);font-weight:700;">WhatsApp Tseke on 072\u00a0474\u00a08888 \u2192</a>';
   }
   msgs.appendChild(rm);
   msgs.scrollTop=msgs.scrollHeight;
