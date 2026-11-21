@@ -1,4 +1,7 @@
-<button class="lms-btn-sec" style="margin-top:4px;font-size:10px;" onclick="(function(btn){if(btn.dataset.loading)return;btn.dataset.loading='1';btn.disabled=true;btn.textContent='Loading…';function tryEntry(){var fn=window.lmsAdminEntry;if(typeof fn==='function'){btn.disabled=false;btn.textContent='Admin';delete btn.dataset.loading;fn();return true;}return false;}if(tryEntry())return;if(typeof _loadAdmin==='function')_loadAdmin();else{var s=document.createElement('script');s.src='/admin.js?v=6';document.head.appendChild(s);}var _t=0;(function _w(){if(tryEntry())return;if(_t++<200)setTimeout(_w,100);else{btn.disabled=false;btn.textContent='Admin';btn.style.color='red';delete btn.dataset.loading;}})(  );})(this);">Admin</button>    <p class="sec-label">LMS &amp; Practice Quizzes</p>
+    <div style="text-align:right;margin-bottom:6px;">
+      <button style="background:none;border:1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:11px;color:var(--fg3);cursor:pointer;line-height:1.4;" onclick="(function(btn){if(btn.dataset.loading)return;btn.dataset.loading='1';btn.disabled=true;btn.textContent='Loading…';function tryEntry(){var fn=window.lmsAdminEntry;if(typeof fn==='function'){btn.disabled=false;btn.textContent='Admin';delete btn.dataset.loading;fn();return true;}return false;}if(tryEntry())return;fetch('/admin.js?v=6&_='+Date.now()).then(function(r){return r.text();}).then(function(txt){var parts=txt.split(/<\/script>/i);parts.forEach(function(chunk){var code=chunk.replace(/^[\s\S]*?<script[^>]*>/i,'');if(code.trim()){try{var s=document.createElement('script');s.textContent=code;document.head.appendChild(s);}catch(e){}}});var _t=0;(function _w(){if(tryEntry())return;if(_t++<50)setTimeout(_w,100);else{btn.disabled=false;btn.textContent='Admin';btn.style.color='red';delete btn.dataset.loading;}})();}).catch(function(){btn.disabled=false;btn.textContent='Admin';btn.style.color='orange';delete btn.dataset.loading;});})(this)">Admin</button>
+    </div>
+    <p class="sec-label">LMS &amp; Practice Quizzes</p>
     <h2 class="sec-title" id="study-public-title">Installation Rules Study</h2>
     <p style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Covers the full IE examination syllabus: SANS 10142-1 (Wiring of Premises), EIR 1992, Construction Regulations 2003, SANS 10198-1 &amp; 10198-2 (Cable Selection), SANS 1507-1 (Cable Types and Labels), SANS 10292 (LV Earthing), SANS 10313 (Lightning Protection), and SANS 1973-3 (LV Switchgear). Exam-style questions, tracked progress, 90% pass mark.</p>
 
@@ -314,6 +317,20 @@
               <li style="color:var(--amb);font-weight:600;">Already on R50 Trial? Keep your key and top up to R1,000 for full IR Companion access</li>
             </ul>
             <p style="margin-top:8px;font-size:12.5px;"><strong>EFT payment details on request — WhatsApp:</strong> 072 474 8888</p>
+          </div>
+
+          <!-- ECSA Companion tier -->
+          <div class="lms-tier-box" style="border-color:#2a5ba8;margin-top:12px;">
+            <span class="tier-tag" style="background:rgba(42,91,168,.12);color:#2a5ba8;">ECSA Companion · By Quote</span>
+            <h4 style="margin:8px 0 4px;">ECSA Professional Registration Journey</h4>
+            <p style="margin:0 0 6px;font-size:13px;color:var(--fg2);line-height:1.6;">A separate companion for engineers and technologists working through ECSA professional registration. Tracks your Training Experience Outline (TEO), Engineering Report milestones, CPD activities, and reference logs. Priced per engagement — contact Tseke for a quote before purchase.</p>
+            <ul style="font-size:12.5px;color:var(--fg2);margin:6px 0 0;padding-left:18px;line-height:1.7;">
+              <li>TEO structure guidance (Candidate Engineering Technician / Technologist / Engineer)</li>
+              <li>Engineering Report milestone tracking</li>
+              <li>CPD log and ECSA membership compliance</li>
+              <li>Digital only — no hardcopy pack</li>
+            </ul>
+            <p style="margin-top:8px;font-size:12.5px;"><strong>WhatsApp for a quote:</strong> 072 474 8888</p>
           </div>
 
           <p style="font-size:11.5px;color:var(--fg3);margin:12px 0 4px;text-align:center;line-height:1.5;">Keys are issued personally by Tseke via WhatsApp. When you upgrade, your existing key is updated — no new key needed. Payment reference: your name and cell number.</p>
