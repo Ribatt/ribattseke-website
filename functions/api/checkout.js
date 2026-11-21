@@ -2,10 +2,31 @@
 // Creates a Yoco hosted-checkout session server-side.
 // Amount is NEVER trusted from the client — derived here from item key.
 
+// All book prices are SABS base cost × 1.40 (40% markup), free delivery included.
+// Amounts stored in cents (integer). Non-round prices preserved from exact calculation.
 const ITEMS = {
-  'companion-ir':    { name: 'Installation Rules Companion Pack', amountCents: 100000 },
-  'sans10142-pdf':   { name: 'SANS 10142-1 (Ed 3.3) — PDF',      amountCents: 148419 },
-  'sans10142-print': { name: 'SANS 10142-1 (Ed 3.3) — Hardcopy', amountCents: 165000 },
+  'companion-ir':       { name: 'Installation Rules Companion Pack',                       amountCents: 100000 },
+  // SANS 10142-1 — Wiring of Premises
+  'sans10142-pdf':      { name: 'SANS 10142-1 (Ed 3.3) PDF',                              amountCents: 207787 },
+  'sans10142-print':    { name: 'SANS 10142-1 (Ed 3.3) Hardcopy',                         amountCents: 230874 },
+  // SANS 10198-1 — Cables Part 1
+  'sans10198-1-pdf':    { name: 'SANS 10198-1 PDF',                                       amountCents:  47817 },
+  'sans10198-1-print':  { name: 'SANS 10198-1 Hardcopy',                                  amountCents:  53130 },
+  // SANS 10198-2 — Cables Part 2
+  'sans10198-2-pdf':    { name: 'SANS 10198-2 PDF',                                       amountCents: 100561 },
+  'sans10198-2-print':  { name: 'SANS 10198-2 Hardcopy',                                  amountCents: 111734 },
+  // SANS 10292 — Earthing LV
+  'sans10292-pdf':      { name: 'SANS 10292 PDF',                                         amountCents: 105487 },
+  'sans10292-print':    { name: 'SANS 10292 Hardcopy',                                    amountCents: 117208 },
+  // SANS 1507-1 — Cables fixed wiring
+  'sans1507-1-pdf':     { name: 'SANS 1507-1 PDF',                                        amountCents:  61002 },
+  'sans1507-1-print':   { name: 'SANS 1507-1 Hardcopy',                                   amountCents:  67781 },
+  // SANS 1973-3 — Switchgear assemblies
+  'sans1973-3-pdf':     { name: 'SANS 1973-3 PDF',                                        amountCents:  88969 },
+  'sans1973-3-print':   { name: 'SANS 1973-3 Hardcopy',                                   amountCents:  98854 },
+  // SANS 10313 — Lightning protection
+  'sans10313-pdf':      { name: 'SANS 10313 PDF',                                         amountCents:  70857 },
+  'sans10313-print':    { name: 'SANS 10313 Hardcopy',                                    amountCents:  78729 },
 };
 
 const TVET_TIERS = { t10: 10, t20: 20, t100: 100 };

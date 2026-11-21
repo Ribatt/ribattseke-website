@@ -176,7 +176,7 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
 <div class="hub-section" id="hub-books">
     <div class="res-books">
       <h3>Standards and Legislation</h3>
-      <p>All standards and legislation referenced in both exam syllabi, sourced and supplied directly by Tseke. As an active Installation Rules lecturer and assessor, he confirms the correct current edition for your paper and delivers to your door. SANS 10142-1 is available now at the prices below — pay securely via Yoco and Tseke will arrange delivery. For the remaining standards, place an order and Tseke will confirm availability and pricing.</p>
+      <p>All standards and legislation referenced in both exam syllabi, sourced and supplied directly by Tseke. As an active Installation Rules lecturer and assessor, he confirms the correct current edition for your paper and delivers to your door. All SANS standards listed below are priced to include free delivery anywhere in South Africa. Pay securely through Yoco and Tseke will arrange dispatch. OHS Act 85 of 1993 is supplied by LexisNexis — place an order and Tseke will confirm pricing directly.</p>
             <div class="books-list">
         <div class="book-row">
           <div><div class="book-title">OHS Act 85 of 1993</div><div class="book-sub">Occupational Health and Safety Act with Electrical Installation Regulations and Electrical Machinery Regulations · Paper 1</div></div>
@@ -199,129 +199,76 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
         </div>
         <div class="book-row book-row--priced">
           <div>
-            <div class="book-title">SANS 10142-1 (Ed 3.3)</div>
+            <div class="book-title">SANS 10142-1 (Ed 3.3) <a href="https://store.sabs.co.za/catalogsearch/result/?q=10142-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
             <div class="book-sub">Wiring of Premises, Low Voltage Installations · Paper 1: Sections 1, 2, 3, 4, 5, 7 · Annexures C, E · Paper 2: Sections 6, 8 · Annexures A, B, D, G, H, I, J, K, L, N</div>
           </div>
           <div class="book-price-btns">
-            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-pdf','SANS 10142-1 (Ed 3.3)','PDF — R 1 484.19',false)">PDF<br><span>R&nbsp;1&nbsp;484.19</span></button>
-            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-print','SANS 10142-1 (Ed 3.3)','Hardcopy — R 1 650',true)">Hardcopy<br><span>R&nbsp;1&nbsp;650</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-pdf','SANS 10142-1 (Ed 3.3)','PDF — R 2 077.87',false)">PDF<br><span>R 2 077.87</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-print','SANS 10142-1 (Ed 3.3)','Hardcopy — R 2 308.74',true)">Hardcopy<br><span>R 2 308.74</span></button>
           </div>
         </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 10292</div><div class="book-sub">Earthing of low-voltage (LV) distribution systems · Paper 1</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-10292')">Order</button>
-        </div>
-        <div id="ord-10292" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 10292</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-10292" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-10292" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-10292" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-10292"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('10292','SANS 10292')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10292')">Cancel</button>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 10292 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10292" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-sub">Earthing of low-voltage (LV) distribution systems · Paper 1</div>
           </div>
-          <div class="ord-result" id="ores-10292" hidden></div>
-        </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 10198-1</div><div class="book-sub">Selection, handling and installation of electric power cables · Part 1: Definitions and statutory requirements · Paper 1</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-10198-1')">Order</button>
-        </div>
-        <div id="ord-10198-1" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 10198-1</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-10198-1" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-10198-1" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-10198-1" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-10198-1"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('10198-1','SANS 10198-1')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10198-1')">Cancel</button>
-          </div>
-          <div class="ord-result" id="ores-10198-1" hidden></div>
-        </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 10198-2</div><div class="book-sub">Selection, handling and installation of electric power cables · Part 2: Selection of cable type · Paper 1 (no calculation questions)</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-10198-2')">Order</button>
-        </div>
-        <div id="ord-10198-2" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 10198-2</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-10198-2" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-10198-2" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-10198-2" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-10198-2"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('10198-2','SANS 10198-2')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10198-2')">Cancel</button>
-          </div>
-          <div class="ord-result" id="ores-10198-2" hidden></div>
-        </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 10313</div><div class="book-sub">Protection against lightning: Physical damage to structures and life hazard · Paper 2</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-10313')">Order</button>
-        </div>
-        <div id="ord-10313" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 10313</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-10313" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-10313" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-10313" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-10313"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('10313','SANS 10313')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10313')">Cancel</button>
-          </div>
-          <div class="ord-result" id="ores-10313" hidden></div>
-        </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 1507-1</div><div class="book-sub">Electric cables - Cables with extruded insulation for fixed wiring, 300/500 V and 450/750 V · Paper 2</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-sans1507')">Order</button>
-        </div>
-        <div id="ord-sans1507" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 1507-1</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-sans1507" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-sans1507" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-sans1507" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-sans1507"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('sans1507','SANS 1507-1')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-sans1507')">Cancel</button>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10292-pdf','SANS 10292','PDF — R 1 054.87',false)">PDF<br><span>R 1 054.87</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10292-print','SANS 10292','Hardcopy — R 1 172.08',true)">Hardcopy<br><span>R 1 172.08</span></button>
           </div>
         </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 1973-3</div><div class="book-sub">Low-voltage switchgear and controlgear assemblies: Safety of assemblies with a rated prospective short-circuit current of up to and including 10 kA · Paper 2</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-1973')">Order</button>
-        </div>
-        <div id="ord-1973" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 1973-3</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-1973" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-1973" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-1973" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-1973"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('1973','SANS 1973-3')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-1973')">Cancel</button>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 10198-1 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10198-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-sub">Selection, handling and installation of electric power cables · Part 1: Definitions and statutory requirements · Paper 1</div>
           </div>
-          <div class="ord-result" id="ores-1973" hidden></div>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10198-1-pdf','SANS 10198-1','PDF — R 478.17',false)">PDF<br><span>R 478.17</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10198-1-print','SANS 10198-1','Hardcopy — R 531.30',true)">Hardcopy<br><span>R 531.30</span></button>
+          </div>
+        </div>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 10198-2 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10198-2" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-sub">Selection, handling and installation of electric power cables · Part 2: Selection of cable type · Paper 1 (no calculation questions)</div>
+          </div>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10198-2-pdf','SANS 10198-2','PDF — R 1 005.61',false)">PDF<br><span>R 1 005.61</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10198-2-print','SANS 10198-2','Hardcopy — R 1 117.34',true)">Hardcopy<br><span>R 1 117.34</span></button>
+          </div>
+        </div>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 10313 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10313" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-sub">Protection against lightning: Physical damage to structures and life hazard · Paper 2</div>
+          </div>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10313-pdf','SANS 10313','PDF — R 708.57',false)">PDF<br><span>R 708.57</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10313-print','SANS 10313','Hardcopy — R 787.29',true)">Hardcopy<br><span>R 787.29</span></button>
+          </div>
+        </div>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 1507-1 <a href="https://store.sabs.co.za/catalogsearch/result/?q=1507-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-sub">Electric cables — Cables with extruded insulation for fixed wiring, 300/500 V and 450/750 V · Paper 2</div>
+          </div>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans1507-1-pdf','SANS 1507-1','PDF — R 610.02',false)">PDF<br><span>R 610.02</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans1507-1-print','SANS 1507-1','Hardcopy — R 677.81',true)">Hardcopy<br><span>R 677.81</span></button>
+          </div>
+        </div>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 1973-3 <a href="https://store.sabs.co.za/catalogsearch/result/?q=1973-3" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-sub">Low-voltage switchgear and controlgear assemblies: Safety of assemblies with a rated prospective short-circuit current of up to and including 10 kA · Paper 2</div>
+          </div>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans1973-3-pdf','SANS 1973-3','PDF — R 889.69',false)">PDF<br><span>R 889.69</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans1973-3-print','SANS 1973-3','Hardcopy — R 988.54',true)">Hardcopy<br><span>R 988.54</span></button>
+          </div>
         </div>
       </div>
-      <p class="books-note">For all other standards, Tseke confirms availability and pricing before any payment is required. Payment details shared on confirmation.</p>
+      <p class="books-note">OHS Act orders are quote-based — Tseke will confirm LexisNexis pricing and arrange payment separately.</p>
       <p class="refund-note">Books are sourced to order on confirmed payment. Raise any concern with Tseke within 24 hours of receiving the book.</p>
     </div>
 </div><!-- /hub-books -->
@@ -364,6 +311,8 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
 }
 .btn-book-buy span { font-size:.75rem; font-weight:400; opacity:.88; }
 .btn-book-buy:hover { opacity:.88; }
+.sabs-link { font-size:.7rem; font-weight:400; color:var(--muted,#888); text-decoration:none; white-space:nowrap; }
+.sabs-link:hover { color:var(--accent,#7c6cfc); }
 </style>
 
 <script>
