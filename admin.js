@@ -167,6 +167,11 @@ function lmsRenderAdmList(containerId, keys){
 }
 
 function lmsOpenAdmin(){
+  // Safety: ensure lmsShowView is available (defined in tab-study.html fragment)
+  if(typeof lmsShowView!=='function'){
+    setTimeout(lmsOpenAdmin,150);
+    return;
+  }
   // Restore last active hub section (render if needed)
   setTimeout(function(){ if(typeof hubRenderers==='function') hubRenderers(); }, 80);
 
