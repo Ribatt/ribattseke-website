@@ -449,9 +449,9 @@ section:last-child{border-bottom:none;}
 .pay-shap-note{font-size:11px;color:#717171;margin-top:3px;}
 .pay-instructions{font-size:12px;color:var(--fg3);margin-top:12px;line-height:1.5;}
 
-.companion-btn{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));right:calc(16px + env(safe-area-inset-right,0px));z-index:200;background:var(--amb);color:#fff;width:60px;height:68px;border-radius:30px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:box-shadow .2s,transform .15s;}
+.companion-btn{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:200;background:var(--amb);color:#fff;width:84px;height:60px;border-radius:30px;border:none;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:box-shadow .2s,transform .15s;}
 .companion-btn:hover{box-shadow:0 6px 24px rgba(0,0,0,.3);transform:translateY(-2px);}
-#companion-panel{position:fixed;bottom:calc(172px + env(safe-area-inset-bottom,0px));right:calc(12px + env(safe-area-inset-right,0px));width:min(400px,calc(100vw - 20px));max-height:min(72vh,calc(100vh - 200px));min-height:300px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.22);z-index:201;display:flex;flex-direction:column;overflow:hidden;}
+#companion-panel{position:fixed;bottom:calc(168px + env(safe-area-inset-bottom,0px));right:calc(10px + env(safe-area-inset-right,0px));width:min(480px,calc(100vw - 14px));max-height:min(82vh,calc(100vh - 180px));min-height:420px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.22);z-index:201;display:flex;flex-direction:column;overflow:hidden;}
 #companion-head{background:var(--amb);color:#fff;padding:11px 14px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
 #companion-head-title{font-weight:700;font-size:14px;flex:1;}
 #companion-langs{display:flex;gap:4px;flex-wrap:wrap;}
@@ -1092,7 +1092,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 </a>
 <button class="companion-btn" id="companion-btn" onclick="companionToggle()" aria-label="Tseke's Companion chat" title="Tseke's Companion">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <span class="float-label">Chat</span>
+  <span class="float-label" style="font-size:7px;line-height:1.3;">Companion<br>Chat</span>
 </button>
 <div id="companion-panel" hidden>
   <div id="companion-head">
@@ -1114,8 +1114,8 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
   <div id="companion-faqs"></div>
   <div id="companion-ask">
     <div style="display:flex;gap:6px;padding:8px 10px 2px;">
-      <input id="companion-ask-input" type="text" placeholder="Ask anything…" autocomplete="off"
-        style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--fg);font-size:13px;outline:none;"
+      <input id="companion-ask-input" type="text" placeholder="Ask me anything about the exam, SANS standards, keys…" autocomplete="off"
+        style="flex:1;padding:11px 13px;border-radius:10px;border:2px solid var(--amb);background:var(--surface);color:var(--fg);font-size:14px;outline:none;"
         onkeydown="if(event.key==='Enter'){companionAsk(this.value);this.value='';}" />
       <button onclick="var i=document.getElementById('companion-ask-input');companionAsk(i.value);i.value='';"
         style="background:var(--amb);color:#fff;border:none;border-radius:8px;padding:0 12px;font-size:18px;cursor:pointer;font-weight:700;">&#10148;</button>
@@ -1510,7 +1510,7 @@ function _loadAdmin(){
   var T={
     en:{
       greeting:"Tseke's Companion 👋 — Ask me anything about the IE exam, SANS standards, study packs, or how to register with ECA(SA), AREP, or DOeL.",
-      faqs:["How do I get a study key?","Trial (R50) vs IR Companion (R1,000)","Standards covered","When are the IE exams?","IE exam pass mark","Key delivery — how long?","Why use Tseke's sessions?","Why pay R1,000 — not free downloads?","SANS standards — are they free online?","Why register with DOeL vs ECSA?","ECSA registration process","Pr Eng vs Pr Tech Eng vs Pr Techni Eng","TERs, TEOs, TES explained","Learnerships and apprenticeships","What is EWSETA?","ECA(SA) membership","AREP registration","DOeL / Wireman's licence","YouTube channel","Banking / Donate","Contact Tseke","What services does Tseke offer?","How much is a quote?"],
+      faqs:["How do I get a study key?","Trial (R50) vs IR Companion (R1,000)","When are the IE exams?","IE exam pass mark","DOeL / Wireman's licence","ECSA registration process","Banking / Donate","Contact Tseke"],
       answers:{
         "How do I get a study key?":"Go to the Study tab and select your plan — Trial (R50) for 4-month access or IR Companion (R1,000) for lifetime access. WhatsApp Tseke on 072 474 8888 to arrange payment and your key will be issued.",
         "Trial (R50) vs IR Companion (R1,000)":"Trial (R50): 4-month access (custom duration on request) — all quizzes at 90% pass mark, session study notes P1 & P2, worked examples. Can upgrade to IR Companion anytime by paying the difference.\n\nIR Companion (R1,000): Lifetime access — everything in Trial plus the full PDF study guide (SANS 10142-1 P1 & P2), past 10 years papers with worked solutions, and direct WhatsApp support from Tseke.",

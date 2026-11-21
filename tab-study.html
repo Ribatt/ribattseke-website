@@ -373,8 +373,8 @@
         </div>
         <div class="lms-overview-bar"><div class="lms-overview-fill" id="lms-ov-bar" style="width:0%"></div></div>
 
-        <!-- Volume blocks — rendered dynamically by _buildVolumeDash() -->
-        <div id="lms-vols-container"></div>
+        <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
+        <div id="lms-tracks-container"></div>
 
         <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
           <button class="lms-logout" onclick="lmsLogout()">Sign out</button>
@@ -1969,7 +1969,7 @@ function lmsShowDash(){
   if(!prog.s10313) prog.s10313={};
 
   // Build volume progress overview and render volume blocks
-  _buildVolumeDash(prog);
+  _buildTrackDash(prog);
   lmsShowView('lms-dash');
   setTimeout(function(){if(typeof engageCheckPopups==='function')engageCheckPopups();}, 500);
 }
@@ -1979,11 +1979,25 @@ function lmsShowDash(){
    Each topic: {paper, idx, yt} — paper+idx map to _getSessionData()
    Update this config to add/reorder topics without touching data.
    ═══════════════════════════════════════════════════════════════════ */
-var LMS_VOLUMES=[
+/* LMS_TRACKS — exam-aligned track structure.
+   Each track maps to exactly one DHET syllabus topic slot.
+   Paper 1 (IR / T880): 10 tracks.  Paper 2 (IR / T890): 5 tracks.
+   placeholder:true  → quiz data being developed; block renders as "coming soon".
+   exam_paper:'P1'|'P2' → groups tracks under their paper header in the dashboard. */
+var LMS_TRACKS=[
+  /* ══════════════ PAPER 1 — T880 ══════════════ */
   {
-    num:1,
+    num:1, exam_paper:'P1',
+    label:'OHS Act 85/1993 — Core Provisions (Sections 1, 8, 9, 10, 22)',
+    abbr:'OHS Act',slot:'P1 · Q1 slot',
+    color:'#8b1a1a',placeholder:true,
+    icon:'<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>',
+    topics:[]
+  },
+  {
+    num:2, exam_paper:'P1',
     label:'OHS Act — Electrical Installation Regulations 1992',
-    abbr:'EIR 1992',
+    abbr:'EIR 1992',slot:'P1 · Q2 slot',
     color:'#c97b2a',
     icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>',
     topics:[
@@ -1999,9 +2013,17 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:2,
-    label:'OHS Act — Construction Regulations 2003',
-    abbr:'CR 2003',
+    num:3, exam_paper:'P1',
+    label:'OHS Act — Electrical Machinery Regulations (Regs 1, 3, 5, 6, 11)',
+    abbr:'EMR',slot:'P1 · Q3 slot',
+    color:'#9b4a2a',placeholder:true,
+    icon:'<path d="M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2zm-4 6H7V7h10v10z"/>',
+    topics:[]
+  },
+  {
+    num:4, exam_paper:'P1',
+    label:'OHS Act — Construction Regulations 2003 (Reg 22)',
+    abbr:'CR 2003',slot:'P1 · Q4 slot',
     color:'#a05c1e',
     icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>',
     topics:[
@@ -2018,11 +2040,11 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:3,
-    label:'SANS 10142-1 — Sections 1–4: Scope, Definitions & Compliance',
-    abbr:'SANS 10142-1 §1–4',
+    num:5, exam_paper:'P1',
+    label:'SANS 10142-1 — Section 3: Definitions',
+    abbr:'SANS 10142-1 §3',slot:'P1 · Q5 slot',
     color:'#2a7a4b',
-    icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
+    icon:'<path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>',
     topics:[
       {paper:'p1',idx:0,yt:null},
       {paper:'p1',idx:1,yt:'https://www.youtube.com/watch?v=t8QlzrQa3CM'},
@@ -2030,9 +2052,9 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:4,
-    label:'SANS 10142-1 — Section 5: Fundamental Requirements',
-    abbr:'SANS 10142-1 §5',
+    num:6, exam_paper:'P1',
+    label:'SANS 10142-1 — Sections 4 & 5: Compliance & Fundamental Requirements',
+    abbr:'SANS 10142-1 §4/5',slot:'P1 · Q6 slot',
     color:'#2a7a4b',
     icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
     topics:[
@@ -2042,10 +2064,10 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:5,
-    label:'SANS 10142-1 — Section 7: Special Locations & Load Calculations',
-    abbr:'SANS 10142-1 §7',
-    color:'#2a7a4b',
+    num:7, exam_paper:'P1',
+    label:'SANS 10142-1 — Section 7: Special Installations & Locations',
+    abbr:'SANS 10142-1 §7',slot:'P1 · Q7 slot',
+    color:'#1e6b3c',
     icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
     topics:[
       {paper:'p1',idx:6,yt:null},
@@ -2055,19 +2077,43 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:6,
-    label:'SANS 10142-1 — Supporting Standards Overview',
-    abbr:'SANS 10142-1 Supp.',
+    num:8, exam_paper:'P1',
+    label:'SANS 10142-1 — Annexures: Load Estimation, Conduit Sizing & Supply Systems',
+    abbr:'SANS 10142-1 Annex',slot:'P1 · Q8 slot',
     color:'#1e6b3c',
-    icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
+    icon:'<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/>',
     topics:[
       {paper:'p1',idx:10,yt:null}
     ]
   },
   {
-    num:7,
-    label:'SANS 10142-1 — Section 6.1–6.2: Cable Selection & Current Capacity',
-    abbr:'SANS 10142-1 §6.1–6.2',
+    num:9, exam_paper:'P1',
+    label:'SANS 10198-2 — Power Cable Type Selection & Installation Methods',
+    abbr:'SANS 10198-2',slot:'P1 · Q9 slot',
+    color:'#6b2fa0',
+    icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
+    topics:[
+      {paper:'s101981',idx:0,yt:null},
+      {paper:'s101981',idx:1,yt:'https://www.youtube.com/playlist?list=PLDtV4uswpcMw'},
+      {paper:'s101981',idx:2,yt:'https://www.youtube.com/playlist?list=PLDtV4uswpcMw'}
+    ]
+  },
+  {
+    num:10, exam_paper:'P1',
+    label:'SANS 10292 — Earthing of LV Distribution Systems',
+    abbr:'SANS 10292',slot:'P1 · Q10 slot',
+    color:'#8a3a1b',
+    icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/>',
+    topics:[
+      {paper:'s10292',idx:0,yt:null},
+      {paper:'s10292',idx:1,yt:null}
+    ]
+  },
+  /* ══════════════ PAPER 2 — T890 ══════════════ */
+  {
+    num:11, exam_paper:'P2',
+    label:'SANS 10142-1 §6.1–6.2 — Cable Selection & Current-Carrying Capacity',
+    abbr:'SANS 10142-1 §6.1/6.2',slot:'P2 · Q1 slot',
     color:'#2563a8',
     icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
     topics:[
@@ -2077,9 +2123,9 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:8,
-    label:'SANS 10142-1 — Section 6.3–6.11: Wiring, DBs, Earthing & Special Circuits',
-    abbr:'SANS 10142-1 §6.3–6.11',
+    num:12, exam_paper:'P2',
+    label:'SANS 10142-1 §6.3–6.6 — Wiring Systems, Distribution Boards & Protection',
+    abbr:'SANS 10142-1 §6.3/6.6',slot:'P2 · Q2 slot',
     color:'#2563a8',
     icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
     topics:[
@@ -2089,9 +2135,9 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:9,
-    label:'SANS 10142-1 — Section 8 & Annexures: Verification & Calculations',
-    abbr:'SANS 10142-1 §8',
+    num:13, exam_paper:'P2',
+    label:'SANS 10142-1 §6.7–6.11 — Earthing, Bonding, Verification & Special Circuits',
+    abbr:'SANS 10142-1 §6.7/6.11',slot:'P2 · Q3 slot',
     color:'#1b4d8a',
     icon:'<path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zM3 17h18V5H3v12zm0 2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3z"/>',
     topics:[
@@ -2102,33 +2148,19 @@ var LMS_VOLUMES=[
     ]
   },
   {
-    num:10,
-    label:'SANS 10198-1 & 10198-2 — Cable Selection & System Design',
-    abbr:'SANS 10198',
-    color:'#6b2fa0',
-    icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
+    num:14, exam_paper:'P2',
+    label:'SANS 1973-3 — LV Switchgear & Controlgear Assemblies (up to 10 kA)',
+    abbr:'SANS 1973-3',slot:'P2 · Q4 slot',
+    color:'#4a2a7a',
+    icon:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zm-6-6h-2v2h2v-2zm-4 0H8v2h2v-2zm8 0h-2v2h2v-2z"/>',
     topics:[
-      {paper:'s101981',idx:0,yt:null},
-      {paper:'s101981',idx:1,yt:'https://www.youtube.com/playlist?list=PLDtV4uswpcMw'},
-      {paper:'s101981',idx:2,yt:'https://www.youtube.com/playlist?list=PLDtV4uswpcMw'}
-    ]
-  },
-  {
-    num:11,
-    label:'SANS 10292 — Earthing + SANS 1973-3 — LV Switchgear Assemblies',
-    abbr:'SANS 10292 / 1973-3',
-    color:'#8a3a1b',
-    icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/>',
-    topics:[
-      {paper:'s10292',idx:0,yt:null},
-      {paper:'s10292',idx:1,yt:null},
       {paper:'s10292',idx:2,yt:null}
     ]
   },
   {
-    num:12,
-    label:'SANS 10313 — Protection Against Lightning',
-    abbr:'SANS 10313',
+    num:15, exam_paper:'P2',
+    label:'SANS 10313 — Protection Against Lightning (Extended Study)',
+    abbr:'SANS 10313',slot:'P2 · Extended',
     color:'#8a7a1b',
     icon:'<path d="M7 2v11h3v9l7-12h-4l4-8z"/>',
     topics:[
@@ -2171,11 +2203,12 @@ function _rlScore(paper,idx){
 /* ───────────────────────────────────────────────────────────
    Build the volume-based dashboard (called from lmsShowDash)
    ─────────────────────────────────────────────────────────── */
-function _buildVolumeDash(prog){
+function _buildTrackDash(prog){
   var totalAll=0,doneAll=0,bestAll=0;
-  // Collect totals across all volumes
-  LMS_VOLUMES.forEach(function(vol){
-    vol.topics.forEach(function(t){
+  // Collect totals across all non-placeholder tracks
+  LMS_TRACKS.forEach(function(track){
+    if(track.placeholder) return;
+    track.topics.forEach(function(t){
       totalAll++;
       var p=prog[t.paper]||{};
       var sid='s'+t.idx;
@@ -2191,73 +2224,107 @@ function _buildVolumeDash(prog){
   document.getElementById('lms-ov-pct').textContent=ovPct+'%';
   document.getElementById('lms-ov-best').textContent=bestAll?bestAll+'%':'—';
   document.getElementById('lms-ov-bar').style.width=ovPct+'%';
-  document.getElementById('lms-dash-sub').textContent=doneAll+' of '+totalAll+' topics passed across '+LMS_VOLUMES.length+' volumes.';
+  var activeTracks=LMS_TRACKS.filter(function(t){return !t.placeholder;}).length;
+  document.getElementById('lms-dash-sub').textContent=doneAll+' of '+totalAll+' topics passed across '+activeTracks+' tracks.';
 
-  // Render volume blocks into container
-  var container=document.getElementById('lms-vols-container');
+  // Render track blocks into container, grouped by exam paper
+  var container=document.getElementById('lms-tracks-container');
   if(!container) return;
   container.innerHTML='';
 
-  LMS_VOLUMES.forEach(function(vol,vi){
-    var n=vol.topics.length;
-    var passed=0;
-    vol.topics.forEach(function(t){
-      var p=prog[t.paper]||{};
-      var sid='s'+t.idx;
-      if(p[sid]&&p[sid].passed) passed++;
-    });
-    var pct=n?Math.round((passed/n)*100):0;
-    var blkId='lmsblk-v'+vol.num;
-    var modsId='lms-v'+vol.num+'-mods';
-    var barId='lmsbar-v'+vol.num;
-    var txtId='lmspt-v'+vol.num;
-    var isFirst=(vi===0);
+  var papers=['P1','P2'];
+  var paperLabels={'P1':'Paper 1 — IR Companion (T880)','P2':'Paper 2 — IR Companion (T890)'};
+  var paperColors={'P1':'#c97b2a','P2':'#2563a8'};
 
-    var blk=document.createElement('div');
-    blk.className='lms-subject-block'+(isFirst?'':' collapsed');
-    blk.id=blkId;
+  papers.forEach(function(paperKey){
+    var paperTracks=LMS_TRACKS.filter(function(tr){return tr.exam_paper===paperKey;});
+    if(!paperTracks.length) return;
 
-    var volBadge='<span style="display:inline-block;min-width:36px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+vol.color+'22;color:'+vol.color+';border:1px solid '+vol.color+'55;margin-right:8px;">Vol '+vol.num+'</span>';
+    // Paper section header
+    var hdr=document.createElement('div');
+    hdr.style.cssText='margin:18px 0 8px;padding:7px 14px;border-radius:8px;background:'+paperColors[paperKey]+'18;border-left:3px solid '+paperColors[paperKey]+';display:flex;align-items:center;gap:8px;';
+    hdr.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="'+paperColors[paperKey]+'"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>'
+      +'<span style="font-size:12px;font-weight:700;color:'+paperColors[paperKey]+';">'+paperLabels[paperKey]+'</span>'
+      +'<span style="font-size:11px;color:var(--fg3);margin-left:auto;">'+paperTracks.length+' tracks</span>';
+    container.appendChild(hdr);
 
-    blk.innerHTML='<div class="lms-subject-hdr" onclick="lmsToggleBlock(\''+blkId+'\')">'
-      +'<div class="lms-subject-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="'+vol.color+'">'+vol.icon+'</svg></div>'
-      +'<div class="lms-subject-meta">'
-        +'<div class="lms-subject-title">'+volBadge+esc(vol.label)+'&nbsp;<span style="font-weight:400;color:var(--fg3);">'+n+' topic'+(n===1?'':'s')+'</span></div>'
-        +'<div class="lms-subject-prog-row"><div class="lms-subject-mini-bar"><div class="lms-subject-mini-fill" id="'+barId+'" style="width:'+pct+'%;background:'+vol.color+';"></div></div><span class="lms-subject-prog-txt" id="'+txtId+'">'+passed+'/'+n+'</span></div>'
-      +'</div>'
-      +'<span class="lms-subject-chevron">▾</span>'
-      +'</div>'
-      +'<div class="lms-subject-body"><div class="lms-modules" id="'+modsId+'"></div></div>';
+    paperTracks.forEach(function(track,vi){
+      var n=track.topics.length;
+      var passed=0;
+      if(!track.placeholder){
+        track.topics.forEach(function(t){
+          var p=prog[t.paper]||{};
+          var sid='s'+t.idx;
+          if(p[sid]&&p[sid].passed) passed++;
+        });
+      }
+      var pct=n?Math.round((passed/n)*100):0;
+      var blkId='lmsblk-t'+track.num;
+      var modsId='lms-t'+track.num+'-mods';
+      var barId='lmsbar-t'+track.num;
+      var txtId='lmspt-t'+track.num;
+      var isFirst=(vi===0);
 
-    container.appendChild(blk);
+      var blk=document.createElement('div');
+      blk.className='lms-subject-block'+(isFirst?'':' collapsed');
+      if(track.placeholder) blk.style.opacity='0.6';
+      blk.id=blkId;
 
-    // Build topic rows inside volume
-    var modsEl=blk.querySelector('#'+modsId);
-    vol.topics.forEach(function(t,ti){
-      var p=prog[t.paper]||{};
-      var sid='s'+t.idx;
-      var rec=p[sid]||{};
-      var sess=_getSessionData(t.paper,t.idx);
-      var title=sess?sess.title:'Topic '+(ti+1);
-      var badge,badgeClass;
-      if(rec.passed){badge='Passed · '+rec.score+'%';badgeClass='pass';}
-      else if(rec.attempts){badge='Attempts: '+rec.attempts;badgeClass='fail';}
-      else{badge='Not started';badgeClass='new';}
-      var ytHtml=t.yt?'<a class="lms-yt-link" href="'+t.yt+'" target="_blank" rel="noopener" onclick="event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>Watch lesson</a>':'';
-      var rl=_rlScore(t.paper,t.idx);
-      var rlHtml=rl>=65?'<span style="margin-left:6px;font-size:11px;padding:1px 5px;border-radius:10px;background:#ff5a0022;color:#ff7a00;border:1px solid #ff7a0044;" title="Likely to appear in next exam sitting ('+rl+'%)">🔥 '+rl+'%</span>':'';
-      var row=document.createElement('div');
-      row.className='lms-mod-row'+(rec.passed?' done':'');
-      row.innerHTML='<div>'
-        +'<div class="lms-mod-title" style="color:'+vol.color+';">Vol '+vol.num+' · Topic '+(ti+1)+rlHtml+'</div>'
-        +'<div class="lms-mod-sub">'+esc(title)+'</div>'
-        +ytHtml
+      var trackBadge='<span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+track.color+'22;color:'+track.color+';border:1px solid '+track.color+'55;margin-right:8px;">Track '+track.num+'</span>';
+      var slotTag=track.slot?'<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:var(--surface2);color:var(--fg3);border:1px solid var(--border);margin-left:4px;">'+track.slot+'</span>':'';
+      var comingSoon=track.placeholder?'<span style="margin-left:8px;font-size:9px;padding:1px 6px;border-radius:8px;background:#ff990022;color:#cc7700;border:1px solid #ff990044;">coming soon</span>':'';
+
+      var topicCountTxt=track.placeholder?'quiz data being developed':n+' topic'+(n===1?'':'s');
+
+      blk.innerHTML='<div class="lms-subject-hdr" onclick="lmsToggleBlock(\''+blkId+'\')">'
+        +'<div class="lms-subject-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="'+track.color+'">'+track.icon+'</svg></div>'
+        +'<div class="lms-subject-meta">'
+          +'<div class="lms-subject-title">'+trackBadge+esc(track.label)+slotTag+comingSoon+'</div>'
+          +'<div class="lms-subject-prog-row"><div class="lms-subject-mini-bar"><div class="lms-subject-mini-fill" id="'+barId+'" style="width:'+pct+'%;background:'+track.color+';"></div></div><span class="lms-subject-prog-txt" id="'+txtId+'">'+(track.placeholder?'—':passed+'/'+n)+'</span></div>'
         +'</div>'
-        +'<span class="lms-mod-badge '+badgeClass+'">'+badge+'</span>';
-      row.onclick=(function(pp,si,vn,tn){
-        return function(){lmsStartQuizVol(pp,si,vn,tn);};
-      })(t.paper,t.idx,vol.num,ti+1);
-      modsEl.appendChild(row);
+        +'<span class="lms-subject-chevron">▾</span>'
+        +'</div>'
+        +'<div class="lms-subject-body"><div class="lms-modules" id="'+modsId+'"></div></div>';
+
+      container.appendChild(blk);
+
+      var modsEl=blk.querySelector('#'+modsId);
+
+      if(track.placeholder){
+        var ph=document.createElement('div');
+        ph.style.cssText='padding:16px 18px;color:var(--fg3);font-size:13px;font-style:italic;';
+        ph.textContent='Quiz questions for this track are being developed. Check back soon — Tseke is seeding this content.';
+        modsEl.appendChild(ph);
+        return;
+      }
+
+      // Build topic rows inside track
+      track.topics.forEach(function(t,ti){
+        var p=prog[t.paper]||{};
+        var sid='s'+t.idx;
+        var rec=p[sid]||{};
+        var sess=_getSessionData(t.paper,t.idx);
+        var title=sess?sess.title:'Topic '+(ti+1);
+        var badge,badgeClass;
+        if(rec.passed){badge='Passed · '+rec.score+'%';badgeClass='pass';}
+        else if(rec.attempts){badge='Attempts: '+rec.attempts;badgeClass='fail';}
+        else{badge='Not started';badgeClass='new';}
+        var ytHtml=t.yt?'<a class="lms-yt-link" href="'+t.yt+'" target="_blank" rel="noopener" onclick="event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>Watch lesson</a>':'';
+        var rl=_rlScore(t.paper,t.idx);
+        var rlHtml=rl>=65?'<span style="margin-left:6px;font-size:11px;padding:1px 5px;border-radius:10px;background:#ff5a0022;color:#ff7a00;border:1px solid #ff7a0044;" title="Likely to appear in next exam sitting ('+rl+'%)">🔥 '+rl+'%</span>':'';
+        var row=document.createElement('div');
+        row.className='lms-mod-row'+(rec.passed?' done':'');
+        row.innerHTML='<div>'
+          +'<div class="lms-mod-title" style="color:'+track.color+';">Track '+track.num+' · Topic '+(ti+1)+rlHtml+'</div>'
+          +'<div class="lms-mod-sub">'+esc(title)+'</div>'
+          +ytHtml
+          +'</div>'
+          +'<span class="lms-mod-badge '+badgeClass+'">'+badge+'</span>';
+        row.onclick=(function(pp,si,tn,tnum){
+          return function(){lmsStartQuizTrack(pp,si,tn,tnum);};
+        })(t.paper,t.idx,track.num,ti+1);
+        modsEl.appendChild(row);
+      });
     });
   });
 }
@@ -2310,9 +2377,9 @@ function _lmsUpdateTimer(){
   el.className='lms-timer'+(m>=5?' warning':'')+(m>=10?' urgent':'');
 }
 
-var _lmsQuizVolLabel=null;
-function lmsStartQuizVol(paper,sessIdx,volNum,topicNum){
-  _lmsQuizVolLabel='Vol '+volNum+' · Topic '+topicNum;
+var _lmsQuizTrackLabel=null;
+function lmsStartQuizTrack(paper,sessIdx,trackNum,topicNum){
+  _lmsQuizTrackLabel='Track '+trackNum+' · Topic '+topicNum;
   lmsStartQuiz(paper,sessIdx);
 }
 function lmsStartQuiz(paper,sessIdx){
@@ -2331,9 +2398,9 @@ function lmsStartQuiz(paper,sessIdx){
   _lmsPool=pool.slice(0,Math.min(QUIZ_Q,pool.length));
   _lmsIdx=0; _lmsCorrect=0;
   _lmsDotResults=new Array(_lmsPool.length).fill(null);
-  var _vt=_lmsQuizVolLabel||('Topic '+(sessIdx+1));
+  var _vt=_lmsQuizTrackLabel||('Topic '+(sessIdx+1));
   document.getElementById('lms-quiz-title').textContent=_vt+': '+sess.title;
-  _lmsQuizVolLabel=null;
+  _lmsQuizTrackLabel=null;
   _lmsStartTimer();
   _lmsRenderDots();
   lmsRenderQ();
@@ -2469,17 +2536,17 @@ function _getSessionCount(paper){
 
 function lmsNextSession(){
   var nextIdx=_lmsSess+1;
-  // Find this paper+nextIdx in LMS_VOLUMES to get volume label
+  // Find this paper+nextIdx in LMS_TRACKS to get track label
   var vLabel=null;
-  for(var vi=0;vi<LMS_VOLUMES.length;vi++){
-    var vol=LMS_VOLUMES[vi];
-    for(var ti=0;ti<vol.topics.length;ti++){
-      var t=vol.topics[ti];
-      if(t.paper===_lmsPaper&&t.idx===nextIdx){vLabel='Vol '+vol.num+' · Topic '+(ti+1);break;}
+  for(var vi=0;vi<LMS_TRACKS.length;vi++){
+    var track=LMS_TRACKS[vi];
+    for(var ti=0;ti<track.topics.length;ti++){
+      var t=track.topics[ti];
+      if(t.paper===_lmsPaper&&t.idx===nextIdx){vLabel='Track '+track.num+' · Topic '+(ti+1);break;}
     }
     if(vLabel) break;
   }
-  _lmsQuizVolLabel=vLabel;
+  _lmsQuizTrackLabel=vLabel;
   lmsStartQuiz(_lmsPaper,nextIdx);
 }
 function lmsRetry(){lmsStartQuiz(_lmsPaper,_lmsSess);}
