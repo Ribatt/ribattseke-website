@@ -118,18 +118,49 @@ function lmsOpenAdmin(){
   // Restore last active hub section (render if needed)
   setTimeout(function(){ if(typeof hubRenderers==='function') hubRenderers(); }, 80);
 
-  // Render all tiers
-  var trialStats=lmsRenderAdmList('adm-trial-list',TRIAL_KEYS);
-  var vqStats=lmsRenderAdmList('adm-vq-list',VQ_KEYS);
-  lmsRenderAdmList('adm-cohort-list',COHORT_KEYS);
-  var sgStats=lmsRenderAdmList('adm-sg-list',PAID_KEYS);
+  // Collect issued keys from localStorage (new Tseke- format)
+  var el=function(id){return document.getElementById(id);};
+  var irIssued=[]; var ecsaIssued=[];
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var lk=localStorage.key(i);
+      if(lk&&lk.indexOf(IR_KEY_NS)===0){
+        var keyStr=lk.substring(IR_KEY_NS.length);
+        irIssued.push({key:keyStr,who:localStorage.getItem(lk)});
+      } else if(lk&&lk.indexOf(ECSA_KEY_NS)===0){
+        var keyStr2=lk.substring(ECSA_KEY_NS.length);
+        ecsaIssued.push({key:keyStr2,who:localStorage.getItem(lk)});
+      }
+    }
+  }catch(e){}
+
+  // Render IR Companion issued list
+  var irList=el('adm-ir-list');
+  if(irList){
+    if(!irIssued.length){
+      irList.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:6px 0;">No IR Companion keys issued yet on this device.</p>';
+    } else {
+      irList.innerHTML=irIssued.map(function(e){
+        return '<div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;"><strong style="font-family:monospace;">'+e.key+'</strong> → '+e.who+'</div>';
+      }).join('');
+    }
+  }
+  // Render ECSA Companion issued list
+  var ecsaList=el('adm-ecsa-list');
+  if(ecsaList){
+    if(!ecsaIssued.length){
+      ecsaList.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:6px 0;">No ECSA Companion keys issued yet on this device.</p>';
+    } else {
+      ecsaList.innerHTML=ecsaIssued.map(function(e){
+        return '<div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;"><strong style="font-family:monospace;">'+e.key+'</strong> → '+e.who+'</div>';
+      }).join('');
+    }
+  }
 
   // Update counts
-  var el=function(id){return document.getElementById(id);};
-  if(el('adm-trial-av')) el('adm-trial-av').textContent=(trialStats?trialStats.available:'-');
-  if(el('adm-vq-av')) el('adm-vq-av').textContent=(vqStats?vqStats.available:'-');
-  if(el('adm-sg-av')) el('adm-sg-av').textContent=(sgStats?sgStats.available:'-');
-  var totalIssued=(trialStats?trialStats.issued:0)+(vqStats?vqStats.issued:0)+(sgStats?sgStats.issued:0);
+  if(el('adm-ir-ct')) el('adm-ir-ct').textContent=irIssued.length;
+  if(el('adm-ecsa-ct')) el('adm-ecsa-ct').textContent=ecsaIssued.length;
+  var totalIssued=irIssued.length+ecsaIssued.length;
   if(el('adm-tot-is')) el('adm-tot-is').textContent=totalIssued;
 
   // Pending registrations from Firebase
@@ -177,100 +208,98 @@ function admShowSendKey(safeId, phone, email, username){
   if(!box) return;
   if(box.style.display==='block'){box.style.display='none';return;}
 
-  // Build list of available keys across all tiers
-  var availableKeys=[];
-  var allTiers=[
-    {label:'R50 Trial',keys:TRIAL_KEYS},
-    {label:'Videos + Quizzes',keys:VQ_KEYS},
-    {label:'Africa TVET',keys:COHORT_KEYS},
-    {label:'Study Guide Pack',keys:PAID_KEYS}
-  ];
-  allTiers.forEach(function(t){
-    t.keys.forEach(function(k){
-      if(!lmsIssuedKey(k)) availableKeys.push({k:k,label:t.label});
-    });
-  });
-
-  if(!availableKeys.length){
-    box.innerHTML='<p style="font-size:12px;color:#c00;">No available keys. All keys have been issued.</p>';
-    box.style.display='block';
-    return;
-  }
-
-  var opts=availableKeys.map(function(o,i){
-    return '<option value="'+i+'">'+o.k+' ('+o.label+')</option>';
-  }).join('');
+  // Auto-generate key from student phone + today's date
+  var todayStr=(function(){
+    var d=new Date();
+    var yy=d.getFullYear();
+    var mm=String(d.getMonth()+1).padStart(2,'0');
+    var dd=String(d.getDate()).padStart(2,'0');
+    return ''+yy+mm+dd;
+  })();
+  var studentPhone=(phone||'').replace(/\s/g,'').replace(/^(\+27|27)/,'0');
+  var autoKey='Tseke-'+studentPhone+'-'+todayStr;
 
   box.innerHTML=
-    '<div style="font-size:11.5px;font-weight:700;margin-bottom:6px;">Select key to send to '+username+'</div>'
-    +'<select id="adm-key-sel-'+safeId+'" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);font-size:12px;margin-bottom:8px;">'
-    +opts+'</select>'
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    '<div style="font-size:11.5px;font-weight:700;margin-bottom:8px;">Generate &amp; send key to '+username+'</div>'
+    +'<div style="margin-bottom:8px;">'
+    +'<label style="font-size:11px;color:var(--fg2);display:block;margin-bottom:3px;">Key type</label>'
+    +'<div style="display:flex;gap:12px;margin-bottom:8px;">'
+    +'<label style="font-size:12px;cursor:pointer;"><input type="radio" name="adm-kt-'+safeId+'" value="ir" checked style="margin-right:4px;">IR Companion</label>'
+    +'<label style="font-size:12px;cursor:pointer;"><input type="radio" name="adm-kt-'+safeId+'" value="ecsa" style="margin-right:4px;">ECSA Companion</label>'
+    +'</div>'
+    +'<label style="font-size:11px;color:var(--fg2);display:block;margin-bottom:3px;">Generated key (edit if needed)</label>'
+    +'<input id="adm-key-inp-'+safeId+'" type="text" value="'+autoKey+'" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid var(--amb);border-radius:6px;background:var(--bg);color:var(--fg);font-size:12px;font-family:monospace;margin-bottom:8px;">'
+    +'</div>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
     +'<button data-sid="'+safeId+'" data-phone="'+phone+'" data-email="'+email+'" data-uname="'+username+'" onclick="admDoSendKey(this.dataset.sid,this.dataset.phone,this.dataset.email,this.dataset.uname)" style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
     +(email?'<button data-sid2="'+safeId+'" data-email2="'+email+'" data-uname2="'+username+'" onclick="admDoSendEmail(this.dataset.sid2,this.dataset.email2,this.dataset.uname2)" style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
-    +'</div></div>';
+    +'</div>';
   box.style.display='block';
 }
 
 function admGetSelectedKey(safeId){
-  var sel=document.getElementById('adm-key-sel-'+safeId);
-  if(!sel) return null;
-  var allTiers=[
-    {label:'R50 Trial',keys:TRIAL_KEYS},
-    {label:'Videos + Quizzes',keys:VQ_KEYS},
-    {label:'Africa TVET',keys:COHORT_KEYS},
-    {label:'Study Guide Pack',keys:PAID_KEYS}
-  ];
-  var availableKeys=[];
-  allTiers.forEach(function(t){
-    t.keys.forEach(function(k){if(!lmsIssuedKey(k)) availableKeys.push(k);});
-  });
-  return availableKeys[parseInt(sel.value,10)]||null;
+  var inp=document.getElementById('adm-key-inp-'+safeId);
+  return inp?inp.value.trim():null;
+}
+
+function admGetKeyType(safeId){
+  var radios=document.querySelectorAll('input[name="adm-kt-'+safeId+'"]');
+  for(var i=0;i<radios.length;i++){
+    if(radios[i].checked) return radios[i].value; // 'ir' or 'ecsa'
+  }
+  return 'ir';
 }
 
 function admDoSendKey(safeId, phone, email, username){
   var key=admGetSelectedKey(safeId);
-  if(!key){alert('No key selected.');return;}
-  // Mark as issued
-  try{localStorage.setItem(ADM_NS+'k_'+key, username+' ('+phone+')');}catch(e){}
-  // Auto-generate invoice (R50 assumed — student was told at signup)
-  var isCohort=COHORT_KEYS.indexOf(key)!==-1;
-  var invAmt=50; // R50 default; cohort students pay voluntarily but invoice still issued
+  if(!key){alert('No key entered.');return;}
+  var keyType=admGetKeyType(safeId); // 'ir' or 'ecsa'
+  // Validate new key format
+  if(!/^Tseke-\d{10}-\d{8}$/i.test(key)){
+    alert('Key format must be Tseke-{10-digit phone}-{YYYYMMDD}\nExample: Tseke-0724748888-20261125');
+    return;
+  }
+  // Mark as issued in localStorage (so lmsCheckKey can resolve it on student device via admin's device)
+  var ns=keyType==='ecsa'?ECSA_KEY_NS:IR_KEY_NS;
+  try{localStorage.setItem(ns+key, username+' ('+phone+')');}catch(e){}
+  // Invoice details
+  var invAmt=keyType==='ecsa'?0:1000; // ECSA is by quote
+  var companionLabel=keyType==='ecsa'?'ECSA Companion':'IR Companion';
   var invId='INV-'+Date.now()+'-'+(username||'').substring(0,6).toUpperCase();
   var invDate=new Date();
   var invDateStr=invDate.toLocaleDateString('en-ZA',{day:'2-digit',month:'long',year:'numeric'});
   var inv={
     id:invId, username:username, phone:phone, email:email,
-    key:key, amount:invAmt, currency:'ZAR',
+    key:key, type:keyType, amount:invAmt, currency:'ZAR',
     date:invDate.toISOString(), dateStr:invDateStr,
-    description:'Installation Rules LMS Access Key — '+(isCohort?'Africa TVET College (voluntary R50)':'R50 Trial Access'),
+    description:'Installation Rules LMS — '+companionLabel+' Access Key',
     status:'issued', issuedBy:'Riba T Tseke', issuedTo:username
   };
   bizSet('inv_'+invId, inv);
-  // Also store a user-keyed reference for quick lookup
   bizSet('inv_user_'+username, invId);
-  // Build WhatsApp message (include invoice reference)
-  var msg='Hi '+username+',\n\nYour Installation Rules LMS access key is:\n\n*'+key+'*\n\nInvoice reference: '+invId+' — R'+invAmt+'\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support WhatsApp Tseke: 072 474 8888';
+  // WhatsApp message
+  var amtLine=invAmt>0?'\nInvoice reference: '+invId+' — R'+invAmt:'';
+  var msg='Hi '+username+',\n\nYour '+companionLabel+' access key is:\n\n*'+key+'*'+amtLine+'\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click the Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support WhatsApp Tseke: 072 474 8888';
   var num=phone.replace(/\s/g,'').replace(/^0/,'27').replace(/^\+/,'');
   window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
-  // Update Firebase — include invoice data
+  // Firebase recording
   if(_lmsFbDb){
     try{
-      _lmsFbDb.collection('keys').doc(key).set({claimed:true,claimedBy:username,claimedPhone:phone,claimedEmail:email,claimedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
-      _lmsFbDb.collection('users').doc(username).update({keyReserved:key,keyReservedAt:firebase.firestore.FieldValue.serverTimestamp(),invoiceId:invId,invoiceAmount:invAmt}).catch(function(){});
+      _lmsFbDb.collection('keys').doc(key).set({claimed:true,type:keyType,claimedBy:username,claimedPhone:phone,claimedEmail:email,claimedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      _lmsFbDb.collection('users').doc(username).update({keyReserved:key,keyType:keyType,keyReservedAt:firebase.firestore.FieldValue.serverTimestamp(),invoiceId:invId,invoiceAmount:invAmt}).catch(function(){});
       _lmsFbDb.collection('invoices').doc(invId).set(inv).catch(function(){});
     }catch(e){}
   }
-  // Refresh admin
   setTimeout(lmsOpenAdmin, 500);
 }
 
 function admDoSendEmail(safeId, email, username){
   var key=admGetSelectedKey(safeId);
-  if(!key){alert('No key selected.');return;}
-  var subj='Your Installation Rules LMS Access Key';
-  var body='Hi '+username+',\n\nYour Installation Rules LMS access key is:\n\n'+key+'\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support contact Tseke: 072 474 8888 or ribattseke@gmail.com\n\nRegards,\nTseke Riba';
+  if(!key){alert('No key entered.');return;}
+  var keyType=admGetKeyType(safeId);
+  var companionLabel=keyType==='ecsa'?'ECSA Companion':'IR Companion';
+  var subj='Your '+companionLabel+' LMS Access Key';
+  var body='Hi '+username+',\n\nYour '+companionLabel+' LMS access key is:\n\n'+key+'\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click the Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support contact Tseke: 072 474 8888 or ribattseke@gmail.com\n\nRegards,\nRiba T Tseke';
   window.location.href='mailto:'+email+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
 }
 
