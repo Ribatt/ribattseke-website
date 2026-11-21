@@ -176,7 +176,7 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
 <div class="hub-section" id="hub-books">
     <div class="res-books">
       <h3>Standards and Legislation</h3>
-      <p>All standards and legislation referenced in both exam syllabi, sourced and supplied directly by Tseke. As an active Installation Rules lecturer and assessor, he confirms the correct current edition for your paper and delivers to your door. Enter your full name and delivery address and Tseke will confirm availability and send you a quote before anything is processed. No prices are shown here — you will receive a quote first.</p>
+      <p>All standards and legislation referenced in both exam syllabi, sourced and supplied directly by Tseke. As an active Installation Rules lecturer and assessor, he confirms the correct current edition for your paper and delivers to your door. SANS 10142-1 is available now at the prices below — pay securely via Yoco and Tseke will arrange delivery. For the remaining standards, place an order and Tseke will confirm availability and pricing.</p>
             <div class="books-list">
         <div class="book-row">
           <div><div class="book-title">OHS Act 85 of 1993</div><div class="book-sub">Occupational Health and Safety Act with Electrical Installation Regulations and Electrical Machinery Regulations · Paper 1</div></div>
@@ -197,24 +197,15 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
           </div>
           <div class="ord-result" id="ores-ohsact" hidden></div>
         </div>
-        <div class="book-row">
-          <div><div class="book-title">SANS 10142-1 (Ed 3.3)</div><div class="book-sub">Wiring of Premises, Low Voltage Installations · Paper 1: Sections 1, 2, 3, 4, 5, 7 · Annexures C, E · Paper 2: Sections 6, 8 · Annexures A, B, D, G, H, I, J, K, L, N</div></div>
-          <button class="btn-book-order" onclick="toggleOrdForm('ord-10142')">Order</button>
-        </div>
-        <div id="ord-10142" class="ord-form" hidden>
-          <p class="ord-form-ttl">Order: SANS 10142-1 (Ed 3.3)</p>
-          <label class="ord-lbl">Full Name</label>
-          <input type="text" class="ord-input" id="oname-10142" placeholder="Your full name">
-          <label class="ord-lbl">Cell Number</label>
-          <input type="tel" class="ord-input" id="ocell-10142" placeholder="e.g. 072 123 4567">
-          <label class="ord-lbl">Full Delivery Address</label>
-          <textarea class="ord-input" id="oaddr-10142" rows="2" placeholder="Street, suburb, city, postal code"></textarea>
-          <div class="ord-err" id="oerr-10142"></div>
-          <div class="ord-btn-row">
-            <button class="btn-ord-go" onclick="prepOrd('10142','SANS 10142-1 (Ed 3.3)')">Prepare Message</button>
-            <button class="btn-ord-x" onclick="toggleOrdForm('ord-10142')">Cancel</button>
+        <div class="book-row book-row--priced">
+          <div>
+            <div class="book-title">SANS 10142-1 (Ed 3.3)</div>
+            <div class="book-sub">Wiring of Premises, Low Voltage Installations · Paper 1: Sections 1, 2, 3, 4, 5, 7 · Annexures C, E · Paper 2: Sections 6, 8 · Annexures A, B, D, G, H, I, J, K, L, N</div>
           </div>
-          <div class="ord-result" id="ores-10142" hidden></div>
+          <div class="book-price-btns">
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-pdf','SANS 10142-1 (Ed 3.3)','PDF — R 1 484.19',false)">PDF<br><span>R&nbsp;1&nbsp;484.19</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-print','SANS 10142-1 (Ed 3.3)','Hardcopy — R 1 650',true)">Hardcopy<br><span>R&nbsp;1&nbsp;650</span></button>
+          </div>
         </div>
         <div class="book-row">
           <div><div class="book-title">SANS 10292</div><div class="book-sub">Earthing of low-voltage (LV) distribution systems · Paper 1</div></div>
@@ -330,10 +321,108 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
           <div class="ord-result" id="ores-1973" hidden></div>
         </div>
       </div>
-      <p class="books-note">Tseke confirms availability and pricing before any payment is required. Payment details shared on confirmation.</p>
+      <p class="books-note">For all other standards, Tseke confirms availability and pricing before any payment is required. Payment details shared on confirmation.</p>
       <p class="refund-note">Books are sourced to order on confirmed payment. Raise any concern with Tseke within 24 hours of receiving the book.</p>
     </div>
 </div><!-- /hub-books -->
+
+<!-- ═══ Book Checkout Modal ═══ -->
+<div id="book-modal-bg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1200;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:var(--card-bg,#1a1a2e);border:1px solid var(--border,#2a2a4a);border-radius:14px;padding:28px 24px;max-width:420px;width:100%;position:relative;">
+    <button onclick="closeBookCheckout()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted,#888);font-size:1.3rem;cursor:pointer;line-height:1;">✕</button>
+    <h3 id="bm-title" style="margin:0 0 4px;font-size:1.05rem;color:var(--accent,#7c6cfc);">Book</h3>
+    <p id="bm-subtitle" style="margin:0 0 18px;font-size:.9rem;color:var(--muted,#888);"></p>
+
+    <label style="font-size:.82rem;color:var(--muted,#888);display:block;margin-bottom:4px;">Email address *</label>
+    <input id="bm-email" type="email" placeholder="you@example.com" style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#2a2a4a);background:var(--input-bg,#111);color:var(--fg,#e0e0e0);font-size:.9rem;margin-bottom:14px;">
+
+    <!-- Hardcopy-only delivery fields -->
+    <div id="bm-print-fields" style="display:none;">
+      <label style="font-size:.82rem;color:var(--muted,#888);display:block;margin-bottom:4px;">Full name *</label>
+      <input id="bm-name" type="text" placeholder="Your full name" style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#2a2a4a);background:var(--input-bg,#111);color:var(--fg,#e0e0e0);font-size:.9rem;margin-bottom:14px;">
+      <label style="font-size:.82rem;color:var(--muted,#888);display:block;margin-bottom:4px;">Cell number *</label>
+      <input id="bm-cell" type="tel" placeholder="e.g. 072 123 4567" style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#2a2a4a);background:var(--input-bg,#111);color:var(--fg,#e0e0e0);font-size:.9rem;margin-bottom:14px;">
+      <label style="font-size:.82rem;color:var(--muted,#888);display:block;margin-bottom:4px;">Delivery address *</label>
+      <textarea id="bm-addr" rows="2" placeholder="Street, suburb, city, postal code" style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:8px;border:1px solid var(--border,#2a2a4a);background:var(--input-bg,#111);color:var(--fg,#e0e0e0);font-size:.9rem;margin-bottom:14px;resize:vertical;"></textarea>
+    </div>
+
+    <div id="bm-err" style="display:none;color:#f87171;font-size:.85rem;margin-bottom:10px;"></div>
+    <button id="bm-pay-btn" onclick="submitBookCheckout()" style="width:100%;padding:12px;background:var(--accent,#7c6cfc);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;">&#128179; Pay Now</button>
+    <div id="bm-direct" style="display:none;margin-top:12px;text-align:center;font-size:.82rem;color:var(--muted,#888);">
+      Or pay directly: <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="color:var(--accent,#7c6cfc);">pay.yoco.com/riba-t-tseke →</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.book-row--priced { align-items: flex-start; }
+.book-price-btns { display:flex; gap:8px; flex-shrink:0; margin-top:4px; }
+.btn-book-buy {
+  background: var(--accent,#7c6cfc); color:#fff; border:none; border-radius:8px;
+  padding:8px 12px; font-size:.8rem; font-weight:600; cursor:pointer;
+  text-align:center; line-height:1.3; min-width:76px;
+}
+.btn-book-buy span { font-size:.75rem; font-weight:400; opacity:.88; }
+.btn-book-buy:hover { opacity:.88; }
+</style>
+
+<script>
+var _bmItem = null, _bmPrint = false;
+function openBookCheckout(item, label, subtitle, isPrint) {
+  _bmItem = item; _bmPrint = !!isPrint;
+  document.getElementById('bm-title').textContent = label;
+  document.getElementById('bm-subtitle').textContent = subtitle;
+  document.getElementById('bm-email').value = '';
+  document.getElementById('bm-err').style.display = 'none';
+  document.getElementById('bm-direct').style.display = 'none';
+  document.getElementById('bm-print-fields').style.display = isPrint ? 'block' : 'none';
+  if (isPrint) { document.getElementById('bm-name').value=''; document.getElementById('bm-cell').value=''; document.getElementById('bm-addr').value=''; }
+  var btn = document.getElementById('bm-pay-btn');
+  btn.disabled = false; btn.textContent = '💳 Pay Now';
+  document.getElementById('book-modal-bg').style.display = 'flex';
+  setTimeout(function(){ document.getElementById('bm-email').focus(); }, 80);
+}
+function closeBookCheckout() { document.getElementById('book-modal-bg').style.display = 'none'; }
+document.getElementById('book-modal-bg').addEventListener('click', function(e){ if(e.target===this) closeBookCheckout(); });
+function submitBookCheckout() {
+  var errEl = document.getElementById('bm-err');
+  errEl.style.display = 'none';
+  var email = document.getElementById('bm-email').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return;
+  }
+  var payload = { item: _bmItem, email: email };
+  if (_bmPrint) {
+    var nm = document.getElementById('bm-name').value.trim();
+    var cl = document.getElementById('bm-cell').value.trim();
+    var ad = document.getElementById('bm-addr').value.trim();
+    if (!nm || !cl || !ad) {
+      errEl.textContent = 'Please fill in your name, cell number and delivery address.'; errEl.style.display = 'block'; return;
+    }
+    payload.deliveryName = nm; payload.deliveryCell = cl; payload.deliveryAddress = ad;
+  }
+  var btn = document.getElementById('bm-pay-btn');
+  btn.disabled = true; btn.textContent = 'Connecting to Yoco…';
+  fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
+    .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+    .then(function(res) {
+      if (!res.ok) {
+        var showDirect = res.data.error && res.data.error.indexOf('not configured') !== -1;
+        errEl.textContent = res.data.error || 'Payment setup failed. Please try again.';
+        errEl.style.display = 'block';
+        if (showDirect) document.getElementById('bm-direct').style.display = 'block';
+        btn.disabled = false; btn.textContent = '💳 Pay Now'; return;
+      }
+      window.location.href = res.data.redirectUrl;
+    })
+    .catch(function() {
+      errEl.textContent = 'Could not reach payment server. Use the direct Yoco link below.';
+      errEl.style.display = 'block';
+      document.getElementById('bm-direct').style.display = 'block';
+      btn.disabled = false; btn.textContent = '💳 Pay Now';
+    });
+}
+</script>
 
 <div class="hub-section" id="hub-services">
     <div id="services-content">

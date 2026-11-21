@@ -48,11 +48,25 @@ async function verifyWebhookSignature(request, secret) {
   return { ok: true, rawBody };
 }
 
-async function notifyTseke(env, { event, email, item, amountInCents, checkoutId }) {
+async function notifyTseke(env, { event, email, item, amountInCents, checkoutId, deliveryName, deliveryCell, deliveryAddress }) {
   const amountRand = (amountInCents / 100).toFixed(2);
   const subject = event === 'payment.succeeded'
     ? `PAID R${amountRand} — ${item} — ${email}`
     : `FAILED — ${item} — ${email}`;
+
+  const isHardcopy = item && item.endsWith('-print');
+  let actionLine;
+  if (event === 'payment.succeeded') {
+    if (isHardcopy) {
+      actionLine = 'ACTION: Ship the hardcopy book to the delivery address below.';
+    } else if (item && item.endsWith('-pdf')) {
+      actionLine = 'ACTION: Email the PDF to the customer at the address above.';
+    } else {
+      actionLine = 'ACTION: Send the companion pack PDF to the customer via WhatsApp or email.';
+    }
+  } else {
+    actionLine = 'No action required — payment did not complete.';
+  }
 
   const body = [
     `Event: ${event}`,
@@ -60,11 +74,12 @@ async function notifyTseke(env, { event, email, item, amountInCents, checkoutId 
     `Customer email: ${email}`,
     `Item: ${item}`,
     `Amount: R${amountRand}`,
+    deliveryName    ? `Delivery name:    ${deliveryName}`    : '',
+    deliveryCell    ? `Delivery cell:    ${deliveryCell}`    : '',
+    deliveryAddress ? `Delivery address: ${deliveryAddress}` : '',
     '',
-    event === 'payment.succeeded'
-      ? 'ACTION: Send the companion pack PDF to the customer via WhatsApp or email.'
-      : 'No action required — payment did not complete.',
-  ].join('\n');
+    actionLine,
+  ].filter(Boolean).join('\n');
 
   try {
     await fetch('https://api.mailchannels.net/tx/v1/send', {
@@ -140,6 +155,9 @@ export async function onRequestPost(context) {
       item: meta.selectedTrackOrBundle || 'companion-ir',
       amountInCents: data.amount || 0,
       checkoutId: checkoutId || 'n/a',
+      deliveryName: meta.deliveryName || '',
+      deliveryCell: meta.deliveryCell || '',
+      deliveryAddress: meta.deliveryAddress || '',
     });
   }
 
@@ -151,6 +169,9 @@ export async function onRequestPost(context) {
       item: meta.selectedTrackOrBundle || 'companion-ir',
       amountInCents: data.amount || 0,
       checkoutId: checkoutId || 'n/a',
+      deliveryName: meta.deliveryName || '',
+      deliveryCell: meta.deliveryCell || '',
+      deliveryAddress: meta.deliveryAddress || '',
     });
   }
 

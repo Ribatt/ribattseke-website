@@ -3,7 +3,9 @@
 // Amount is NEVER trusted from the client — derived here from item key.
 
 const ITEMS = {
-  'companion-ir': { name: 'Installation Rules Companion Pack', amountRand: 1000 },
+  'companion-ir':    { name: 'Installation Rules Companion Pack', amountCents: 100000 },
+  'sans10142-pdf':   { name: 'SANS 10142-1 (Ed 3.3) — PDF',      amountCents: 148419 },
+  'sans10142-print': { name: 'SANS 10142-1 (Ed 3.3) — Hardcopy', amountCents: 165000 },
 };
 
 const TVET_TIERS = { t10: 10, t20: 20, t100: 100 };
@@ -23,7 +25,7 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: corsHeaders });
   }
 
-  const { item, email, isAfricaTvet, tier, customAmount } = body;
+  const { item, email, isAfricaTvet, tier, customAmount, deliveryName, deliveryCell, deliveryAddress } = body;
 
   // Validate email
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -35,25 +37,23 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Unknown item.' }), { status: 400, headers: corsHeaders });
   }
 
-  // Server-side amount determination
-  let amountInRand;
+  // Server-side amount determination — amount is NEVER trusted from the client
+  let amountInCents;
   if (isAfricaTvet) {
     if (tier && TVET_TIERS[tier]) {
-      amountInRand = TVET_TIERS[tier];
+      amountInCents = TVET_TIERS[tier] * 100;
     } else if (customAmount) {
       const ca = parseInt(customAmount, 10);
       if (isNaN(ca) || ca < 10 || ca > 1000) {
         return new Response(JSON.stringify({ error: 'Custom amount must be between R10 and R1000.' }), { status: 400, headers: corsHeaders });
       }
-      amountInRand = ca;
+      amountInCents = ca * 100;
     } else {
       return new Response(JSON.stringify({ error: 'Africa TVET: select a tier or enter a custom amount.' }), { status: 400, headers: corsHeaders });
     }
   } else {
-    amountInRand = ITEMS[item].amountRand;
+    amountInCents = ITEMS[item].amountCents;
   }
-
-  const amountInCents = amountInRand * 100;
 
   // Yoco minimum is R2 (200 cents)
   if (amountInCents < 200) {
@@ -89,6 +89,9 @@ export async function onRequestPost(context) {
           selectedTrackOrBundle: item,
           isAfricaTvet: isAfricaTvet ? 'true' : 'false',
           selectedTier: tier || 'standard',
+          deliveryName: deliveryName || '',
+          deliveryCell: deliveryCell || '',
+          deliveryAddress: deliveryAddress || '',
         },
       }),
     });
@@ -110,6 +113,9 @@ export async function onRequestPost(context) {
       currency: 'ZAR',
       isAfricaTvet: !!isAfricaTvet,
       tier: tier || null,
+      deliveryName: deliveryName || null,
+      deliveryCell: deliveryCell || null,
+      deliveryAddress: deliveryAddress || null,
       createdAt: Date.now(),
       status: 'pending',
     };
