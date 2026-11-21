@@ -3,7 +3,7 @@
     </div>
     <p class="sec-label">Study &amp; Development</p>
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
-    <p style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Two companions in one platform. The <strong style="color:var(--fg2);">IR Companion</strong> prepares you for the SANS 10142-1 Installation Rules exam. The <strong style="color:var(--fg2);">ECSA Companion</strong> guides engineers through Professional Registration. Your key determines which companion(s) you access.</p>
+    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Two companions in one platform. The <strong style="color:var(--fg2);">IR Companion</strong> prepares you for the SANS 10142-1 Installation Rules exam. The <strong style="color:var(--fg2);">ECSA Companion</strong> guides engineers through Professional Registration. Your key determines which companion(s) you access.</p>
 
     <div class="lms-wrap">
 
@@ -423,6 +423,12 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-po',this)">Purchase Orders</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-pr',this)">Purchase Requests</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-travel',this)">&#9992; Travel Mgmt</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-stock',this)">Stock</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-delivery',this)">Delivery Notes</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-handover',this)">Handovers</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-warranty',this)">Warranties</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">Reg &amp; Compliance</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -431,21 +437,21 @@
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Purchase Orders</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Track purchase orders raised with suppliers.</p>
           <div id="hub-po-list" style="font-size:13px;color:var(--fg3);">No purchase orders recorded yet.</div>
-          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="alert('PO module coming soon')">+ New Purchase Order</button>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="poAdd()">+ New Purchase Order</button>
         </div>
         <!-- Purchase Requests hub section -->
         <div id="hub-pr" class="hub-section" style="display:none;">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Purchase Requests</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Internal purchase requests pending approval.</p>
           <div id="hub-pr-list" style="font-size:13px;color:var(--fg3);">No purchase requests recorded yet.</div>
-          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="alert('PR module coming soon')">+ New Purchase Request</button>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="prAdd()">+ New Purchase Request</button>
         </div>
         <!-- Travel Management hub section -->
         <div id="hub-travel" class="hub-section" style="display:none;">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Travel Management</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Log travel expenses, claims and site visit records.</p>
           <div id="hub-travel-list" style="font-size:13px;color:var(--fg3);">No travel records yet.</div>
-          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="alert('Travel module coming soon')">+ Log Travel</button>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="travelAdd()">+ Log Travel</button>
         </div>
         <!-- LMS Keys hub section -->
         <div id="hub-lms" class="hub-section active">
@@ -469,6 +475,29 @@
             <div class="admin-tier-title" style="color:#2a5ba8;">ECSA Companion Keys — Issued</div>
             <div id="adm-ecsa-list"></div>
           </div>
+
+          <!-- Issue / Upgrade Key -->
+          <div class="admin-tier-block" style="border-top:2px solid var(--amb);padding-top:16px;margin-top:8px;">
+            <div class="admin-tier-title">Issue New Key / Upgrade Access</div>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Generate a new Tseke-format key for a student or upgrade an existing key to include the ECSA companion.</p>
+            <div style="display:grid;gap:8px;max-width:420px;">
+              <label style="font-size:12px;font-weight:600;">Phone number (key will be Tseke-{phone}-{date})</label>
+              <input id="adm-new-key-phone" type="tel" class="biz-input" placeholder="e.g. 0824567890" style="font-size:13px;">
+              <label style="font-size:12px;font-weight:600;">Student name</label>
+              <input id="adm-new-key-name" type="text" class="biz-input" placeholder="e.g. Tiaan van der Merwe" style="font-size:13px;">
+              <label style="font-size:12px;font-weight:600;">Key type</label>
+              <select id="adm-new-key-tier" class="biz-input" style="font-size:13px;">
+                <option value="ir">IR Companion (Installation Rules)</option>
+                <option value="ecsa">ECSA Companion (Pr. Technician)</option>
+                <option value="both">Both Companions (IR + ECSA)</option>
+              </select>
+              <button class="lms-btn" style="font-size:13px;" onclick="admIssueKey()">Generate &amp; Copy Key</button>
+            </div>
+            <div id="adm-new-key-out" style="margin-top:10px;font-size:13px;"></div>
+          </div>
+
+          <!-- Legacy key pool section -->
+          <!-- ECSA Companion issued keys — closing of hub-lms is below -->
         </div>
 
         <!-- ===== HUB: CLIENTS ===== -->
@@ -688,6 +717,77 @@
           </div>
           <div id="rates-panel"></div>
         </div>
+
+        <!-- Companion Enquiries hub section -->
+        <div id="hub-enquiries" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 4px;">Companion Enquiries</h3>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Questions asked via the Companion chat widget — review and follow up.</p>
+          <div id="hub-enq-list" style="font-size:13px;color:var(--fg3);">
+            <div style="text-align:center;padding:24px 0;color:var(--fg3);">No logged enquiries yet. Companion chat logs will appear here as students ask questions.</div>
+          </div>
+        </div>
+
+        <!-- Company Registration hub section -->
+        <div id="hub-regdocs" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Company Registration &amp; Compliance</h3>
+          <div style="display:grid;gap:10px;">
+            <div style="background:var(--bg-alt);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:12px;font-weight:700;color:var(--fg);margin-bottom:6px;">Registration Documents</div>
+              <div style="font-size:12px;color:var(--fg3);line-height:1.8;">
+                <div>&#10003; CIPC Registration — Riba T Tseke (Sole Proprietor)</div>
+                <div>&#10003; DOeL / Wireman's Licence — Installation Electrician</div>
+                <div>&#10003; ECA(SA) Membership</div>
+                <div>&#10003; AREP Registration</div>
+                <div>&#10003; SAIEE Associate Membership (No. 125138)</div>
+                <div>&#10003; SAPVIA Member</div>
+                <div>&#10003; SAEEC Member (No. SAEEC2009)</div>
+              </div>
+            </div>
+            <div style="background:var(--bg-alt);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:12px;font-weight:700;color:var(--fg);margin-bottom:6px;">Insurance &amp; Tax</div>
+              <div style="font-size:12px;color:var(--fg3);line-height:1.8;">
+                <div>&#8226; Goods in Transit — upload policy document</div>
+                <div>&#8226; Public Liability — upload policy document</div>
+                <div>&#8226; Tax clearance / SARS compliance pin</div>
+                <div>&#8226; B-BBEE affidavit / certificate</div>
+              </div>
+            </div>
+            <button class="lms-btn" style="font-size:13px;" onclick="alert('Document upload module coming soon')">+ Upload Document</button>
+          </div>
+        </div>
+
+        <!-- Stock & Materials hub section -->
+        <div id="hub-stock" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Stock &amp; Materials</h3>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track materials on hand, issued to jobs, and to order.</p>
+          <div id="hub-stock-list" style="font-size:13px;color:var(--fg3);">No stock items recorded yet.</div>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="stockAdd()">+ Add Stock Item</button>
+        </div>
+
+        <!-- Delivery Notes hub section -->
+        <div id="hub-delivery" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Delivery Notes</h3>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Record materials delivered to and from site.</p>
+          <div id="hub-delivery-list" style="font-size:13px;color:var(--fg3);">No delivery notes recorded yet.</div>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="deliveryAdd()">+ New Delivery Note</button>
+        </div>
+
+        <!-- Site Handovers hub section -->
+        <div id="hub-handover" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Site Handovers</h3>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Record final handover sign-offs for completed installations.</p>
+          <div id="hub-handover-list" style="font-size:13px;color:var(--fg3);">No handover records yet.</div>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="handoverAdd()">+ Record Handover</button>
+        </div>
+
+        <!-- Warranties hub section -->
+        <div id="hub-warranty" class="hub-section" style="display:none;">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Warranties &amp; Defects</h3>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track warranty periods and defects liability for completed jobs.</p>
+          <div id="hub-warranty-list" style="font-size:13px;color:var(--fg3);">No warranty records yet.</div>
+          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="warrantyAdd()">+ Log Warranty</button>
+        </div>
+
 
       <!-- PRINT AREA (hidden, shown on print only) -->
       <div id="biz-print-area"></div>
@@ -1525,7 +1625,10 @@ var _lmsPendingK=null;
 var _lmsCompanionType = 'ir'; // 'ir' or 'ecsa'
 function lmsSetCompanion(type){
   var requestedType = type || 'ir';
-  var userTier = (_lmsProgress||{}).tier || 'ir';
+  var rawTier = (_lmsProgress||{}).tier || '';
+  var userTier = (rawTier === 'ir' || rawTier === 'ecsa' || rawTier === 'both') ? rawTier : 'ir';
+  // Auto-heal tier for legacy key holders (pre-tier system)
+  if(rawTier !== userTier && _lmsProgress) { _lmsProgress.tier = userTier; try{_lmsStore();}catch(e){} }
   // Check if user has access to requested companion type
   // userTier can be 'ir', 'ecsa', or 'both'
   var hasIR = (userTier === 'ir' || userTier === 'both');
@@ -1541,9 +1644,9 @@ function lmsSetCompanion(type){
           +'<div style="font-size:36px;text-align:center;margin-bottom:12px;">&#127891;</div>'
           +'<strong style="font-size:15px;color:var(--fg2);display:block;text-align:center;margin-bottom:12px;">ECSA Companion</strong>'
           +'<p style="font-size:13px;color:var(--fg3);line-height:1.6;margin-bottom:12px;">'
-          +'The ECSA Companion guides Engineering professionals through the '
-          +'<strong style="color:var(--fg2);">Engineering Council of South Africa (ECSA)</strong> registration process — '
-          +'from candidate engineering to Professional Registration (Pr.Eng / Pr.Tech / Pr.Technician).</p>'
+          +'The ECSA Companion is built for engineers working towards '
+          +'<strong style="color:var(--fg2);">Professional Registration as Pr. Technician</strong> with ECSA. '
+          +'Support for Pr.Tech and Pr.Eng categories is planned for future releases.</p>'
           +'<ul style="font-size:12.5px;color:var(--fg3);padding-left:18px;line-height:1.9;margin-bottom:16px;">'
           +'<li>ECSA registration pathway guidance</li>'
           +'<li>Competency assessment (Outcomes 1–11)</li>'
@@ -1608,8 +1711,12 @@ function lmsShowView(id){
   var el=document.getElementById(id);
   if(el) el.classList.add('active');
   window.scrollTo(0,0);
+  // Hide headings when inside admin or dashboard
+  var hide = (id==='lms-admin'||id==='lms-dash'||id==='lms-quiz');
   var t=document.getElementById('study-public-title');
-  if(t) t.style.display=(id==='lms-admin')?'none':'';
+  if(t) t.style.display=hide?'none':'';
+  var d=document.getElementById('lms-public-desc');
+  if(d) d.style.display=hide?'none':'';
 }
 
 function _lmsStore(){

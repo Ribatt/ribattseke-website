@@ -4733,11 +4733,375 @@ function hubRenderers(){
       else if(id==='hub-ecsa')ecsaRender();
       else if(id==='hub-mentor')mentorRender();
       else if(id==='hub-rates')ratesRender();
+      else if(id==='hub-enquiries')enquiriesRender();
+      else if(id==='hub-po')poRender();
+      else if(id==='hub-pr')prRender();
+      else if(id==='hub-travel')travelRender();
+      else if(id==='hub-stock')stockRender();
+      else if(id==='hub-delivery')deliveryRender();
+      else if(id==='hub-handover')handoverRender();
+      else if(id==='hub-warranty')warrantyRender();
     },50);
   };
 })();
 window.lmsAdminEntry=lmsAdminEntry;
 window._engageShowDonateFull=function(){if(typeof lmsAdminEntry==="function")lmsAdminEntry();};
+
+/* ===== ISSUE NEW KEY ===== */
+function admIssueKey(){
+  var phone=(document.getElementById('adm-new-key-phone')||{}).value||'';
+  var name=(document.getElementById('adm-new-key-name')||{}).value||'';
+  var tier=(document.getElementById('adm-new-key-tier')||{}).value||'ir';
+  var out=document.getElementById('adm-new-key-out');
+  phone=phone.replace(/\D/g,'');
+  name=name.trim();
+  if(!phone||phone.length<9){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter a valid phone number.</span>';return;}
+  if(!name){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter the recipient name.</span>';return;}
+  var d=new Date();
+  var ds=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  var phone10=phone.replace(/^0/,'').slice(-10).padStart(10,'0');
+  var key='Tseke-'+phone10+'-'+ds;
+  try{
+    if(tier==='ir'||tier==='both') localStorage.setItem(IR_KEY_NS+key,name+'|'+phone);
+    if(tier==='ecsa'||tier==='both') localStorage.setItem(ECSA_KEY_NS+key,name+'|'+phone);
+  }catch(e){}
+  var label={'ir':'IR Companion','ecsa':'ECSA Companion','both':'Both Companions'}[tier]||tier;
+  if(out){
+    out.innerHTML='<div style="background:var(--bg-alt);border-radius:8px;padding:12px;margin-top:8px;">'
+      +'<div style="font-size:11px;color:var(--fg3);margin-bottom:4px;">Key generated for <strong>'+name+'</strong> ('+label+'):</div>'
+      +'<div style="font-family:monospace;font-size:14px;font-weight:700;color:var(--amb);letter-spacing:.5px;user-select:all;">'+key+'</div>'
+      +'<button onclick="navigator.clipboard.writeText(\''+key+'\').then(function(){var b=this;b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Copy key\';},1500);}.bind(this)).catch(function(){});" '
+      +'style="margin-top:8px;font-size:12px;padding:5px 12px;background:var(--amb);color:#fff;border:none;border-radius:6px;cursor:pointer;">Copy key</button>'
+      +'<div style="font-size:11px;color:var(--fg3);margin-top:6px;">Send this key to '+(phone.startsWith('0')?phone:'0'+phone10)+' via WhatsApp: '
+      +'<a href="https://wa.me/27'+phone10+'?text=Hi+'+encodeURIComponent(name)+'%2C+here+is+your+Learning+Companion+key%3A+'+key+'" target="_blank" style="color:var(--amb);">Send on WhatsApp ↗</a></div>'
+      +'</div>';
+  }
+}
+
+/* ===== COMPANION ENQUIRIES LOG ===== */
+var ENQ_NS='biz_enq_';
+function enquiriesRender(){
+  var list=document.getElementById('hub-enq-list');
+  if(!list)return;
+  var entries=[];
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(ENQ_NS)===0){
+        try{var v=JSON.parse(localStorage.getItem(k));if(v)entries.push(v);}catch(e){}
+      }
+    }
+  }catch(e){}
+  entries.sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+  if(!entries.length){
+    list.innerHTML='<div style="text-align:center;padding:24px 0;color:var(--fg3);">No logged enquiries yet.</div>';
+    return;
+  }
+  var html='<div style="display:grid;gap:10px;">';
+  entries.forEach(function(e,idx){
+    var dt=new Date(e.ts||0);
+    var dtStr=dt.toLocaleDateString('en-ZA',{day:'2-digit',month:'short',year:'numeric'})+' '+dt.toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'});
+    var lang=e.lang||'en';
+    var phone=e.phone||'';
+    var waLink=phone?'https://wa.me/27'+phone.replace(/^0/,'').replace(/\D/g,''):'https://wa.me/27724748888';
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:12px 14px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+      +'<span style="font-size:11px;color:var(--fg3);">'+dtStr+' &bull; lang: '+lang+'</span>'
+      +'<div style="display:flex;gap:6px;">'
+      +'<a href="mailto:ribattseke@gmail.com?subject=Re:+Companion+query&body='+encodeURIComponent('Query: '+e.q+'\n\nResponse: '+e.a) +'" style="font-size:11px;padding:3px 8px;background:var(--border);color:var(--fg);border-radius:5px;text-decoration:none;">&#9993; Email</a>'
+      +'<a href="'+waLink+'?text='+encodeURIComponent('Hi! Regarding your question: "'+e.q+'" — ') +'" target="_blank" style="font-size:11px;padding:3px 8px;background:#25d366;color:#fff;border-radius:5px;text-decoration:none;">&#128172; WhatsApp</a>'
+      +(phone?'<a href="tel:'+phone+'" style="font-size:11px;padding:3px 8px;background:var(--amb);color:#fff;border-radius:5px;text-decoration:none;">&#128222; Call</a>':'')
+      +'</div></div>'
+      +'<div style="font-size:13px;font-weight:600;color:var(--fg);margin-bottom:4px;">Q: '+_esc(e.q)+'</div>'
+      +'<div style="font-size:12.5px;color:var(--fg2);line-height:1.5;">A: '+_esc(e.a)+'</div>'
+      +'<button onclick="admDelEnq(\''+e.id+'\')" style="margin-top:8px;font-size:11px;padding:2px 8px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">Remove</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function admDelEnq(id){
+  try{localStorage.removeItem(ENQ_NS+id);}catch(e){}
+  enquiriesRender();
+}
+function _esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ===== PURCHASE ORDERS ===== */
+var PO_NS='biz_po_';
+function poRender(){
+  var list=document.getElementById('hub-po-list');
+  if(!list)return;
+  var items=_hubGetAll(PO_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No purchase orders yet.</div>';return;}
+  items.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+  var html='<div style="display:grid;gap:8px;">';
+  items.forEach(function(o){
+    var status={'pending':'🟡 Pending','approved':'🟢 Approved','received':'✅ Received','cancelled':'🔴 Cancelled'}[o.status]||o.status||'pending';
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">PO-'+o.poNum+' &bull; '+_esc(o.supplier)+'</div>'
+      +'<div style="font-size:12px;color:var(--fg2);margin:2px 0;">'+_esc(o.desc)+'</div>'
+      +'<div style="font-size:11.5px;color:var(--fg3);">R'+Number(o.amount||0).toFixed(2)+' &bull; '+o.date+' &bull; '+status+'</div>'
+      +'</div>'
+      +'<button onclick="admDelItem(\''+PO_NS+'\',\''+o.id+'\',poRender)" style="font-size:11px;padding:2px 7px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function poAdd(){
+  var supplier=prompt('Supplier name:');if(!supplier)return;
+  var desc=prompt('Items / description:');if(!desc)return;
+  var amount=prompt('Total amount (R):');
+  var status='pending';
+  var id=Date.now().toString(36);
+  var num=String((_hubGetAll(PO_NS).length||0)+1).padStart(4,'0');
+  var rec={id:id,poNum:num,supplier:supplier,desc:desc,amount:parseFloat(amount)||0,date:new Date().toLocaleDateString('en-ZA'),status:status,ts:Date.now()};
+  try{localStorage.setItem(PO_NS+id,JSON.stringify(rec));}catch(e){}
+  poRender();
+}
+
+/* ===== PURCHASE REQUESTS ===== */
+var PR_NS='biz_pr_';
+function prRender(){
+  var list=document.getElementById('hub-pr-list');
+  if(!list)return;
+  var items=_hubGetAll(PR_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No purchase requests yet.</div>';return;}
+  items.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+  var html='<div style="display:grid;gap:8px;">';
+  items.forEach(function(r){
+    var prio={'low':'🔵 Low','medium':'🟡 Medium','high':'🔴 High'}[r.priority]||r.priority||'low';
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">'+_esc(r.desc)+'</div>'
+      +'<div style="font-size:11.5px;color:var(--fg3);margin-top:3px;">Est. R'+Number(r.amount||0).toFixed(2)+' &bull; '+r.date+' &bull; '+prio+'</div>'
+      +'<div style="font-size:11px;color:var(--fg3);">Requested by: '+_esc(r.requester||'—')+'</div>'
+      +'</div>'
+      +'<button onclick="admDelItem(\''+PR_NS+'\',\''+r.id+'\',prRender)" style="font-size:11px;padding:2px 7px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function prAdd(){
+  var desc=prompt('What is needed?');if(!desc)return;
+  var amount=prompt('Estimated cost (R):');
+  var requester=prompt('Requested by (name):');
+  var priority=prompt('Priority (low / medium / high):') ||'medium';
+  var id=Date.now().toString(36);
+  var rec={id:id,desc:desc,amount:parseFloat(amount)||0,requester:requester||'—',priority:priority,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+  try{localStorage.setItem(PR_NS+id,JSON.stringify(rec));}catch(e){}
+  prRender();
+}
+
+/* ===== TRAVEL MANAGEMENT ===== */
+var TRAVEL_NS='biz_travel_';
+function travelRender(){
+  var list=document.getElementById('hub-travel-list');
+  if(!list)return;
+  var items=_hubGetAll(TRAVEL_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No travel records yet.</div>';return;}
+  items.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+  var html='<div style="display:grid;gap:8px;">';
+  items.forEach(function(t){
+    var totalCost=(parseFloat(t.fuel||0)+parseFloat(t.toll||0)+parseFloat(t.other||0)).toFixed(2);
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">✈ '+_esc(t.destination)+' &bull; '+t.date+'</div>'
+      +'<div style="font-size:12px;color:var(--fg2);margin:2px 0;">'+_esc(t.purpose)+'</div>'
+      +'<div style="font-size:11.5px;color:var(--fg3);">'+t.km+' km &bull; Fuel: R'+parseFloat(t.fuel||0).toFixed(2)+' | Toll: R'+parseFloat(t.toll||0).toFixed(2)+' | Total: R'+totalCost+'</div>'
+      +'</div>'
+      +'<button onclick="admDelItem(\''+TRAVEL_NS+'\',\''+t.id+'\',travelRender)" style="font-size:11px;padding:2px 7px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function travelAdd(){
+  var dest=prompt('Destination:');if(!dest)return;
+  var purpose=prompt('Purpose:');if(!purpose)return;
+  var km=prompt('Distance (km):');
+  var fuel=prompt('Fuel cost (R):');
+  var toll=prompt('Toll cost (R):');
+  var other=prompt('Other costs (R):');
+  var id=Date.now().toString(36);
+  var rec={id:id,destination:dest,purpose:purpose,km:parseFloat(km)||0,fuel:parseFloat(fuel)||0,toll:parseFloat(toll)||0,other:parseFloat(other)||0,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+  try{localStorage.setItem(TRAVEL_NS+id,JSON.stringify(rec));}catch(e){}
+  travelRender();
+}
+
+/* ===== STOCK & MATERIALS ===== */
+var STOCK_NS='biz_stock_';
+function stockRender(){
+  var list=document.getElementById('hub-stock-list');
+  if(!list)return;
+  var items=_hubGetAll(STOCK_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No stock items yet.</div>';return;}
+  items.sort(function(a,b){return _esc(a.name).localeCompare(_esc(b.name));});
+  var html='<table style="width:100%;border-collapse:collapse;font-size:12.5px;">'
+    +'<thead><tr style="text-align:left;border-bottom:1px solid var(--border);">'
+    +'<th style="padding:6px 8px;">Item</th><th style="padding:6px 8px;">Unit</th>'
+    +'<th style="padding:6px 8px;">On Hand</th><th style="padding:6px 8px;">Issued</th>'
+    +'<th style="padding:6px 8px;">Unit Cost</th><th style="padding:6px 4px;"></th></tr></thead><tbody>';
+  items.forEach(function(s){
+    var onHand=parseInt(s.onHand||0);
+    var issued=parseInt(s.issued||0);
+    var alert=onHand<=parseInt(s.reorder||2)?'color:red;font-weight:700;':'';
+    html+='<tr style="border-bottom:1px solid var(--border);">'
+      +'<td style="padding:6px 8px;">'+_esc(s.name)+'</td>'
+      +'<td style="padding:6px 8px;color:var(--fg3);">'+_esc(s.unit||'ea')+'</td>'
+      +'<td style="padding:6px 8px;'+alert+'">'+onHand+'</td>'
+      +'<td style="padding:6px 8px;color:var(--fg3);">'+issued+'</td>'
+      +'<td style="padding:6px 8px;">R'+Number(s.cost||0).toFixed(2)+'</td>'
+      +'<td style="padding:4px;"><button onclick="stockIssue(\''+s.id+'\')" style="font-size:10px;padding:2px 6px;background:var(--amb);color:#fff;border:none;border-radius:4px;cursor:pointer;">Issue</button>'
+      +' <button onclick="admDelItem(\''+STOCK_NS+'\',\''+s.id+'\',stockRender)" style="font-size:10px;padding:2px 6px;background:transparent;border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--fg3);">✕</button></td>'
+      +'</tr>';
+  });
+  html+='</tbody></table>';
+  list.innerHTML=html;
+}
+function stockAdd(){
+  var name=prompt('Item name:');if(!name)return;
+  var unit=prompt('Unit (ea/m/kg/roll etc.):') ||'ea';
+  var onHand=prompt('Quantity on hand:');
+  var cost=prompt('Unit cost (R):');
+  var reorder=prompt('Reorder at qty (default 2):') ||'2';
+  var id=Date.now().toString(36);
+  var rec={id:id,name:name,unit:unit,onHand:parseInt(onHand)||0,issued:0,cost:parseFloat(cost)||0,reorder:parseInt(reorder)||2,ts:Date.now()};
+  try{localStorage.setItem(STOCK_NS+id,JSON.stringify(rec));}catch(e){}
+  stockRender();
+}
+function stockIssue(id){
+  var qty=prompt('Quantity to issue:');if(!qty)return;
+  try{
+    var s=JSON.parse(localStorage.getItem(STOCK_NS+id)||'{}');
+    s.onHand=Math.max(0,(parseInt(s.onHand)||0)-(parseInt(qty)||1));
+    s.issued=(parseInt(s.issued)||0)+(parseInt(qty)||1);
+    localStorage.setItem(STOCK_NS+id,JSON.stringify(s));
+  }catch(e){}
+  stockRender();
+}
+
+/* ===== DELIVERY NOTES ===== */
+var DN_NS='biz_dn_';
+function deliveryRender(){
+  var list=document.getElementById('hub-delivery-list');
+  if(!list)return;
+  var items=_hubGetAll(DN_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No delivery notes yet.</div>';return;}
+  items.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+  var html='<div style="display:grid;gap:8px;">';
+  items.forEach(function(d){
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">DN-'+d.dnNum+' &bull; Job: '+_esc(d.jobRef)+'</div>'
+      +'<div style="font-size:12px;color:var(--fg2);margin:2px 0;">'+_esc(d.items)+'</div>'
+      +'<div style="font-size:11.5px;color:var(--fg3);">Qty: '+d.qty+' &bull; '+d.date+' &bull; Driver: '+_esc(d.driver||'—')+'</div>'
+      +'</div>'
+      +'<button onclick="admDelItem(\''+DN_NS+'\',\''+d.id+'\',deliveryRender)" style="font-size:11px;padding:2px 7px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function deliveryAdd(){
+  var jobRef=prompt('Job reference:');if(!jobRef)return;
+  var items=prompt('Items delivered:');if(!items)return;
+  var qty=prompt('Quantity:');
+  var driver=prompt('Driver name:');
+  var id=Date.now().toString(36);
+  var num=String((_hubGetAll(DN_NS).length||0)+1).padStart(4,'0');
+  var rec={id:id,dnNum:num,jobRef:jobRef,items:items,qty:qty||'1',driver:driver||'—',date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+  try{localStorage.setItem(DN_NS+id,JSON.stringify(rec));}catch(e){}
+  deliveryRender();
+}
+
+/* ===== SITE HANDOVERS ===== */
+var HO_NS='biz_ho_';
+function handoverRender(){
+  var list=document.getElementById('hub-handover-list');
+  if(!list)return;
+  var items=_hubGetAll(HO_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No handover records yet.</div>';return;}
+  items.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+  var html='<div style="display:grid;gap:8px;">';
+  items.forEach(function(h){
+    var signed=h.signed?'✅ Signed off':'⏳ Pending';
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">'+_esc(h.jobRef)+' &bull; '+_esc(h.client)+'</div>'
+      +'<div style="font-size:12px;color:var(--fg2);margin:2px 0;">'+_esc(h.punch||'No outstanding items')+'</div>'
+      +'<div style="font-size:11.5px;color:var(--fg3);">'+h.date+' &bull; '+signed+'</div>'
+      +'</div>'
+      +'<button onclick="admDelItem(\''+HO_NS+'\',\''+h.id+'\',handoverRender)" style="font-size:11px;padding:2px 7px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function handoverAdd(){
+  var jobRef=prompt('Job reference:');if(!jobRef)return;
+  var client=prompt('Client name:');if(!client)return;
+  var punch=prompt('Punch list items (outstanding):') ||'';
+  var signed=confirm('Has client signed off?');
+  var id=Date.now().toString(36);
+  var rec={id:id,jobRef:jobRef,client:client,punch:punch,signed:signed,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+  try{localStorage.setItem(HO_NS+id,JSON.stringify(rec));}catch(e){}
+  handoverRender();
+}
+
+/* ===== WARRANTIES ===== */
+var WR_NS='biz_wr_';
+function warrantyRender(){
+  var list=document.getElementById('hub-warranty-list');
+  if(!list)return;
+  var items=_hubGetAll(WR_NS);
+  if(!items.length){list.innerHTML='<div style="text-align:center;padding:16px 0;color:var(--fg3);">No warranty records yet.</div>';return;}
+  items.sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+  var now=Date.now();
+  var html='<div style="display:grid;gap:8px;">';
+  items.forEach(function(w){
+    var end=new Date(w.endDate||w.date).getTime();
+    var daysLeft=Math.ceil((end-now)/(86400000));
+    var status=daysLeft<0?'🔴 Expired':daysLeft<30?'🟡 Expiring soon':'🟢 Active';
+    html+='<div style="background:var(--bg-alt);border-radius:8px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;">'+_esc(w.jobRef)+' &bull; '+_esc(w.client)+'</div>'
+      +'<div style="font-size:12px;color:var(--fg2);margin:2px 0;">'+_esc(w.defects||'No defects logged')+'</div>'
+      +'<div style="font-size:11.5px;color:var(--fg3);">Start: '+w.startDate+' &bull; End: '+w.endDate+' &bull; '+status+(daysLeft>=0?' ('+daysLeft+'d left)':'')+'</div>'
+      +'</div>'
+      +'<button onclick="admDelItem(\''+WR_NS+'\',\''+w.id+'\',warrantyRender)" style="font-size:11px;padding:2px 7px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--fg3);cursor:pointer;">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+function warrantyAdd(){
+  var jobRef=prompt('Job reference:');if(!jobRef)return;
+  var client=prompt('Client name:');if(!client)return;
+  var startDate=prompt('Warranty start date (YYYY-MM-DD):') ||new Date().toISOString().slice(0,10);
+  var months=parseInt(prompt('Warranty period (months):') ||'12')||12;
+  var d=new Date(startDate);d.setMonth(d.getMonth()+months);
+  var endDate=d.toISOString().slice(0,10);
+  var defects=prompt('Known defects / notes:') ||'';
+  var id=Date.now().toString(36);
+  var rec={id:id,jobRef:jobRef,client:client,startDate:startDate,endDate:endDate,defects:defects,ts:Date.now()};
+  try{localStorage.setItem(WR_NS+id,JSON.stringify(rec));}catch(e){}
+  warrantyRender();
+}
+
+/* ===== SHARED HELPERS ===== */
+function _hubGetAll(ns){
+  var out=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(ns)===0){try{var v=JSON.parse(localStorage.getItem(k));if(v)out.push(v);}catch(e){}}}}catch(e){}
+  return out;
+}
+function admDelItem(ns,id,cb){
+  if(!confirm('Remove this record?'))return;
+  try{localStorage.removeItem(ns+id);}catch(e){}
+  if(typeof cb==='function')cb();
+}
 
 
 </script>
