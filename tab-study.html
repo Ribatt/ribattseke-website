@@ -3,15 +3,15 @@
     </div>
     <p class="sec-label">Study &amp; Development</p>
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
-    <p style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Covers the full IE examination syllabus: SANS 10142-1 (Wiring of Premises), EIR 1992, Construction Regulations 2003, SANS 10198-1 &amp; 10198-2 (Cable Selection), SANS 1507-1 (Cable Types and Labels), SANS 10292 (LV Earthing), SANS 10313 (Lightning Protection), and SANS 1973-3 (LV Switchgear). Exam-style questions, tracked progress, 90% pass mark.</p>
+    <p style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Two companions in one platform. The <strong style="color:var(--fg2);">IR Companion</strong> prepares you for the SANS 10142-1 Installation Rules exam. The <strong style="color:var(--fg2);">ECSA Companion</strong> guides engineers through Professional Registration. Your key determines which companion(s) you access.</p>
 
     <div class="lms-wrap">
 
       <!-- LOGIN VIEW -->
       <div id="lms-login" class="lms-view active">
         <div class="lms-card">
-          <h3 style="text-align:center;margin-bottom:4px;">Installation Rules LMS</h3>
-          <p style="text-align:center;margin-bottom:12px;">SANS 10142-1 &middot; SANS 10198-1/2 &middot; SANS 1507-1 &middot; SANS 10292 &middot; SANS 10313 &middot; SANS 1973-3 &middot; OHS Act</p>
+          <h3 style="text-align:center;margin-bottom:4px;">Learning Companion</h3>
+          <p style="text-align:center;margin-bottom:12px;font-size:12.5px;color:var(--fg3);">IR Companion &middot; ECSA Companion &middot; Key-based access</p>
           <!-- Free tier callout -->
           <div style="background:rgba(30,133,64,.08);border:1px solid rgba(30,133,64,.25);border-radius:8px;padding:10px 13px;margin-bottom:14px;display:flex;align-items:flex-start;gap:9px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#1e8540" style="flex-shrink:0;margin-top:1px;"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
@@ -1926,7 +1926,7 @@ function lmsSubmitKey(){
   var wm=document.getElementById('lms-welcome-msg');
   var wu=document.getElementById('lms-welcome-u');
   var wp=document.getElementById('lms-welcome-p');
-  if(wm) wm.textContent='Welcome to the Installation Rules LMS, '+_lmsPendingU+'. Your account is active.';
+  if(wm) wm.textContent='Your Learning Companion is ready, '+_lmsPendingU+'. Your account is active.';
   if(wu) wu.textContent=_lmsPendingU;
   if(wp) wp.textContent=_lmsPendingK;
   lmsShowView('lms-welcome');
@@ -1951,7 +1951,7 @@ function lmsActivateKey(){
   var wm=document.getElementById('lms-welcome-msg');
   var wu=document.getElementById('lms-welcome-u');
   var wp=document.getElementById('lms-welcome-p');
-  if(wm) wm.textContent='Access activated! Welcome to the Installation Rules LMS, '+_lmsUser+'.';
+  if(wm) wm.textContent='Access activated! Your Learning Companion is ready, '+_lmsUser+'.';
   if(wu) wu.textContent=_lmsUser;
   if(wp) wp.textContent=_lmsKey;
   lmsShowView('lms-welcome');
@@ -2061,8 +2061,18 @@ function lmsShowDash(){
   if(!prog.s10292) prog.s10292={};
   if(!prog.s10313) prog.s10313={};
 
+  // Show/hide toggle buttons based on key tier
+  var togIR = document.getElementById('lms-tog-ir');
+  var togEC = document.getElementById('lms-tog-ecsa');
+  var togBar = document.getElementById('lms-companion-toggle');
+  var hasIRKey = (tier === 'ir' || tier === 'both');
+  var hasECSAKey = (tier === 'ecsa' || tier === 'both');
+  if(togIR) togIR.style.display = hasIRKey ? '' : 'none';
+  if(togEC) togEC.style.display = hasECSAKey ? '' : 'none';
+  // Hide the whole toggle bar if user only has one companion type
+  if(togBar) togBar.style.display = (hasIRKey && hasECSAKey) ? 'flex' : 'none';
   // Initialise companion toggle to match the user's key tier
-  _lmsCompanionType = (tier === 'ecsa' || tier === 'both') ? 'ecsa' : 'ir';
+  _lmsCompanionType = hasECSAKey && !hasIRKey ? 'ecsa' : 'ir';
   setTimeout(function(){ lmsSetCompanion(_lmsCompanionType); }, 50);
   // Build volume progress overview and render volume blocks
   _buildTrackDash(prog);
