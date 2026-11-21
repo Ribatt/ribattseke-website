@@ -359,6 +359,17 @@
 
       <!-- DASHBOARD VIEW -->
       <div id="lms-dash" class="lms-view">
+        <!-- Companion type toggle -->
+        <div id="lms-companion-toggle" style="display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;font-size:13px;">
+          <button id="lms-tog-ir" onclick="lmsSetCompanion('ir')"
+            style="flex:1;padding:9px 12px;border:none;cursor:pointer;font-weight:600;transition:background .15s;background:var(--amb);color:#fff;">
+            Installation Rules Companion
+          </button>
+          <button id="lms-tog-ecsa" onclick="lmsSetCompanion('ecsa')"
+            style="flex:1;padding:9px 12px;border:none;cursor:pointer;font-weight:400;transition:background .15s;background:var(--bg-alt);color:var(--fg2);">
+            ECSA Companion
+          </button>
+        </div>
         <div class="lms-dash-hdr">
           <h3 id="lms-dash-name">Welcome</h3>
           <p id="lms-dash-sub">Select a session to study.</p>
@@ -1485,6 +1496,36 @@ var _lmsCorrect=0;
 var _lmsAnswered=false;
 var _lmsPendingU=null;
 var _lmsPendingK=null;
+
+var _lmsCompanionType = 'ir'; // 'ir' or 'ecsa'
+function lmsSetCompanion(type){
+  _lmsCompanionType = type || 'ir';
+  // Update toggle button styles
+  var ir = document.getElementById('lms-tog-ir');
+  var ec = document.getElementById('lms-tog-ecsa');
+  if(ir && ec){
+    if(_lmsCompanionType === 'ecsa'){
+      ir.style.background='var(--bg-alt)'; ir.style.color='var(--fg2)'; ir.style.fontWeight='400';
+      ec.style.background='#2a5ba8'; ec.style.color='#fff'; ec.style.fontWeight='600';
+    } else {
+      ir.style.background='var(--amb)'; ir.style.color='#fff'; ir.style.fontWeight='600';
+      ec.style.background='var(--bg-alt)'; ec.style.color='var(--fg2)'; ec.style.fontWeight='400';
+    }
+  }
+  // Re-render tracks for selected companion
+  if(typeof _buildTrackDash === 'function') _buildTrackDash();
+  // Show ECSA placeholder if ECSA selected
+  var tc = document.getElementById('lms-tracks-container');
+  if(tc && _lmsCompanionType === 'ecsa'){
+    tc.innerHTML = '<div style="padding:24px 0;text-align:center;color:var(--fg3);">'
+      +'<div style="font-size:36px;margin-bottom:12px;">&#127381;</div>'
+      +'<strong style="font-size:15px;color:var(--fg2);">ECSA Companion — Coming Soon</strong>'
+      +'<p style="margin-top:8px;font-size:13px;">The ECSA Professional Development companion is under development.<br>'
+      +'For ECSA registration guidance visit <a href="https://www.ecsa.co.za" target="_blank" style="color:var(--amb);">ecsa.co.za</a>.</p>'
+      +'</div>';
+  }
+}
+
 
 function lmsShowView(id){
   document.querySelectorAll('.lms-view').forEach(function(v){v.classList.remove('active');});

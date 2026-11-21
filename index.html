@@ -1767,10 +1767,31 @@ window.companionAsk=function(q){
   if(!msgs)return;
   // Show user message
   var um=document.createElement('div');
-  um.style.cssText='background:var(--amb);color:#fff;border-radius:12px 12px 4px 12px;padding:8px 11px;font-size:13px;align-self:flex-end;max-width:85%;word-break:break-word;';
-  um.textContent=q;
+  um.style.cssText='margin:6px 0;text-align:right;';
+  var ub=document.createElement('span');
+  ub.style.cssText='display:inline-block;background:var(--amb,#2a7a4b);color:#fff;padding:7px 12px;border-radius:14px 14px 2px 14px;max-width:85%;font-size:13.5px;word-wrap:break-word;';
+  ub.textContent=q;
+  um.appendChild(ub);
   msgs.appendChild(um);
+  msgs.scrollTop=msgs.scrollHeight;
 
+  // Show "thinking..." indicator in selected language
+  var _thinkTrans={
+    'en':'Thinking…','nso':'Ke a gopola…','af':'Dink na…',
+    'zu':'Ngicabanga…','sn':'Ndiri kufunga…','xh':'Ndicinga…',
+    'nd':'Ngicabanga…','sw':'Ninafikiri…','ar':'جاري التفكير…'
+  };
+  var thinkTxt=_thinkTrans[_lang]||_thinkTrans['en'];
+  var rm=document.createElement('div');
+  rm.style.cssText='margin:6px 0;';
+  var rb=document.createElement('span');
+  rb.style.cssText='display:inline-block;background:var(--bot-bg,#1e1e1e);color:var(--fg,#eee);padding:7px 12px;border-radius:14px 14px 14px 2px;max-width:92%;font-size:13.5px;word-wrap:break-word;font-style:italic;opacity:0.7;';
+  rb.textContent=thinkTxt;
+  rm.appendChild(rb);
+  msgs.appendChild(rm);
+  msgs.scrollTop=msgs.scrollHeight;
+
+  // --- Local 4-tier matching ---
   var t=T[_lang]||T['en'];
   var answers=t.answers||{};
   var ql=q.toLowerCase().replace(/[?!.,;:]/g,'');
@@ -1782,69 +1803,104 @@ window.companionAsk=function(q){
   // 2. Substring / word-overlap match against FAQ keys
   if(!reply){
     var faqs=t.faqs||[];
-    var best=null,bestScore=0;
-    faqs.forEach(function(faq){
-      var fl=faq.toLowerCase();
-      var score=0;
-      if(fl===ql||ql===fl) score=20;
-      else if(fl.indexOf(ql)>=0||ql.indexOf(fl)>=0) score=10;
-      else {
-        var qw=ql.split(/\s+/);
-        var fw=fl.split(/\s+/);
-        qw.forEach(function(w){if(w.length>2&&fw.some(function(f){return f.indexOf(w)>=0||w.indexOf(f)>=0;}))score++;});
-      }
-      if(score>bestScore){bestScore=score;best=faq;}
+    var qWords=ql.split(/\s+/).filter(function(w){return w.length>2;});
+    var best=null;var bestScore=0;
+    faqs.forEach(function(fk){
+      var fkl=fk.toLowerCase();
+      var sc=0;
+      if(fkl.indexOf(ql)!==-1) sc+=5;
+      qWords.forEach(function(w){if(fkl.indexOf(w)!==-1) sc++;});
+      if(sc>bestScore){bestScore=sc;best=fk;}
     });
     if(best&&bestScore>0&&answers[best])reply=answers[best];
   }
 
   // 3. Match against all answer keys (broader)
   if(!reply){
-    var bestK=null,bestKS=0;
-    Object.keys(answers).forEach(function(k){
-      var fl=k.toLowerCase();
-      var score=0;
-      if(fl.indexOf(ql)>=0||ql.indexOf(fl)>=0) score=10;
-      else {
-        var qw=ql.split(/\s+/);
-        var fw=fl.split(/\s+/);
-        qw.forEach(function(w){if(w.length>2&&fw.some(function(f){return f.indexOf(w)>=0;}))score++;});
-      }
-      if(score>bestKS){bestKS=score;bestK=k;}
+    var allKeys=Object.keys(answers);
+    var qWords2=ql.split(/\s+/).filter(function(w){return w.length>2;});
+    var bestK=null;var bestKS=0;
+    allKeys.forEach(function(ak){
+      var akl=ak.toLowerCase();
+      var sc=0;
+      if(akl.indexOf(ql)!==-1) sc+=4;
+      qWords2.forEach(function(w){if(akl.indexOf(w)!==-1) sc++;});
+      if(sc>bestKS){bestKS=sc;bestK=ak;}
     });
     if(bestK&&bestKS>1&&answers[bestK])reply=answers[bestK];
   }
 
-  // 4. English extended knowledge base -- intent/phrase matching
-  if(!reply&&_lang==='en'){
-    var kbBest=null,kbScore=0;
-    var qwords=ql.split(/\s+/).filter(function(w){return w.length>2;});
-    Object.keys(_KB_EN).forEach(function(key){
-      var entry=_KB_EN[key];
-      var score=0;
-      entry.k.forEach(function(phrase){
-        if(ql.indexOf(phrase)>=0) score+=5;
+  // 4. English extended knowledge base intent/phrase matching
+  if(!reply&&_lang==='en'&&typeof _KB_EN!=='undefined'){
+    var qW3=ql.split(/\s+/).filter(function(w){return w.length>2;});
+    var kbBest=null;var kbScore=0;
+    Object.keys(_KB_EN).forEach(function(ek){
+      var entry=_KB_EN[ek];
+      var sc=0;
+      (entry.k||[]).forEach(function(phrase){
+        if(ql.indexOf(phrase)!==-1) sc+=3;
         else {
-          phrase.split(/\s+/).forEach(function(pw){
-            if(pw.length>2&&qwords.some(function(qw){return qw.indexOf(pw)>=0||pw.indexOf(qw)>=0;})) score++;
-          });
+          phrase.split(/\s+/).forEach(function(pw){if(pw.length>2&&ql.indexOf(pw)!==-1)sc++;});
         }
       });
-      if(score>kbScore){kbScore=score;kbBest=entry.a;}
+      qW3.forEach(function(w){if(ek.indexOf(w)!==-1)sc++;});
+      if(sc>kbScore){kbScore=sc;kbBest=entry.a;}
     });
     if(kbBest&&kbScore>=2)reply=kbBest;
   }
 
-  var rm=document.createElement('div');
-  rm.style.cssText='background:var(--surface2,#f5f5f5);color:var(--fg);border-radius:12px 12px 12px 4px;padding:8px 11px;font-size:13px;align-self:flex-start;max-width:90%;white-space:pre-wrap;word-break:break-word;border:1px solid var(--border);';
-  if(reply){
-    rm.textContent=reply;
-  } else {
-    rm.innerHTML='I don\u2019t have a specific answer for that \u2014 that\u2019s a great question for Tseke directly as the subject matter expert. <a href="https://wa.me/27724748888" target="_blank" style="color:var(--amb);font-weight:700;">WhatsApp Tseke on 072\u00a0474\u00a08888 \u2192</a>';
+  // ---- Render function (called after local or web lookup) ----
+  function _renderReply(text, source){
+    rb.style.fontStyle='normal';rb.style.opacity='1';
+    if(text){
+      rb.textContent=text;
+      if(source){
+        var src=document.createElement('div');
+        src.style.cssText='font-size:10.5px;color:var(--fg3,#888);margin-top:4px;';
+        src.textContent='ℹ️ '+source;
+        rm.appendChild(src);
+      }
+    } else {
+      rb.innerHTML='I don’t have a specific answer for that — that’s a great question for Tseke directly as the subject matter expert. <a href="https://wa.me/27724748888" target="_blank" style="color:var(--amb,#2a7a4b);text-decoration:none;font-weight:600;">WhatsApp Tseke on 072 474 8888 →</a>';
+    }
+    msgs.scrollTop=msgs.scrollHeight;
   }
-  msgs.appendChild(rm);
-  msgs.scrollTop=msgs.scrollHeight;
-};
+
+  // If we have a local reply, render it immediately
+  if(reply){
+    _renderReply(reply, null);
+    return;
+  }
+
+  // ---- Web search fallback via DuckDuckGo Instant Answer API ----
+  var ddqBase='electrical installation rules south africa ';
+  var ddq=encodeURIComponent(ddqBase+q);
+  var ddUrl='https://api.duckduckgo.com/?q='+ddq+'&format=json&no_redirect=1&no_html=1&skip_disambig=1';
+  var fetchedOK=false;
+  try{
+    fetch(ddUrl,{method:'GET',mode:'cors'})
+      .then(function(resp){return resp.ok?resp.json():null;})
+      .then(function(data){
+        if(!data) throw new Error('no data');
+        var ans=data.AbstractText||data.Answer||data.Definition||'';
+        // Strip very generic or empty answers
+        if(ans&&ans.length>40&&ans.length<1200){
+          _renderReply(ans, (data.AbstractSource||'DuckDuckGo'));
+        } else if(data.RelatedTopics&&data.RelatedTopics.length>0){
+          var first=data.RelatedTopics[0];
+          var txt=first.Text||'';
+          if(txt&&txt.length>30){
+            _renderReply(txt+'\n\nFor more detail, WhatsApp Tseke on 072 474 8888.', 'DuckDuckGo');
+          } else { _renderReply(null); }
+        } else {
+          _renderReply(null);
+        }
+      })
+      .catch(function(){_renderReply(null);});
+  }catch(e){
+    _renderReply(null);
+  }
+};;
 window.companionToggle=function(){
     _open=!_open;
     var panel=document.getElementById('companion-panel');

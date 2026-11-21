@@ -4,6 +4,34 @@ var ADM_PIN_KEY=ADM_NS+'pin';
 var ADM_CORRECT=btoa('20171125');
 var ADM_EMAIL='ribattseke@gmail.com';
 
+
+// Legacy IR keys pool (pre-new-format). Admin marks specific ones as issued via ADM_NS.
+var LEGACY_IR_KEYS=[
+  'TRIAL-A001','TRIAL-A002','TRIAL-A003','TRIAL-A004','TRIAL-A005',
+  'TRIAL-B001','TRIAL-B002','TRIAL-B003','TRIAL-B004','TRIAL-B005',
+  'TRIAL-C001','TRIAL-C002','TRIAL-C003','TRIAL-C004','TRIAL-C005',
+  'TRIAL-D001','TRIAL-D002','TRIAL-D003','TRIAL-D004','TRIAL-D005',
+  'TRIAL-E001','TRIAL-E002','TRIAL-E003','TRIAL-E004','TRIAL-E005',
+  'VQ-A001','VQ-A002','VQ-A003','VQ-A004','VQ-A005',
+  'VQ-B001','VQ-B002','VQ-B003','VQ-B004','VQ-B005',
+  'VQ-C001','VQ-C002','VQ-C003','VQ-C004','VQ-C005',
+  'VQ-D001','VQ-D002','VQ-D003','VQ-D004','VQ-D005',
+  'VQ-E001','VQ-E002','VQ-E003','VQ-E004','VQ-E005',
+  'ATVET-2026','AFRICA-2026',
+  'RIBA-A001','RIBA-A002','RIBA-A003','RIBA-A004','RIBA-A005',
+  'RIBA-B001','RIBA-B002','RIBA-B003','RIBA-B004','RIBA-B005',
+  'RIBA-C001','RIBA-C002','RIBA-C003','RIBA-C004','RIBA-C005',
+  'RIBA-D001','RIBA-D002','RIBA-D003','RIBA-D004','RIBA-D005',
+  'RIBA-E001','RIBA-E002','RIBA-E003','RIBA-E004','RIBA-E005',
+  'RIBA-F001','RIBA-F002','RIBA-F003','RIBA-F004','RIBA-F005',
+  'RIBA-G001','RIBA-G002','RIBA-G003','RIBA-G004','RIBA-G005',
+  'RIBA-H001','RIBA-H002','RIBA-H003','RIBA-H004','RIBA-H005',
+  'RIBA-J001','RIBA-J002','RIBA-J003','RIBA-J004','RIBA-J005',
+  'RIBA-K001','RIBA-K002','RIBA-K003','RIBA-K004','RIBA-K005'
+];
+var IR_KEY_NS='biz_ir_issued_';
+var ECSA_KEY_NS='biz_ecsa_issued_';
+
 function lmsAdminEntry(){
   /* Show inline PIN prompt — no browser dialog */
   /* remove any stale overlay */
@@ -134,6 +162,14 @@ function lmsOpenAdmin(){
     }
   }catch(e){}
 
+  // Also include legacy IR keys that have been marked issued in the old ADM_NS system
+  try{
+    LEGACY_IR_KEYS.forEach(function(lk2){
+      var who2=localStorage.getItem(ADM_NS+'k_'+lk2);
+      if(who2){ irIssued.push({key:lk2, who:who2, legacy:true}); }
+    });
+  }catch(e){}
+
   // Render IR Companion issued list
   var irList=el('adm-ir-list');
   if(irList){
@@ -155,6 +191,13 @@ function lmsOpenAdmin(){
         return '<div style="padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;"><strong style="font-family:monospace;">'+e.key+'</strong> → '+e.who+'</div>';
       }).join('');
     }
+  }
+
+  // Render legacy IR key pool section (shows all legacy keys with issue toggle)
+  var legacyList=el('adm-legacy-ir-list');
+  if(legacyList){
+    var lStats=lmsRenderAdmList('adm-legacy-ir-list', LEGACY_IR_KEYS);
+    if(el('adm-legacy-ir-ct') && lStats) el('adm-legacy-ir-ct').textContent=lStats.issued+' / '+lStats.total;
   }
 
   // Update counts
@@ -2540,7 +2583,10 @@ function cocRender(){
 }
 function cocNew(preClientId,preSite,preJobRef){cocEdit(null,preClientId,preSite,preJobRef);}
 function cocEdit(id,preClientId,preSite,preJobRef){
-  var c=id?bizGet('coc_'+id):{};
+  // Guard: remove any existing coc-modal first to prevent 3x rendering
+  var existingModal=document.getElementById('coc-modal');
+  if(existingModal) existingModal.remove();
+  var c=id?bizGet('coc_'+id):{}; 
   var cliId=preClientId||c.clientId||'';
   var clients=bizList('cli');
   var cOpts=clients.map(function(cl){return '<option value="'+cl.id+'"'+(cliId===cl.id?' selected':'')+'>'+esc(cl.name)+'</option>';}).join('');
@@ -2558,6 +2604,10 @@ function cocEdit(id,preClientId,preSite,preJobRef){
     +'<label>Inspector Name<input id="cm-inspector" value="'+esc(c.inspector||'Tseke Riba')+'"></label>'
     +'<label>Inspector Registration #<input id="cm-reg" value="'+esc(c.inspReg||'')+'"></label>'
     +'<label>Findings / Notes<textarea id="cm-notes" rows="3">'+esc(c.notes||'')+'</textarea></label>'
+    +'<label style="margin-top:8px;">Signed CoC PDF <span style="font-size:11px;color:var(--fg3);">(optional — stored locally)</span>'
+    +'<input type="file" id="cm-pdf" accept="application/pdf" style="margin-top:4px;display:block;font-size:12px;">'
+    +(c.pdfName?'<span style="font-size:11px;color:var(--amb);margin-top:2px;display:block;">Current: '+esc(c.pdfName)+'</span>':'')
+    +'</label>'
     +'<label>Result<select id="cm-result">'
       +['Pass','Conditional Pass','Fail','Pending'].map(function(r){return '<option'+(c.result===r?' selected':'')+'>'+r+'</option>';}).join('')
     +'</select></label>'
@@ -2582,9 +2632,25 @@ function cocSave(id){
     inspector:val('cm-inspector'),inspReg:val('cm-reg'),notes:val('cm-notes'),result:val('cm-result'),
     cocNo:cocNo,ts:Date.now()};
   if(id){obj=Object.assign(bizGet('coc_'+id)||{},obj);}else{obj.id=cocNo;}
-  bizSet('coc_'+(id||cocNo),obj);
-  closeModal('coc-modal');
-  cocRender();
+  // Handle optional PDF upload — read as base64 and store with record
+  var pdfInp=document.getElementById('cm-pdf');
+  if(pdfInp&&pdfInp.files&&pdfInp.files[0]){
+    var file=pdfInp.files[0];
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      obj.pdfData=ev.target.result; // base64 data URI
+      obj.pdfName=file.name;
+      obj.pdfSize=file.size;
+      bizSet('coc_'+(id||cocNo),obj);
+      closeModal('coc-modal');
+      cocRender();
+    };
+    reader.readAsDataURL(file);
+  } else {
+    bizSet('coc_'+(id||cocNo),obj);
+    closeModal('coc-modal');
+    cocRender();
+  }
 }
 function cocPrint(id){
   var c=bizGet('coc_'+id);if(!c)return;
