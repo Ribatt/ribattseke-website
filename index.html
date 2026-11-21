@@ -86,6 +86,7 @@
 .lms-opt.correct .lms-opt-key{background:var(--amb);color:#fff;}
 .lms-opt.wrong .lms-opt-key{background:#c0392b;color:#fff;}
 .lms-opt-txt{font-size:13.5px;color:var(--fg);line-height:1.45;}
+.lms-copyright-notice{font-size:10.5px;color:var(--fg3);background:var(--surf-alt);border:1px solid var(--border);border-radius:6px;padding:6px 10px;margin-bottom:10px;line-height:1.5;}
 .lms-feedback{padding:12px 14px;background:var(--surf-alt);border:1px solid var(--border);border-radius:8px;font-size:12.5px;color:var(--fg2);margin-bottom:12px;line-height:1.55;}
 .lms-feedback .fb-correct{color:var(--amb);font-weight:700;}
 .lms-feedback .fb-wrong{color:#c0392b;font-weight:700;}
@@ -1330,11 +1331,71 @@ function prepSvcNew(sid,sname){
     lines.push('','Provider: Khosithi Training');
     lines.push('Note: Please confirm payment details and registration process.');
   } else if(sid==='courier'){
-    var addr=gv('sf-courier-addr');if(!addr){errEl.textContent='Please enter the delivery address.';return;}
-    lines.push('Delivery Address: '+addr);
-    var items=gv('sf-courier-items');if(items)lines.push('Items: '+items);
-    var date=gv('sf-courier-date');if(date)lines.push('Preferred Date: '+date);
-    var notes=gv('sf-courier-notes');if(notes)lines.push('Notes: '+notes);
+    /* Recipient */
+    var cName=gv('sf-courier-name');if(!cName){errEl.textContent='Please enter the recipient name.';return;}
+    var cCell=gv('sf-courier-cell');if(!cCell){errEl.textContent='Please enter the recipient cell number.';return;}
+    var cEmail=gv('sf-courier-email');
+    var cContact=gv('sf-courier-contact');
+    /* Location */
+    var cLoctype=gv('sf-courier-loctype');if(!cLoctype){errEl.textContent='Please select the location type.';return;}
+    var cStreet=gv('sf-courier-street');if(!cStreet){errEl.textContent='Please enter the street address.';return;}
+    var cSuburb=gv('sf-courier-suburb');if(!cSuburb){errEl.textContent='Please enter the suburb.';return;}
+    var cCity=gv('sf-courier-city');if(!cCity){errEl.textContent='Please enter the city.';return;}
+    var cProvince=gv('sf-courier-province');if(!cProvince){errEl.textContent='Please select the province.';return;}
+    var cPostal=gv('sf-courier-postal');
+    if(cPostal&&!/^\d{4}$/.test(cPostal)){errEl.textContent='Postal code must be 4 digits.';return;}
+    if(!cPostal){errEl.textContent='Please enter the postal code.';return;}
+    var cAccess=gv('sf-courier-access');
+    /* Items */
+    var itemList=document.getElementById('sf-courier-item-list');
+    var itemRows=itemList?itemList.querySelectorAll('div'):[];
+    var itemLines=[];var totalParcels=0;
+    itemRows.forEach(function(row,i){
+      var inputs=row.querySelectorAll('input');
+      var desc=inputs[0]?inputs[0].value.trim():'';
+      var qty=inputs[1]?inputs[1].value.trim():'1';
+      var wt=inputs[2]?inputs[2].value.trim():'';
+      var dims=inputs[3]?inputs[3].value.trim():'';
+      if(desc){
+        totalParcels+=(parseInt(qty)||1);
+        var il='  '+(i+1)+'. '+desc+' × '+(qty||'1');
+        if(wt)il+=' | '+wt+' kg';
+        if(dims)il+=' | '+dims+' cm';
+        itemLines.push(il);
+      }
+    });
+    if(itemLines.length===0){errEl.textContent='Please add at least one item to courier.';return;}
+    var cFragile=(document.getElementById('sf-courier-fragile')||{}).checked;
+    var cPref=gv('sf-courier-pref')||'Best Available';
+    var cTier=gv('sf-courier-tier')||'Economy';
+    var cDate=gv('sf-courier-date');
+    var cNotes=gv('sf-courier-notes');
+    /* Build structured dispatch summary */
+    lines.push('=== DISPATCH ORDER ===');
+    lines.push('');
+    lines.push('RECIPIENT');
+    lines.push('  Name: '+cName);
+    lines.push('  Cell: '+cCell);
+    if(cEmail)lines.push('  Email: '+cEmail);
+    if(cContact)lines.push('  On-Site Contact: '+cContact);
+    lines.push('');
+    lines.push('DELIVERY ADDRESS');
+    lines.push('  Type: '+cLoctype);
+    lines.push('  '+cStreet+', '+cSuburb);
+    lines.push('  '+cCity+', '+cProvince+' '+cPostal);
+    if(cAccess)lines.push('  Access: '+cAccess);
+    lines.push('');
+    lines.push('ITEMS ('+totalParcels+' parcel'+(totalParcels===1?'':'s')+')');
+    itemLines.forEach(function(l){lines.push(l);});
+    if(cFragile)lines.push('  ⚠️ FRAGILE — Special Handling Required');
+    lines.push('');
+    lines.push('COURIER DETAILS');
+    lines.push('  Preferred Provider: '+cPref);
+    lines.push('  Service Tier: '+cTier);
+    if(cDate)lines.push('  Delivery Date: '+cDate);
+    if(cNotes)lines.push('  Notes: '+cNotes);
+    lines.push('');
+    lines.push('Prepared by: Riba T Tseke | ribattseke.co.za');
   } else if(sid==='water'){
     var addr=gv('sf-water-addr');if(!addr){errEl.textContent='Please enter the delivery address.';return;}
     var size=gv('sf-water-size');if(!size){errEl.textContent='Please select a bottle size.';return;}
