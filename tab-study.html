@@ -2140,6 +2140,35 @@ var LMS_VOLUMES=[
 ];
 
 /* ───────────────────────────────────────────────────────────
+   REPEAT-LIKELIHOOD ENGINE
+   Formula: λ = 1/avg_interval_years, P = 1 - e^(-λ × H)
+   H = years since last appearance (approximated from sitting history)
+   Returns 0–100. Badge shows when P ≥ 65%.
+   ─────────────────────────────────────────────────────────── */
+function _rlScore(paper,idx){
+  var key='biz_rl_'+paper+'_'+idx;
+  var hist=[];
+  try{hist=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}
+  if(!hist.length) return 0;
+  var now=Date.now(), d=new Date(now);
+  var yd=d.getFullYear()+(d.getMonth()/12);
+  // Use sitting timestamps
+  var times=hist.map(function(h){return h.t;}).sort();
+  if(times.length<2){
+    // Single appearance — assume annual exam cycle, H = time elapsed
+    var H=yd-times[0];
+    var lam=1; // assume annual appearance
+    return Math.round((1-Math.exp(-lam*H))*100);
+  }
+  var intervals=[];
+  for(var i=1;i<times.length;i++) intervals.push(times[i]-times[i-1]);
+  var avg=intervals.reduce(function(a,b){return a+b;},0)/intervals.length;
+  var lam=avg>0?1/avg:1;
+  var H=yd-times[times.length-1];
+  return Math.round((1-Math.exp(-lam*H))*100);
+}
+
+/* ───────────────────────────────────────────────────────────
    Build the volume-based dashboard (called from lmsShowDash)
    ─────────────────────────────────────────────────────────── */
 function _buildVolumeDash(prog){
@@ -2215,10 +2244,12 @@ function _buildVolumeDash(prog){
       else if(rec.attempts){badge='Attempts: '+rec.attempts;badgeClass='fail';}
       else{badge='Not started';badgeClass='new';}
       var ytHtml=t.yt?'<a class="lms-yt-link" href="'+t.yt+'" target="_blank" rel="noopener" onclick="event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>Watch lesson</a>':'';
+      var rl=_rlScore(t.paper,t.idx);
+      var rlHtml=rl>=65?'<span style="margin-left:6px;font-size:11px;padding:1px 5px;border-radius:10px;background:#ff5a0022;color:#ff7a00;border:1px solid #ff7a0044;" title="Likely to appear in next exam sitting ('+rl+'%)">🔥 '+rl+'%</span>':'';
       var row=document.createElement('div');
       row.className='lms-mod-row'+(rec.passed?' done':'');
       row.innerHTML='<div>'
-        +'<div class="lms-mod-title" style="color:'+vol.color+';">Vol '+vol.num+' · Topic '+(ti+1)+'</div>'
+        +'<div class="lms-mod-title" style="color:'+vol.color+';">Vol '+vol.num+' · Topic '+(ti+1)+rlHtml+'</div>'
         +'<div class="lms-mod-sub">'+esc(title)+'</div>'
         +ytHtml
         +'</div>'
@@ -2382,6 +2413,17 @@ function lmsFinish(){
   if(passed){rec.passed=true;rec.score=pct;rec.failCount=0;}
   else{rec.failCount=(rec.failCount||0)+1;}
   _lmsStore();
+  // Save sitting history for repeat-likelihood engine
+  (function(){
+    var now=Date.now(), d=new Date(now);
+    var yd=d.getFullYear()+(d.getMonth()/12);
+    var key='biz_rl_'+_lmsPaper+'_'+_lmsSess;
+    var hist=[];
+    try{hist=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}
+    hist.push({t:parseFloat(yd.toFixed(4)),s:pct,p:passed?1:0});
+    if(hist.length>20) hist=hist.slice(-20);
+    try{localStorage.setItem(key,JSON.stringify(hist));}catch(e){}
+  })();
 
   // Ring chart
   var circ=Math.PI*2*50; // circumference of r=50 circle
