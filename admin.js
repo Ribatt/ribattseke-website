@@ -34,17 +34,18 @@ var IR_KEY_NS='biz_ir_issued_';
 var ECSA_KEY_NS='biz_ecsa_issued_';
 
 function lmsAdminEntry(){
-  /* Show inline PIN prompt — no browser dialog */
-  /* remove any stale overlay */
+  /* Show email + PIN prompt */
   var old=document.getElementById('lms-adm-pin-overlay');
   if(old) old.parentNode.removeChild(old);
   var ov=document.createElement('div');
   ov.id='lms-adm-pin-overlay';
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
-  ov.innerHTML='<div style="background:#1a1a1a;border:1px solid #444;border-radius:12px;padding:28px 24px;width:280px;text-align:center;">'
-    +'<p style="color:#ccc;margin:0 0 16px;font-size:15px;">Admin Access</p>'
+  ov.innerHTML='<div style="background:#1a1a1a;border:1px solid #444;border-radius:12px;padding:28px 24px;width:300px;text-align:center;">'
+    +'<p style="color:#ccc;margin:0 0 16px;font-size:15px;font-weight:600;">Admin Access</p>'
+    +'<input id="lms-adm-email-inp" type="email" placeholder="Admin email" autocomplete="email" '
+    +'style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid #555;background:#111;color:#fff;font-size:14px;margin-bottom:10px;" />'
     +'<div style="position:relative;width:100%;">'
-    +'<input id="lms-adm-pin-inp" type="password" placeholder="Enter admin PIN" autocomplete="off" '
+    +'<input id="lms-adm-pin-inp" type="password" placeholder="PIN" autocomplete="off" '
     +'style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border-radius:8px;border:1px solid #555;background:#111;color:#fff;font-size:16px;text-align:center;letter-spacing:4px;" />'
     +'<button type="button" onclick="lmsTogglePinVis()" tabindex="-1" '
     +'style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:4px;line-height:1;">'
@@ -58,12 +59,10 @@ function lmsAdminEntry(){
     +'style="flex:1;padding:9px;border-radius:8px;border:none;background:#2a7a4b;color:#fff;cursor:pointer;font-weight:600;">Enter</button>'
     +'</div></div>';
   document.body.appendChild(ov);
-  setTimeout(function(){ var inp=document.getElementById('lms-adm-pin-inp'); if(inp) inp.focus(); },80);
-  /* allow Enter key */
-  var inp2=document.getElementById('lms-adm-pin-inp');
-  if(inp2){
-    inp2.addEventListener('keydown',function(e){ if(e.key==='Enter') lmsAdmPinSubmit(); });
-  }
+  setTimeout(function(){ var inp=document.getElementById('lms-adm-email-inp'); if(inp) inp.focus(); },80);
+  /* allow Enter key on PIN field */
+  var pinInp=document.getElementById('lms-adm-pin-inp');
+  if(pinInp){ pinInp.addEventListener('keydown',function(e){ if(e.key==='Enter') lmsAdmPinSubmit(); }); }
 }
 
 function lmsTogglePinVis(){
@@ -80,11 +79,15 @@ function lmsTogglePinVis(){
 }
 
 function lmsAdmPinSubmit(){
+  var emailInp=document.getElementById('lms-adm-email-inp');
   var inp=document.getElementById('lms-adm-pin-inp');
   var err=document.getElementById('lms-adm-pin-err');
   if(!inp) return;
+  var emailVal=(emailInp?emailInp.value:'').trim().toLowerCase();
   var val=(inp.value||'').trim();
-  if(!val){ if(err) err.textContent='Please enter the PIN.'; return; }
+  if(!emailVal){ if(err) err.textContent='Please enter your admin email.'; if(emailInp) emailInp.focus(); return; }
+  if(ADM_EMAILS.map(function(e){return e.toLowerCase();}).indexOf(emailVal)<0){ if(err) err.textContent='Email not recognised.'; if(emailInp){emailInp.value='';emailInp.focus();} return; }
+  if(!val){ if(err) err.textContent='Please enter the PIN.'; inp.focus(); return; }
   if(btoa(val)!==ADM_CORRECT){ if(err) err.textContent='Incorrect PIN. Try again.'; inp.value=''; inp.focus(); return; }
   var ov=document.getElementById('lms-adm-pin-overlay');
   if(ov) ov.remove();

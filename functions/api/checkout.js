@@ -27,6 +27,12 @@ const ITEMS = {
   // SANS 10313 — Lightning protection
   'sans10313-pdf':      { name: 'SANS 10313 PDF',                                         amountCents:  70857 },
   'sans10313-print':    { name: 'SANS 10313 Hardcopy',                                    amountCents:  78729 },
+  // Atchar — homemade in jar sizes
+  'atchar-250':         { name: 'Atchar 250 ml',                                           amountCents:   4500 },
+  'atchar-500':         { name: 'Atchar 500 ml',                                           amountCents:   8000 },
+  'atchar-1l':          { name: 'Atchar 1 L',                                              amountCents:  15000 },
+  'atchar-2l':          { name: 'Atchar 2 L',                                              amountCents:  28000 },
+  'atchar-5l':          { name: 'Atchar 5 L',                                              amountCents:  65000 },
 };
 
 const TVET_TIERS = { t10: 10, t20: 20, t100: 100 };
