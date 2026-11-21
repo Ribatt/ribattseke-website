@@ -7,8 +7,8 @@
 const ITEMS = {
   'companion-ir':       { name: 'Installation Rules Companion Pack',                       amountCents: 100000 },
   // SANS 10142-1 — Wiring of Premises
-  'sans10142-pdf':      { name: 'SANS 10142-1 (Ed 3.3) PDF',                              amountCents: 207787 },
-  'sans10142-print':    { name: 'SANS 10142-1 (Ed 3.3) Hardcopy',                         amountCents: 230874 },
+  'sans10142-pdf':      { name: 'SANS 10142-1 (Ed 3.3) PDF',                              amountCents: 170682 },
+  'sans10142-print':    { name: 'SANS 10142-1 (Ed 3.3) Hardcopy',                         amountCents: 189646 },
   // SANS 10198-1 — Cables Part 1
   'sans10198-1-pdf':    { name: 'SANS 10198-1 PDF',                                       amountCents:  47817 },
   'sans10198-1-print':  { name: 'SANS 10198-1 Hardcopy',                                  amountCents:  53130 },

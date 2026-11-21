@@ -608,7 +608,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
     <div class="support-card" id="pay-sess-wrap">
       <div class="support-text">
         <strong>Support Tseke's Work</strong>
-        <p>Sessions are open to all. To pay for a session or donate, tap the <strong>Donate</strong> button — payment details will appear there.</p>
+        <p>Sessions are open to all. To pay for a session or donate, tap the <strong>Donate</strong> button — you’ll be taken straight to Yoco to pay securely.</p>
         <div style="margin-top:12px;">
           <a href="#" onclick="engageShowDonate();return false;" style="display:inline-flex;align-items:center;gap:7px;background:var(--amb);color:#fff;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;text-decoration:none;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53L12 21.35z"/></svg>
@@ -1034,19 +1034,10 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 
       <div id="pay-about" hidden>
         <div class="pay-block">
-          <p class="pay-block-head">Payment Details</p>
-          <div class="pay-details">
-            <span class="lbl">Account holder:</span> Tseke Riba<br>
-            <span class="lbl">Bank:</span> Capitec Bank<br>
-            <span class="lbl">Account no.:</span> <strong>2605150883</strong><br>
-            <span class="lbl">Branch code:</span> 470010 · Savings
-          </div>
-          <div class="pay-shap">
-            <div class="pay-shap-label">PayShap · Any Bank</div>
-            <div class="pay-shap-num">072 474 8888</div>
-            <div class="pay-shap-note">T T Riba · open your banking app and tap PayShap</div>
-          </div>
-          <p class="pay-instructions">For sessions, resources, books, or services. Send proof of payment to ribattseke@gmail.com or WhatsApp after paying. Include your name and what you are paying for.</p>
+          <p class="pay-block-head">Pay Securely via Yoco</p>
+          <p style="font-size:13px;color:var(--fg2);margin:0 0 14px;line-height:1.6;">All payments go through Yoco — card and instant EFT accepted. Click the button below to open the payment page.</p>
+          <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="display:block;text-align:center;background:var(--amb);color:#fff;border-radius:9px;padding:12px;font-size:14px;font-weight:700;text-decoration:none;">💳 Pay on Yoco</a>
+          <p class="pay-instructions" style="margin-top:12px;">After payment, WhatsApp your proof of payment to 072 474 8888 with your name and what you paid for.</p>
         </div>
       </div>
     </div>
@@ -1505,47 +1496,16 @@ window.addEventListener('popstate',function(e){
   showTab(tab,true);
 })();
 
-// Inline donate fallback — shown when admin.js is unavailable
+// Donate — open Yoco payment page directly
 function _showDonateInline(){
-  if(document.getElementById('_dnt_ov'))return;
-  var o=document.createElement('div');
-  o.id='_dnt_ov';
-  o.setAttribute('style','position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;');
-  o.onclick=function(e){if(e.target===o)o.remove();};
-  o.innerHTML='<div style="background:var(--surface,#1f1f1f);border-radius:16px;padding:22px 20px;max-width:400px;width:100%;position:relative;box-shadow:0 8px 40px rgba(0,0,0,.35);">'
-    +'<button onclick="document.getElementById(\'_dnt_ov\').remove()" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:22px;line-height:1;cursor:pointer;color:var(--fg2,#aaa);">×</button>'
-    +'<h4 style="margin:0 0 6px;font-size:17px;color:var(--fg,#fff);">💛 Support the next learner</h4>'
-    +'<p style="font-size:12.5px;color:var(--fg2,#aaa);margin:0 0 14px;line-height:1.6;">These resources are free because people like you care about the trade. Any amount helps keep the platform running.</p>'
-    +'<div style="background:#1E8540;border-radius:10px;padding:14px;margin-bottom:10px;text-align:center;">'
-    +'<div style="font-size:10px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.8);margin-bottom:3px;">PayShap · Works with any SA bank</div>'
-    +'<div style="font-size:26px;font-weight:700;color:#fff;letter-spacing:.03em;font-family:\'Playfair Display\',Georgia,serif;">072 474 8888</div>'
-    +'<div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;">Riba T Tseke</div>'
-    +'</div>'
-    +'<details style="margin-bottom:14px;">'
-    +'<summary style="cursor:pointer;font-size:11px;color:var(--fg3,#888);">EFT bank details</summary>'
-    +'<div style="margin-top:7px;line-height:2;background:var(--bg,#111);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--fg,#eee);">'
-    +'Name: <strong>Riba T Tseke</strong><br>Bank: Capitec Bank<br>Account: <strong style="color:#34A853;">2605150883</strong><br>Branch: 470010 · Savings<br>Ref: DONATE'
-    +'</div></details>'
-    +'<button onclick="document.getElementById(\'_dnt_ov\').remove()" style="background:#1E8540;color:#fff;border:none;border-radius:9px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">Close</button>'
-    +'</div>';
-  document.body.appendChild(o);
+  window.open('https://pay.yoco.com/riba-t-tseke','_blank','noopener');
+}
 }
 
-// Donate — loads admin.js (which redefines this function with full banking overlay)
+// Donate — opens Yoco payment page directly
 function engageShowDonate(){
-  if(typeof _engageShowDonateFull==='function'){_engageShowDonateFull();return;}
-  // Admin already loaded but _engageShowDonateFull not defined — show inline fallback
-  if(window._adminLoaded){_showDonateInline();return;}
-  if(window._donateLoading)return;
-  window._donateLoading=true;
-  _loadAdmin();
-  var _t=0;
-  (function _w(){
-    if(typeof _engageShowDonateFull==='function'){window._donateLoading=false;_engageShowDonateFull();}
-    else if(window._adminLoaded){window._donateLoading=false;_showDonateInline();}
-    else if(_t++<100){setTimeout(_w,100);}
-    else{window._donateLoading=false;_showDonateInline();}
-  })();
+  window.open('https://pay.yoco.com/riba-t-tseke','_blank','noopener');
+}
 }
 
 // Admin panel loaded on demand
@@ -1576,7 +1536,7 @@ function _loadAdmin(){
         "What does Paper 2 cover?":"Paper 2 (T890) covers the practical installation requirements: Current-carrying capacity and cable selection (Section 6.1–6.2), Voltage drop calculations (Section 6.2.7 and Annexure D), Methods of installation and correction factors, Wiring systems, accessories and distribution boards (Sections 6.3–6.5), Protective earthing and bonding (Sections 6.6–6.8), Special circuits, ELV, and switching (Sections 6.9–6.11), Verification and certification (Section 8), SANS 1973-3 (LV switchgear assemblies), SANS 10313 (lightning protection), and Paper 2 calculations (Annexures B, D, and E).",
         "What is the OHS Act?":"The Occupational Health and Safety Act (OHS Act) is South African law that governs workplace health and safety. For electricians, the most relevant regulations under the OHS Act are: Electrical Installation Regulations (EIR) — covering Certificate of Compliance requirements and registered persons; Construction Regulations (CR 2003) — covering electrical work on construction sites; and Electrical Machinery Regulations (EMR) — covering electrical machinery safety. These regulations always appear in Question 1 of the Installation Rules exam.",
         "What SANS standards are covered?":"The Installation Rules exam covers: SANS 10142-1 (Installation Rules — Wiring of Premises, Paper 1 and Paper 2), SANS 10198-1 (Cable selection), SANS 10198-2 (Cable installation), SABS 1507-1 (Electric cables), SANS 10292 (Earthing systems), SANS 10313 (Lightning protection), SANS 1973-3 (Low-voltage switchgear assemblies), and the OHS Act regulations (EIR, CR 2003, EMR).",
-        "How do I get a study key?":"WhatsApp Tseke on 072 474 8888 to arrange payment. Pay via PayShap (072 474 8888) or EFT (Capitec, Acc 2605150883, Branch 470010) using your name and cell number as reference. Send your proof of payment on WhatsApp with your name and your key will be issued — usually within a few hours during business hours.",
+        "How do I get a study key?":"WhatsApp Tseke on 072 474 8888 to arrange access. Pay securely via Yoco at pay.yoco.com/riba-t-tseke. Send your payment confirmation on WhatsApp with your name and your key will be issued — usually within a few hours during business hours.",
         "What does the IR Companion include?":"The Installation Rules Companion (R1,000 — lifetime access) includes: Full quiz bank covering all exam topics at 90% pass-mark threshold, Session study notes for Paper 1 and Paper 2, Worked examples and calculations, the full PDF study guide for SANS 10142-1 (Paper 1 and Paper 2), past 10 years of actual DOeL exam papers with Tseke's worked solutions, and direct WhatsApp support from Tseke.",
         "What is the ECSA Companion?":"The ECSA Companion is for engineering graduates pursuing ECSA professional registration (Pr Eng, Pr Tech Eng, or Pr Techni Eng). It guides you through the full ECSA registration journey including TES, TEO, TERs, the Engineering Report, and the Professional Review Interview. Tseke mentors through the full process — WhatsApp 072 474 8888.",
         "Standards covered":"Full IE syllabus: SANS 10142-1 (P1 & P2), SANS 10198-1 & 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, and the OHS Act including Electrical Installation Regulations and Construction Regulations.",
@@ -1585,7 +1545,7 @@ function _loadAdmin(){
         "AREP registration":"AREP (Association for Renewable Energy Practitioners) is a professional body for renewable energy practitioners including solar PV installers. Registration supports professional credibility and ongoing CPD. Visit arep.co.za for membership details.",
         "DOeL / Wireman's licence":"The Wireman's Licence (Installation Electrician) is issued by the Department of Employment and Labour (DOeL) under the Electrical Installation Regulations. You must pass both Paper 1 and Paper 2 of the Installation Rules exam and have your practical experience certified. Contact your nearest DOeL Labour Centre. Tseke can guide you through the process — WhatsApp 072 474 8888.",
         "YouTube channel":"Tseke runs YouTube live sessions covering SANS 10142-1 Installation Rules — Paper 1 and Paper 2. Sessions are free and open to all learners. Search 'Riba T Tseke' on YouTube or use the YouTube link in the Sessions tab.",
-        "Banking / Donate":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference.\nTap the yellow Donate button at the bottom of the page.",
+        "Banking / Donate":"All payments go through Yoco — card and instant EFT accepted.\nTap the Donate button at the bottom of the page, or visit pay.yoco.com/riba-t-tseke directly.",
         "Contact Tseke":"WhatsApp: 072 474 8888\nEmail: ribattseke@gmail.com\nFor study keys, mentoring, consultation, or general questions — WhatsApp is the fastest way.",
         "What services does Tseke offer?":"Tseke offers: Training panel manufacturing (EWSETA-aligned, single and three phase), Installation Rules exam coaching (Paper 1 & 2), ECSA professional registration mentoring (Pr. Tech Eng pathway), and electrical consulting. WhatsApp 072 474 8888 to discuss your needs.",
         "How much is a quote?":"Quote pricing depends on the type of work, scope, and your location. WhatsApp Tseke on 072 474 8888 with your location and what you need — a free no-obligation discussion can be arranged.",
@@ -1617,7 +1577,7 @@ function _loadAdmin(){
         "Boikarabelo bja AREP":"AREP ke kgobokano ya bagwebi ba phihlelelo ya maatla a go lokologišwa. Tsekela arep.co.za.",
         "Laesense ya DOeL":"Laesense ya Wireman e fiwa ke DOeL. O swanetše go pasa Pepa 1 le 2 ya Installation Rules. Ikopanya le ofisi ya DOeL ya ge o lego gona.",
         "Moaneltšane wa YouTube":"Tseke o phetha ditirišo tša go laiwa ka YouTube ka SANS 10142-1. Nyaka 'Riba T Tseke' YouTube.",
-        "Ditsela tša go duela":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Ak 2605150883, Lekala 470010\nDiriša leina la gago le nomoro ya sellefounou.",
+        "Ditsela tša go duela":"Duela ka go š Yoco: pay.yoco.com/riba-t-tseke\nKard le EFT ya go ikaega di amogelēgile.",
         "Ikopanya le Tseke":"Romela Tseke molaetša ka WhatsApp go 072 474 8888 go thekgo, dikgopelo tša konopo, goba dipotšišo.",
         "Tseke o dira ditirelo dife?":"Tseke o dira: go agwa ga mabokose a thuto (go ya ka EWSETA, ya phêisi e tee le ya maphêisi a mararo), go ruta dihlahlobo tša IE (Pepa 1 le 2), go thuša ka ngwalo wa ECSA (Pr. Tech Eng), le dikhomšente tša mohlagase. WhatsApp 072 474 8888 go bua ka ditirelo.",
         "Ke bokae ats'ha?":"Pereisi ya ats'ha e fapana ke go ya le ka mofuta wa tiro le bogolo bja yona, le gore o dula kae. Bolela le Tseke ka WhatsApp 072 474 8888 gore o re botše o dula kae le gore o nyaka go kgona eng — re ka go fa ats'ha ya mahala.",
@@ -1637,7 +1597,7 @@ function _loadAdmin(){
         "Hoe kry ek 'n sleutelkode?":"Gaan na die Studie-oortjie en kies jou plan. WhatsApp Tseke op 072 474 8888 om betaling te reël — jou sleutel word na betaling uitgereik.","Wanneer is IE-eksamens?":"IE-eksamendata word deur DHET uitgereik. Kontak jou naaste TVET-kollege vir die datums van die trimester wat jy wil skryf. Tseke kan ook adviseer — WhatsApp 072 474 8888.","ECA(SA)-lidmaatskap":"ECA(SA) is die Electrical Contractors Association of South Africa. Besoek ecasa.co.za of kontak jou provinsiale ECA(SA)-kantoor.","AREP-registrasie":"AREP is vir hernubare energie-praktisyns. Besoek arep.co.za vir lidmaatskapsbesonderhede.","DOeL / Wireman se lisensie":"Die Wireman se lisensie word deur DOeL uitgereik. Jy moet Papier 1 en 2 van die Installation Rules-eksamen slaag. Tseke kan jou deur die proses lei — WhatsApp 072 474 8888.","YouTube-kanaal":"Tseke hou gratis YouTube-sessies oor SANS 10142-1 Installation Rules. Soek 'Riba T Tseke' op YouTube.",
         "R50 teen R1,000":"R50 gee 4 maande toegang (aangepaste duur op versoek) — alle vasvra's, sessie-notas P1 en P2, en gewerkte voorbeelde. R1,000 is lewenslange toegang en sluit in die volledige PDF-studiegids (SANS 10142-1 P1 en P2), afgelope 10 jaar se vraestelle met oplossings, en direkte WhatsApp-ondersteuning van Tseke.",
         "Watter standaarde word gedek?":"Die LMS dek: SANS 10142-1 (P1 en P2), SANS 10198-1 en 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, en die OHS-wet insluitend Elektriese Installasieregulasies en Bou-regulasies.",
-        "Bankbesonderhede / Skenk":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Rek 2605150883, Tak 470010\nGebruik jou naam en selnommer as verwysing.",
+        "Bankbesonderhede / Skenk":"Alle betalings gaan deur Yoco — kaart en kitsbetaling aanvaar.\nBesoek pay.yoco.com/riba-t-tseke om te betaal.",
         "Kontak Tseke":"WhatsApp Tseke direk op 072 474 8888 vir ondersteuning, sleutelversoeke, of enige vrae."
       },
       wa:"Gesels op WhatsApp"
@@ -1649,7 +1609,7 @@ function _loadAdmin(){
         "Ngithole kanjani ukhiye?":"Hamba ku-Study tab bese ukhetha uhlelo lwakho. Xhumana noTseke ngqo ku-WhatsApp ukuze ulungise inkokhelo nokukhishelwa ukhiye.",
         "R50 vs R1,000":"R50 ikunika ukufinyelela izinyanga ezingu-4 (isikhathi esikhethekile ngomcelo) — wonke amakulithi, amanothi esifundo P1 no-P2, nezibonelo ezikhiqiziwe. R1,000 ukufinyelela kwesikhathi sonke futhi yengeza umhlahlandlela wokufunda we-PDF ophelele (SANS 10142-1 P1 no-P2), amaphepha emisuka iminyaka eyi-10 edlule nezixazululo, kanye nokusekela kwe-WhatsApp ngqo evela kuTseke.",
         "Yimiphi imigangatho efihlakele?":"I-LMS ikhuluma nge: SANS 10142-1 (P1 no-P2), SANS 10198-1 no-10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, ne-OHS Act efaka i-Electrical Installation Regulations ne-Construction Regulations.",
-        "Imininingwane yebhange / Qopha":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Akhawunti 2605150883, Igatsha 470010\nSebenzisa igama lakho nenombolo yeselula njengereference.",
+        "Imininingwane yebhange / Qopha":"Yiya ku-pay.yoco.com/riba-t-tseke ukuze ukhokhe ngokuphepha nge-Yoco.",
         "Xhumana noTseke":"WhatsApp uTseke ngqo ku-072 474 8888 ukuze uthole usizo, izicelo zokhiye, noma imibuzo."
       },
       wa:"Xhumana ku-WhatsApp"
@@ -1658,7 +1618,7 @@ function _loadAdmin(){
       greeting:"Tseke's Companion 👋 — Niulize chochote kuhusu mtihani wa IE, viwango vya SANS, vifurushi vya kusoma, au jinsi ya kusajiliwa na ECA(SA), AREP, au DOeL.",
       faqs:["Ninapata vipi ufunguo wa masomo?","Tofauti kati ya R50 na R1,000","Viwango vilivyofunikwa","Mitihani ya IE ni lini?","Alama ya kufaulu mtihani wa IE","Ufunguo unaotolewa lini?","Uanachama wa ECA(SA)","Chaneli ya YouTube","Benki / Changia","Wasiliana na Tseke"],
       answers:{
-        "Ninapata vipi ufunguo wa masomo?":"Nenda kwenye kichupo cha Masomo na uchague mpango wako — R50 (ufikiaji wa miezi 4) au R1,000 (ufikiaji wa maisha yote). Lipa kwa PayShap au EFT, tuma uthibitisho kwa WhatsApp kwenye 072 474 8888 na jina lako, kisha Tseke atatoa ufunguo wako.",
+        "Ninapata vipi ufunguo wa masomo?":"Nenda kwenye kichupo cha Masomo na uchague mpango wako. Lipa kwa Yoco: pay.yoco.com/riba-t-tseke, tuma uthibitisho kwa WhatsApp kwenye 072 474 8888 na jina lako, kisha Tseke atatoa ufunguo wako.",
         "Tofauti kati ya R50 na R1,000":"R50: Ufikiaji wa miezi 4 — maswali yote ya asilimia 90, maelezo ya P1 na P2, mifano ya vitendo. R1,000: Ufikiaji wa maisha yote — kila kitu katika mpango wa majaribio pamoja na mwongozo kamili wa PDF (SANS 10142-1 P1 na P2), karatasi za miaka kumi iliyopita na majibu, na usaidizi wa WhatsApp moja kwa moja kutoka kwa Tseke.",
         "Viwango vilivyofunikwa":"Maudhui kamili ya IE: SANS 10142-1 (P1 na P2), SANS 10198-1 na 10198-2, SANS 1507-1, SANS 10292, SANS 10313, SANS 1973-3, na Sheria ya OHS inayojumuisha Kanuni za EIR na CR.",
         "Mitihani ya IE ni lini?":"Tarehe za Mitihani ya Sheria za Usakinishaji hutolewa na DHET. Wasiliana na chuo chako cha karibu cha TVET kwa tarehe za trimesta unayokusudia kuandika. Tseke anaweza pia kushauri — WhatsApp 072 474 8888.",
@@ -1666,7 +1626,7 @@ function _loadAdmin(){
         "Ufunguo unaotolewa lini?":"Baada ya uthibitisho wa malipo, ufunguo hutolewa ndani ya masaa 24 (mara nyingi haraka zaidi). Tuma uthibitisho wako kwa WhatsApp kwenye 072 474 8888 na jina lako.",
         "Uanachama wa ECA(SA)":"ECA(SA) ni Chama cha Wakandarasi wa Umeme cha Afrika Kusini. Usajili hutoa haki za kisheria za kufanya kazi kama Mkandarasi wa Umeme.",
         "Chaneli ya YouTube":"Tseke anaendesha vikao vya YouTube vilivyo hai vinavyofunika Sheria za Usakinishaji — Karatasi 1 na 2. Vikao ni bure. Tafuta 'Riba T Tseke' kwenye YouTube.",
-        "Benki / Changia":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Akaunti 2605150883, Tawi 470010\nTuma jina lako na nambari ya simu kama kumbukumbu.",
+        "Benki / Changia":"Nenda kwa pay.yoco.com/riba-t-tseke kulipa kwa usalama kupitia Yoco.",
         "Wasiliana na Tseke":"Wasiliana na Tseke moja kwa moja kwa WhatsApp kwenye 072 474 8888 kwa usaidizi, maombi ya ufunguo, au maswali yoyote."
       },
       wa:"Zungumza kwa WhatsApp"
@@ -1675,7 +1635,7 @@ function _loadAdmin(){
       greeting:"Tseke's Companion 👋 — اسألني أي شيء عن امتحان IE، معايير SANS، حزم الدراسة، أو كيفية التسجيل في ECA(SA) أو AREP أو DOeL.",
       faqs:["كيف أحصل على مفتاح الدراسة؟","الفرق بين R50 و R1,000","المعايير المشمولة","متى تُعقد امتحانات IE؟","درجة النجاح","تسليم المفتاح","عضوية ECA(SA)","قناة YouTube","البنك / التبرع","التواصل مع Tseke"],
       answers:{
-        "كيف أحصل على مفتاح الدراسة؟":"انتقل إلى تبويب الدراسة واختر خطتك — R50 (وصول لمدة 4 أشهر) أو R1,000 (وصول مدى الحياة). ادفع عبر PayShap أو EFT، وأرسل الإيصال عبر WhatsApp إلى 072 474 8888 مع اسمك، وسيرسل لك Tseke مفتاحك.",
+        "كيف أحصل على مفتاح الدراسة؟":"انتقل إلى تبويب الدراسة واختر خطتك. ادفع عبر Yoco: pay.yoco.com/riba-t-tseke، وأرسل الإيصال عبر WhatsApp إلى 072 474 8888 مع اسمك، وسيرسل لك Tseke مفتاحك.",
         "الفرق بين R50 و R1,000":"R50: وصول لمدة 4 أشهر — جميع الأسئلة بنسبة 90%، ملاحظات P1 وP2، أمثلة عملية. R1,000: وصول مدى الحياة — كل شيء في الخطة التجريبية بالإضافة إلى الدليل الكامل بصيغة PDF وأوراق امتحانات 10 سنوات مع الحلول، ودعم مباشر عبر WhatsApp من Tseke.",
         "المعايير المشمولة":"المحتوى الكامل لامتحان IE: SANS 10142-1 (P1 وP2)، SANS 10198-1 و10198-2، SANS 1507-1، SANS 10292، SANS 10313، SANS 1973-3، وقانون الصحة والسلامة المهنية.",
         "متى تُعقد امتحانات IE؟":"تُصدر مواعيد امتحانات قواعد التركيب من قِبَل DHET. تواصل مع كليتك القريبة TVET لمعرفة مواعيد الفصل الدراسي الذي تعتزم الكتابة فيه. يمكن أن يرشدك Tseke أيضًا — WhatsApp 072 474 8888.",
@@ -1683,7 +1643,7 @@ function _loadAdmin(){
         "تسليم المفتاح":"بعد تأكيد الدفع، يُسلَّم المفتاح خلال 24 ساعة (عادةً بشكل أسرع). أرسل إيصالك عبر WhatsApp إلى 072 474 8888 مع اسمك.",
         "عضوية ECA(SA)":"ECA(SA) هي جمعية المقاولين الكهربائيين في جنوب أفريقيا. التسجيل يمنح حقوقًا قانونية للعمل كمقاول كهربائي.",
         "قناة YouTube":"يُجري Tseke جلسات YouTube مباشرة تغطي قواعد التركيب — الورقة 1 والورقة 2. الجلسات مجانية. ابحث عن 'Riba T Tseke' على YouTube.",
-        "البنك / التبرع":"PayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank، الحساب 2605150883، الفرع 470010\nأرسل اسمك ورقم هاتفك كمرجع.",
+        "البنك / التبرع":"ادفع بأمان عبر Yoco على pay.yoco.com/riba-t-tseke.",
         "التواصل مع Tseke":"تواصل مع Tseke مباشرة عبر WhatsApp على 072 474 8888 للحصول على الدعم أو طلبات المفاتيح أو أي استفسارات."
       },
       wa:"تحدث عبر WhatsApp"
@@ -1757,9 +1717,9 @@ var _KB_EN={
   'wireman':{k:['wireman','wireman licence','wireman license','installation electrician','ie licence'],a:'The Wireman\'s Licence (Installation Electrician) is issued by the Department of Employment and Labour (DOeL) under the Electrical Installation Regulations. Requirements: pass both Paper 1 and Paper 2 of the Installation Rules exam with at least 60%, and have your practical experience certified. Contact your nearest DOeL Labour Centre. Tseke can guide you — WhatsApp 072 474 8888.'},
   'ecasa':{k:['eca(sa)','ecasa','electrical contractors association','contractor association'],a:'ECA(SA) is the Electrical Contractors Association of South Africa — the professional body representing registered electrical contractors. Membership provides industry representation, access to technical updates and training, and business support. Visit ecasa.co.za. Note: ECA(SA) is different from ECSA (the Engineering Council of South Africa).'},
   'ecsa':{k:['ecsa','professional registration','pr eng','pr tech','preng','engineering council','11 outcomes'],a:'ECSA (Engineering Council of South Africa) is the statutory body that registers engineers professionally. Categories: Pr Eng (requires BEng/BSc Eng), Pr Tech Eng (requires BTech or B.Eng Tech), Pr Techni Eng (requires National Diploma). Registration requires submitting experience documents (TES, TEO, TERs, Engineering Report) and passing a Professional Review Interview. Tseke mentors through the ECSA Pr Tech Eng process — WhatsApp 072 474 8888.'},
-  'study key':{k:['study key','get a key','how to get','lms access','how do i access','join','enrol'],a:'WhatsApp Tseke on 072 474 8888 to arrange a study key. Pay via PayShap (072 474 8888) or EFT (Capitec, Acc 2605150883, Branch 470010) using your name and cell number as reference. Send your proof of payment on WhatsApp with your name — your key is usually issued within a few hours during business hours.'},
+  'study key':{k:['study key','get a key','how to get','lms access','how do i access','join','enrol'],a:'WhatsApp Tseke on 072 474 8888 to arrange a study key. Pay securely via Yoco at pay.yoco.com/riba-t-tseke. Send your payment confirmation on WhatsApp with your name — your key is usually issued within a few hours during business hours.'},
   'ir companion':{k:['ir companion','installation rules companion','r1000','r 1,000','r1 000','lifetime access','companion include','study pack'],a:'The Installation Rules Companion (R1,000 — lifetime access) includes: Full quiz bank covering all IE exam topics (90% pass-mark threshold), session study notes for Paper 1 and Paper 2, worked examples and calculations, the complete PDF study guide for SANS 10142-1 (P1 and P2), past 10 years of actual DOeL exam papers with Tseke\'s worked solutions, and direct WhatsApp support from Tseke.'},
-  'payment':{k:['payment','how to pay','banking','payshap','capitec','eft','donate','bank'],a:'Payment options:\nPayShap: 072 474 8888 (Riba T Tseke)\nEFT: Capitec Bank, Acc 2605150883, Branch 470010\nUse your name and cell number as reference. Send proof of payment to 072 474 8888 on WhatsApp with your name.'},
+  'payment':{k:['payment','how to pay','banking','payshap','capitec','eft','donate','bank','yoco'],a:'All payments go through Yoco (card and instant EFT accepted).\nVisit pay.yoco.com/riba-t-tseke to pay, then WhatsApp your confirmation to 072 474 8888 with your name and what you paid for.'},
   'youtube':{k:['youtube','sessions','live session','recordings','video','channel','watch'],a:'Tseke runs live YouTube sessions covering the full Installation Rules syllabus — Paper 1 and Paper 2. Sessions are free and open to all. Recordings go to YouTube. Search \"Riba T Tseke\" on YouTube or use the Sessions tab on this site.'},
   'arep':{k:['arep','renewable energy','solar','pv'],a:'AREP (Association for Renewable Energy Practitioners) is a professional body for renewable energy practitioners. Registration supports professional credibility and CPD. Visit arep.co.za for membership details.'},
   'ewseta':{k:['ewseta','learnership','apprenticeship','seta','training authority'],a:'EWSETA (Electricity and Water Sector Education and Training Authority) funds learnerships and accredits training providers in the electricity sector. For funded learnerships in electrical installation, check ewseta.org.za. MERSETA also covers electrical engineering learnerships — see merseta.org.za.'},

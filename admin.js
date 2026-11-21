@@ -2354,40 +2354,7 @@ function engageCopyText(txt,btn){
   try{navigator.clipboard.writeText(txt).then(function(){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy';},2000);});}catch(e){btn.textContent='Copy';}
 }
 function engageShowDonate(){
-  if(document.getElementById('engage-donate-overlay')) return;
-  var el=document.createElement('div');
-  el.id='engage-donate-overlay';
-  el.className='engage-overlay';
-  el.innerHTML='<div class="engage-card" style="max-width:420px;">'
-    +'<button class="engage-close" onclick="engageDismiss(\'donate\')">×</button>'
-    +'<h4>💛 Support the next learner</h4>'
-    +'<p style="font-size:12.5px;color:var(--fg2);margin:0 0 12px;">These resources are free because people like you care about the trade. Any amount helps keep the platform running.</p>'
-    +'<div style="background:var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:10px;text-align:center;">'
-    +'<div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:4px;">PayShap · Works with any SA bank</div>'
-    +'<div style="font-family:\'Playfair Display\',serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:.04em;">072 474 8888</div>'
-    +'<div style="font-size:11px;color:rgba(255,255,255,.85);margin:2px 0 8px;">Riba T Tseke</div>'
-    +'<button onclick="engageCopyText(\'0724748888\',this)" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:5px 14px;font-size:12px;cursor:pointer;">Copy</button>'
-    +'</div>'
-    +'<div style="font-size:11px;color:var(--fg3);text-align:center;margin-bottom:8px;">Open your banking app → PayShap / Instant Pay → enter the number above</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px;">'
-    +'<button onclick="engageBankApp(\'fnb\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>FNB</span></button>'
-    +'<button onclick="engageBankApp(\'capitec\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>Capitec</span></button>'
-    +'<button onclick="engageBankApp(\'absa\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>ABSA</span></button>'
-    +'<button onclick="engageBankApp(\'standardbank\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>Std Bank</span></button>'
-    +'<button onclick="engageBankApp(\'nedbank\')" style="display:flex;flex-direction:column;align-items:center;padding:7px 4px;background:var(--bg);border:1px solid var(--border);border-radius:7px;font-size:9.5px;color:var(--fg2);font-weight:600;cursor:pointer;">🏦<span>Nedbank</span></button>'
-    +'</div>'
-    +'<details style="font-size:12px;color:var(--fg2);margin-bottom:10px;">'
-    +'<summary style="cursor:pointer;color:var(--fg3);font-size:11px;">EFT bank details</summary>'
-    +'<div style="margin-top:7px;line-height:1.9;background:var(--bg);border-radius:7px;padding:9px 11px;">'
-    +'<span style="color:var(--fg3);">Name:</span> <strong>Riba T Tseke</strong><br>'
-    +'<span style="color:var(--fg3);">Bank:</span> Capitec Bank<br>'
-    +'<span style="color:var(--fg3);">Account:</span> <strong style="color:var(--amb);">2605150883</strong><br>'
-    +'<span style="color:var(--fg3);">Branch:</span> 470010 · Savings<br>'
-    +'<span style="color:var(--fg3);">Ref:</span> DONATE'
-    +'</div></details>'
-    +'<button class="biz-btn" onclick="engageDismiss(\'donate\')" style="width:100%;">Close</button>'
-    +'</div></div>';
-  document.body.appendChild(el);
+  window.open('https://pay.yoco.com/riba-t-tseke','_blank','noopener');
 }
 
 function engageDismiss(type){

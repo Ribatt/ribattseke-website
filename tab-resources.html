@@ -33,22 +33,7 @@ function switchHub(id,btn){
         <p class="res-price"><span style="text-decoration:line-through;color:var(--fg3);font-size:14px;font-weight:400;">R1&#8201;200</span> <span style="color:var(--amb);">R1&#8201;000</span></p>
         <p class="res-delivery">PDF pack and YouTube links via WhatsApp or email</p>
         <button class="biz-btn biz-btn-primary" onclick="openYocoCheckout()" style="width:100%;margin-top:8px;padding:10px;">&#128179; Pay &amp; Get Companion Pack</button>
-        <button class="btn-show-pay" onclick="togglePay('pay-guide')" style="width:100%;margin-top:6px;font-size:11.5px;">Show EFT / PayShap payment details</button>
-        <div id="pay-guide" hidden style="background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;text-align:left;">
-          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">EFT · Bank Transfer</div>
-          <div style="font-size:12px;color:var(--fg2);line-height:1.75;margin-bottom:8px;">
-            <span style="color:var(--fg3);">Account holder:</span> Tseke Riba<br>
-            <span style="color:var(--fg3);">Bank:</span> Capitec Bank<br>
-            <span style="color:var(--fg3);">Account no.:</span> <strong style="color:var(--amb);">2605150883</strong><br>
-            <span style="color:var(--fg3);">Branch code:</span> 470010 · Savings
-          </div>
-          <div style="border-top:1px solid var(--border);padding-top:7px;">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:3px;">PayShap · Any Bank</div>
-            <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--amb);letter-spacing:.03em;">072 474 8888</div>
-            <div style="font-size:11px;color:var(--fg3);margin-top:1px;">Riba T Tseke</div>
-          </div>
-        </div>
-        <p class="pay-step">Send proof to ribattseke@gmail.com or WhatsApp. Pack delivered same day.</p>
+        <p style="font-size:11.5px;color:var(--fg3);margin-top:6px;text-align:center;">Or <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="color:var(--amb);">pay directly on Yoco →</a></p>
       </div>
     </div>
     <p style="font-size:12px;color:var(--fg3);margin-top:8px;line-height:1.5;">Study packs are non-refundable digital products. Contact ribattseke@gmail.com within 24 hours if there is a delivery issue.</p>
@@ -203,8 +188,8 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
             <div class="book-sub">Wiring of Premises, Low Voltage Installations · Paper 1: Sections 1, 2, 3, 4, 5, 7 · Annexures C, E · Paper 2: Sections 6, 8 · Annexures A, B, D, G, H, I, J, K, L, N</div>
           </div>
           <div class="book-price-btns">
-            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-pdf','SANS 10142-1 (Ed 3.3)','PDF — R 2 077.87',false)">PDF<br><span>R 2 077.87</span></button>
-            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-print','SANS 10142-1 (Ed 3.3)','Hardcopy — R 2 308.74',true)">Hardcopy<br><span>R 2 308.74</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-pdf','SANS 10142-1 (Ed 3.3)','PDF — R 1 706.82',false)">PDF<br><span>R 1 706.82</span></button>
+            <button class="btn-book-buy" onclick="openBookCheckout('sans10142-print','SANS 10142-1 (Ed 3.3)','Hardcopy — R 1 896.46',true)">Hardcopy<br><span>R 1 896.46</span></button>
           </div>
         </div>
         <div class="book-row book-row--priced">
