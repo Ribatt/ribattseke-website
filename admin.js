@@ -2648,6 +2648,7 @@ function jobEdit(id){
     +'</div></div></div>';
   _jmPhotos=(j.photos||[]).slice();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
   setTimeout(function(){ _jmPhotos.forEach(function(p,i){ jmRenderThumb(p,i); }); },0);
 }
 function jmAddPhotos(inp){
@@ -2763,7 +2764,7 @@ function cocEdit(id,preClientId,preSite,preJobRef){
   var cliId=preClientId||c.clientId||'';
   var clients=bizList('cl_');
   var cOpts=clients.map(function(cl){return '<option value="'+cl.id+'"'+(cliId===cl.id?' selected':'')+'>'+esc(cl.name)+'</option>';}).join('');
-  var html='<div class="biz-modal-backdrop" id="coc-modal">'
+  var html='<div class="biz-modal-bg" id="coc-modal">'
     +'<div class="biz-modal">'
     +'<h3>'+(id?'Edit':'New')+' Certificate of Compliance (CoC)</h3>'
     +'<label>Client *<select id="cm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
@@ -2790,6 +2791,7 @@ function cocEdit(id,preClientId,preSite,preJobRef){
     +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'coc_'+id+'\');closeModal(\'coc-modal\');cocRender()">Delete</button>':'')
     +'</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function cocSave(id){
   var clientId=val('cm-client');
@@ -2908,7 +2910,7 @@ function poeEdit(id,preClientId,preCocRef,preSite){
   var checkHtml=POE_CHECKLIST.map(function(item,i){
     return '<label style="display:flex;gap:8px;align-items:center;margin:4px 0"><input type="checkbox" id="poe-chk-'+i+'" '+(checks[i]?'checked':'')+'>'+esc(item)+'</label>';
   }).join('');
-  var html='<div class="biz-modal-backdrop" id="poe-modal">'
+  var html='<div class="biz-modal-bg" id="poe-modal">'
     +'<div class="biz-modal" style="max-width:600px">'
     +'<h3>'+(id?'Edit':'New')+' Portfolio of Evidence</h3>'
     +'<label>Client *<select id="pm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
@@ -2927,6 +2929,7 @@ function poeEdit(id,preClientId,preCocRef,preSite){
     +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'poe_'+id+'\');closeModal(\'poe-modal\');poeRender()">Delete</button>':'')
     +'</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function poeSave(id){
   var clientId=val('pm-client');
@@ -3001,7 +3004,7 @@ function projEdit(id){
   var p=id?bizGet('proj_'+id):{};
   var clients=bizList('cl_');
   var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(p.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
-  var html='<div class="biz-modal-backdrop" id="proj-modal">'
+  var html='<div class="biz-modal-bg" id="proj-modal">'
     +'<div class="biz-modal" style="max-width:580px">'
     +'<h3>'+(id?'Edit':'New')+' Project</h3>'
     +'<label>Project Name *<input id="pjm-name" value="'+esc(p.name||'')+'"></label>'
@@ -3020,6 +3023,7 @@ function projEdit(id){
     +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'proj_'+id+'\');closeModal(\'proj-modal\');projRender()">Delete</button>':'')
     +'</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function projSave(id){
   var name=val('pjm-name').trim();
@@ -3069,7 +3073,7 @@ function mileModal(projId){
       +'<td><input type="checkbox" '+(m.done?'checked':'')+' onchange="mileToggle(\''+m.id+'\',\''+projId+'\',this.checked)"></td>'
       +'<td><button class="biz-btn biz-btn-xs" onclick="bizDel(\'mile_'+m.id+'\');mileModal(\''+projId+'\')">✕</button></td></tr>';
   }).join('');
-  var html='<div class="biz-modal-backdrop" id="mile-modal">'
+  var html='<div class="biz-modal-bg" id="mile-modal">'
     +'<div class="biz-modal" style="max-width:520px">'
     +'<h3>Milestones — '+esc(p.projNo||projId)+': '+esc(p.name||'')+'</h3>'
     +'<table class="biz-table"><thead><tr><th>Milestone</th><th>Due</th><th>Done</th><th></th></tr></thead><tbody>'
@@ -3083,6 +3087,7 @@ function mileModal(projId){
     +'</div></div>';
   var old=document.getElementById('mile-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function mileAdd(projId){
   var title=val('mile-title').trim();
@@ -3146,7 +3151,7 @@ function riskEdit(id){
       +'<td><button class="biz-btn biz-btn-xs" onclick="riskRemoveRow(\''+id+'\','+i+')">✕</button></td></tr>';
   }).join('');
   var hazOpts=RISK_HAZARDS.map(function(h){return '<option>'+h+'</option>';}).join('');
-  var html='<div class="biz-modal-backdrop" id="risk-modal">'
+  var html='<div class="biz-modal-bg" id="risk-modal">'
     +'<div class="biz-modal" style="max-width:700px">'
     +'<h3>Risk Assessment — '+r.raNo+'</h3>'
     +'<label>Title / Activity<input id="rim-title" value="'+esc(r.title||'')+'"></label>'
@@ -3168,6 +3173,7 @@ function riskEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('risk-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function riskAddRow(id){
   var r=bizGet('risk_'+id)||{rows:[]};
@@ -3233,7 +3239,7 @@ function msNew(){
 }
 function msEdit(id){
   var m=bizGet('ms_'+id)||{};
-  var html='<div class="biz-modal-backdrop" id="ms-modal">'
+  var html='<div class="biz-modal-bg" id="ms-modal">'
     +'<div class="biz-modal" style="max-width:580px">'
     +'<h3>Method Statement — '+m.msNo+'</h3>'
     +'<label>Activity *<input id="mm-act" value="'+esc(m.activity||'')+'"></label>'
@@ -3249,6 +3255,7 @@ function msEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('ms-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function msSave(id){
   var m=bizGet('ms_'+id)||{};
@@ -3298,7 +3305,7 @@ function ptwNew(){
 }
 function ptwEdit(id){
   var p=bizGet('ptw_'+id)||{};
-  var html='<div class="biz-modal-backdrop" id="ptw-modal">'
+  var html='<div class="biz-modal-bg" id="ptw-modal">'
     +'<div class="biz-modal">'
     +'<h3>Permit to Work — '+p.ptwNo+'</h3>'
     +'<label>Work Type *<input id="pw-type" value="'+esc(p.workType||'')+'"></label>'
@@ -3317,6 +3324,7 @@ function ptwEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('ptw-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function ptwSave(id){
   var p=bizGet('ptw_'+id)||{};
@@ -3370,7 +3378,7 @@ function incNew(){
 }
 function incEdit(id){
   var i=bizGet('inc_'+id)||{};
-  var html='<div class="biz-modal-backdrop" id="inc-modal">'
+  var html='<div class="biz-modal-bg" id="inc-modal">'
     +'<div class="biz-modal">'
     +'<h3>Incident Report — '+i.incNo+'</h3>'
     +'<label>Incident Type<select id="im-type">'
@@ -3392,6 +3400,7 @@ function incEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('inc-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function incSave(id){
   var i=bizGet('inc_'+id)||{};
@@ -3456,7 +3465,7 @@ function tstEdit(id){
     return '<tr><td>'+esc(c.id||'')+'</td><td>'+esc(c.desc||'')+'</td><td>'+esc(c.ir||'')+'</td><td>'+esc(c.cont||'')+'</td><td>'+esc(c.rcd||'')+'</td>'
       +'<td><button class="biz-btn biz-btn-xs" onclick="tstRemoveCirc(\''+id+'\','+i+')">✕</button></td></tr>';
   }).join('');
-  var html='<div class="biz-modal-backdrop" id="tst-modal">'
+  var html='<div class="biz-modal-bg" id="tst-modal">'
     +'<div class="biz-modal" style="max-width:720px">'
     +'<h3>'+(id?'Edit':'New')+' Electrical Test Record</h3>'
     +'<label>Client<select id="tm-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
@@ -3485,6 +3494,7 @@ function tstEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('tst-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function tstAddCirc(id){
   var t=id?bizGet('tst_'+id):{circuits:[]};
@@ -3564,7 +3574,7 @@ function pvtEdit(id){
     return '<tr><td>'+esc(s.id||'')+'</td><td>'+esc(s.panels||'')+'</td><td>'+esc(s.voc||'')+'</td><td>'+esc(s.isc||'')+'</td><td>'+esc(s.ir||'')+'</td><td>'+esc(s.pmax||'')+'</td>'
       +'<td><button class="biz-btn biz-btn-xs" onclick="pvtRemoveStr(\''+id+'\','+i+')">✕</button></td></tr>';
   }).join('');
-  var html='<div class="biz-modal-backdrop" id="pvt-modal">'
+  var html='<div class="biz-modal-bg" id="pvt-modal">'
     +'<div class="biz-modal" style="max-width:760px">'
     +'<h3>'+(id?'Edit':'New')+' PV System Test Record</h3>'
     +'<label>Client<select id="pv-client"><option value="">— Select —</option>'+cOpts+'</select></label>'
@@ -3596,6 +3606,7 @@ function pvtEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('pvt-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function pvtAddString(id){
   var p=id?bizGet('pvt_'+id):{strings:[]};
@@ -3688,7 +3699,7 @@ function empRender(){
 function empNew(){empEdit(null);}
 function empEdit(id){
   var e=id?bizGet('emp_'+id):{};
-  var html='<div class="biz-modal-backdrop" id="emp-modal">'
+  var html='<div class="biz-modal-bg" id="emp-modal">'
     +'<div class="biz-modal" style="max-width:580px">'
     +'<h3>'+(id?'Edit':'New')+' Employee</h3>'
     +'<label>Full Name *<input id="em-name" value="'+esc(e.name||'')+'"></label>'
@@ -3711,6 +3722,7 @@ function empEdit(id){
     +(id&&id!=='EMP0001'?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'emp_'+id+'\');closeModal(\'emp-modal\');empRender()">Delete</button>':'')
     +'</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function empSave(id){
   var name=val('em-name').trim();var title=val('em-title').trim();
@@ -3764,7 +3776,7 @@ function payEdit(id){
     SA_MONTHS.slice().reverse().forEach(function(m){periodOpts.push(m+' '+y);});
   }
   var pOpts=periodOpts.map(function(o){return '<option'+(p.period===o?' selected':'')+'>'+o+'</option>';}).join('');
-  var html='<div class="biz-modal-backdrop" id="pay-modal">'
+  var html='<div class="biz-modal-bg" id="pay-modal">'
     +'<div class="biz-modal" style="max-width:500px">'
     +'<h3>Payslip — '+p.slipNo+'</h3>'
     +'<label>Employee<select id="py-emp" onchange="payLoadEmp()"><option value="">— Select —</option>'+eOpts+'</select></label>'
@@ -3785,6 +3797,7 @@ function payEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('pay-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function payLoadEmp(){
   var empId=val('py-emp');
@@ -3903,7 +3916,7 @@ function kpiEdit(id){
     return '<tr><td>'+esc(item.label)+'</td><td>'+esc(item.unit)+'</td><td style="color:var(--muted)">'+item.target+'</td>'
       +'<td><input type="number" id="kv-'+item.key+'" value="'+v+'" min="0" oninput="kpiCalc()" style="width:80px"></td></tr>';
   }).join('');
-  var html='<div class="biz-modal-backdrop" id="kpi-modal">'
+  var html='<div class="biz-modal-bg" id="kpi-modal">'
     +'<div class="biz-modal" style="max-width:580px">'
     +'<h3>KPI Scorecard — '+k.kpiNo+'</h3>'
     +'<label>Employee<select id="ki-emp"><option value="">— Select —</option>'+eOpts+'</select></label>'
@@ -3919,6 +3932,7 @@ function kpiEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('kpi-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function kpiCalc(){
   var scores=KPI_ITEMS.map(function(item){
@@ -4000,7 +4014,7 @@ function memLoadDefaults(){
 function memNew(){memEdit(null);}
 function memEdit(id){
   var m=id?bizGet('mem_'+id):{};
-  var html='<div class="biz-modal-backdrop" id="mem-modal">'
+  var html='<div class="biz-modal-bg" id="mem-modal">'
     +'<div class="biz-modal">'
     +'<h3>'+(id?'Edit':'New')+' Membership / Licence</h3>'
     +'<label>Organisation Abbreviation<input id="mm-org" value="'+esc(m.org||'')+'"></label>'
@@ -4016,6 +4030,7 @@ function memEdit(id){
     +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'mem_'+id+'\');closeModal(\'mem-modal\');memRender()">Delete</button>':'')
     +'</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function memSave(id){
   var saved=id?bizGet('mem_'+id):{};
@@ -4059,7 +4074,7 @@ function _agrEditOldStub_DISABLED(id){
   var a=id?bizGet('agr_'+id):{};
   var agrNo=a.agrNo||'AGR-'+(Date.now()+'').slice(-5);
   var types=['Employee Contract','Subcontractor SLA','MOU','NDA','Other'];
-  var html='<div class="biz-modal-backdrop" id="agr-modal"><div class="biz-modal" style="max-width:640px">'
+  var html='<div class="biz-modal-bg" id="agr-modal"><div class="biz-modal" style="max-width:640px">'
     +'<h3>Agreement — '+agrNo+'</h3>'
     +'<label>Type *<select id="am-type">'
     +types.map(function(t){return '<option'+(a.agrType===t?' selected':'')+'>'+t+'</option>';}).join('')
@@ -4081,6 +4096,7 @@ function _agrEditOldStub_DISABLED(id){
     +'</div></div></div>';
   var old=document.getElementById('agr-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function _agrSaveOldStub_DISABLED(agrNo,existingId){
   var id=existingId||agrNo;
@@ -4284,7 +4300,7 @@ function sopNew(){
 }
 function sopEdit(id){
   var s=bizGet('sop_'+id)||{};
-  var html='<div class="biz-modal-backdrop" id="sop-modal">'
+  var html='<div class="biz-modal-bg" id="sop-modal">'
     +'<div class="biz-modal" style="max-width:640px">'
     +'<h3>SOP — '+s.sopNo+'</h3>'
     +'<label>Category<select id="sm-cat">'
@@ -4306,6 +4322,7 @@ function sopEdit(id){
     +'</div></div></div>';
   var old=document.getElementById('sop-modal');if(old)old.remove();
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function sopSave(id){
   var s=bizGet('sop_'+id)||{};
@@ -4413,7 +4430,7 @@ function ecsaEdit(id){
     var checked=(e.outcomes||'').split(',').map(function(x){return x.trim();}).indexOf(String(o.no))>=0;
     return '<label style="display:flex;gap:6px;align-items:center;white-space:nowrap"><input type="checkbox" class="ecsa-chk" value="'+o.no+'" '+(checked?'checked':'')+'>'+o.no+'. '+esc(o.label)+'</label>';
   }).join('');
-  var html='<div class="biz-modal-backdrop" id="ecsa-modal">'
+  var html='<div class="biz-modal-bg" id="ecsa-modal">'
     +'<div class="biz-modal" style="max-width:580px">'
     +'<h3>'+(id?'Edit':'Log')+' CPD Activity</h3>'
     +'<label>Activity Description *<input id="ea-act" value="'+esc(e.activity||'')+'"></label>'
@@ -4433,6 +4450,7 @@ function ecsaEdit(id){
     +(id?'<button class="biz-btn biz-btn-danger" style="float:right" onclick="bizDel(\'ecsa_'+id+'\');closeModal(\'ecsa-modal\');ecsaRender()">Delete</button>':'')
     +'</div></div></div>';
   document.body.insertAdjacentHTML('beforeend',html);
+  var _m=document.body.lastElementChild;if(_m&&_m.classList.contains('biz-modal-bg'))_m.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function ecsaSave(id){
   var act=val('ea-act').trim();if(!act){alert('Activity description required.');return;}
@@ -4918,6 +4936,11 @@ function hubRenderers(){
     if(!btn) btn=document.querySelector('.hub-nav-btn[onclick*="\''+id+'\'"]')||document.querySelector('.hub-nav-btn[onclick*="\"'+id+'\""]');
     if(typeof orig==='function')orig(id,btn);
     localStorage.setItem('biz_hub_active',id);
+    // Scroll the activated section into view so it appears above the page fold
+    setTimeout(function(){
+      var sec=document.getElementById(id);
+      if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+    },20);
     setTimeout(function(){
       if(id==='hub-jobs')jobRender();
       else if(id==='hub-coc')cocRender();
@@ -5046,6 +5069,41 @@ function admDelEnq(id){
 }
 function _esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
+/* ===== GENERIC FORM MODAL HELPER ===== */
+function _admForm(title,fields,onSave){
+  var existing=document.getElementById('_admf-modal');
+  if(existing)existing.remove();
+  var fhtml=fields.map(function(f){
+    var inp;
+    if(f.type==='textarea'){
+      inp='<textarea id="admf-'+f.id+'" rows="3" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);font-size:13px;font-family:inherit;resize:vertical;">'+_esc(f.value||'')+'</textarea>';
+    }else if(f.type==='select'){
+      var opts=(f.options||[]).map(function(o){return '<option value="'+_esc(o.v)+'"'+(o.v===f.value?' selected':'')+'>'+_esc(o.l)+'</option>';}).join('');
+      inp='<select id="admf-'+f.id+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);font-size:13px;">'+opts+'</select>';
+    }else{
+      inp='<input id="admf-'+f.id+'" type="'+(f.type||'text')+'" value="'+_esc(f.value||'')+'" placeholder="'+(f.placeholder||'')+'" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);font-size:13px;">';
+    }
+    return '<div style="margin-bottom:12px;"><label style="display:block;font-size:12.5px;font-weight:600;color:var(--fg2);margin-bottom:4px;">'+_esc(f.label)+(f.required?'<span style="color:#e53;"> *</span>':'')+'</label>'+inp+'</div>';
+  }).join('');
+  var ov=document.createElement('div');
+  ov.id='_admf-modal';
+  ov.className='biz-modal-bg';
+  ov.innerHTML='<div class="biz-modal" style="max-height:85vh;overflow-y:auto;">'
+    +'<h4 style="margin:0 0 14px;font-size:15px;font-weight:700;">'+_esc(title)+'</h4>'
+    +fhtml
+    +'<div class="biz-modal-actions" style="margin-top:16px;">'
+    +'<button class="biz-btn biz-btn-primary" id="_admf-save">Save</button>'
+    +'<button class="biz-btn" onclick="document.getElementById(\'_admf-modal\').remove()">Cancel</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  ov.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('_admf-save').onclick=function(){
+    var data={};
+    fields.forEach(function(f){var el=document.getElementById('admf-'+f.id);data[f.id]=el?(el.value||''):'';});
+    onSave(data,ov);
+  };
+}
+
 /* ===== PURCHASE ORDERS ===== */
 var PO_NS='biz_po_';
 function poRender(){
@@ -5070,15 +5128,21 @@ function poRender(){
   list.innerHTML=html;
 }
 function poAdd(){
-  var supplier=prompt('Supplier name:');if(!supplier)return;
-  var desc=prompt('Items / description:');if(!desc)return;
-  var amount=prompt('Total amount (R):');
-  var status='pending';
-  var id=Date.now().toString(36);
-  var num=String((_hubGetAll(PO_NS).length||0)+1).padStart(4,'0');
-  var rec={id:id,poNum:num,supplier:supplier,desc:desc,amount:parseFloat(amount)||0,date:new Date().toLocaleDateString('en-ZA'),status:status,ts:Date.now()};
-  try{localStorage.setItem(PO_NS+id,JSON.stringify(rec));}catch(e){}
-  poRender();
+  _admForm('New Purchase Order',[
+    {id:'supplier',label:'Supplier name',required:true},
+    {id:'desc',label:'Items / description',type:'textarea',required:true},
+    {id:'amount',label:'Total amount (R)',type:'number',placeholder:'0.00'},
+    {id:'status',label:'Status',type:'select',value:'pending',options:[
+      {v:'pending',l:'🟡 Pending'},{v:'approved',l:'🟢 Approved'},{v:'received',l:'✅ Received'},{v:'cancelled',l:'🔴 Cancelled'}
+    ]}
+  ],function(data,ov){
+    if(!data.supplier.trim()){alert('Supplier name is required.');return;}
+    var id=Date.now().toString(36);
+    var num=String((_hubGetAll(PO_NS).length||0)+1).padStart(4,'0');
+    var rec={id:id,poNum:num,supplier:data.supplier.trim(),desc:data.desc.trim(),amount:parseFloat(data.amount)||0,date:new Date().toLocaleDateString('en-ZA'),status:data.status||'pending',ts:Date.now()};
+    try{localStorage.setItem(PO_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();poRender();
+  });
 }
 
 /* ===== PURCHASE REQUESTS ===== */
@@ -5105,14 +5169,20 @@ function prRender(){
   list.innerHTML=html;
 }
 function prAdd(){
-  var desc=prompt('What is needed?');if(!desc)return;
-  var amount=prompt('Estimated cost (R):');
-  var requester=prompt('Requested by (name):');
-  var priority=prompt('Priority (low / medium / high):') ||'medium';
-  var id=Date.now().toString(36);
-  var rec={id:id,desc:desc,amount:parseFloat(amount)||0,requester:requester||'—',priority:priority,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
-  try{localStorage.setItem(PR_NS+id,JSON.stringify(rec));}catch(e){}
-  prRender();
+  _admForm('New Purchase Request',[
+    {id:'desc',label:'What is needed?',type:'textarea',required:true},
+    {id:'amount',label:'Estimated cost (R)',type:'number',placeholder:'0.00'},
+    {id:'requester',label:'Requested by (name)',placeholder:'Your name'},
+    {id:'priority',label:'Priority',type:'select',value:'medium',options:[
+      {v:'low',l:'🔵 Low'},{v:'medium',l:'🟡 Medium'},{v:'high',l:'🔴 High'}
+    ]}
+  ],function(data,ov){
+    if(!data.desc.trim()){alert('Description is required.');return;}
+    var id=Date.now().toString(36);
+    var rec={id:id,desc:data.desc.trim(),amount:parseFloat(data.amount)||0,requester:data.requester.trim()||'—',priority:data.priority||'medium',date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+    try{localStorage.setItem(PR_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();prRender();
+  });
 }
 
 /* ===== TRAVEL MANAGEMENT ===== */
@@ -5139,16 +5209,21 @@ function travelRender(){
   list.innerHTML=html;
 }
 function travelAdd(){
-  var dest=prompt('Destination:');if(!dest)return;
-  var purpose=prompt('Purpose:');if(!purpose)return;
-  var km=prompt('Distance (km):');
-  var fuel=prompt('Fuel cost (R):');
-  var toll=prompt('Toll cost (R):');
-  var other=prompt('Other costs (R):');
-  var id=Date.now().toString(36);
-  var rec={id:id,destination:dest,purpose:purpose,km:parseFloat(km)||0,fuel:parseFloat(fuel)||0,toll:parseFloat(toll)||0,other:parseFloat(other)||0,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
-  try{localStorage.setItem(TRAVEL_NS+id,JSON.stringify(rec));}catch(e){}
-  travelRender();
+  _admForm('New Travel Record',[
+    {id:'destination',label:'Destination',required:true},
+    {id:'purpose',label:'Purpose / description',required:true},
+    {id:'km',label:'Distance (km)',type:'number',placeholder:'0'},
+    {id:'fuel',label:'Fuel cost (R)',type:'number',placeholder:'0.00'},
+    {id:'toll',label:'Toll cost (R)',type:'number',placeholder:'0.00'},
+    {id:'other',label:'Other costs (R)',type:'number',placeholder:'0.00'}
+  ],function(data,ov){
+    if(!data.destination.trim()){alert('Destination is required.');return;}
+    if(!data.purpose.trim()){alert('Purpose is required.');return;}
+    var id=Date.now().toString(36);
+    var rec={id:id,destination:data.destination.trim(),purpose:data.purpose.trim(),km:parseFloat(data.km)||0,fuel:parseFloat(data.fuel)||0,toll:parseFloat(data.toll)||0,other:parseFloat(data.other)||0,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+    try{localStorage.setItem(TRAVEL_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();travelRender();
+  });
 }
 
 /* ===== STOCK & MATERIALS ===== */
@@ -5182,25 +5257,34 @@ function stockRender(){
   list.innerHTML=html;
 }
 function stockAdd(){
-  var name=prompt('Item name:');if(!name)return;
-  var unit=prompt('Unit (ea/m/kg/roll etc.):') ||'ea';
-  var onHand=prompt('Quantity on hand:');
-  var cost=prompt('Unit cost (R):');
-  var reorder=prompt('Reorder at qty (default 2):') ||'2';
-  var id=Date.now().toString(36);
-  var rec={id:id,name:name,unit:unit,onHand:parseInt(onHand)||0,issued:0,cost:parseFloat(cost)||0,reorder:parseInt(reorder)||2,ts:Date.now()};
-  try{localStorage.setItem(STOCK_NS+id,JSON.stringify(rec));}catch(e){}
-  stockRender();
+  _admForm('Add Stock Item',[
+    {id:'name',label:'Item name',required:true},
+    {id:'unit',label:'Unit (ea / m / kg / roll etc.)',value:'ea'},
+    {id:'onHand',label:'Quantity on hand',type:'number',placeholder:'0'},
+    {id:'cost',label:'Unit cost (R)',type:'number',placeholder:'0.00'},
+    {id:'reorder',label:'Reorder alert at quantity',type:'number',value:'2'}
+  ],function(data,ov){
+    if(!data.name.trim()){alert('Item name is required.');return;}
+    var id=Date.now().toString(36);
+    var rec={id:id,name:data.name.trim(),unit:data.unit.trim()||'ea',onHand:parseInt(data.onHand)||0,issued:0,cost:parseFloat(data.cost)||0,reorder:parseInt(data.reorder)||2,ts:Date.now()};
+    try{localStorage.setItem(STOCK_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();stockRender();
+  });
 }
 function stockIssue(id){
-  var qty=prompt('Quantity to issue:');if(!qty)return;
-  try{
-    var s=JSON.parse(localStorage.getItem(STOCK_NS+id)||'{}');
-    s.onHand=Math.max(0,(parseInt(s.onHand)||0)-(parseInt(qty)||1));
-    s.issued=(parseInt(s.issued)||0)+(parseInt(qty)||1);
-    localStorage.setItem(STOCK_NS+id,JSON.stringify(s));
-  }catch(e){}
-  stockRender();
+  _admForm('Issue Stock',[
+    {id:'qty',label:'Quantity to issue',type:'number',value:'1',required:true}
+  ],function(data,ov){
+    var qty=parseInt(data.qty)||0;
+    if(!qty){alert('Enter a valid quantity.');return;}
+    try{
+      var s=JSON.parse(localStorage.getItem(STOCK_NS+id)||'{}');
+      s.onHand=Math.max(0,(parseInt(s.onHand)||0)-qty);
+      s.issued=(parseInt(s.issued)||0)+qty;
+      localStorage.setItem(STOCK_NS+id,JSON.stringify(s));
+    }catch(e){}
+    ov.remove();stockRender();
+  });
 }
 
 /* ===== DELIVERY NOTES ===== */
@@ -5226,15 +5310,20 @@ function deliveryRender(){
   list.innerHTML=html;
 }
 function deliveryAdd(){
-  var jobRef=prompt('Job reference:');if(!jobRef)return;
-  var items=prompt('Items delivered:');if(!items)return;
-  var qty=prompt('Quantity:');
-  var driver=prompt('Driver name:');
-  var id=Date.now().toString(36);
-  var num=String((_hubGetAll(DN_NS).length||0)+1).padStart(4,'0');
-  var rec={id:id,dnNum:num,jobRef:jobRef,items:items,qty:qty||'1',driver:driver||'—',date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
-  try{localStorage.setItem(DN_NS+id,JSON.stringify(rec));}catch(e){}
-  deliveryRender();
+  _admForm('New Delivery Note',[
+    {id:'jobRef',label:'Job reference',required:true},
+    {id:'items',label:'Items delivered',type:'textarea',required:true},
+    {id:'qty',label:'Quantity',type:'number',value:'1'},
+    {id:'driver',label:'Driver name',placeholder:'Driver / courier name'}
+  ],function(data,ov){
+    if(!data.jobRef.trim()){alert('Job reference is required.');return;}
+    if(!data.items.trim()){alert('Items description is required.');return;}
+    var id=Date.now().toString(36);
+    var num=String((_hubGetAll(DN_NS).length||0)+1).padStart(4,'0');
+    var rec={id:id,dnNum:num,jobRef:data.jobRef.trim(),items:data.items.trim(),qty:data.qty||'1',driver:data.driver.trim()||'—',date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+    try{localStorage.setItem(DN_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();deliveryRender();
+  });
 }
 
 /* ===== SITE HANDOVERS ===== */
@@ -5261,14 +5350,21 @@ function handoverRender(){
   list.innerHTML=html;
 }
 function handoverAdd(){
-  var jobRef=prompt('Job reference:');if(!jobRef)return;
-  var client=prompt('Client name:');if(!client)return;
-  var punch=prompt('Punch list items (outstanding):') ||'';
-  var signed=confirm('Has client signed off?');
-  var id=Date.now().toString(36);
-  var rec={id:id,jobRef:jobRef,client:client,punch:punch,signed:signed,date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
-  try{localStorage.setItem(HO_NS+id,JSON.stringify(rec));}catch(e){}
-  handoverRender();
+  _admForm('New Site Handover',[
+    {id:'jobRef',label:'Job reference',required:true},
+    {id:'client',label:'Client name',required:true},
+    {id:'punch',label:'Outstanding punch list items',type:'textarea',placeholder:'List any outstanding items or leave blank if none'},
+    {id:'signed',label:'Client signed off?',type:'select',value:'no',options:[
+      {v:'no',l:'⏳ Not yet signed'},{v:'yes',l:'✅ Signed off'}
+    ]}
+  ],function(data,ov){
+    if(!data.jobRef.trim()){alert('Job reference is required.');return;}
+    if(!data.client.trim()){alert('Client name is required.');return;}
+    var id=Date.now().toString(36);
+    var rec={id:id,jobRef:data.jobRef.trim(),client:data.client.trim(),punch:data.punch.trim(),signed:data.signed==='yes',date:new Date().toLocaleDateString('en-ZA'),ts:Date.now()};
+    try{localStorage.setItem(HO_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();handoverRender();
+  });
 }
 
 /* ===== WARRANTIES ===== */
@@ -5298,17 +5394,24 @@ function warrantyRender(){
   list.innerHTML=html;
 }
 function warrantyAdd(){
-  var jobRef=prompt('Job reference:');if(!jobRef)return;
-  var client=prompt('Client name:');if(!client)return;
-  var startDate=prompt('Warranty start date (YYYY-MM-DD):') ||new Date().toISOString().slice(0,10);
-  var months=parseInt(prompt('Warranty period (months):') ||'12')||12;
-  var d=new Date(startDate);d.setMonth(d.getMonth()+months);
-  var endDate=d.toISOString().slice(0,10);
-  var defects=prompt('Known defects / notes:') ||'';
-  var id=Date.now().toString(36);
-  var rec={id:id,jobRef:jobRef,client:client,startDate:startDate,endDate:endDate,defects:defects,ts:Date.now()};
-  try{localStorage.setItem(WR_NS+id,JSON.stringify(rec));}catch(e){}
-  warrantyRender();
+  var today=new Date().toISOString().slice(0,10);
+  _admForm('New Warranty Record',[
+    {id:'jobRef',label:'Job reference',required:true},
+    {id:'client',label:'Client name',required:true},
+    {id:'startDate',label:'Warranty start date',type:'date',value:today},
+    {id:'months',label:'Warranty period (months)',type:'number',value:'12'},
+    {id:'defects',label:'Known defects / notes',type:'textarea',placeholder:'Leave blank if none'}
+  ],function(data,ov){
+    if(!data.jobRef.trim()){alert('Job reference is required.');return;}
+    if(!data.client.trim()){alert('Client name is required.');return;}
+    var months=parseInt(data.months)||12;
+    var d=new Date(data.startDate||today);d.setMonth(d.getMonth()+months);
+    var endDate=d.toISOString().slice(0,10);
+    var id=Date.now().toString(36);
+    var rec={id:id,jobRef:data.jobRef.trim(),client:data.client.trim(),startDate:data.startDate||today,endDate:endDate,defects:data.defects.trim(),ts:Date.now()};
+    try{localStorage.setItem(WR_NS+id,JSON.stringify(rec));}catch(e){}
+    ov.remove();warrantyRender();
+  });
 }
 
 /* ===== SHARED HELPERS ===== */

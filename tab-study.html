@@ -2249,7 +2249,9 @@ function lmsShowView(id){
   document.querySelectorAll('.lms-view').forEach(function(v){v.classList.remove('active');});
   var el=document.getElementById(id);
   if(el) el.classList.add('active');
-  window.scrollTo(0,0);
+  // Scroll the LMS section into view (not window top — that hides it below the fold)
+  var lmsWrap=document.getElementById('lms-wrap')||document.querySelector('[id="study-tab"] .lms-container')||el;
+  if(lmsWrap) lmsWrap.scrollIntoView({behavior:'smooth',block:'start'});
   // Hide headings when inside admin or dashboard
   var hide = (id==='lms-admin'||id==='lms-dash'||id==='lms-quiz');
   var t=document.getElementById('study-public-title');
