@@ -1532,7 +1532,7 @@ function _loadAdmin(){
   if(window._adminLoaded||window._adminLoading)return;
   window._adminLoading=true;
   var s=document.createElement('script');
-  s.src='/admin.js?v=6';
+  s.src='/admin.js?v=11';
   s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
   s.onerror=function(){window._adminLoading=false;window._donateLoading=false;_showDonateInline();};
   document.head.appendChild(s);

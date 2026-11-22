@@ -59,7 +59,10 @@
           <label class="lms-label">Email / Username</label>
           <input class="lms-input" id="lms-u" type="text" placeholder="Your email or username" autocomplete="username" autocapitalize="none">
           <label class="lms-label" style="margin-top:10px;">PIN</label>
-          <input class="lms-input" id="lms-p" type="text" placeholder="Your PIN" autocomplete="current-password">
+          <div style="position:relative;">
+            <input class="lms-input" id="lms-p" type="password" placeholder="Your PIN" autocomplete="current-password" style="padding-right:42px;">
+            <button type="button" onclick="(function(){var i=document.getElementById('lms-p');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
+          </div>
           <div class="lms-err" id="lms-login-err"></div>
           <button class="lms-btn" onclick="lmsSignin()">Sign In</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
@@ -2115,6 +2118,25 @@ if(typeof hubShow==='undefined'){
     if(sec){sec.style.display='block';sec.classList.add('active');}
     if(btn){btn.classList.add('active');}
     try{localStorage.setItem('biz_hub_active',id);}catch(e){}
+    /* Call render functions immediately if admin.js already loaded them */
+    setTimeout(function(){
+      try{
+        if(id==='hub-kyc'&&typeof kycRender==='function')kycRender();
+        else if(id==='hub-expiry'&&typeof expiryRender==='function')expiryRender();
+        else if(id==='hub-financials'&&typeof finRender==='function')finRender();
+        else if(id==='hub-jobs'&&typeof jobRender==='function')jobRender();
+        else if(id==='hub-coc'&&typeof cocRender==='function')cocRender();
+        else if(id==='hub-poe'&&typeof poeRender==='function')poeRender();
+        else if(id==='hub-projects'&&typeof projRender==='function')projRender();
+        else if(id==='hub-sops'&&typeof sopRender==='function')sopRender();
+        else if(id==='hub-ecsa'&&typeof ecsaRender==='function')ecsaRender();
+        else if(id==='hub-mentor'&&typeof mentorRender==='function')mentorRender();
+        else if(id==='hub-rates'&&typeof ratesRender==='function')ratesRender();
+        else if(id==='hub-enquiries'&&typeof enquiriesRender==='function')enquiriesRender();
+        else if(id==='hub-orders'&&typeof ordersRender==='function')ordersRender();
+        else if(id==='hub-clients'&&typeof clRender==='function')clRender();
+      }catch(err){}
+    },30);
   };
 }
 
@@ -2129,7 +2151,16 @@ function lmsShowView(id){
   if(t) t.style.display=hide?'none':'';
   var d=document.getElementById('lms-public-desc');
   if(d) d.style.display=hide?'none':'';
+  // Remember last username on sign-in screen
+  if(id==='lms-signin'){
+    try{
+      var saved=localStorage.getItem(LMS_NS+'_last_u');
+      var uInp=document.getElementById('lms-u');
+      if(saved&&uInp&&!uInp.value) uInp.value=saved;
+    }catch(e){}
+  }
 }
+
 
 function _lmsStore(){
   try{localStorage.setItem(LMS_NS+_lmsUser+'_'+_lmsKey,JSON.stringify(_lmsProgress));}catch(e){}
@@ -2150,6 +2181,8 @@ function _lmsUserExists(u){
 function lmsSignin(){
   var u=(document.getElementById('lms-u').value||'').trim();
   var p=(document.getElementById('lms-p').value||'').trim();
+  /* remember last username across page loads */
+  try{if(u)localStorage.setItem(LMS_NS+'_last_u',u);}catch(e){}
   var err=document.getElementById('lms-login-err');
   err.textContent='';
   if(!u){err.textContent='Please enter your username.';return;}
@@ -3637,7 +3670,7 @@ function ecsaRunEvidence(){
   var _adminAttempts=0;
   function _doLoadAdmin(){
     var s=document.createElement('script');
-    s.src='/admin.js?v=10&_='+Date.now();
+    s.src='/admin.js?v=11&_='+Date.now();
     s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
     s.onerror=function(){
       window._adminLoading=false;

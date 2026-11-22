@@ -173,7 +173,20 @@ function lmsOpenAdmin(){
     return;
   }
   // Restore last active hub section (render if needed)
-  setTimeout(function(){ if(typeof hubRenderers==='function') hubRenderers(); }, 80);
+  setTimeout(function(){
+    if(typeof hubRenderers==='function') hubRenderers();
+    /* Also force-render whatever hub section is currently visible */
+    var activeHub=document.querySelector('#lms-admin .hub-section.active');
+    if(activeHub){
+      var hid=activeHub.id;
+      if(hid==='hub-kyc'&&typeof kycRender==='function')kycRender();
+      else if(hid==='hub-expiry'&&typeof expiryRender==='function')expiryRender();
+      else if(hid==='hub-financials'&&typeof finRender==='function')finRender();
+      else if(hid==='hub-jobs'&&typeof jobRender==='function')jobRender();
+      else if(hid==='hub-coc'&&typeof cocRender==='function')cocRender();
+      else if(hid==='hub-clients'&&typeof clRender==='function')clRender();
+    }
+  }, 80);
 
   // Collect issued keys from localStorage (new Tseke- format)
   var el=function(id){return document.getElementById(id);};
@@ -500,6 +513,33 @@ function bizList(prefix){
   return out;
 }
 function bizDel(key){ try{ localStorage.removeItem(BIZ_NS+key); }catch(e){} }
+
+/* ---- Seed factory data (clients + issued keys) — written once, never overwritten ---- */
+(function _seedFactory(){
+  /* Clients */
+  var SEED_CLIENTS=[
+    {id:'cl_keletso_manoto',name:'Keletso Manoto',company:'',phone:'',email:'',address:'',vat:'',notes:'',createdAt:1700000000000},
+  ];
+  SEED_CLIENTS.forEach(function(c){
+    if(!localStorage.getItem(BIZ_NS+'cl_'+c.id.replace(/^cl_/,''))){
+      try{ localStorage.setItem(BIZ_NS+'cl_'+c.id.replace(/^cl_/,''),JSON.stringify(c)); }catch(e){}
+    }
+  });
+  /* Issued keys — write to both old ADM_NS and new IR_KEY_NS so they show in every list view */
+  var SEED_KEYS=[
+    {key:'RIBA-A001', who:'Tseke Riba', ns:'legacy'},
+    {key:'RIBA-A002', who:'Tiaan',      ns:'legacy'},
+  ];
+  SEED_KEYS.forEach(function(sk){
+    if(sk.ns==='legacy'){
+      var lk=ADM_NS+'k_'+sk.key;
+      if(!localStorage.getItem(lk)){ try{ localStorage.setItem(lk,sk.who); }catch(e){} }
+    } else {
+      var irk=IR_KEY_NS+sk.key;
+      if(!localStorage.getItem(irk)){ try{ localStorage.setItem(irk,sk.who); }catch(e){} }
+    }
+  });
+})();
 
 /* ---- ID generators ---- */
 function bizNextSeq(type){
