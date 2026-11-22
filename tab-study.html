@@ -2096,12 +2096,8 @@ function lmsSetCompanion(type){
   // Show content for selected companion
   var tc2 = document.getElementById('lms-tracks-container');
   if(_lmsCompanionType === 'ecsa'){
-    if(tc2) tc2.innerHTML = '<div style="padding:24px 0;text-align:center;color:var(--fg3);">'
-      +'<div style="font-size:36px;margin-bottom:12px;">&#127381;</div>'
-      +'<strong style="font-size:15px;color:var(--fg2);">ECSA Companion — Coming Soon</strong>'
-      +'<p style="margin-top:8px;font-size:13px;">The ECSA Professional Development companion is under development.<br>'
-      +'For ECSA registration guidance visit <a href="https://www.ecsa.co.za" target="_blank" style="color:var(--amb);">ecsa.co.za</a>.</p>'
-      +'</div>';
+    if(tc2) tc2.innerHTML = _ecsaCompanionHTML();
+    _ecsaCompanionInit();
   } else {
     // Re-render IR tracks
     if(typeof _buildTrackDash === 'function') _buildTrackDash();
@@ -3654,5 +3650,353 @@ function ecsaRunEvidence(){
   }
   _doLoadAdmin();
 })();
+
+/* ═══════════════════════════════════════════════════════════════
+   ECSA COMPANION — Full workspace
+   Tabs: Overview · Section 25 VAs · TEO/TER · CPD Log · Eng Report · Interview
+   ═══════════════════════════════════════════════════════════════ */
+var _ecsaTab = 'overview';
+function _ecsaCompanionHTML(){
+  return '<div id="ecsa-ws" style="font-family:inherit;">'
+    +'<div style="display:flex;gap:0;border-bottom:2px solid #ddd;margin-bottom:18px;overflow-x:auto;white-space:nowrap;scrollbar-width:thin;">'
+    +'<button id="etab-overview"  onclick="ecsaSub(\'overview\')"  style="padding:9px 14px;border:none;background:none;font-size:12.5px;font-weight:700;color:#2a5ba8;border-bottom:3px solid #2a5ba8;cursor:pointer;white-space:nowrap;">&#127919; Overview</button>'
+    +'<button id="etab-sec25"     onclick="ecsaSub(\'sec25\')"     style="padding:9px 14px;border:none;background:none;font-size:12.5px;font-weight:400;color:#666;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;">&#128101; Section 25 VAs</button>'
+    +'<button id="etab-teo"       onclick="ecsaSub(\'teo\')"       style="padding:9px 14px;border:none;background:none;font-size:12.5px;font-weight:400;color:#666;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;">&#128203; TEO / TER</button>'
+    +'<button id="etab-cpd"       onclick="ecsaSub(\'cpd\')"       style="padding:9px 14px;border:none;background:none;font-size:12.5px;font-weight:400;color:#666;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;">&#127347; CPD Log</button>'
+    +'<button id="etab-engrpt"    onclick="ecsaSub(\'engrpt\')"    style="padding:9px 14px;border:none;background:none;font-size:12.5px;font-weight:400;color:#666;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;">&#128196; Eng Report</button>'
+    +'<button id="etab-interview" onclick="ecsaSub(\'interview\')" style="padding:9px 14px;border:none;background:none;font-size:12.5px;font-weight:400;color:#666;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;">&#127908; Interview Prep</button>'
+    +'</div>'
+    +'<div id="ecsa-pane" style="padding-bottom:20px;"></div>'
+    +'</div>';
+}
+
+function _ecsaCompanionInit(){
+  setTimeout(function(){ ecsaSub('overview'); }, 40);
+}
+
+function ecsaSub(tab){
+  _ecsaTab = tab;
+  ['overview','sec25','teo','cpd','engrpt','interview'].forEach(function(t){
+    var b = document.getElementById('etab-'+t);
+    if(!b) return;
+    var active = t===tab;
+    b.style.fontWeight = active?'700':'400';
+    b.style.color      = active?'#2a5ba8':'#666';
+    b.style.borderBottom = active?'3px solid #2a5ba8':'3px solid transparent';
+  });
+  var pane = document.getElementById('ecsa-pane');
+  if(!pane) return;
+  if(tab==='overview')   pane.innerHTML = _ecsaOverview();
+  if(tab==='sec25')      pane.innerHTML = _ecsaSec25();
+  if(tab==='teo')        { pane.innerHTML = _ecsaTEO(); _ecsaLoadTEO(); }
+  if(tab==='cpd')        pane.innerHTML = _ecsaCPD();
+  if(tab==='engrpt')     pane.innerHTML = _ecsaEngRpt();
+  if(tab==='interview')  pane.innerHTML = _ecsaInterview();
+}
+
+/* ── Overview ── */
+function _ecsaOverview(){
+  return '<div style="max-width:620px;">'
+    +'<div style="background:linear-gradient(135deg,#2a5ba8,#1a3d78);border-radius:12px;padding:20px;color:#fff;margin-bottom:18px;">'
+    +'<div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:6px;">ECSA Companion</div>'
+    +'<div style="font-size:18px;font-weight:800;line-height:1.2;margin-bottom:8px;">Professional Registration — Pr. Technician</div>'
+    +'<p style="font-size:12.5px;line-height:1.6;opacity:.9;margin:0;">This workspace guides you through every requirement for ECSA professional registration as a Pr. Technician (Electrical Engineering). Use each tab to track your TEO/TER, CPD, Engineering Report milestones, and interview readiness.</p>'
+    +'</div>'
+    +'<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:10px;">ECSA Registration Categories</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">'
+    +_catCard('Pr. Techni Eng (Pr. Technician)','NQF 6 — National Diploma. Covers electrical/electronic engineering technology. Minimum 3 years post-qualification experience. Assessed against 11 Outcomes. ECSA Annual Fee ~R780.','#2a5ba8',true)
+    +_catCard('Pr. Tech Eng','NQF 7/8 — B.Tech or equivalent. Same 11 Outcomes but with broader scope and research elements. Minimum 3 years post-qualification experience.','#1a6fa0',false)
+    +_catCard('Pr. Eng','NQF 8 — B.Eng (Hons) or equivalent. Full engineering design authority. Engineering Report demonstrating independent design. Highest annual fee.','#145a2e',false)
+    +_catCard('Candidate (CEng Tech)','Your current status while accumulating supervised experience. Register with ECSA within 1 year of qualification. No annual fee during candidacy.','#7a5000',false)
+    +'</div>'
+    +'<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:10px;">Registration Milestones</div>'
+    +'<div style="display:flex;flex-direction:column;gap:7px;">'
+    +_milestone('1','Register as Candidate Engineering Technician (CEng Tech) with ECSA','Done at qualification')
+    +_milestone('2','Accumulate minimum 3 years supervised post-qualification experience','Ongoing')
+    +_milestone('3','Compile TEO covering all 11 Outcomes','See TEO/TER tab')
+    +_milestone('4','Join a Section 25 Voluntary Association (e.g. SAIEE, CET)','See Section 25 tab')
+    +_milestone('5','Draft and finalise Engineering Report','See Eng Report tab')
+    +_milestone('6','Log minimum 15 CPD credits per year','See CPD Log tab')
+    +_milestone('7','Submit application; interview with ECSA assessors','See Interview Prep tab')
+    +_milestone('8','Professional Registration confirmed — Pr. Techni Eng','Goal')
+    +'</div>'
+    +'<p style="font-size:11px;color:#999;margin:14px 0 0;line-height:1.6;">Fee exemptions: ECSA offers a 50% fee reduction for first-year professionals. Candidates registered as CEng Tech pay no annual ECSA fee. Some Section 25 VAs negotiate reduced ECSA membership fees for their members. Contact <a href="mailto:membership@ecsa.co.za" style="color:#2a5ba8;">membership@ecsa.co.za</a> for financial hardship deferrals.</p>'
+    +'</div>';
+}
+function _catCard(title,desc,col,active){
+  return '<div style="border:2px solid '+(active?col:'#ddd')+';border-radius:10px;padding:13px;background:'+(active?'rgba(42,91,168,.05)':'#fff')+'">'
+    +'<div style="font-size:11px;font-weight:800;color:'+col+';margin-bottom:5px;">'+title+'</div>'
+    +'<div style="font-size:11.5px;color:#555;line-height:1.6;">'+desc+'</div>'
+    +'</div>';
+}
+function _milestone(n,text,note){
+  return '<div style="display:flex;gap:10px;align-items:flex-start;">'
+    +'<div style="min-width:24px;height:24px;border-radius:50%;background:#2a5ba8;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;">'+n+'</div>'
+    +'<div><div style="font-size:13px;color:#333;line-height:1.4;">'+text+'</div>'
+    +'<div style="font-size:11px;color:#999;">'+note+'</div></div>'
+    +'</div>';
+}
+
+/* ── Section 25 Voluntary Associations ── */
+function _ecsaSec25(){
+  var vas=[
+    {name:'SAIEE',full:'South African Institute of Electrical Engineers',cat:'Electrical',fee:'~R1 980/yr (Associate)',note:'Most common for electrical technicians and engineers. Directly aligned with ECSA Outcomes. Hosts CPD events and ECSA-accredited short courses. Member No. 125138.',link:'https://www.saiee.org.za'},
+    {name:'CET',full:'Chamber of Engineering Technology',cat:'Technicians',fee:'~R600/yr',note:'Specifically for engineering technicians — aligns directly with Pr. Techni Eng pathway. Member No. 8100848. CET is an ECSA-recognised Section 25 body.',link:'https://www.cet.org.za'},
+    {name:'CESA',full:'Consulting Engineers South Africa',cat:'Multi-discipline',fee:'~R2 400/yr (Affiliate)',note:'For engineers in consulting roles. Strong CPD programme. ECSA-recognised. Publishes industry salary surveys and standard professional agreements.',link:'https://www.cesa.co.za'},
+    {name:'AREP',full:'Association of Registered Engineering Professionals',cat:'Multi-discipline',fee:'Varies',note:'Advocates for registered professionals. Active mentorship network. Some fee negotiation with ECSA.',link:'#'},
+    {name:'SAEEC',full:'South African Energy Efficiency Confederation',cat:'Energy',fee:'Varies',note:'For energy professionals and EE practitioners. Member No. SAEEC2009. CPD events on energy standards and solar PV.',link:'https://www.saeec.org.za'},
+    {name:'SAPVIA',full:'South African Photovoltaic Industry Association',cat:'Renewable Energy',fee:'~R1 800/yr (Individual)',note:'Leading solar PV industry body in SA. Relevant to renewable energy engineering work for ECSA Outcome evidence.',link:'https://www.sapvia.co.za'}
+  ];
+  var rows=vas.map(function(v){
+    return '<div style="border:1px solid #e0e0e0;border-radius:10px;padding:14px;background:#fff;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">'
+      +'<div><span style="font-size:14px;font-weight:800;color:#2a5ba8;">'+v.name+'</span> '
+      +'<span style="font-size:11px;color:#999;">'+v.full+'</span></div>'
+      +'<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(42,91,168,.1);color:#2a5ba8;white-space:nowrap;">'+v.cat+'</span>'
+      +'</div>'
+      +'<div style="font-size:11.5px;color:#555;line-height:1.6;margin-bottom:6px;">'+v.note+'</div>'
+      +'<div style="display:flex;gap:12px;align-items:center;">'
+      +'<span style="font-size:11px;color:#999;">&#128176; '+v.fee+'</span>'
+      +(v.link!=='#'?'<a href="'+v.link+'" target="_blank" rel="noopener" style="font-size:11px;color:#2a5ba8;text-decoration:none;font-weight:700;">Visit &#8599;</a>':'')
+      +'</div></div>';
+  }).join('');
+  return '<div style="max-width:640px;">'
+    +'<div style="font-size:13px;color:#444;line-height:1.6;margin-bottom:16px;padding:12px 14px;background:rgba(42,91,168,.05);border-radius:9px;border-left:3px solid #2a5ba8;">'
+    +'<strong>Section 25 of the Engineering Profession Act 46 of 2000</strong> allows ECSA to recognise voluntary associations (VAs) as professional bodies. Membership in at least one ECSA-recognised VA is not mandatory for registration, but strongly recommended — VAs provide CPD events, mentors, and industry access that strengthen your ECSA application and ongoing compliance.'
+    +'</div>'
+    +'<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:10px;">ECSA-Recognised VAs Relevant to Electrical Engineering</div>'
+    +'<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">'+rows+'</div>'
+    +'<div style="border:1px solid #e0e0e0;border-radius:10px;padding:14px;background:#fff;">'
+    +'<div style="font-size:11.5px;font-weight:800;color:#333;margin-bottom:8px;">Fee Exemptions &amp; Reductions</div>'
+    +'<ul style="font-size:12px;color:#555;padding-left:18px;line-height:1.9;margin:0;">'
+    +'<li>ECSA offers a <strong>50% fee reduction</strong> for first-year professionals immediately after registration — apply at the time of initial registration.</li>'
+    +'<li>Candidates registered with ECSA as CEng Tech pay <strong>no annual ECSA fee</strong> during the candidacy period.</li>'
+    +'<li>SAIEE, CET, and CESA have <strong>student/graduate member tiers</strong> at reduced rates.</li>'
+    +'<li>ECSA members who are also members of a Section 25 VA may qualify for <strong>joint-membership discounts</strong> negotiated by that VA — check directly with your VA.</li>'
+    +'<li>Financial hardship deferrals: write to <a href="mailto:membership@ecsa.co.za" style="color:#2a5ba8;">membership@ecsa.co.za</a>.</li>'
+    +'</ul></div>'
+    +'</div>';
+}
+
+/* ── TEO / TER ── */
+function _ecsaTEO(){
+  var outcomes=[
+    'Problem solving, design, and innovative thinking in an engineering technology context',
+    'Application of scientific and engineering knowledge',
+    'Engineering design',
+    'Investigations, experiments, and data analysis',
+    'Engineering methods, skills, and tools, including IT',
+    'Professional and general engineering judgment',
+    'Impact of engineering technology activity',
+    'Individual, team, and multidisciplinary working',
+    'Independent learning ability',
+    'Engineering technology professionalism',
+    'Engineering management'
+  ];
+  var rows=outcomes.map(function(o,i){
+    return '<div style="border:1px solid #e0e0e0;border-radius:9px;padding:12px;margin-bottom:8px;background:#fff;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+      +'<span style="font-size:12px;font-weight:800;color:#2a5ba8;">Outcome '+(i+1)+'</span>'
+      +'<span id="teo-badge-'+(i+1)+'" style="font-size:10px;padding:2px 8px;border-radius:10px;background:#f0f0f0;color:#999;">Pending</span>'
+      +'</div>'
+      +'<div style="font-size:12.5px;color:#444;margin-bottom:8px;">'+o+'</div>'
+      +'<textarea id="teo_out_'+(i+1)+'" placeholder="Describe your evidence for this outcome (project name, dates, your specific role)..." rows="2" '
+      +'onblur="ecsaSaveTEO('+(i+1)+')" '
+      +'style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12px;resize:vertical;font-family:inherit;"></textarea>'
+      +'</div>';
+  }).join('');
+  var mentor=''; var candno='';
+  try{mentor=localStorage.getItem('biz_ecsa_mentor')||'';candno=localStorage.getItem('biz_ecsa_candno')||'';}catch(e){}
+  return '<div style="max-width:640px;">'
+    +'<p style="font-size:13px;color:#444;line-height:1.6;margin:0 0 16px;">Your <strong>Training Experience Outline (TEO)</strong> and <strong>Technical Experience Record (TER)</strong> demonstrate that you have met all 11 ECSA Outcomes through your work experience. Write a paragraph per outcome citing specific projects and dates. Notes save locally.</p>'
+    +'<div id="teo-outcomes">'+rows+'</div>'
+    +'<div style="border:1px solid #e0e0e0;border-radius:9px;padding:14px;margin-top:4px;background:#fff;">'
+    +'<div style="font-size:11.5px;font-weight:800;color:#333;margin-bottom:10px;">Supervision &amp; Candidacy</div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:#444;">'
+    +'<div>Mentor / Supervisor: <input id="teo-mentor" value="'+mentor+'" placeholder="e.g. Mr. J. Smith Pr. Eng" style="border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px;background:#fafafa;color:#222;margin-left:4px;width:55%;" onblur="ecsaSaveMisc(\'mentor\',this.value)"></div>'
+    +'<div>ECSA Candidate No.: <input id="teo-candno" value="'+candno+'" placeholder="e.g. CEng123456" style="border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px;background:#fafafa;color:#222;margin-left:4px;width:45%;" onblur="ecsaSaveMisc(\'candno\',this.value)"></div>'
+    +'</div></div>'
+    +'</div>';
+}
+function _ecsaLoadTEO(){
+  setTimeout(function(){
+    for(var i=1;i<=11;i++){
+      var el=document.getElementById('teo_out_'+i);
+      var badge=document.getElementById('teo-badge-'+i);
+      var val='';
+      try{val=localStorage.getItem('biz_ecsa_teo_outcome_'+i)||'';}catch(e){}
+      if(el) el.value=val;
+      if(badge){
+        badge.textContent=val?'Evidence noted':'Pending';
+        badge.style.background=val?'#e8f5e9':'#f0f0f0';
+        badge.style.color=val?'#1E8540':'#999';
+      }
+    }
+  },30);
+}
+function ecsaSaveTEO(n){
+  var el=document.getElementById('teo_out_'+n);
+  var badge=document.getElementById('teo-badge-'+n);
+  if(!el) return;
+  try{localStorage.setItem('biz_ecsa_teo_outcome_'+n,el.value);}catch(e){}
+  if(badge){
+    badge.textContent=el.value?'Evidence noted':'Pending';
+    badge.style.background=el.value?'#e8f5e9':'#f0f0f0';
+    badge.style.color=el.value?'#1E8540':'#999';
+  }
+}
+function ecsaSaveMisc(key,val){
+  try{localStorage.setItem('biz_ecsa_'+key,val);}catch(e){}
+}
+
+/* ── CPD Log ── */
+function _ecsaCPD(){
+  var entries=[];
+  try{
+    Object.keys(localStorage).filter(function(k){return k.startsWith('biz_ecsa_cpd_');}).forEach(function(k){
+      try{entries.push(JSON.parse(localStorage.getItem(k)));}catch(e){}
+    });
+  }catch(e){}
+  entries.sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  var total=entries.reduce(function(s,e){return s+(parseFloat(e.credits)||0);},0);
+  var rows=entries.length?entries.map(function(e){
+    return '<tr><td style="padding:7px 8px;font-size:12px;color:#333;">'+e.date+'</td>'
+      +'<td style="padding:7px 8px;font-size:12px;color:#333;">'+e.activity+'</td>'
+      +'<td style="padding:7px 8px;font-size:12px;color:#333;">'+e.type+'</td>'
+      +'<td style="padding:7px 8px;font-size:12px;color:#333;text-align:right;">'+e.credits+'</td>'
+      +'<td style="padding:7px 8px;"><button onclick="ecsaDelCPD(\''+e.id+'\')" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:12px;">&#128465;</button></td>'
+      +'</tr>';
+  }).join(''):'<tr><td colspan="5" style="padding:14px;text-align:center;color:#999;font-size:12.5px;">No CPD entries yet — add your first one below.</td></tr>';
+  return '<div style="max-width:640px;">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">'
+    +'<div style="border:1px solid #e0e0e0;border-radius:9px;padding:14px;background:#fff;text-align:center;">'
+    +'<div style="font-size:28px;font-weight:800;color:#2a5ba8;">'+total.toFixed(1)+'</div>'
+    +'<div style="font-size:11px;color:#999;margin-top:3px;">Total Credits Logged</div>'
+    +'</div>'
+    +'<div style="border:1px solid #e0e0e0;border-radius:9px;padding:14px;background:#fff;text-align:center;">'
+    +'<div style="font-size:28px;font-weight:800;color:'+(total>=15?'#1E8540':'#c0392b')+';">'+Math.max(0,(15-total)).toFixed(1)+'</div>'
+    +'<div style="font-size:11px;color:#999;margin-top:3px;">Still Needed This Year (target: 15)</div>'
+    +'</div>'
+    +'</div>'
+    +'<div style="overflow-x:auto;margin-bottom:14px;">'
+    +'<table style="width:100%;border-collapse:collapse;border:1px solid #e0e0e0;border-radius:9px;overflow:hidden;">'
+    +'<thead><tr style="background:#f8f8f8;">'
+    +'<th style="padding:8px;font-size:11px;text-align:left;color:#888;">Date</th>'
+    +'<th style="padding:8px;font-size:11px;text-align:left;color:#888;">Activity</th>'
+    +'<th style="padding:8px;font-size:11px;text-align:left;color:#888;">Type</th>'
+    +'<th style="padding:8px;font-size:11px;text-align:right;color:#888;">Credits</th>'
+    +'<th style="padding:8px;"></th>'
+    +'</tr></thead>'
+    +'<tbody id="cpd-tbody">'+rows+'</tbody>'
+    +'</table></div>'
+    +'<div style="border:1px solid #e0e0e0;border-radius:9px;padding:14px;background:#fff;">'
+    +'<div style="font-size:11.5px;font-weight:800;color:#333;margin-bottom:10px;">Log CPD Activity</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">'
+    +'<input id="cpd-date" type="date" style="padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12.5px;">'
+    +'<select id="cpd-type" style="padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12px;">'
+    +'<option value="Structured">Structured (courses, conferences)</option>'
+    +'<option value="Unstructured">Unstructured (reading, mentoring)</option>'
+    +'<option value="Industry Contribution">Industry Contribution (committees, standards)</option>'
+    +'<option value="Accredited CPD">Accredited CPD Event</option>'
+    +'</select>'
+    +'</div>'
+    +'<input id="cpd-activity" type="text" placeholder="Activity description (e.g. SAIEE CPD Webinar — SANS 10142-1 Ed 3.3)" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12.5px;margin-bottom:8px;font-family:inherit;">'
+    +'<div style="display:flex;gap:8px;">'
+    +'<input id="cpd-credits" type="number" min="0.5" max="40" step="0.5" placeholder="Credits" style="width:100px;padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12.5px;">'
+    +'<button onclick="ecsaAddCPD()" style="flex:1;padding:9px;background:#2a5ba8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">+ Add Entry</button>'
+    +'</div>'
+    +'</div>'
+    +'<p style="font-size:11px;color:#999;margin:12px 0 0;line-height:1.6;">ECSA requires 15 CDP credits per year (minimum 5 from structured activities). Keep attendance certificates and course completion letters as evidence.</p>'
+    +'</div>';
+}
+function ecsaAddCPD(){
+  var d=document.getElementById('cpd-date').value;
+  var a=document.getElementById('cpd-activity').value.trim();
+  var t=document.getElementById('cpd-type').value;
+  var c=parseFloat(document.getElementById('cpd-credits').value);
+  if(!d||!a||!c||c<0.5){alert('Please fill in date, activity, and credits.');return;}
+  var id='cpd_'+Date.now();
+  var entry={id:id,date:d,activity:a,type:t,credits:c};
+  try{localStorage.setItem('biz_ecsa_'+id,JSON.stringify(entry));}catch(e){}
+  document.getElementById('cpd-date').value='';
+  document.getElementById('cpd-activity').value='';
+  document.getElementById('cpd-credits').value='';
+  ecsaSub('cpd');
+}
+function ecsaDelCPD(id){
+  if(!confirm('Remove this CPD entry?')) return;
+  try{localStorage.removeItem('biz_ecsa_'+id);}catch(e){}
+  ecsaSub('cpd');
+}
+
+/* ── Engineering Report ── */
+function _ecsaEngRpt(){
+  var milestones=[
+    {id:'m1',label:'Choose project/work for Engineering Report',note:'Must demonstrate independent professional judgment. A project you led or contributed significantly to.'},
+    {id:'m2',label:'Draft Section A — Problem statement and context',note:'Describe the engineering challenge, applicable SANS/IEC standards, and your role.'},
+    {id:'m3',label:'Draft Section B — Investigation and analysis',note:'Show your reasoning, calculations, compliance checks (SANS 10142-1, SANS 10198, OHS Act, etc.).'},
+    {id:'m4',label:'Draft Section C — Solution and outcome',note:'Implementation, verification, results, and professional recommendation made.'},
+    {id:'m5',label:'Get report reviewed by Mentor / Pr. Eng',note:'Minimum one review cycle before submission.'},
+    {id:'m6',label:'Finalise and submit to ECSA with application',note:'Report is assessed by ECSA panel alongside TEO.'}
+  ];
+  var rows=milestones.map(function(m){
+    var checked=false;
+    try{checked=!!localStorage.getItem('biz_ecsa_'+m.id);}catch(e){}
+    return '<div style="border:1px solid #e0e0e0;border-radius:9px;padding:12px;display:flex;gap:12px;align-items:flex-start;background:#fff;">'
+      +'<input type="checkbox" id="engr_'+m.id+'" '+(checked?'checked':'')+' onchange="ecsaTogRpt(\''+m.id+'\',this.checked)" style="margin-top:3px;accent-color:#2a5ba8;width:16px;height:16px;cursor:pointer;flex-shrink:0;">'
+      +'<div>'
+      +'<div style="font-size:13px;font-weight:700;color:'+(checked?'#1E8540':'#333')+';">'+m.label+'</div>'
+      +'<div style="font-size:11.5px;color:#999;margin-top:3px;line-height:1.5;">'+m.note+'</div>'
+      +'</div></div>';
+  }).join('');
+  var notes='';
+  try{notes=localStorage.getItem('biz_ecsa_engrpt_notes')||'';}catch(e){}
+  return '<div style="max-width:640px;">'
+    +'<p style="font-size:13px;color:#444;line-height:1.6;margin:0 0 16px;">The Engineering Report is submitted with your ECSA application. It must demonstrate that you independently applied engineering judgment on a real project — NOT a copy of a company report. Use the milestones below to track your drafting progress.</p>'
+    +'<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">'+rows+'</div>'
+    +'<div style="border:1px solid #e0e0e0;border-radius:9px;padding:14px;background:#fff;">'
+    +'<div style="font-size:11.5px;font-weight:800;color:#333;margin-bottom:8px;">Report Notes</div>'
+    +'<textarea id="engrpt-notes" rows="4" placeholder="Project title, key SANS standards cited, review comments, etc." onblur="try{localStorage.setItem(\'biz_ecsa_engrpt_notes\',this.value);}catch(e){}" '
+    +'style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12px;resize:vertical;font-family:inherit;">'+notes+'</textarea>'
+    +'</div>'
+    +'</div>';
+}
+function ecsaTogRpt(id,checked){
+  try{
+    if(checked) localStorage.setItem('biz_ecsa_'+id,'1');
+    else localStorage.removeItem('biz_ecsa_'+id);
+  }catch(e){}
+  var label=document.querySelector('#engr_'+id+' + div > div:first-child') ||
+            (document.getElementById('engr_'+id)?document.getElementById('engr_'+id).nextElementSibling:null);
+  if(label&&label.firstElementChild) label.firstElementChild.style.color=checked?'#1E8540':'#333';
+}
+
+/* ── Interview Prep ── */
+function _ecsaInterview(){
+  var qs=[
+    {q:'Walk us through your Engineering Report — what was the problem and how did you solve it?',tip:'Explain clearly. Focus on your independent judgment and decision points, not just what happened.'},
+    {q:'Which of the 11 ECSA Outcomes do you feel strongest about? Give an example.',tip:'Pick 2–3 Outcomes with strong project evidence from your TEO. Be specific about your role.'},
+    {q:'How do you stay current with SANS and electrical regulations?',tip:'Mention SAIEE CPD events, SANS 10142-1 Ed 3.3 draft review, and your teaching/training work.'},
+    {q:'Describe a time you identified a safety risk on-site. What did you do?',tip:'Quote OHS Act Section 8/14 obligations. Describe your corrective action and documentation.'},
+    {q:'What is your understanding of Outcome 7 — Impact of Engineering Technology Activity?',tip:'Covers environmental, social, economic, and legal impacts. Link to SANS 10400, National Building Regulations, and environmental compliance.'},
+    {q:"How have you managed a project where the client's request conflicted with SANS requirements?",tip:'Demonstrate professional independence. You must advise the client correctly — SANS is the minimum lawful standard.'},
+    {q:'What voluntary association(s) have you joined and why?',tip:'Mention SAIEE (Member 125138), CET (Member 8100848), AREP, SAEEC, SAPVIA. Explain how membership supports CPD and professional network.'},
+    {q:'What is your 5-year professional development plan?',tip:'Show ambition grounded in reality — e.g. Pr. Tech Eng after Pr. Techni Eng, possible SABS committee membership, teaching/training expansion.'}
+  ];
+  var rows=qs.map(function(item,i){
+    var saved='';
+    try{saved=localStorage.getItem('biz_ecsa_ivq_'+i)||'';}catch(e){}
+    return '<div style="border:1px solid #e0e0e0;border-radius:9px;padding:13px;background:#fff;margin-bottom:10px;">'
+      +'<div style="font-size:12.5px;font-weight:700;color:#333;margin-bottom:5px;">Q'+(i+1)+'. '+item.q+'</div>'
+      +'<div style="font-size:11.5px;color:#2a5ba8;margin-bottom:8px;padding:7px 10px;background:rgba(42,91,168,.06);border-radius:7px;line-height:1.5;">&#128273; '+item.tip+'</div>'
+      +'<textarea rows="2" placeholder="Your answer notes..." onblur="try{localStorage.setItem(\'biz_ecsa_ivq_'+i+'\',this.value);}catch(e){}" '
+      +'style="width:100%;box-sizing:border-box;padding:8px;border:1px solid #ddd;border-radius:7px;background:#fafafa;color:#222;font-size:12px;resize:vertical;font-family:inherit;">'+saved+'</textarea>'
+      +'</div>';
+  }).join('');
+  return '<div style="max-width:640px;">'
+    +'<p style="font-size:13px;color:#444;line-height:1.6;margin:0 0 16px;">The ECSA interview is typically 45–60 minutes with 2–3 assessors. They assess whether you demonstrate the judgment and professional maturity expected of a registered Pr. Technician. Prepare a short summary of your Engineering Report and be ready to discuss any Outcome from your TEO. Notes save locally.</p>'
+    +rows
+    +'</div>';
+}
 
 </script>
