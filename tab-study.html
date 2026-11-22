@@ -357,8 +357,225 @@
         </div>
         <div class="lms-overview-bar"><div class="lms-overview-fill" id="lms-ov-bar" style="width:0%"></div></div>
 
-        <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
-        <div id="lms-tracks-container"></div>
+        <!-- ══ LEVEL NAVIGATOR ══ -->
+        <div id="lms-level-nav" style="display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;padding-bottom:2px;">
+          <button class="lms-lvl-btn active" id="lvl-btn-1" onclick="lmsSetLevel(1)"
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--amb);background:var(--amb);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Level 1 — Orientation
+          </button>
+          <button class="lms-lvl-btn" id="lvl-btn-2" onclick="lmsSetLevel(2)"
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
+            Level 2 — Electrical Fundamentals
+          </button>
+          <button class="lms-lvl-btn" id="lvl-btn-3" onclick="lmsSetLevel(3)"
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+            Level 3 — Standards &amp; Tracks
+          </button>
+        </div>
+
+        <!-- ══ LEVEL 1 — ORIENTATION ══ -->
+        <div id="lms-level1-panel" style="display:block;">
+          <!-- What is this exam -->
+          <div style="background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.03));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">What you are preparing for</div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">DHET Installation Rules Examination</div>
+            <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">The Installation Rules examination is administered by the Department of Higher Education and Training (DHET) under the Technical and Vocational Education and Training (TVET) system. It qualifies you as a competent person in terms of SANS 10142-1 (Wiring of Premises). Two papers are written.</p>
+          </div>
+
+          <!-- Paper 1 syllabus -->
+          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
+            <div style="background:var(--amb);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">T880 · Paper 1</span>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Theory &amp; Legislation</div>
+              </div>
+              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">10 questions · 100 marks</span>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);">
+              <div style="display:grid;grid-template-columns:28px 1fr;gap:6px 10px;font-size:12px;color:var(--fg2);line-height:1.5;">
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q1</span><span>Occupational Health &amp; Safety Act 85 of 1993 — definitions, employer duties, HSRs, penalties</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q2</span><span>Electrical Installation Regulations 1992 — definitions, obligations, CoC, testing</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q3</span><span>Electrical Machinery Regulations — Regs 1, 3, 5, 6, 11</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q4</span><span>SANS 10142-1 — Sections 1–2 (scope, normative references) and Section 3 (definitions)</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q5</span><span>SANS 10142-1 — Section 5 (design), Section 6 (earthing), Section 8 (conductors)</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q6</span><span>SANS 10142-1 — Section 9 (overcurrent protection), Section 10 (switchgear &amp; controlgear)</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q7</span><span>SANS 10142-1 — Section 11 (socket outlets, plugs), Section 12 (luminaires, fans)</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q8</span><span>SANS 10142-1 — Section 13 (motors), Section 14 (extra-low voltage), Section 15 (special locations)</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q9</span><span>SANS 10292 — LV systems earthing, lightning protection, switchgear assemblies</span>
+                <span style="font-weight:800;color:var(--amb);text-align:right;">Q10</span><span>SANS 10313 — Lightning protection systems (LPS), air terminations, SPDs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paper 2 syllabus -->
+          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
+            <div style="background:#2a5ba8;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">T890 · Paper 2</span>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Practical Application &amp; Calculations</div>
+              </div>
+              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">5 questions · 100 marks</span>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);">
+              <div style="display:grid;grid-template-columns:28px 1fr;gap:6px 10px;font-size:12px;color:var(--fg2);line-height:1.5;">
+                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q1</span><span>SANS 10142-1 application — circuit design, fuse/MCB selection, cable sizing</span>
+                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q2</span><span>Earthing calculations — fault loop impedance, earth electrode resistance, bonding</span>
+                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q3</span><span>Voltage drop calculations — cable length, load, conductor cross-section</span>
+                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q4</span><span>Load calculations — demand factors, diversity, panel sizing</span>
+                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q5</span><span>Scenario-based question — wiring diagram, fault finding, compliance check</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- History & Benefits row -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+            <div style="border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--bg-alt);">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">Brief History</div>
+              <p style="font-size:12px;color:var(--fg2);line-height:1.6;margin:0;">SANS 10142-1 traces its roots to SABS 0142 (1986), South Africa's first unified wiring code. It was reissued as SANS 10142-1 in 2003 and substantially revised in 2017 and 2022. The OHS Act 85 of 1993 and the Electrical Installation Regulations give it legislative force — making compliance mandatory, not optional.</p>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--bg-alt);">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">Why it matters</div>
+              <div style="font-size:12px;color:var(--fg2);line-height:1.6;">
+                <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Legal authorisation to wire premises and issue CoCs</span></div>
+                <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Prerequisite for EWSETA / QCTO trade test pathway</span></div>
+                <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Gateway to higher earning &amp; self-employment</span></div>
+                <div style="display:flex;gap:7px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Foundation for ECSA Professional Registration (Pr. Tech Eng)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- eBook + Video slots -->
+          <div style="border:1.5px dashed rgba(30,133,64,.35);border-radius:12px;padding:14px 16px;margin-bottom:14px;background:rgba(30,133,64,.03);">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:9px;">📖 Level 1 — Orientation eBook</div>
+            <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">The Level 1 Orientation eBook covers the exam structure, DHET syllabus breakdown, how marks are distributed across both papers, and what to expect on exam day. Available in the Study Packs section.</p>
+            <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:var(--amb);color:#fff;text-decoration:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+              Get the Level 1 eBook
+            </a>
+          </div>
+
+          <!-- Recorded video slot -->
+          <div style="border:1.5px dashed rgba(30,133,64,.25);border-radius:12px;padding:14px 16px;margin-bottom:4px;background:var(--bg-alt);">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">🎬 Level 1 — Recorded Sessions</div>
+            <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">All Level 1 orientation recordings are freely available on YouTube. No account or key required.</p>
+            <a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#ff0000;color:#fff;text-decoration:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/></svg>
+              Watch on YouTube →
+            </a>
+          </div>
+        </div>
+
+        <!-- ══ LEVEL 2 — ELECTRICAL FUNDAMENTALS ══ -->
+        <div id="lms-level2-panel" style="display:none;">
+          <!-- Formula reference -->
+          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
+            <div style="background:linear-gradient(135deg,#2a5ba8,#1a3a78);padding:11px 16px;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Reference</span>
+              <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Basic Electrical Formulae</div>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="border:1px solid var(--border);border-radius:9px;padding:11px 13px;background:var(--bg-alt);">
+                <div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;">Ohm's Law</div>
+                <div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--fg);margin-bottom:3px;">V = I × R</div>
+                <div style="font-size:11px;color:var(--fg3);">V = volts · I = amps · R = ohms</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:9px;padding:11px 13px;background:var(--bg-alt);">
+                <div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;">Power</div>
+                <div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--fg);margin-bottom:3px;">P = V × I = I²R</div>
+                <div style="font-size:11px;color:var(--fg3);">P = watts · also P = V²/R</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:9px;padding:11px 13px;background:var(--bg-alt);">
+                <div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;">Voltage Drop</div>
+                <div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--fg);margin-bottom:3px;">Vd = I × (mVA/m × L) / 1000</div>
+                <div style="font-size:11px;color:var(--fg3);">SANS 10142-1 max 5% (2.5% preferred)</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:9px;padding:11px 13px;background:var(--bg-alt);">
+                <div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;">Fault Loop Impedance</div>
+                <div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--fg);margin-bottom:3px;">Zs = Ze + (R1 + R2)</div>
+                <div style="font-size:11px;color:var(--fg3);">Ze = external · R1+R2 = conductors</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:9px;padding:11px 13px;background:var(--bg-alt);">
+                <div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;">Prospective Fault Current</div>
+                <div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--fg);margin-bottom:3px;">If = Uo / Zs</div>
+                <div style="font-size:11px;color:var(--fg3);">Uo = nominal voltage to earth (230 V)</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:9px;padding:11px 13px;background:var(--bg-alt);">
+                <div style="font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;">Resistance of Conductor</div>
+                <div style="font-size:15px;font-weight:800;font-family:monospace;color:var(--fg);margin-bottom:3px;">R = ρL / A</div>
+                <div style="font-size:11px;color:var(--fg3);">ρ = resistivity · L = length · A = area mm²</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scenario cards -->
+          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
+            <div style="background:var(--bg-alt);padding:11px 16px;border-bottom:1px solid var(--border);">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);">Scenario-Based Formula Practice</div>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);display:flex;flex-direction:column;gap:11px;">
+              <!-- Scenario 1 -->
+              <div style="border-left:3px solid var(--amb);padding:10px 13px;background:var(--bg-alt);border-radius:0 9px 9px 0;">
+                <div style="font-size:11px;font-weight:800;color:var(--amb);margin-bottom:4px;">Scenario A — Cable sizing (voltage drop)</div>
+                <p style="font-size:12px;color:var(--fg2);margin:0 0 7px;line-height:1.5;">A 15 A circuit, 25 m long, using 2.5 mm² copper (mV/A/m = 18). Permitted Vd = 11.5 V.</p>
+                <div style="font-size:12.5px;font-family:monospace;color:var(--fg);background:rgba(30,133,64,.07);padding:7px 10px;border-radius:6px;">Vd = 15 × 18 × 25 / 1000 = <strong>6.75 V</strong> ✓ (within limit)</div>
+              </div>
+              <!-- Scenario 2 -->
+              <div style="border-left:3px solid #2a5ba8;padding:10px 13px;background:var(--bg-alt);border-radius:0 9px 9px 0;">
+                <div style="font-size:11px;font-weight:800;color:#2a5ba8;margin-bottom:4px;">Scenario B — Fault loop impedance</div>
+                <p style="font-size:12px;color:var(--fg2);margin:0 0 7px;line-height:1.5;">Ze = 0.35 Ω · 20 m of 2.5 mm² live (R1=0.18 Ω/m/100m=0.036 Ω) and 1.5 mm² CPC (R2=0.3 Ω). Find Zs and If.</p>
+                <div style="font-size:12.5px;font-family:monospace;color:var(--fg);background:rgba(42,91,168,.07);padding:7px 10px;border-radius:6px;">Zs = 0.35 + 0.036 + 0.3 = <strong>0.686 Ω</strong> · If = 230/0.686 = <strong>335 A</strong></div>
+              </div>
+              <!-- Scenario 3 -->
+              <div style="border-left:3px solid #c97b2a;padding:10px 13px;background:var(--bg-alt);border-radius:0 9px 9px 0;">
+                <div style="font-size:11px;font-weight:800;color:#c97b2a;margin-bottom:4px;">Scenario C — Power calculation</div>
+                <p style="font-size:12px;color:var(--fg2);margin:0 0 7px;line-height:1.5;">A 230 V, 13 A appliance. Find power, and resistance when hot.</p>
+                <div style="font-size:12.5px;font-family:monospace;color:var(--fg);background:rgba(201,123,42,.07);padding:7px 10px;border-radius:6px;">P = 230×13 = <strong>2 990 W ≈ 3 kW</strong> · R = 230/13 = <strong>17.7 Ω</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- eBook + Video slots -->
+          <div style="border:1.5px dashed rgba(30,133,64,.35);border-radius:12px;padding:14px 16px;margin-bottom:14px;background:rgba(30,133,64,.03);">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:9px;">📖 Level 2 — Electrical Fundamentals eBook</div>
+            <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">The Level 2 eBook contains worked formula examples, all SANS 10142-1 calculation types tested in Paper 2, and scenario walkthroughs from past papers (2019–2025).</p>
+            <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:var(--amb);color:#fff;text-decoration:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+              Get the Level 2 eBook
+            </a>
+          </div>
+          <div style="border:1.5px dashed rgba(30,133,64,.25);border-radius:12px;padding:14px 16px;margin-bottom:4px;background:var(--bg-alt);">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">🎬 Level 2 — Recorded Sessions</div>
+            <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">Level 2 formula walkthrough recordings are on YouTube. Advanced worked scenarios are platform-exclusive (key required).</p>
+            <a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#ff0000;color:#fff;text-decoration:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/></svg>
+              Watch on YouTube →
+            </a>
+          </div>
+        </div>
+
+        <!-- ══ LEVEL 3 — STANDARDS & TRACKS (original content) ══ -->
+        <div id="lms-level3-panel" style="display:none;">
+          <!-- Start-of-session mistake review -->
+          <div id="lms-mistake-review" style="display:none;border:1.5px solid #c97b2a;border-radius:12px;overflow:hidden;margin-bottom:16px;">
+            <div style="background:#c97b2a;padding:10px 16px;display:flex;align-items:center;gap:9px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+              <div>
+                <div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.8);">Start-of-session review</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;">Mistakes from your last session</div>
+              </div>
+            </div>
+            <div id="lms-mistake-list" style="padding:12px 16px;background:var(--bg);font-size:12.5px;color:var(--fg2);line-height:1.7;"></div>
+            <div style="padding:0 16px 12px;">
+              <button onclick="document.getElementById('lms-mistake-review').style.display='none';" style="font-size:12px;border:1px solid var(--border);background:var(--bg-alt);color:var(--fg2);padding:7px 13px;border-radius:7px;cursor:pointer;font-weight:600;">Got it — start studying</button>
+            </div>
+          </div>
+
+          <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
+          <div id="lms-tracks-container"></div>
+        </div>
 
         <!-- ══ eBOOK READER PANEL ══ -->
         <div id="lms-ebook-panel" style="display:none;margin-top:18px;border:1.5px solid var(--amb);border-radius:12px;overflow:hidden;">
@@ -2315,6 +2532,48 @@ function lmsToggleBlock(id){
   if(!wasOpen) el.classList.remove('collapsed');
 }
 
+/* ── Level navigation ──────────────────────────────────────────── */
+var _lmsCurrentLevel = 1;
+function lmsSetLevel(n){
+  _lmsCurrentLevel = n;
+  try{ localStorage.setItem('lms4_level', n); }catch(e){}
+  var panels = {1:'lms-level1-panel',2:'lms-level2-panel',3:'lms-level3-panel'};
+  for(var k in panels){
+    var el = document.getElementById(panels[k]);
+    if(el) el.style.display = (parseInt(k)===n) ? 'block' : 'none';
+  }
+  var btns = [1,2,3];
+  btns.forEach(function(i){
+    var btn = document.getElementById('lvl-btn-'+i);
+    if(!btn) return;
+    if(i===n){
+      btn.style.background = 'var(--amb)'; btn.style.color = '#fff';
+      btn.style.border = '1.5px solid var(--amb)';
+    } else {
+      btn.style.background = 'var(--bg-alt)'; btn.style.color = 'var(--fg2)';
+      btn.style.border = '1.5px solid var(--border)';
+    }
+  });
+  // Show mistake review when entering Level 3
+  if(n===3) _lmsShowMistakeReview();
+}
+function _lmsShowMistakeReview(){
+  var mistakes=[];
+  try{
+    var stored=localStorage.getItem('lms4_mistakes_'+(_lmsUser||''));
+    if(stored) mistakes=JSON.parse(stored);
+  }catch(e){}
+  var panel=document.getElementById('lms-mistake-review');
+  var list=document.getElementById('lms-mistake-list');
+  if(!panel||!list) return;
+  if(!mistakes||!mistakes.length){ panel.style.display='none'; return; }
+  panel.style.display='block';
+  list.innerHTML=mistakes.slice(0,5).map(function(m,i){
+    return '<div style="display:flex;gap:9px;margin-bottom:7px;"><span style="color:#c97b2a;font-weight:800;">'+(i+1)+'.</span><span>'+m+'</span></div>';
+  }).join('');
+}
+/* ── end level navigation ──────────────────────────────────────── */
+
 function lmsShowDash(){
   if(!_lmsUser){lmsShowView('lms-login');return;}
   // Show payment prompt once for existing accounts who signed up before the payment screen existed
@@ -2364,6 +2623,10 @@ function lmsShowDash(){
   // Build volume progress overview and render volume blocks
   _buildTrackDash(prog);
   lmsShowView('lms-dash');
+  // Restore saved level (default 1 for new students)
+  var savedLevel=1;
+  try{ var sl=localStorage.getItem('lms4_level'); if(sl) savedLevel=parseInt(sl)||1; }catch(e){}
+  lmsSetLevel(savedLevel);
   setTimeout(function(){if(typeof engageCheckPopups==='function')engageCheckPopups();}, 500);
 }
 
@@ -3066,6 +3329,14 @@ function lmsAnswer(key,btn){
     opts[['a','b','c','d'].indexOf(correct)].classList.add('correct');
     _lmsDotResults[_lmsIdx]='wrong';
     document.getElementById('lms-feedback').innerHTML='<span class="fb-wrong">✗ Incorrect.</span> The correct answer is <strong>'+correct.toUpperCase()+': '+esc(q[correct])+'</strong><br><span class="fb-ref">Ref: '+esc(q.ref)+'</span>';
+    // Track mistake for next-session review
+    try{
+      var mk=localStorage.getItem('lms4_mistakes_'+(_lmsUser||''));
+      var ma=mk?JSON.parse(mk):[];
+      var mEntry=esc(q.q||'').substring(0,120)+' — Correct: '+esc(q[correct]||'').substring(0,60);
+      ma.unshift(mEntry); if(ma.length>10) ma=ma.slice(0,10);
+      localStorage.setItem('lms4_mistakes_'+(_lmsUser||''),JSON.stringify(ma));
+    }catch(e){}
   }
   _lmsRenderDots();
   document.getElementById('lms-feedback').hidden=false;
