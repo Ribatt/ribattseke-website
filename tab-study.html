@@ -279,21 +279,6 @@
             <a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#c4302b;color:#fff;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;text-decoration:none;">Watch on YouTube →</a>
           </div>
 
-          <!-- Tier 1: R100 Trial -->
-          <div class="lms-tier-box">
-            <span class="tier-tag" style="background:rgba(120,60,180,.12);color:#783cb4;">Trial Access · R100</span>
-            <h4 style="margin:8px 0 4px;">Trial Access — <span style="color:#783cb4;">R100</span></h4>
-            <p style="margin:0 0 6px;">Everything you need to study for the exam, beyond the free recordings.</p>
-            <ul style="font-size:12.5px;color:var(--fg2);margin:6px 0 0;padding-left:18px;line-height:1.7;">
-              <li>All practice quizzes (90% pass mark, tracked progress)</li>
-              <li>Detailed session study notes — Paper 1 and Paper 2</li>
-              <li>Worked examples and exam technique tips</li>
-              <li>Valid for 4 months from activation (custom duration available on request when messaging Tseke)</li>
-              <li style="color:var(--amb);font-weight:600;">Upgrade to lifetime anytime — keep the same key, pay the difference</li>
-            </ul>
-            <p style="margin-top:8px;font-size:12.5px;"><strong>WhatsApp Tseke to pay and get your key:</strong> 072 474 8888</p>
-          </div>
-
           <!-- Tier 2: R1000 IR Companion -->
           <div class="lms-tier-box">
             <span class="tier-tag paid">IR Companion · R1,000</span>
@@ -305,7 +290,7 @@
               <li>All quizzes, session study notes, worked examples</li>
               <li>Lifetime platform access — no expiry</li>
               <li>WhatsApp support from Tseke after purchase</li>
-              <li style="color:var(--amb);font-weight:600;">Already on R100 Trial? Keep your key and top up to R1,000 for full IR Companion access</li>
+              <li style="color:var(--amb);font-weight:600;">WhatsApp Tseke to arrange payment and receive your key: 072 474 8888</li>
             </ul>
             <p style="margin-top:8px;font-size:12.5px;"><strong>EFT payment details on request — WhatsApp:</strong> 072 474 8888</p>
           </div>
@@ -1916,9 +1901,13 @@ function lmsSignin(){
   var _ADM_EMAILS=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
   var _ADM_PIN=btoa('20171125');
   if(_ADM_EMAILS.indexOf(u.toLowerCase())>=0 && btoa(p)===_ADM_PIN){
-    if(typeof lmsOpenAdmin==='function'){lmsOpenAdmin();return;}
-    /* admin.js still loading — wait up to 4 s */
-    var _n=0;(function _w(){if(typeof lmsOpenAdmin==='function'){lmsOpenAdmin();return;}if(_n++<40)setTimeout(_w,100);else err.textContent='Admin panel failed to load. Try refreshing.';}());
+    /* Show admin view immediately — lmsShowView is always available in this fragment */
+    lmsShowView('lms-admin');
+    /* Populate lists/counts when admin.js finishes loading (up to 60 s on slow connection) */
+    var _n=0;(function _populate(){
+      if(typeof lmsOpenAdmin==='function'){lmsOpenAdmin();return;}
+      if(_n++<120) setTimeout(_populate,500);
+    })();
     return;
   }
   var existing=_lmsLoad(u,p);
@@ -3334,11 +3323,21 @@ function ecsaRunEvidence(){
 (function(){
   if(window._adminLoaded||window._adminLoading) return;
   window._adminLoading=true;
-  var s=document.createElement('script');
-  s.src='/admin.js?v=9&_='+Date.now();
-  s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
-  s.onerror=function(){window._adminLoading=false;};
-  document.head.appendChild(s);
+  var _adminAttempts=0;
+  function _doLoadAdmin(){
+    var s=document.createElement('script');
+    s.src='/admin.js?v=10&_='+Date.now();
+    s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
+    s.onerror=function(){
+      window._adminLoading=false;
+      /* Retry up to 4 times with exponential backoff (1s, 2s, 4s, 8s) */
+      if(_adminAttempts++<4){
+        setTimeout(function(){window._adminLoading=true;_doLoadAdmin();},1000*(1<<(_adminAttempts-1)));
+      }
+    };
+    document.head.appendChild(s);
+  }
+  _doLoadAdmin();
 })();
 
 </script>
