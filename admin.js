@@ -33,6 +33,98 @@ var LEGACY_IR_KEYS=[
 var IR_KEY_NS='biz_ir_issued_';
 var ECSA_KEY_NS='biz_ecsa_issued_';
 
+/* ===== RTT 13-CHARACTER KEY GENERATION =====
+ * Format: RTT-{I1}{I2}-{H1}{R1}{R2}-{IR|EC}  — always exactly 13 chars
+ * I1 = first letter of first name (uppercase)
+ * I2 = first letter of second name (uppercase), or "-" if no second name
+ * H1 = deterministic char derived from SHA-256-like hash of normalizedEmail+digitsOnlyPhone+"RTT2026"
+ * R1,R2 = crypto.getRandomValues — no ambiguous chars (no 0,O,1,I,l)
+ * Scope suffix: "IR" (Installation Rules) or "EC" (ECSA Companion)
+ *
+ * Uniqueness: block duplicate active key for same email+phone+scope in localStorage
+ * Validation: reject any key not found in IR_KEY_NS or ECSA_KEY_NS storage
+ * Frontend enforces format & localStorage uniqueness; Firestore/backend enforces cross-device uniqueness
+ */
+var RTT_SAFE_CHARS='ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // 31 chars, no 0/O/1/I/l
+var RTT_SALT='RTT2026';
+
+function rttInitials(firstName, secondName){
+  var i1=(firstName||'').replace(/[^A-Za-z]/g,'').charAt(0).toUpperCase()||'-';
+  var i2=(secondName||'').replace(/[^A-Za-z]/g,'').charAt(0).toUpperCase()||'-';
+  return i1+i2;
+}
+
+function rttHashChar(email, phone){
+  /* Simple deterministic hash → one safe char from RTT_SAFE_CHARS
+   * Uses a DJB2-style hash on normalized inputs + salt */
+  var s=(email||'').toLowerCase().trim()+(phone||'').replace(/\D/g,'')+RTT_SALT;
+  var h=5381;
+  for(var i=0;i<s.length;i++){ h=((h<<5)+h)+s.charCodeAt(i); h=h&0x7fffffff; }
+  return RTT_SAFE_CHARS[Math.abs(h)%RTT_SAFE_CHARS.length];
+}
+
+function rttRandomChars(n){
+  var arr=new Uint8Array(n*4);
+  crypto.getRandomValues(arr);
+  var result='';
+  var idx=0;
+  while(result.length<n && idx<arr.length){
+    var c=RTT_SAFE_CHARS[arr[idx]%RTT_SAFE_CHARS.length];
+    result+=c;
+    idx++;
+  }
+  // fallback if somehow short (extremely unlikely)
+  while(result.length<n) result+=RTT_SAFE_CHARS[Math.floor(Math.random()*RTT_SAFE_CHARS.length)];
+  return result;
+}
+
+function rttGenerateKey(firstName, secondName, email, phone, scope){
+  /* scope: 'ir' → 'IR', 'ecsa' → 'EC' */
+  var initials=rttInitials(firstName, secondName);
+  var h1=rttHashChar(email, phone);
+  var r1r2=rttRandomChars(2);
+  var sfx=(scope==='ecsa')?'EC':'IR';
+  var key='RTT-'+initials+'-'+h1+r1r2+'-'+sfx;
+  /* Verify exactly 13 chars */
+  if(key.length!==13){
+    console.error('RTT key length error:',key,'length='+key.length);
+  }
+  return key;
+}
+
+function rttIsDuplicateActive(email, phone, scope){
+  /* Check localStorage for any active key already issued to same email+phone+scope */
+  var ns=(scope==='ecsa')?ECSA_KEY_NS:IR_KEY_NS;
+  var normEmail=(email||'').toLowerCase().trim();
+  var normPhone=(phone||'').replace(/\D/g,'');
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(ns)===0){
+        try{
+          var v=JSON.parse(localStorage.getItem(k));
+          if(v&&v.email&&v.phone){
+            if(v.email.toLowerCase().trim()===normEmail && v.phone.replace(/\D/g,'')===normPhone){
+              return k.substring(ns.length); // return the existing key
+            }
+          }
+        }catch(e){}
+      }
+    }
+  }catch(e){}
+  return null;
+}
+
+function rttValidateKey(key){
+  /* Returns true if key matches RTT format AND is found in localStorage */
+  if(!key||key.length!==13) return false;
+  if(!/^RTT-[A-Z\-]{2}-[A-Z2-9]{3}-(IR|EC)$/.test(key)) return false;
+  // Also accept legacy RIBA- / Tseke- keys for backwards compat
+  var stored=localStorage.getItem(IR_KEY_NS+key)||localStorage.getItem(ECSA_KEY_NS+key)
+             ||localStorage.getItem(ADM_NS+'k_'+key);
+  return !!stored;
+}
+
 function lmsAdminEntry(){
   /* Show email + PIN prompt */
   var old=document.getElementById('lms-adm-pin-overlay');
@@ -293,33 +385,62 @@ function admShowSendKey(safeId, phone, email, username){
   if(!box) return;
   if(box.style.display==='block'){box.style.display='none';return;}
 
-  // Auto-generate key from student phone + today's date
-  var todayStr=(function(){
-    var d=new Date();
-    var yy=d.getFullYear();
-    var mm=String(d.getMonth()+1).padStart(2,'0');
-    var dd=String(d.getDate()).padStart(2,'0');
-    return ''+yy+mm+dd;
-  })();
-  var studentPhone=(phone||'').replace(/\s/g,'').replace(/^(\+27|27)/,'0');
-  var autoKey='Tseke-'+studentPhone+'-'+todayStr;
+  // Parse username into first/second name for RTT initials
+  var parts=(username||'').trim().split(/\s+/);
+  var fn=parts[0]||'';
+  var sn=parts.length>1?parts[1]:'';
+
+  // Auto-generate RTT-13 key
+  var autoKey=rttGenerateKey(fn, sn, email||'', phone||'', 'ir');
 
   box.innerHTML=
-    '<div style="font-size:11.5px;font-weight:700;margin-bottom:8px;">Generate &amp; send key to '+username+'</div>'
+    '<div style="font-size:11.5px;font-weight:700;margin-bottom:8px;">Generate &amp; send key to '+esc(username)+'</div>'
     +'<div style="margin-bottom:8px;">'
+    +'<div style="display:flex;gap:8px;margin-bottom:6px;">'
+    +'<div style="flex:1;">'
+    +'<label style="font-size:10px;color:var(--fg3);display:block;margin-bottom:2px;">First name (for initials)</label>'
+    +'<input id="adm-fn-'+safeId+'" type="text" value="'+esc(fn)+'" placeholder="First" style="width:100%;box-sizing:border-box;padding:5px 7px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--fg);font-size:12px;" oninput="admRegenKey(\''+safeId+'\',\''+esc(email||'')+'\',\''+esc(phone||'')+'\')">'
+    +'</div>'
+    +'<div style="flex:1;">'
+    +'<label style="font-size:10px;color:var(--fg3);display:block;margin-bottom:2px;">Second name (optional)</label>'
+    +'<input id="adm-sn-'+safeId+'" type="text" value="'+esc(sn)+'" placeholder="Second or leave blank" style="width:100%;box-sizing:border-box;padding:5px 7px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--fg);font-size:12px;" oninput="admRegenKey(\''+safeId+'\',\''+esc(email||'')+'\',\''+esc(phone||'')+'\')">'
+    +'</div>'
+    +'</div>'
     +'<label style="font-size:11px;color:var(--fg2);display:block;margin-bottom:3px;">Key type</label>'
     +'<div style="display:flex;gap:12px;margin-bottom:8px;">'
-    +'<label style="font-size:12px;cursor:pointer;"><input type="radio" name="adm-kt-'+safeId+'" value="ir" checked style="margin-right:4px;">IR Companion</label>'
-    +'<label style="font-size:12px;cursor:pointer;"><input type="radio" name="adm-kt-'+safeId+'" value="ecsa" style="margin-right:4px;">ECSA Companion</label>'
+    +'<label style="font-size:12px;cursor:pointer;"><input type="radio" name="adm-kt-'+safeId+'" value="ir" checked style="margin-right:4px;" onchange="admRegenKey(\''+safeId+'\',\''+esc(email||'')+'\',\''+esc(phone||'')+'\')">IR Companion</label>'
+    +'<label style="font-size:12px;cursor:pointer;"><input type="radio" name="adm-kt-'+safeId+'" value="ecsa" style="margin-right:4px;" onchange="admRegenKey(\''+safeId+'\',\''+esc(email||'')+'\',\''+esc(phone||'')+'\')">ECSA Companion</label>'
     +'</div>'
-    +'<label style="font-size:11px;color:var(--fg2);display:block;margin-bottom:3px;">Generated key (edit if needed)</label>'
-    +'<input id="adm-key-inp-'+safeId+'" type="text" value="'+autoKey+'" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid var(--amb);border-radius:6px;background:var(--bg);color:var(--fg);font-size:12px;font-family:monospace;margin-bottom:8px;">'
+    +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">'
+    +'<label style="font-size:11px;color:var(--fg2);flex:1;">Generated key (13 chars — edit only if needed)</label>'
+    +'<button onclick="admRegenKey(\''+safeId+'\',\''+esc(email||'')+'\',\''+esc(phone||'')+'\')" style="font-size:11px;padding:3px 8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--fg2);">↻ Regenerate</button>'
+    +'</div>'
+    +'<input id="adm-key-inp-'+safeId+'" type="text" value="'+autoKey+'" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid var(--amb);border-radius:6px;background:var(--bg);color:var(--fg);font-size:13px;font-family:monospace;font-weight:700;letter-spacing:1px;margin-bottom:4px;">'
+    +'<div id="adm-key-warn-'+safeId+'" style="font-size:10.5px;color:var(--fg3);margin-bottom:8px;">RTT-{I1}{I2}-{H1}{R1}{R2}-IR/EC — always 13 characters</div>'
     +'</div>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;">'
-    +'<button data-sid="'+safeId+'" data-phone="'+phone+'" data-email="'+email+'" data-uname="'+username+'" onclick="admDoSendKey(this.dataset.sid,this.dataset.phone,this.dataset.email,this.dataset.uname)" style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
-    +(email?'<button data-sid2="'+safeId+'" data-email2="'+email+'" data-uname2="'+username+'" onclick="admDoSendEmail(this.dataset.sid2,this.dataset.email2,this.dataset.uname2)" style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
+    +'<button data-sid="'+safeId+'" data-phone="'+esc(phone||'')+'" data-email="'+esc(email||'')+'" data-uname="'+esc(username)+'" onclick="admDoSendKey(this.dataset.sid,this.dataset.phone,this.dataset.email,this.dataset.uname)" style="flex:1;background:#25D366;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">WhatsApp</button>'
+    +(email?'<button data-sid2="'+safeId+'" data-email2="'+esc(email)+'" data-uname2="'+esc(username)+'" onclick="admDoSendEmail(this.dataset.sid2,this.dataset.email2,this.dataset.uname2)" style="flex:1;background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:7px 10px;font-size:12px;cursor:pointer;min-width:120px;">Email</button>':'')
     +'</div>';
   box.style.display='block';
+}
+
+function admRegenKey(safeId, email, phone){
+  var fn=(document.getElementById('adm-fn-'+safeId)||{}).value||'';
+  var sn=(document.getElementById('adm-sn-'+safeId)||{}).value||'';
+  var scope=admGetKeyType(safeId);
+  // Check for existing active key
+  var existing=rttIsDuplicateActive(email, phone, scope);
+  var warn=document.getElementById('adm-key-warn-'+safeId);
+  var inp=document.getElementById('adm-key-inp-'+safeId);
+  if(existing && existing.length===13){
+    if(inp) inp.value=existing;
+    if(warn) warn.innerHTML='<span style="color:#e67e22;">⚠ Active key already exists for this email+phone. Using existing key.</span>';
+  } else {
+    var newKey=rttGenerateKey(fn, sn, email, phone, scope);
+    if(inp) inp.value=newKey;
+    if(warn) warn.innerHTML='<span style="color:var(--fg3);">RTT-{I1}{I2}-{H1}{R1}{R2}-'+((scope==='ecsa')?'EC':'IR')+' — 13 chars ✓</span>';
+  }
 }
 
 function admGetSelectedKey(safeId){
@@ -339,14 +460,20 @@ function admDoSendKey(safeId, phone, email, username){
   var key=admGetSelectedKey(safeId);
   if(!key){alert('No key entered.');return;}
   var keyType=admGetKeyType(safeId); // 'ir' or 'ecsa'
-  // Validate new key format
-  if(!/^Tseke-\d{10}-\d{8}$/i.test(key)){
-    alert('Key format must be Tseke-{10-digit phone}-{YYYYMMDD}\nExample: Tseke-0724748888-20261125');
+  // Validate RTT-13 format (also accept legacy RIBA-/Tseke- for backwards compat)
+  var isRTT=/^RTT-[A-Z\-]{2}-[A-Z2-9]{3}-(IR|EC)$/.test(key);
+  var isLegacy=/^(RIBA-[A-Z]\d{3}|Tseke-\d{10}-\d{8})$/i.test(key);
+  if(!isRTT && !isLegacy){
+    alert('Key format must be RTT-{I1}{I2}-{H1}{R1}{R2}-{IR|EC}\nExample: RTT-TS-A9K-IR\n\nUse the auto-generate button to create a valid key.');
     return;
   }
   // Mark as issued in localStorage (so lmsCheckKey can resolve it on student device via admin's device)
+  // Store rich object for duplicate detection
   var ns=keyType==='ecsa'?ECSA_KEY_NS:IR_KEY_NS;
-  try{localStorage.setItem(ns+key, username+' ('+phone+')');}catch(e){}
+  try{
+    var keyRec={who:username,phone:(phone||''),email:(email||''),issuedAt:Date.now(),scope:keyType};
+    localStorage.setItem(ns+key, JSON.stringify(keyRec));
+  }catch(e){}
   // Invoice details
   var invAmt=keyType==='ecsa'?0:1000; // ECSA is by quote
   var companionLabel=keyType==='ecsa'?'ECSA Companion':'IR Companion';
@@ -3986,7 +4113,7 @@ function _agrPrintOldStub_DISABLED(id){
    SOPs
    ═══════════════════════════════════════════════════════════ */
 var SOP_DEFAULTS=[
-  {id:'SOP-001',sopNo:'SOP-001',title:'CoC Issuance Procedure',version:'1.1',
+  {id:'SOP-001',sopNo:'SOP-001',category:'compliance',title:'CoC Issuance Procedure',version:'1.1',
     desc:'Standard operating procedure for issuing a Certificate of Compliance (CoC) for electrical installations under SANS 10142-1.',
     steps:'1. Receive client request or job card; confirm site address and client details.\n2. Review any previous CoC or inspection history for the property.\n3. Conduct visual inspection: DB labelling, wiring condition, earthing, cable management.\n4. Perform electrical tests per SANS 10142-1:\n   a. Insulation resistance — each circuit ≥1 MΩ at 500V DC\n   b. Continuity of protective conductors\n   c. RCD trip time — 30 mA type ≤300 ms\n   d. Earth loop impedance (where applicable)\n5. Record ALL test results on the Test Record form with instrument serial and cal date.\n6. Identify and document any defects; photograph non-conformances.\n7. If installation PASSES: complete CoC form — client name, site address, installation description, expiry date (not more than 2 years for general; on change of occupancy).\n8. If installation FAILS: issue Defect Notice. Schedule re-inspection after repairs.\n9. Obtain signatures: inspector (and ECA(SA) member stamp) and client/owner.\n10. File signed original in the job folder; email PDF copy to client.\n11. Update CoC Register in the admin system (Business Hub → Test Records).\n12. Notify client of expiry date and recommend calendar reminder.',
     ecsa:'10 - Take responsibility for decisions',
@@ -3998,7 +4125,7 @@ var SOP_DEFAULTS=[
       {step:'5. Issue CoC / Defect Notice',r:'Inspector',a:'Director',c:'Client',i:'Admin'},
       {step:'6. Update CoC Register',r:'Admin',a:'Director',c:'—',i:'Inspector'}
     ])},
-  {id:'SOP-002',sopNo:'SOP-002',title:'PV System Commissioning',version:'1.1',
+  {id:'SOP-002',sopNo:'SOP-002',category:'technical',title:'PV System Commissioning',version:'1.1',
     desc:'Procedure for commissioning a grid-tied or off-grid photovoltaic (PV) solar installation.',
     steps:'1. Verify PV array installation: panel orientation, tilt angle, shading assessment.\n2. Inspect all DC wiring: MC4 connectors, cable sizing, fusing, surge protection devices.\n3. Verify AC inverter wiring, isolators, and anti-islanding protection settings.\n4. Test each string with open circuits: Voc, Isc, insulation resistance per string (≥1 MΩ).\n5. Measure and record string polarity before connecting to inverter.\n6. Commission inverter: set grid parameters (220 V / 50 Hz), verify feed-in limits (if grid-tied).\n7. Monitor inverter display for fault codes; test anti-islanding protection relay.\n8. Complete PV Test Record with all measurements — log under Business Hub → Test Records.\n9. Issue CoC for AC wiring portion under SANS 10142-1.\n10. Provide handover documentation: system manual, warranty cards, monitoring app setup.\n11. Train client on basic operation, shutdown procedure, and fault identification.',
     ecsa:'2 - Design or develop solutions',
@@ -4010,7 +4137,7 @@ var SOP_DEFAULTS=[
       {step:'9. CoC issuance',r:'Inspector',a:'Director',c:'Client',i:'Admin'},
       {step:'10–11. Handover & training',r:'Director',a:'Director',c:'Inspector',i:'Client'}
     ])},
-  {id:'SOP-003',sopNo:'SOP-003',title:'DB (Distribution Board) Inspection',version:'1.1',
+  {id:'SOP-003',sopNo:'SOP-003',category:'technical',title:'DB (Distribution Board) Inspection',version:'1.1',
     desc:'Procedure for inspecting and testing a main or sub-distribution board per SANS 10142-1.',
     steps:'1. Confirm isolation: switch off main breaker; apply LOTO (lock out / tag out).\n2. Remove DB cover safely; inspect for moisture, corrosion, pest ingress, overheating.\n3. Verify all breakers are correctly rated, labelled, and not bypassed.\n4. Check earthing and neutral bar connections; torque check on ALL terminals.\n5. Inspect cable entry points and gland sizes vs. cable diameter.\n6. Test all RCDs: press test button; verify 30 mA RCDs trip ≤300 ms with test instrument.\n7. Measure insulation resistance on each outgoing circuit (≥1 MΩ at 500V DC).\n8. Check earth leakage current on main supply (must be below RCD trip threshold).\n9. Document all readings on Test Record form; note instrument serial and calibration date.\n10. Reinstate supply; monitor for abnormal current draw or heat.\n11. Issue defect notice for any non-conformance; schedule re-test after repair.',
     ecsa:'1 - Define, investigate and analyse',
@@ -4021,7 +4148,7 @@ var SOP_DEFAULTS=[
       {step:'9. Record results',r:'Inspector',a:'Inspector',c:'—',i:'Admin'},
       {step:'10–11. Reinstate & close',r:'Inspector',a:'Director',c:'Client',i:'Admin'}
     ])},
-  {id:'SOP-004',sopNo:'SOP-004',title:'GitHub Version Control Workflow',version:'1.0',
+  {id:'SOP-004',sopNo:'SOP-004',category:'technical',title:'GitHub Version Control Workflow',version:'1.0',
     desc:'Standard workflow for managing source code using GitHub — branching, commits, pull requests, and releases for the ribattseke.co.za project.',
     steps:'1. REPOSITORY SETUP\n   - Main repo: ribattseke-site (private, GitHub)\n   - Main branch = production; dev branch = development\n   - Never commit directly to main without review.\n\n2. DAILY WORKFLOW\n   a. Pull latest from main: git pull origin main\n   b. Create a feature/fix branch: git checkout -b fix/description\n   c. Make changes in VS Code or directly on the index.html\n   d. Stage and commit: git add index.html && git commit -m "fix: short description"\n   e. Push branch: git push origin fix/description\n\n3. COMMIT MESSAGE CONVENTIONS\n   - feat: new feature\n   - fix: bug fix\n   - content: text/data update\n   - deploy: production release\n   - Use present tense. Keep under 72 chars.\n\n4. PULL REQUESTS\n   a. Open PR on GitHub: fix/description → main\n   b. Describe what changed and why\n   c. Self-review: check diff for accidental deletions or exposed secrets\n   d. Merge via "Squash and merge"\n   e. Delete merged branch\n\n5. RELEASE TAGGING\n   - Tag production releases: git tag -a v1.x.x -m "Release notes"\n   - Push tag: git push origin --tags\n\n6. SECRETS & SECURITY\n   - NEVER commit API keys, Firebase config, or admin PINs to the repo\n   - Store secrets in Cloudflare environment variables or in a separate .env file listed in .gitignore\n   - Rotate keys immediately if accidentally exposed\n\n7. BACKUP\n   - GitHub serves as the primary backup\n   - Download a local ZIP copy after each major release\n   - Keep one copy on Google Drive (Business Hub → Files)',
     ecsa:'3 - Apply established engineering practice',
@@ -4032,7 +4159,7 @@ var SOP_DEFAULTS=[
       {step:'Tag release',r:'Director',a:'Director',c:'—',i:'Admin'},
       {step:'Check for exposed secrets',r:'Developer',a:'Director',c:'—',i:'Admin'}
     ])},
-  {id:'SOP-005',sopNo:'SOP-005',title:'Firebase / Firestore Database Management',version:'1.0',
+  {id:'SOP-005',sopNo:'SOP-005',category:'technical',title:'Firebase / Firestore Database Management',version:'1.0',
     desc:'Procedure for managing Firebase Firestore collections, security rules, and user data for the LMS platform.',
     steps:'1. FIREBASE PROJECT\n   - Project: ribattseke-lms (Firebase Console)\n   - Collections: users, keys, activity, invoices\n   - Authentication: Email/Password and anonymous\n\n2. ADDING / UPDATING RECORDS\n   a. Access Firebase Console → Firestore Database\n   b. Navigate to the relevant collection\n   c. Add or edit documents using the console UI or via Admin SDK scripts\n   d. NEVER manually edit user payment or access records without an audit trail\n\n3. COHORT KEY MANAGEMENT\n   - Keys are stored in collection: keys\n   - Africa TVET cohort keys: prefix ATVET- or AFRICA-\n   - To add a batch of keys: use the Admin panel → Keys section in the LMS\n   - Set maxUses and expiry fields appropriately\n\n4. SECURITY RULES\n   - Rules are in Firebase Console → Firestore → Rules\n   - Default rule: authenticated users can read their own document only\n   - Admin writes are done via service account (server-side) only\n   - Review rules quarterly; never open read/write to all\n\n5. BACKUPS\n   a. Export Firestore data monthly: Firebase Console → Firestore → Import/Export\n   b. Store exports in Google Cloud Storage bucket (ribattseke-backups)\n   c. Test restore procedure every 6 months\n\n6. MONITORING\n   - Firebase Console → Usage and Billing: check quota monthly\n   - Alert threshold: 70% of free-tier limit → upgrade to Blaze plan\n   - Activity logs: check for unusual authentication or write spikes\n\n7. INCIDENT RESPONSE\n   - Suspected data breach: immediately disable authentication in Firebase Console\n   - Notify affected users within 72 hours (POPIA requirement)\n   - Document incident in HSE / Risk Register',
     ecsa:'7 - Meet legal and safety requirements',
@@ -4043,7 +4170,7 @@ var SOP_DEFAULTS=[
       {step:'Monthly backup',r:'Admin',a:'Director',c:'—',i:'Director'},
       {step:'Incident response',r:'Director',a:'Director',c:'Legal',i:'Users'}
     ])},
-  {id:'SOP-006',sopNo:'SOP-006',title:'Claude AI Usage Policy',version:'1.0',
+  {id:'SOP-006',sopNo:'SOP-006',category:'hse',title:'Claude AI Usage Policy',version:'1.0',
     desc:'Guidelines for using Claude AI (Anthropic) in business operations, content creation, and site development for Riba T Tseke.',
     steps:'1. APPROVED USES\n   - Website development and debugging (index.html edits)\n   - Drafting client communications and proposals\n   - Generating quiz questions and study content for the LMS\n   - Research and summarising technical standards (SANS, IEC)\n   - SOP and report drafting (always human-reviewed before finalising)\n\n2. PROHIBITED USES\n   - Submitting Claude-generated content as ECSA CPD evidence without disclosure\n   - Sharing confidential client data, ID numbers, or financial records with Claude\n   - Using Claude to generate false certifications, qualifications, or regulatory submissions\n   - Relying solely on Claude for legal or financial advice\n\n3. WORKFLOW\n   a. Session: start a new Claude session for each distinct task\n   b. Context: paste only the minimum required context (no full client databases)\n   c. Review: ALL Claude outputs must be reviewed and approved by the Director before use\n   d. Version: note which Claude model was used for significant deliverables\n\n4. DATA PRIVACY (POPIA)\n   - Do not paste personal information (ID numbers, banking details, medical info) into Claude\n   - Anonymise data before using it as AI context (e.g., "Client A" instead of full name)\n   - Delete conversation history after sensitive sessions\n\n5. COST MANAGEMENT\n   - Monitor Claude.ai subscription usage monthly\n   - For large batch tasks (e.g., generating 100 quiz questions), use the API with token limits\n   - Log significant AI-assisted projects in the Business Hub notes\n\n6. QUALITY CONTROL\n   - Cross-check technical content against official SANS standards\n   - Have a qualified person verify all electrical engineering calculations\n   - Do not publish AI-generated exam questions without expert review',
     ecsa:'8 - Conduct work ethically',
@@ -4054,7 +4181,7 @@ var SOP_DEFAULTS=[
       {step:'Data privacy check',r:'Director',a:'Director',c:'—',i:'Admin'},
       {step:'Monthly usage review',r:'Admin',a:'Director',c:'—',i:'Director'}
     ])},
-  {id:'SOP-007',sopNo:'SOP-007',title:'Domain & Website Management (ribattseke.co.za)',version:'1.0',
+  {id:'SOP-007',sopNo:'SOP-007',category:'technical',title:'Domain & Website Management (ribattseke.co.za)',version:'1.0',
     desc:'Procedure for managing the ribattseke.co.za domain, DNS, Cloudflare CDN, and website deployments.',
     steps:'1. DOMAIN DETAILS\n   - Domain: ribattseke.co.za\n   - Registrar: (confirm in Cloudflare or Domains panel)\n   - DNS managed by: Cloudflare\n   - Hosting: Cloudflare Pages (static site deployment)\n\n2. DNS MANAGEMENT\n   a. Log in to Cloudflare Dashboard → ribattseke.co.za\n   b. DNS records: A record and CNAME for www must point to Cloudflare Pages\n   c. MX records: check if email forwarding is configured\n   d. Any DNS change takes effect within 5 minutes on Cloudflare (orange cloud = proxied)\n   e. Document all DNS changes with date, reason, and who made the change\n\n3. WEBSITE DEPLOYMENT\n   a. Download updated index.html from Claude session\n   b. Log in to Cloudflare Pages Dashboard\n   c. Select project: ribattseke-site (or the correct project name)\n   d. Upload the new index.html via the Dashboard upload OR use:\n      wrangler pages publish . --project-name=ribattseke-site\n   e. Verify deployment at https://ribattseke.co.za after ~1 min\n   f. Test: LMS login, admin panel, quotes, print functions\n   g. If anything is broken: Cloudflare Pages → Deployments → Roll back to previous\n\n4. SSL / HTTPS\n   - SSL is automatic via Cloudflare Universal SSL (always ON)\n   - Minimum TLS version: 1.2\n   - HSTS: enabled\n   - If SSL error appears: check nameserver delegation and Cloudflare proxy status\n\n5. DOMAIN RENEWAL\n   - Set domain auto-renewal ON in the registrar\n   - Calendar reminder: 60 days before expiry\n   - Domain expiry date: check annually and log in Business Hub → Notes\n\n6. SECURITY\n   - Cloudflare WAF: basic protection ON\n   - Rate limiting: enabled on /api/* if any server-side routes are added\n   - Page Rules: redirect HTTP to HTTPS (always on)\n   - If site is defaced or hacked: roll back deployment immediately; change all passwords',
     ecsa:'7 - Meet legal and safety requirements',
@@ -4065,7 +4192,7 @@ var SOP_DEFAULTS=[
       {step:'Rollback',r:'Director',a:'Director',c:'—',i:'Admin'},
       {step:'Domain renewal',r:'Admin',a:'Director',c:'—',i:'Director'}
     ])},
-  {id:'SOP-008',sopNo:'SOP-008',title:'Quoting and Proposal Process',version:'1.0',
+  {id:'SOP-008',sopNo:'SOP-008',category:'hse',title:'Quoting and Proposal Process',version:'1.0',
     desc:'Standard procedure for preparing, issuing, and following up on client quotations.',
     steps:'1. INTAKE\n   a. Receive client enquiry (WhatsApp, phone, email, or walk-in)\n   b. Conduct site visit or telephone assessment; take photos\n   c. Confirm scope: installation type, cable runs, DB size, special requirements\n\n2. PREPARE QUOTATION\n   a. Open Business Hub → Quotes → + New Quote\n   b. Select or create client record\n   c. Add line items: labour, materials, sundries, travel (if applicable)\n   d. Apply applicable markup and VAT (if VAT-registered; confirm current status)\n   e. Add payment terms: 50% deposit, balance on completion\n   f. Add validity period: 30 days from issue date\n   g. Add any special conditions (site access, client-supplied materials)\n\n3. ISSUE QUOTATION\n   a. Print or export quote PDF from Business Hub\n   b. Send to client via WhatsApp or email with a brief cover message\n   c. Follow up within 3 business days if no response\n\n4. ACCEPTANCE\n   a. Record client acceptance (signed quote or written confirmation)\n   b. Convert quote to job card\n   c. Schedule work date in calendar\n   d. Collect deposit before starting work\n\n5. VARIATIONS\n   - Any change to scope must be agreed in writing before the work is done\n   - Issue a Variation Order (VO) or revised quote for cost changes ≥10%\n\n6. REJECTION\n   - Log reason for rejection in the quote record (price, timing, competitor)\n   - Follow up after 2 weeks if circumstances may have changed',
     ecsa:'5 - Communicate and collaborate',
@@ -4076,7 +4203,7 @@ var SOP_DEFAULTS=[
       {step:'Follow up',r:'Admin',a:'Director',c:'Director',i:'Client'},
       {step:'Accept & schedule',r:'Director',a:'Director',c:'Client',i:'Admin'}
     ])},
-  {id:'SOP-009',sopNo:'SOP-009',title:'Invoicing and Payment Process',version:'1.0',
+  {id:'SOP-009',sopNo:'SOP-009',category:'hse',title:'Invoicing and Payment Process',version:'1.0',
     desc:'Standard procedure for issuing invoices, collecting payment, and reconciling accounts.',
     steps:'1. INVOICE PREPARATION\n   a. After job completion (or at deposit stage), open Business Hub → Invoices → + New Invoice\n   b. Link to accepted quotation; adjust line items for actual work done\n   c. Add payment terms: EFT details or SnapScan/PayShap\n   d. Set due date: 7 days from invoice date (or as agreed)\n   e. Verify VAT treatment (zero-rated / excluded if not VAT-registered)\n\n2. ISSUE INVOICE\n   a. Print or export invoice PDF\n   b. Send to client via WhatsApp or email\n   c. For deposits: issue a Pro-Forma invoice before work starts\n\n3. PAYMENT FOLLOW-UP\n   - Day 0: Invoice issued\n   - Day 7: Check if payment received\n   - Day 8: First follow-up — polite WhatsApp reminder\n   - Day 14: Second follow-up — formal email\n   - Day 21: Escalate — call and issue final demand letter\n   - Day 30+: Consider letter of demand or SMME tribunal process\n\n4. PROOF OF PAYMENT\n   a. When PoP received: verify in banking app that money has cleared\n   b. Update invoice status to "Paid" in Business Hub\n   c. Send receipt (stamped/signed invoice marked PAID)\n\n5. RECONCILIATION\n   a. Weekly: check Business Hub → Invoices for outstanding balances\n   b. Monthly: reconcile invoices against bank statement\n   c. Quarterly: review debtors list; write off irrecoverable amounts after escalation\n\n6. RECORD RETENTION\n   - Keep invoices and PoPs for minimum 5 years (SARS requirement)\n   - Store in Google Drive: Accounts / Invoices / YYYY',
     ecsa:'6 - Recognise effects of work',
@@ -4087,7 +4214,7 @@ var SOP_DEFAULTS=[
       {step:'Verify & receipt payment',r:'Director',a:'Director',c:'—',i:'Admin'},
       {step:'Monthly reconciliation',r:'Admin',a:'Director',c:'—',i:'Director'}
     ])},
-  {id:'SOP-010',sopNo:'SOP-010',title:'Electrical Test Record Procedure',version:'1.0',
+  {id:'SOP-010',sopNo:'SOP-010',category:'compliance',title:'Electrical Test Record Procedure',version:'1.0',
     desc:'Procedure for completing and filing electrical installation test records per SANS 10142-1 and Construction Regulations.',
     steps:'1. PRE-TEST PREPARATION\n   a. Confirm test instrument calibration is current (annual calibration required)\n   b. Record instrument make, model, and serial number on test record form\n   c. Obtain installation drawings or single-line diagram\n   d. Confirm isolation procedure with client\n\n2. INSULATION RESISTANCE TESTS\n   a. Isolate all circuit breakers and disconnect sensitive equipment (dimmers, surge protectors, smart devices)\n   b. Apply 500V DC between line and earth, neutral and earth for each circuit\n   c. Minimum acceptable: 1 MΩ per circuit\n   d. Record individual circuit readings — not just a single composite reading\n\n3. CONTINUITY TESTS\n   a. Test CPC (circuit protective conductor) continuity on all circuits\n   b. Record resistance in Ω for each circuit\n   c. Acceptable: <1 Ω for most residential circuits\n\n4. RCD TESTS\n   a. Test all 30 mA RCDs with calibrated tester\n   b. Trip time must be ≤300 ms at rated trip current\n   c. Test at 50%, 100%, and 150% of rated trip current where instrument allows\n   d. Record trip time for each RCD\n\n5. COMPLETING THE RECORD\n   a. Complete test record form in full — no blank fields\n   b. Sign and date; include ECSA / ECA(SA) registration number\n   c. Have installation owner or representative sign as witness\n   d. Attach to CoC or store separately in job folder\n\n6. FILING\n   a. Upload scan or photo to Business Hub → Test Records\n   b. Cross-reference with the linked CoC record\n   c. Retain original paper record for minimum 2 years',
     ecsa:'1 - Define, investigate and analyse',
@@ -4100,6 +4227,11 @@ var SOP_DEFAULTS=[
     ])}
 ];
 
+var SOP_CATS={
+  compliance:{label:'Compliance',color:'#1565C0',bg:'rgba(21,101,192,.1)',icon:'📋'},
+  technical:{label:'Technical',color:'#2E7D32',bg:'rgba(46,125,50,.1)',icon:'🔧'},
+  hse:{label:'Health, Safety & Environment',color:'#B71C1C',bg:'rgba(183,28,28,.1)',icon:'🦺'}
+};
 function sopRender(){
   var list=bizList('sop');list.sort(function(a,b){return a.sopNo>b.sopNo?1:-1;});
   var el=document.getElementById('sop-list');if(!el)return;
@@ -4108,14 +4240,28 @@ function sopRender(){
       +'<button class="biz-btn" onclick="sopLoadDefaults()">Load default SOPs</button></p>';
     return;
   }
-  var html='<table class="biz-table"><thead><tr><th>SOP #</th><th>Title</th><th>Version</th><th>ECSA Outcome</th><th>Actions</th></tr></thead><tbody>';
-  list.forEach(function(s){
-    html+='<tr><td><b>'+s.sopNo+'</b></td><td>'+esc(s.title||'—')+'</td><td>'+esc(s.version||'1.0')+'</td>'
-      +'<td>'+esc(s.ecsa||'—')+'</td>'
-      +'<td><button class="biz-btn" onclick="sopEdit(\''+s.id+'\')">Edit</button> '
-      +'<button class="biz-btn" onclick="sopPrint(\''+s.id+'\')">Print</button></td></tr>';
+  var groups={compliance:[],technical:[],hse:[]};
+  list.forEach(function(s){var c=s.category||'technical';if(!groups[c])groups[c]=[];groups[c].push(s);});
+  var html='';
+  ['compliance','technical','hse'].forEach(function(cat){
+    var items=groups[cat];if(!items||!items.length)return;
+    var cc=SOP_CATS[cat];
+    html+='<div style="margin-bottom:20px">'
+      +'<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;background:'+cc.bg+';margin-bottom:8px">'
+      +'<span style="font-size:16px">'+cc.icon+'</span>'
+      +'<span style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:'+cc.color+'">'+cc.label+'</span>'
+      +'<span style="margin-left:auto;font-size:11px;color:var(--muted)">'+items.length+' document'+(items.length>1?'s':'')+'</span>'
+      +'</div>'
+      +'<table class="biz-table" style="margin:0"><thead><tr><th>SOP #</th><th>Title</th><th>Version</th><th>ECSA Outcome</th><th>Actions</th></tr></thead><tbody>';
+    items.forEach(function(s){
+      html+='<tr><td><b>'+s.sopNo+'</b></td><td>'+esc(s.title||'—')+'</td><td>'+esc(s.version||'1.0')+'</td>'
+        +'<td>'+esc(s.ecsa||'—')+'</td>'
+        +'<td><button class="biz-btn" onclick="sopEdit(\''+s.id+'\')">Edit</button> '
+        +'<button class="biz-btn" onclick="sopPrint(\''+s.id+'\')">Print</button></td></tr>';
+    });
+    html+='</tbody></table></div>';
   });
-  el.innerHTML=html+'</tbody></table>';
+  el.innerHTML=html;
 }
 function sopLoadDefaults(){
   SOP_DEFAULTS.forEach(function(s){if(!bizGet('sop_'+s.id)){bizSet('sop_'+s.id,Object.assign({ts:Date.now()},s));}});
@@ -4123,7 +4269,7 @@ function sopLoadDefaults(){
 }
 function sopNew(){
   var seq=bizSeq('sop');var sopNo='SOP-'+String(seq+3).padStart(3,'0');
-  var obj={id:sopNo,sopNo:sopNo,title:'',version:'1.0',desc:'',steps:'',ecsa:'',ts:Date.now()};
+  var obj={id:sopNo,sopNo:sopNo,category:'compliance',title:'',version:'1.0',desc:'',steps:'',ecsa:'',ts:Date.now()};
   bizSet('sop_'+sopNo,obj);sopEdit(sopNo);
 }
 function sopEdit(id){
@@ -4131,6 +4277,11 @@ function sopEdit(id){
   var html='<div class="biz-modal-backdrop" id="sop-modal">'
     +'<div class="biz-modal" style="max-width:640px">'
     +'<h3>SOP — '+s.sopNo+'</h3>'
+    +'<label>Category<select id="sm-cat">'
+    +'<option value="compliance"'+(s.category==='compliance'?' selected':'')+'>📋 Compliance</option>'
+    +'<option value="technical"'+(!s.category||s.category==='technical'?' selected':'')+'>🔧 Technical</option>'
+    +'<option value="hse"'+(s.category==='hse'?' selected':'')+'>🦺 Health, Safety &amp; Environment</option>'
+    +'</select></label>'
     +'<label>Title *<input id="sm-title" value="'+esc(s.title||'')+'"></label>'
     +'<label>Version<input id="sm-ver" value="'+esc(s.version||'1.0')+'" style="width:80px"></label>'
     +'<label>Description<textarea id="sm-desc" rows="2">'+esc(s.desc||'')+'</textarea></label>'
@@ -4148,7 +4299,7 @@ function sopEdit(id){
 }
 function sopSave(id){
   var s=bizGet('sop_'+id)||{};
-  s.title=val('sm-title');s.version=val('sm-ver');s.desc=val('sm-desc');s.steps=val('sm-steps');s.ecsa=val('sm-ecsa');s.ts=Date.now();
+  s.category=val('sm-cat')||'technical';s.title=val('sm-title');s.version=val('sm-ver');s.desc=val('sm-desc');s.steps=val('sm-steps');s.ecsa=val('sm-ecsa');s.ts=Date.now();
   bizSet('sop_'+id,s);closeModal('sop-modal');sopRender();
 }
 function sopPrint(id){
@@ -4790,30 +4941,49 @@ window._engageShowDonateFull=function(){if(typeof lmsAdminEntry==="function")lms
 /* ===== ISSUE NEW KEY ===== */
 function admIssueKey(){
   var phone=(document.getElementById('adm-new-key-phone')||{}).value||'';
-  var name=(document.getElementById('adm-new-key-name')||{}).value||'';
+  var firstName=(document.getElementById('adm-new-key-fname')||{}).value||'';
+  var secondName=(document.getElementById('adm-new-key-sname')||{}).value||'';
+  var email=(document.getElementById('adm-new-key-email')||{}).value||'';
   var tier=(document.getElementById('adm-new-key-tier')||{}).value||'ir';
   var out=document.getElementById('adm-new-key-out');
   phone=phone.replace(/\D/g,'');
-  name=name.trim();
+  firstName=firstName.trim();
   if(!phone||phone.length<9){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter a valid phone number.</span>';return;}
-  if(!name){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter the recipient name.</span>';return;}
-  var d=new Date();
-  var ds=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
-  var phone10=phone.replace(/^0/,'').slice(-10).padStart(10,'0');
-  var key='Tseke-'+phone10+'-'+ds;
-  try{
-    if(tier==='ir'||tier==='both') localStorage.setItem(IR_KEY_NS+key,name+'|'+phone);
-    if(tier==='ecsa'||tier==='both') localStorage.setItem(ECSA_KEY_NS+key,name+'|'+phone);
-  }catch(e){}
+  if(!firstName){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter the recipient first name.</span>';return;}
+  // Check for duplicate before generating
+  var scopes=(tier==='both')?['ir','ecsa']:[tier];
+  var keys={};
   var label={'ir':'IR Companion','ecsa':'ECSA Companion','both':'Both Companions'}[tier]||tier;
+  var fullName=firstName+(secondName?' '+secondName:'');
+  var phone10=phone.replace(/^0/,'').slice(-10).padStart(10,'0');
+  var htmlKeys='';
+  scopes.forEach(function(sc){
+    var existing=rttIsDuplicateActive(email, phone, sc);
+    var key;
+    if(existing && existing.length===13){
+      key=existing;
+      htmlKeys+='<div style="font-size:11px;color:#e67e22;margin-bottom:3px;">⚠ Existing active key ('+sc.toUpperCase()+'):</div>';
+    } else {
+      key=rttGenerateKey(firstName, secondName, email, phone, sc);
+      var ns=(sc==='ecsa')?ECSA_KEY_NS:IR_KEY_NS;
+      try{
+        var keyRec={who:fullName,phone:phone,email:email,issuedAt:Date.now(),scope:sc};
+        localStorage.setItem(ns+key,JSON.stringify(keyRec));
+      }catch(e){}
+      htmlKeys+='<div style="font-size:11px;color:var(--fg3);margin-bottom:3px;">New key ('+sc.toUpperCase()+'):</div>';
+    }
+    keys[sc]=key;
+    htmlKeys+='<div style="font-family:monospace;font-size:15px;font-weight:700;color:var(--amb);letter-spacing:1.5px;user-select:all;margin-bottom:6px;">'+key+'</div>'
+      +'<button onclick="navigator.clipboard.writeText(\''+key+'\').then(function(){var b=this;b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Copy\';},1500);}.bind(this)).catch(function(){});" '
+      +'style="font-size:11px;padding:3px 10px;background:var(--amb);color:#fff;border:none;border-radius:5px;cursor:pointer;margin-bottom:10px;">Copy</button>';
+  });
   if(out){
+    var waKey=keys['ir']||keys['ecsa']||'';
     out.innerHTML='<div style="background:var(--bg-alt);border-radius:8px;padding:12px;margin-top:8px;">'
-      +'<div style="font-size:11px;color:var(--fg3);margin-bottom:4px;">Key generated for <strong>'+name+'</strong> ('+label+'):</div>'
-      +'<div style="font-family:monospace;font-size:14px;font-weight:700;color:var(--amb);letter-spacing:.5px;user-select:all;">'+key+'</div>'
-      +'<button onclick="navigator.clipboard.writeText(\''+key+'\').then(function(){var b=this;b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Copy key\';},1500);}.bind(this)).catch(function(){});" '
-      +'style="margin-top:8px;font-size:12px;padding:5px 12px;background:var(--amb);color:#fff;border:none;border-radius:6px;cursor:pointer;">Copy key</button>'
-      +'<div style="font-size:11px;color:var(--fg3);margin-top:6px;">Send this key to '+(phone.startsWith('0')?phone:'0'+phone10)+' via WhatsApp: '
-      +'<a href="https://wa.me/27'+phone10+'?text=Hi+'+encodeURIComponent(name)+'%2C+here+is+your+Learning+Companion+key%3A+'+key+'" target="_blank" style="color:var(--amb);">Send on WhatsApp ↗</a></div>'
+      +'<div style="font-size:11px;color:var(--fg3);margin-bottom:6px;">Key generated for <strong>'+esc(fullName)+'</strong> ('+label+'):</div>'
+      +htmlKeys
+      +'<div style="font-size:11px;color:var(--fg3);margin-top:4px;">Send to '+phone+' via WhatsApp: '
+      +'<a href="https://wa.me/27'+phone10+'?text=Hi+'+encodeURIComponent(fullName)+'%2C+your+Riba+T+Tseke+Learning+Companion+key%3A+'+encodeURIComponent(waKey)+'" target="_blank" style="color:var(--amb);">Send ↗</a></div>'
       +'</div>';
   }
 }

@@ -25,19 +25,93 @@
         </div>
       </div>
 
-      <!-- SIGN UP VIEW -->
+      <!-- SIGN UP VIEW — Expanded KYC (no SA ID, POPIA compliant) -->
       <div id="lms-signup" class="lms-view">
         <div class="lms-card">
           <h3>Create your account</h3>
           <p style="font-size:12.5px;color:var(--fg2);margin-bottom:14px;">Register now. Tseke will send your access key via WhatsApp once your account is confirmed. Already have a key? You will activate it after signing in.</p>
-          <label class="lms-label">Choose a username</label>
-          <input class="lms-input" id="lms-su-u" type="text" placeholder="e.g. john123" autocomplete="username" autocapitalize="none">
-          <label class="lms-label" style="margin-top:10px;">Cell number (Tseke will WhatsApp your key here)</label>
+
+          <!-- Name group -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0;">
+            <div>
+              <label class="lms-label">First name *</label>
+              <input class="lms-input" id="lms-su-fname" type="text" placeholder="e.g. John" autocapitalize="words">
+            </div>
+            <div>
+              <label class="lms-label">Second name <span style="font-weight:400;color:var(--fg3);font-size:11px;">(optional)</span></label>
+              <input class="lms-input" id="lms-su-sname" type="text" placeholder="e.g. Peter" autocapitalize="words">
+            </div>
+          </div>
+          <label class="lms-label" style="margin-top:8px;">Surname *</label>
+          <input class="lms-input" id="lms-su-surname" type="text" placeholder="e.g. Smith" autocapitalize="words">
+
+          <!-- Contact -->
+          <label class="lms-label" style="margin-top:10px;">Cell number * <span style="font-weight:400;color:var(--fg3);font-size:11px;">(Tseke WhatsApps your key here)</span></label>
           <input class="lms-input" id="lms-su-cell" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
-          <label class="lms-label" style="margin-top:10px;">Email address (optional, for recovery)</label>
+          <label class="lms-label" style="margin-top:10px;">Email address *</label>
           <input class="lms-input" id="lms-su-email" type="email" placeholder="e.g. student@gmail.com" autocomplete="email">
-          <label class="lms-label" style="margin-top:10px;">Choose a PIN (letters, numbers, anything)</label>
+
+          <!-- DOB (not SA ID — POPIA) -->
+          <label class="lms-label" style="margin-top:10px;">Date of birth <span style="font-weight:400;color:var(--fg3);font-size:11px;">(POPIA compliant — no ID number)</span></label>
+          <input class="lms-input" id="lms-su-dob" type="date" style="color:var(--fg);">
+
+          <!-- Education & experience -->
+          <label class="lms-label" style="margin-top:10px;">Highest level of education</label>
+          <select class="lms-input" id="lms-su-edu" style="color:var(--fg);">
+            <option value="">— Select —</option>
+            <option value="Grade 10 or below">Grade 10 or below</option>
+            <option value="Grade 11">Grade 11</option>
+            <option value="Grade 12 / Matric">Grade 12 / Matric</option>
+            <option value="N2">N2 (Electrical)</option>
+            <option value="N3">N3 (Electrical)</option>
+            <option value="N4 / N5 / N6">N4 / N5 / N6</option>
+            <option value="Certificate / Diploma">Certificate / Diploma</option>
+            <option value="Degree or higher">Degree or higher</option>
+          </select>
+          <label class="lms-label" style="margin-top:10px;">Years of electrical experience</label>
+          <select class="lms-input" id="lms-su-exp" style="color:var(--fg);">
+            <option value="">— Select —</option>
+            <option value="None">None — just starting</option>
+            <option value="Less than 1 year">Less than 1 year</option>
+            <option value="1–2 years">1–2 years</option>
+            <option value="3–5 years">3–5 years</option>
+            <option value="6–10 years">6–10 years</option>
+            <option value="More than 10 years">More than 10 years</option>
+          </select>
+
+          <!-- Employment status -->
+          <label class="lms-label" style="margin-top:10px;">Current employment status</label>
+          <div style="display:flex;gap:16px;margin-top:4px;margin-bottom:2px;">
+            <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="lms-su-emp" value="Employed" style="accent-color:var(--amb);">Employed
+            </label>
+            <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="lms-su-emp" value="Unemployed" style="accent-color:var(--amb);">Unemployed
+            </label>
+            <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="lms-su-emp" value="Student" style="accent-color:var(--amb);">Full-time student
+            </label>
+          </div>
+          <input class="lms-input" id="lms-su-role" type="text" placeholder="Current role / occupation (e.g. Apprentice Electrician)" style="margin-top:6px;">
+
+          <!-- Track selection -->
+          <label class="lms-label" style="margin-top:10px;">Learning track / companion</label>
+          <div style="display:flex;gap:12px;margin-top:4px;margin-bottom:2px;">
+            <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="lms-su-track" value="ir" checked style="accent-color:var(--amb);">IR Companion <span style="font-size:11px;color:var(--fg3);">(Installation Rules)</span>
+            </label>
+            <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="lms-su-track" value="ecsa" style="accent-color:var(--amb);">ECSA Companion <span style="font-size:11px;color:var(--fg3);">(Pr. Technician)</span>
+            </label>
+          </div>
+
+          <!-- Username + PIN -->
+          <label class="lms-label" style="margin-top:12px;">Choose a username *</label>
+          <input class="lms-input" id="lms-su-u" type="text" placeholder="e.g. john123" autocomplete="username" autocapitalize="none">
+          <label class="lms-label" style="margin-top:10px;">Choose a PIN *</label>
           <input class="lms-input" id="lms-su-p" type="text" placeholder="e.g. Riba2026 or 7749" autocomplete="new-password">
+
+          <!-- TVET College -->
           <label class="lms-label" style="margin-top:14px;display:flex;align-items:center;gap:8px;cursor:pointer;">
             <input type="checkbox" id="lms-su-is-atvet" onchange="lmsToggleAtvetField(this.checked)" style="width:16px;height:16px;accent-color:var(--amb);flex-shrink:0;">
             <span>I am enrolled at Africa TVET College</span>
@@ -745,22 +819,32 @@
             <div id="adm-ecsa-list"></div>
           </div>
 
-          <!-- Issue / Upgrade Key -->
+          <!-- Issue / Upgrade Key — RTT-13 format -->
           <div class="admin-tier-block" style="border-top:2px solid var(--amb);padding-top:16px;margin-top:8px;">
-            <div class="admin-tier-title">Issue New Key / Upgrade Access</div>
-            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Generate a new Tseke-format key for a student or upgrade an existing key to include the ECSA companion.</p>
+            <div class="admin-tier-title">Issue New RTT Key</div>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Generates <strong>RTT-{I1}{I2}-{H1}{R1}{R2}-IR/EC</strong> — always exactly 13 characters. Duplicate keys for the same email+phone+scope are blocked.</p>
             <div style="display:grid;gap:8px;max-width:420px;">
-              <label style="font-size:12px;font-weight:600;">Phone number (key will be Tseke-{phone}-{date})</label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">First name *</label>
+                  <input id="adm-new-key-fname" type="text" class="biz-input" placeholder="e.g. Tiaan" style="font-size:13px;width:100%;box-sizing:border-box;">
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:3px;">Second name <span style="font-weight:400;color:var(--fg3);">(opt, "-" if blank)</span></label>
+                  <input id="adm-new-key-sname" type="text" class="biz-input" placeholder="e.g. van der Merwe" style="font-size:13px;width:100%;box-sizing:border-box;">
+                </div>
+              </div>
+              <label style="font-size:12px;font-weight:600;">Phone number *</label>
               <input id="adm-new-key-phone" type="tel" class="biz-input" placeholder="e.g. 0824567890" style="font-size:13px;">
-              <label style="font-size:12px;font-weight:600;">Student name</label>
-              <input id="adm-new-key-name" type="text" class="biz-input" placeholder="e.g. Tiaan van der Merwe" style="font-size:13px;">
+              <label style="font-size:12px;font-weight:600;">Email <span style="font-weight:400;color:var(--fg3);">(used for duplicate check)</span></label>
+              <input id="adm-new-key-email" type="email" class="biz-input" placeholder="e.g. student@gmail.com" style="font-size:13px;">
               <label style="font-size:12px;font-weight:600;">Key type</label>
               <select id="adm-new-key-tier" class="biz-input" style="font-size:13px;">
-                <option value="ir">IR Companion (Installation Rules)</option>
-                <option value="ecsa">ECSA Companion (Pr. Technician)</option>
-                <option value="both">Both Companions (IR + ECSA)</option>
+                <option value="ir">IR Companion (Installation Rules) — RTT-{I1}{I2}-{H1}{R1}{R2}-IR</option>
+                <option value="ecsa">ECSA Companion (Pr. Technician) — RTT-{I1}{I2}-{H1}{R1}{R2}-EC</option>
+                <option value="both">Both Companions (IR + ECSA) — two keys</option>
               </select>
-              <button class="lms-btn" style="font-size:13px;" onclick="admIssueKey()">Generate &amp; Copy Key</button>
+              <button class="lms-btn" style="font-size:13px;" onclick="admIssueKey()">&#9889; Generate RTT Key</button>
             </div>
             <div id="adm-new-key-out" style="margin-top:10px;font-size:13px;"></div>
           </div>
@@ -2187,10 +2271,17 @@ function lmsSignin(){
   err.textContent='';
   if(!u){err.textContent='Please enter your username.';return;}
   if(!p){err.textContent='Please enter your PIN.';return;}
-  /* Admin bypass: any of the 3 admin emails + PIN 20171125 → open admin panel */
+  /* Admin bypass: any of the 3 admin emails + PIN 20171125 → open admin panel.
+   * IMPORTANT: admin emails NEVER fall through to student flow — if PIN is wrong
+   * they get an error, not a "username not found" that could bypass admin gate. */
   var _ADM_EMAILS=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
   var _ADM_PIN=btoa('20171125');
-  if(_ADM_EMAILS.indexOf(u.toLowerCase())>=0 && btoa(p)===_ADM_PIN){
+  var isAdminEmail=_ADM_EMAILS.indexOf(u.toLowerCase())>=0;
+  if(isAdminEmail && btoa(p)!==_ADM_PIN){
+    err.textContent='Incorrect admin PIN. Admin access requires the correct PIN.';
+    return;
+  }
+  if(isAdminEmail && btoa(p)===_ADM_PIN){
     /* Show admin view immediately — lmsShowView is always available in this fragment */
     lmsShowView('lms-admin');
     /* Populate lists/counts when admin.js finishes loading (up to 60 s on slow connection) */
@@ -2247,6 +2338,19 @@ function _lmsPhoneExists(cell){
 }
 
 function lmsDoSignup(){
+  // --- KYC fields ---
+  var firstName=(document.getElementById('lms-su-fname')||{value:''}).value.trim();
+  var secondName=(document.getElementById('lms-su-sname')||{value:''}).value.trim();
+  var surname=(document.getElementById('lms-su-surname')||{value:''}).value.trim();
+  var dob=(document.getElementById('lms-su-dob')||{value:''}).value.trim();
+  var edu=(document.getElementById('lms-su-edu')||{value:''}).value.trim();
+  var exp=(document.getElementById('lms-su-exp')||{value:''}).value.trim();
+  var role=(document.getElementById('lms-su-role')||{value:''}).value.trim();
+  var empRadio=document.querySelector('input[name="lms-su-emp"]:checked');
+  var employment=empRadio?empRadio.value:'';
+  var trackRadio=document.querySelector('input[name="lms-su-track"]:checked');
+  var track=trackRadio?trackRadio.value:'ir';
+  // --- Core fields ---
   var u=(document.getElementById('lms-su-u').value||'').trim();
   var cell=(document.getElementById('lms-su-cell').value||'').trim();
   var email=(document.getElementById('lms-su-email').value||'').trim();
@@ -2255,9 +2359,12 @@ function lmsDoSignup(){
   var collegeId=isAtvet?(document.getElementById('lms-su-college-id')&&document.getElementById('lms-su-college-id').value||'').trim():'';
   var err=document.getElementById('lms-signup-err');
   err.textContent='';
+  if(!firstName){err.textContent='Please enter your first name.';return;}
+  if(!surname){err.textContent='Please enter your surname.';return;}
   if(!u){err.textContent='Please choose a username.';return;}
   if(u.length<3){err.textContent='Username must be at least 3 characters.';return;}
   if(!cell){err.textContent='Please enter your cell number so Tseke can WhatsApp your key.';return;}
+  if(!email){err.textContent='Please enter your email address.';return;}
   if(!p||p.length<3){err.textContent='PIN must be at least 3 characters.';return;}
   // Duplicate username check
   if(_lmsUserExists(u)){
@@ -2274,22 +2381,44 @@ function lmsDoSignup(){
       }
     }
   }catch(e){}
+  // Build full name from KYC fields
+  var displayName=firstName+(secondName?' '+secondName:'')+' '+surname;
   // Save account as pending (no tier/key yet)
   _lmsPendingU=u; _lmsPendingK=p;
   _lmsPhone=cell; _lmsEmail=email;
   _lmsPendingIsAtvet=isAtvet;
   _lmsPendingCollegeId=collegeId;
   _lmsPendingPayAmt=50;
-  _lmsProgress={tier:'pending',p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},activatedAt:null,isAtvet:isAtvet,collegeId:collegeId};
+  _lmsProgress={
+    tier:'pending',p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},
+    activatedAt:null,isAtvet:isAtvet,collegeId:collegeId,
+    // KYC
+    firstName:firstName,secondName:secondName,surname:surname,displayName:displayName,
+    dob:dob,edu:edu,exp:exp,role:role,employment:employment,track:track
+  };
   _lmsUser=u; _lmsKey=p;
   _lmsStore();
   // Store phone lookup for future duplicate detection
   try{localStorage.setItem(LMS_NS+'ph_'+u, normCell);}catch(e){}
+  // Also write to admin pending records (biz_ns) for admin hub
+  try{
+    var pendRec={
+      username:u, phone:cell, email:email, displayName:displayName,
+      firstName:firstName, secondName:secondName, surname:surname,
+      dob:dob, edu:edu, exp:exp, role:role, employment:employment, track:track,
+      isAtvet:isAtvet, collegeId:collegeId||'',
+      status:'pending', registeredAt:Date.now()
+    };
+    localStorage.setItem('biz_pend_'+u, JSON.stringify(pendRec));
+  }catch(e){}
   // Register in Firebase as pending
   if(_lmsFbDb){
     try{
       _lmsFbDb.collection('users').doc(u).set({
-        username:u, phone:cell, email:email, tier:'pending', key:'',
+        username:u, phone:cell, email:email, displayName:displayName,
+        firstName:firstName, secondName:secondName, surname:surname,
+        dob:dob, edu:edu, exp:exp, role:role, employment:employment, track:track,
+        tier:'pending', key:'',
         isAtvet:isAtvet, collegeId:collegeId||'',
         joinedAt:firebase.firestore.FieldValue.serverTimestamp(),
         lastSeen:firebase.firestore.FieldValue.serverTimestamp(),
