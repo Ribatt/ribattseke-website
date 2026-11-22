@@ -2250,7 +2250,7 @@ function lmsShowView(id){
   var el=document.getElementById(id);
   if(el) el.classList.add('active');
   // Scroll the LMS section into view (not window top — that hides it below the fold)
-  var lmsWrap=document.getElementById('lms-wrap')||document.querySelector('[id="study-tab"] .lms-container')||el;
+  var lmsWrap=document.querySelector('.lms-wrap')||document.querySelector('.lms-container')||el;
   if(lmsWrap) lmsWrap.scrollIntoView({behavior:'smooth',block:'start'});
   // Hide headings when inside admin or dashboard
   var hide = (id==='lms-admin'||id==='lms-dash'||id==='lms-quiz');
@@ -2383,6 +2383,8 @@ function lmsAdminSignin(){
   document.getElementById('lms-adm-u').value='';
   document.getElementById('lms-adm-p').value='';
   lmsShowView('lms-admin');
+  /* Ensure admin.js is loaded — it may not be if the user never tapped the logo */
+  if(typeof _loadAdmin==='function') _loadAdmin();
   var _n=0;(function _populate(){
     if(typeof lmsOpenAdmin==='function'){lmsOpenAdmin();return;}
     if(_n++<120) setTimeout(_populate,500);

@@ -1417,7 +1417,7 @@ function selTxt(el){var r=document.createRange();r.selectNodeContents(el);var s=
 
 var _tabLoaded={};
 var _tabLoading={};
-var _tabFiles={library:'/tab-resources.html',study:'/tab-study.html'};
+var _tabFiles={library:'/tab-resources.html?v=2',study:'/tab-study.html?v=2'};
 
 function _activateTab(name,skipPush){
   document.querySelectorAll('.tab-panel').forEach(function(p){p.hidden=true;});
@@ -1544,7 +1544,7 @@ function _loadAdmin(){
   if(window._adminLoaded||window._adminLoading)return;
   window._adminLoading=true;
   var s=document.createElement('script');
-  s.src='/admin.js?v=11';
+  s.src='/admin.js?v=12';
   s.onload=function(){window._adminLoaded=true;window._adminLoading=false;};
   s.onerror=function(){window._adminLoading=false;window._donateLoading=false;_showDonateInline();};
   document.head.appendChild(s);
