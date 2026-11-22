@@ -547,7 +547,7 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
 </style>
 
 <nav>
-  <a href="#top" class="nav-logo">
+  <a href="#top" class="nav-logo" onclick="navOpenAdmin();return false;" title="Admin access">
     <span class="nav-name">Tseke Riba</span>
     <span class="nav-domain">ribattseke.co.za</span>
   </a>
@@ -572,10 +572,6 @@ footer{padding:20px 0;text-align:center;font-size:12px;color:var(--fg3);}
       <div class="nav-circ-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18V15c0 2.21 3.13 4 7 4s7-1.79 7-4v-3.82L22 9l-10-6zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99c0 .95-2.09 2.01-5 2.01s-5-1.06-5-2V12.86l5 2.72 5-2.72v3.13z"/></svg></div>
       <span class="nav-circ-lbl">Study</span>
     </a>
-    <button id="nav-admin-btn" onclick="navOpenAdmin()" aria-label="Admin login" title="Business Hub" style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:0 2px;">
-      <div class="nav-circ-ic" style="width:30px;height:30px;border-color:rgba(255,255,255,.07);"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="opacity:.55;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
-      <span class="nav-circ-lbl" style="color:#555;font-size:8px;">Admin</span>
-    </button>
   </div>
 </nav>
 
@@ -1489,23 +1485,34 @@ window.addEventListener('popstate',function(e){
   showTab(tab,true);
 })();
 
-// Admin button in nav — switches to Study tab (which loads admin.js), then opens entry
+// Logo tap → show friendly notice first, then open admin entry for the owner
 function navOpenAdmin(){
-  // Ensure Study tab is loaded (triggers eager admin.js load)
-  if(window._currentTab!=='study'){
-    showTab('study');
-    // Wait for tab fragment to inject before opening entry
+  /* Show a friendly overlay — students learn to leave it alone; owner dismisses and logs in */
+  var old=document.getElementById('_nav-adm-notice');
+  if(old) old.remove();
+  var ov=document.createElement('div');
+  ov.id='_nav-adm-notice';
+  ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:20px;';
+  ov.innerHTML='<div style="background:#111;border-radius:16px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.6);">'
+    +'<div style="font-size:36px;margin-bottom:12px;">🔒</div>'
+    +'<h3 style="color:#fff;font-size:16px;margin:0 0 10px;font-family:\'Playfair Display\',serif;">This is Tseke\'s admin area</h3>'
+    +'<p style="color:#aaa;font-size:13px;line-height:1.6;margin:0 0 20px;">This section is for the owner of this site. If you are a student, please leave this area and use the <strong style="color:#fff;">Study</strong> tab — Tseke keeps things running here so the site stays great for you.</p>'
+    +'<div style="display:flex;gap:10px;justify-content:center;">'
+    +'<button onclick="document.getElementById(\'_nav-adm-notice\').remove();" style="flex:1;padding:11px 0;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#aaa;font-size:13px;cursor:pointer;">I\'m a student — close</button>'
+    +'<button id="_nav-adm-login-btn" style="flex:1;padding:11px 0;border-radius:8px;border:none;background:#1E8540;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Owner login</button>'
+    +'</div>'
+    +'</div>';
+  document.body.appendChild(ov);
+
+  /* Owner login button — load Study tab + open admin entry */
+  document.getElementById('_nav-adm-login-btn').onclick=function(){
+    ov.remove();
+    if(window._currentTab!=='study') showTab('study');
     var _t=0;(function _wa(){
       if(typeof lmsAdminEntry==='function'){lmsAdminEntry();return;}
       if(_t++<60) setTimeout(_wa,200);
     })();
-  } else {
-    if(typeof lmsAdminEntry==='function'){lmsAdminEntry();return;}
-    var _t2=0;(function _wa2(){
-      if(typeof lmsAdminEntry==='function'){lmsAdminEntry();return;}
-      if(_t2++<60) setTimeout(_wa2,200);
-    })();
-  }
+  };
 }
 
 // Donate — open Yoco payment page directly
