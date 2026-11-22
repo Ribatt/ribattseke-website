@@ -21,6 +21,9 @@
           <button class="lms-btn" onclick="lmsShowView('lms-signup')" style="margin-bottom:8px;">New Student &mdash; Create Account</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')">Returning Student &mdash; Sign In</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);text-align:center;">
+            <button onclick="lmsShowAdminGate()" style="background:none;border:none;color:var(--fg3);font-size:11px;cursor:pointer;padding:4px 8px;letter-spacing:.03em;">&#128274; Business Hub Access</button>
+          </div>
 
         </div>
       </div>
@@ -2274,7 +2277,7 @@ function lmsSignin(){
   /* Admin bypass: any of the 3 admin emails + PIN 20171125 → open admin panel.
    * IMPORTANT: admin emails NEVER fall through to student flow — if PIN is wrong
    * they get an error, not a "username not found" that could bypass admin gate. */
-  var _ADM_EMAILS=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
+  var _ADM_EMAILS=['ribattseke@gmail.com','60523255@mylife.unisa.ac.za'];
   var _ADM_PIN=btoa('20171125');
   var isAdminEmail=_ADM_EMAILS.indexOf(u.toLowerCase())>=0;
   if(isAdminEmail && btoa(p)!==_ADM_PIN){
@@ -2310,6 +2313,30 @@ function lmsSignin(){
   } else {
     err.textContent='Username not found. Create a new account instead.';
   }
+}
+
+
+/* ── Business Hub / Admin Gate ── */
+function lmsShowAdminGate(){
+  var existing=document.getElementById('lms-admin-gate-bg');
+  if(existing){existing.remove();}
+  var bg=document.createElement('div');
+  bg.id='lms-admin-gate-bg';
+  bg.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;';
+  bg.innerHTML=
+    '<div style="background:var(--surface,#fff);border-radius:16px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.22);">'
+    +'<div style="text-align:center;margin-bottom:16px;">'
+    +'<div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1a3c5e,#0d6b3e);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>'
+    +'<h3 style="margin:0 0 6px;font-size:17px;">Business Hub</h3>'
+    +'<p style="font-size:13px;color:var(--fg2,#555);line-height:1.55;margin:0;">This area is for Riba T Tseke’s business administration and operations. If you’re a student, you’re in the right place — head back to the Learning Companion below.</p>'
+    +'</div>'
+    +'<div style="border-top:1px solid var(--border,#eee);padding-top:16px;display:flex;flex-direction:column;gap:9px;">'
+    +'<button onclick="document.getElementById('lms-admin-gate-bg').remove();document.getElementById('tab-study')&&document.getElementById('tab-study').scrollIntoView({behavior:'smooth'});" style="display:block;width:100%;padding:11px;border-radius:9px;border:1.5px solid var(--border,#ddd);background:none;color:var(--fg,#222);font-size:13.5px;font-weight:600;cursor:pointer;">📚 I’m a student — Back to Study</button>'
+    +'<button onclick="document.getElementById('lms-admin-gate-bg').remove();lmsShowView('lms-signin');document.getElementById('lms-u')&&setTimeout(function(){document.getElementById('lms-u').focus();},150);" style="display:block;width:100%;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,#1a3c5e,#0d6b3e);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">🔐 Owner Login</button>'
+    +'<button onclick="document.getElementById('lms-admin-gate-bg').remove();" style="background:none;border:none;color:var(--fg3,#aaa);font-size:12px;cursor:pointer;padding:4px;">Cancel</button>'
+    +'</div>'
+    +'</div>';
+  document.body.appendChild(bg);
 }
 
 function lmsSignup(){lmsSignin();}
