@@ -378,6 +378,78 @@
         <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
         <div id="lms-tracks-container"></div>
 
+        <!-- ══ eBOOK READER PANEL ══ -->
+        <div id="lms-ebook-panel" style="display:none;margin-top:18px;border:1.5px solid var(--amb);border-radius:12px;overflow:hidden;">
+          <div style="background:var(--amb);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div>
+              <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:#ffffffcc;text-transform:uppercase;">eBook &amp; Predictive Analytics</div>
+              <div id="ebk-track-title" style="font-size:13px;font-weight:700;color:#fff;margin-top:2px;"></div>
+            </div>
+            <button onclick="document.getElementById('lms-ebook-panel').style.display='none';" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;">✕ Close</button>
+          </div>
+
+          <!-- eBook title + scope -->
+          <div style="padding:14px 16px;background:var(--bg-alt);border-bottom:1px solid var(--border);">
+            <div id="ebk-ebook-title" style="font-size:13px;font-weight:800;color:var(--fg);margin-bottom:4px;"></div>
+            <div id="ebk-scope" style="font-size:12px;color:var(--fg2);line-height:1.6;"></div>
+            <div id="ebk-bundles" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;"></div>
+          </div>
+
+          <!-- Formula A — Position (slot distribution) -->
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">📐 Formula A — Position &amp; Slot Distribution</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px;">
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Mode (most frequent slot)</div>
+                <div id="ebk-mode" style="font-size:18px;font-weight:800;color:var(--amb);margin-top:2px;"></div>
+              </div>
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Expected E[Q]</div>
+                <div id="ebk-expected" style="font-size:18px;font-weight:800;color:var(--amb);margin-top:2px;"></div>
+              </div>
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Std Dev σ_Q</div>
+                <div id="ebk-std" style="font-size:18px;font-weight:800;color:var(--fg);margin-top:2px;"></div>
+              </div>
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Slot Range</div>
+                <div id="ebk-range" style="font-size:18px;font-weight:800;color:var(--fg);margin-top:2px;"></div>
+              </div>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:var(--fg3);margin-bottom:6px;text-transform:uppercase;">Question Number Distribution</div>
+            <div id="ebk-bars" style="display:flex;flex-direction:column;gap:5px;"></div>
+          </div>
+
+          <!-- Formula B — Repeat Likelihood -->
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">🔁 Formula B — Repeat Likelihood P(H) = 1 − e<sup>−λH</sup></div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+              <div style="background:#1E854011;border:1px solid #1E854044;border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Repeat Probability P(H)</div>
+                <div id="ebk-repeat" style="font-size:22px;font-weight:800;color:var(--amb);margin-top:2px;"></div>
+              </div>
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Sittings (n)</div>
+                <div id="ebk-n" style="font-size:18px;font-weight:800;color:var(--fg);margin-top:2px;"></div>
+              </div>
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Mean Gap λ⁻¹</div>
+                <div id="ebk-gap" style="font-size:18px;font-weight:800;color:var(--fg);margin-top:2px;"></div>
+              </div>
+              <div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;">Years Since Last</div>
+                <div id="ebk-since" style="font-size:18px;font-weight:800;color:var(--fg);margin-top:2px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sitting History Log -->
+          <div style="padding:14px 16px;">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">📋 Sitting History &amp; IEEE Citations</div>
+            <div id="ebk-history" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+        </div>
+
         <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
           <button class="lms-logout" onclick="lmsLogout()">Sign out</button>
           <button class="lms-logout" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset</button>
@@ -674,14 +746,58 @@
 
         <!-- ===== ECSA CPD ===== -->
         <div id="hub-ecsa" class="hub-section">
-          <p style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin:0 0 10px;">CPD &amp; Professional Memberships</p>
-          <p style="font-size:12.5px;color:var(--fg2);margin:0 0 14px;">Track CPD activities for SAIEE, ECA(SA), AREP, SAEEC, SAPVIA, and CET. Log hours, categories, and evidence for annual returns.</p>
-          <div class="biz-toolbar">
-            <button class="biz-btn biz-btn-primary" onclick="ecsaNew()">+ Log CPD Activity</button>
-            <button class="biz-btn biz-btn-secondary" onclick="ecsaPrint()">Print CPD Summary</button>
+          <!-- ECSA sub-tabs -->
+          <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;font-size:12px;">
+            <button id="ecsa-sub-ter" onclick="ecsaSubTab('ter')" style="flex:1;padding:8px;border:none;cursor:pointer;font-weight:700;background:var(--amb);color:#fff;">TER Ledger</button>
+            <button id="ecsa-sub-outcomes" onclick="ecsaSubTab('outcomes')" style="flex:1;padding:8px;border:none;cursor:pointer;font-weight:400;background:var(--bg-alt);color:var(--fg2);">11 Outcomes</button>
+            <button id="ecsa-sub-milestones" onclick="ecsaSubTab('milestones')" style="flex:1;padding:8px;border:none;cursor:pointer;font-weight:400;background:var(--bg-alt);color:var(--fg2);">Milestones</button>
+            <button id="ecsa-sub-evidence" onclick="ecsaSubTab('evidence')" style="flex:1;padding:8px;border:none;cursor:pointer;font-weight:400;background:var(--bg-alt);color:var(--fg2);">Draft Check</button>
           </div>
-          <div id="ecsa-summary" style="margin-bottom:16px;"></div>
-          <div id="ecsa-list"></div>
+
+          <!-- TER Ledger -->
+          <div id="ecsa-pane-ter">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:12px;font-weight:700;color:var(--fg2);">ECASA Pr Techni Eng — Technical Experience Record (TER)</div>
+              <button class="biz-btn biz-btn-primary" onclick="ecsaAddTer()" style="font-size:12px;">+ Add TER Entry</button>
+            </div>
+            <div id="ecsa-ter-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+
+          <!-- 11 Outcomes Matrix -->
+          <div id="ecsa-pane-outcomes" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--fg2);margin-bottom:10px;">11-Outcome Coverage (from TER Ledger)</div>
+            <div id="ecsa-outcomes-matrix" style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px;"></div>
+          </div>
+
+          <!-- Milestones -->
+          <div id="ecsa-pane-milestones" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--fg2);margin-bottom:4px;">Registration Progress</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+              <div style="flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden;"><div id="ecsa-ms-bar" style="height:100%;background:var(--amb);width:0%;transition:width .4s;"></div></div>
+              <span id="ecsa-ms-pct" style="font-size:14px;font-weight:800;color:var(--amb);">0%</span>
+            </div>
+            <div id="ecsa-ms-list" style="display:flex;flex-direction:column;gap:7px;"></div>
+          </div>
+
+          <!-- Evidence Draft Check -->
+          <div id="ecsa-pane-evidence" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--fg2);margin-bottom:8px;">Evidence-First TER Draft Checker</div>
+            <div style="font-size:11.5px;color:var(--fg3);margin-bottom:10px;">Paste a TER paragraph below. The checker verifies it references a standard/regulation and contains measurable parameters — the two minimum Pr Techni Eng evidence requirements.</div>
+            <textarea id="ecsa-draft-txt" style="width:100%;box-sizing:border-box;min-height:100px;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:12.5px;background:var(--bg-alt);color:var(--fg);resize:vertical;" placeholder="e.g. Conducted earth continuity testing per SANS 10142-1 Section 6.4 on 24 circuits, recording readings between 0.4 Ω and 1.1 Ω …"></textarea>
+            <button class="biz-btn biz-btn-primary" onclick="ecsaRunEvidence()" style="margin-top:8px;font-size:12px;">Run Evidence Check</button>
+            <div id="ecsa-evidence-result" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--bg-alt);border:1px solid var(--border);font-size:12.5px;display:none;"></div>
+          </div>
+
+          <!-- CPD legacy section -->
+          <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px;">CPD &amp; Professional Memberships</div>
+            <div class="biz-toolbar">
+              <button class="biz-btn biz-btn-secondary" onclick="ecsaNew()" style="font-size:12px;">+ Log CPD Activity</button>
+              <button class="biz-btn biz-btn-secondary" onclick="ecsaPrint()" style="font-size:12px;">Print CPD Summary</button>
+            </div>
+            <div id="ecsa-summary" style="margin-bottom:16px;"></div>
+            <div id="ecsa-list"></div>
+          </div>
         </div>
 
         <div id="hub-mentor" class="hub-section">
@@ -2268,6 +2384,14 @@ var LMS_TRACKS=[
     abbr:'OHS Act',slot:'P1 · Q1 slot',
     color:'#8b1a1a',
     icon:'<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>',
+    ebookTitle:'eBook 01: OHS Act 85 of 1993 — Scope, Definitions & User/Lessor Duties',
+    syllabusScope:'OHS Act 85/1993: Sections 1 (definitions), 8 (general duties of employers), 9 (duty to inform), 10 (health and safety representatives), 22 (penalties). Covers user and lessor of electrical machinery duties per Electrical Installation Regulations.',
+    bundles:['Paper 1 Complete 20-eBook Bundle','OHS & Regulations Starter Pack'],
+    appearances:[
+      {year:2019,month:'Nov',qNum:1,ieee:'DHET, "Installation Rules (First Paper — 11040412)," Question 1: Occupational Health and Safety Act 85 of 1993, Nov. 2019.',questionPreview:'State FOUR duties of a user of electrical machinery as defined in the OHS Act 85 of 1993.',memoPreview:'User must keep machinery in a safe condition; ensure operators are trained; report incidents; maintain safety records (reg. 9 & 10).'},
+      {year:2022,month:'Nov',qNum:1,ieee:'DHET, "Installation Rules (First Paper — T880)," Question 1: OHS Act Sections, Nov. 2022.',questionPreview:'Explain the duties of an employer regarding health and safety representatives in terms of the OHS Act.',memoPreview:'S10: Employer must designate HSRs for every 50 employees; allow time off for inspections; consider recommendations made.'},
+      {year:2025,month:'Aug',qNum:1,ieee:'DHET, "Installation Rules (First Paper — T880)," Question 1: OHS Act, Aug. 2025.',questionPreview:'Describe the general duties of an employer to employees as per Section 8 of the OHS Act 85 of 1993.',memoPreview:'Provide safe plant, safe systems of work, safe handling/storage, training, supervision and adequate facilities (s8(1)(a)–(e)).'}
+    ],
     topics:[
       {paper:'ohs1',idx:0,yt:null},
       {paper:'ohs1',idx:1,yt:null},
@@ -2451,11 +2575,82 @@ var LMS_TRACKS=[
     abbr:'SANS 10313',slot:'P2 · Extended',
     color:'#8a7a1b',
     icon:'<path d="M7 2v11h3v9l7-12h-4l4-8z"/>',
+    ebookTitle:'eBook 15: SANS 10313 — Lightning Protection (LPS Design, SPDs, Bonding)',
+    syllabusScope:'SANS 10313: Risk assessment, lightning protection zones (LPZ), air termination systems, down conductors, earth termination, bonding, surge protective devices (SPDs), internal LPS, maintenance.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[
+      {year:2021,month:'Nov',qNum:4,ieee:'DHET, "Installation Rules (Second Paper — T890)," Q4: Lightning Protection, Nov. 2021.',questionPreview:'List the components of an external lightning protection system per SANS 10313.',memoPreview:'Air termination, down conductors, earth termination system — installed to intercept and safely conduct lightning current to ground.'}
+    ],
     topics:[
       {paper:'s10313',idx:0,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
       {paper:'s10313',idx:1,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
       {paper:'s10313',idx:2,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'}
     ]
+  },
+  {
+    num:16, exam_paper:'P1',
+    label:'SANS 10142-1 — Annexe A: Earthing & Bonding Requirements',
+    abbr:'Annexe A',slot:'P1 · Annexe slot',
+    color:'#2a7a4b',
+    icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
+    ebookTitle:'eBook 16: SANS 10142-1 Annexe A — Earthing, Bonding & Earthing Electrode Design',
+    syllabusScope:'Annexe A of SANS 10142-1: Earthing system selection (TN, TT, IT), protective earth conductors, equipotential bonding, electrode types and installation, earth resistance testing.',
+    bundles:['Paper 1 Complete 20-eBook Bundle'],
+    appearances:[],
+    placeholder:true,
+    topics:[]
+  },
+  {
+    num:17, exam_paper:'P1',
+    label:'SANS 10142-1 — Annexe B: Wiring Systems',
+    abbr:'Annexe B',slot:'P1 · Annexe slot',
+    color:'#2a5ba8',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook 17: SANS 10142-1 Annexe B — Wiring System Selection & Cable Support',
+    syllabusScope:'Annexe B of SANS 10142-1: Selection of wiring systems, conduit types, trunking, cable tray, cable clips and supports, minimum installation distances, penetrations.',
+    bundles:['Paper 1 Complete 20-eBook Bundle'],
+    appearances:[],
+    placeholder:true,
+    topics:[]
+  },
+  {
+    num:18, exam_paper:'P1',
+    label:'SANS 10198-1 & -2 — Cable Selection & Power Cables ≤ 33 kV',
+    abbr:'SANS 10198',slot:'P1 · Cable slot',
+    color:'#8b4513',
+    icon:'<path d="M20 5h-9.586L8.707 3.293A1 1 0 0 0 8 3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/>',
+    ebookTitle:'eBook 18: SANS 10198-1 & -2 — Cable Installation & Power Cables up to 33 kV',
+    syllabusScope:'SANS 10198-1: General principles for cable installation. SANS 10198-2: Construction and characteristics of power cables rated up to and including 33 kV — conductor types, insulation, sheathing, armouring.',
+    bundles:['Paper 1 Complete 20-eBook Bundle'],
+    appearances:[],
+    placeholder:true,
+    topics:[]
+  },
+  {
+    num:19, exam_paper:'P1',
+    label:'SANS 10292 — Earthing of LV Distribution Systems',
+    abbr:'SANS 10292',slot:'P1 · Earthing slot',
+    color:'#1a5f3a',
+    icon:'<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>',
+    ebookTitle:'eBook 19: SANS 10292 — Earthing of Low-Voltage Distribution Systems',
+    syllabusScope:'SANS 10292: Earthing of LV distribution systems — TN-S, TN-C-S, TT and IT systems; installation of earthing conductors; earth electrode resistance; RCD coordination; protective multiple earthing (PME).',
+    bundles:['Paper 1 Complete 20-eBook Bundle'],
+    appearances:[],
+    placeholder:true,
+    topics:[]
+  },
+  {
+    num:20, exam_paper:'P1',
+    label:'Trimester 3-Paper Predictive & Mock Exam eBook (Track 20)',
+    abbr:'Track 20 · Predictive',slot:'P1 · Predictive',
+    color:'#4a1a8b',
+    icon:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+    ebookTitle:'eBook 20: Trimester 3-Paper Probability Forecast — Predictive Mock Exam',
+    syllabusScope:'Updated every trimester. Uses Formula B (P(H) = 1 − e^(−λH)) across all 19 tracks to rank topics by repeat probability, generating a prioritised mock exam for the upcoming trimester sitting. Includes worked answers and marker guidelines.',
+    bundles:['Paper 1 Complete 20-eBook Bundle','Trimester Forecast Pack'],
+    appearances:[],
+    placeholder:true,
+    topics:[]
   }
 ];
 
@@ -2486,6 +2681,128 @@ function _rlScore(paper,idx){
   var lam=avg>0?1/avg:1;
   var H=yd-times[times.length-1];
   return Math.round((1-Math.exp(-lam*H))*100);
+}
+
+/* ───────────────────────────────────────────────────────────
+   PREDICTIVE ENGINE — Formula A & B
+   Formula A: mode, E[Q], σ_Q from exam sitting appearances
+   Formula B: P(H) = 1 - exp(-λ × H), λ = 1/meanGap
+   ─────────────────────────────────────────────────────────── */
+function _toDecimalYear(year, month){
+  var months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  var m = typeof month === 'number' ? month : (months[month]||0);
+  return year + m/12;
+}
+function computeTrackAnalytics(track, horizonYears){
+  horizonYears = horizonYears || 2;
+  var apps = (track.appearances||[]).slice().sort(function(a,b){
+    return _toDecimalYear(a.year,a.month) - _toDecimalYear(b.year,b.month);
+  });
+  var n = apps.length;
+  if(!n) return {n:0,counts:{},modeQ:'—',modePct:0,expectedQ:'—',stdQ:'—',minQ:'—',maxQ:'—',meanGap:2,repeatProb:0,sinceLast:'—'};
+
+  var qNums = apps.map(function(a){return a.qNum;});
+  var counts = {};
+  qNums.forEach(function(q){ counts[q]=(counts[q]||0)+1; });
+  var modeQ='—', modeCount=0;
+  Object.keys(counts).forEach(function(q){
+    if(counts[q]>modeCount){modeCount=counts[q];modeQ=q;}
+  });
+  var modePct = Math.round((modeCount/n)*100);
+  var sum=qNums.reduce(function(a,b){return a+b;},0);
+  var expectedQ = (sum/n).toFixed(1);
+  var variance = n>1 ? qNums.reduce(function(acc,q){return acc+Math.pow(q-(sum/n),2);},0)/(n-1) : 0;
+  var stdQ = Math.sqrt(variance).toFixed(2);
+  var minQ = Math.min.apply(null,qNums);
+  var maxQ = Math.max.apply(null,qNums);
+
+  var times = apps.map(function(a){return _toDecimalYear(a.year,a.month);});
+  var meanGap = 2.0;
+  if(n>=2){
+    var gaps=[];
+    for(var i=1;i<times.length;i++) gaps.push(times[i]-times[i-1]);
+    meanGap = gaps.reduce(function(a,b){return a+b;},0)/gaps.length;
+  }
+  var lam = 1/Math.max(meanGap,0.25);
+  var repeatProb = Math.round((1-Math.exp(-lam*horizonYears))*100);
+  var nowDec = _toDecimalYear(2026,'Nov');
+  var sinceLast = n ? Math.max(0,nowDec-times[times.length-1]).toFixed(1) : '—';
+
+  return {n:n,counts:counts,modeQ:'Q'+modeQ,modePct:modePct,expectedQ:'Q'+expectedQ,stdQ:stdQ,minQ:minQ,maxQ:maxQ,meanGap:meanGap.toFixed(1),repeatProb:repeatProb,sinceLast:sinceLast};
+}
+
+function lmsOpenEbook(trackNum){
+  var track = null;
+  for(var i=0;i<LMS_TRACKS.length;i++){
+    if(LMS_TRACKS[i].num===trackNum){track=LMS_TRACKS[i];break;}
+  }
+  if(!track) return;
+
+  var a = computeTrackAnalytics(track, 2);
+  var panel = document.getElementById('lms-ebook-panel');
+
+  document.getElementById('ebk-track-title').textContent = 'Track '+track.num+' — '+track.label;
+  document.getElementById('ebk-ebook-title').textContent = track.ebookTitle||'eBook — '+track.label;
+  document.getElementById('ebk-scope').textContent = track.syllabusScope||'';
+
+  var bundlesEl = document.getElementById('ebk-bundles');
+  bundlesEl.innerHTML = (track.bundles||[]).map(function(b){
+    return '<span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:#1E854015;color:var(--amb);border:1px solid #1E854044;">'+b+'</span>';
+  }).join('');
+
+  document.getElementById('ebk-mode').textContent = a.n ? a.modeQ+' ('+a.modePct+'%)' : '—';
+  document.getElementById('ebk-expected').textContent = a.n ? a.expectedQ : '—';
+  document.getElementById('ebk-std').textContent = a.n ? 'σ='+a.stdQ : '—';
+  document.getElementById('ebk-range').textContent = a.n ? (a.minQ===a.maxQ?'Q'+a.minQ:'Q'+a.minQ+'–Q'+a.maxQ) : '—';
+
+  var barsHtml = '';
+  if(a.n){
+    Object.keys(a.counts).sort().forEach(function(q){
+      var c=a.counts[q];
+      var pct=Math.round((c/a.n)*100);
+      barsHtml+='<div style="display:flex;align-items:center;gap:8px;font-size:12px;">'
+        +'<span style="min-width:28px;font-weight:700;color:var(--fg2);">Q'+q+'</span>'
+        +'<div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="height:100%;background:var(--amb);width:'+pct+'%;"></div></div>'
+        +'<span style="min-width:60px;text-align:right;font-weight:600;color:var(--fg2);">'+c+'/'+a.n+' ('+pct+'%)</span>'
+        +'</div>';
+    });
+  } else {
+    barsHtml='<div style="color:var(--fg3);font-size:12px;">No sitting records yet. Add appearances to LMS_TRACKS.</div>';
+  }
+  document.getElementById('ebk-bars').innerHTML = barsHtml;
+
+  document.getElementById('ebk-repeat').textContent = a.n ? a.repeatProb+'%' : '—';
+  document.getElementById('ebk-n').textContent = a.n ? a.n+' Sitting'+(a.n===1?'':'s') : '0';
+  document.getElementById('ebk-gap').textContent = a.n>=2 ? a.meanGap+' yrs' : 'N/A';
+  document.getElementById('ebk-since').textContent = a.n ? a.sinceLast+' yrs' : '—';
+
+  var histHtml = '';
+  if(track.appearances && track.appearances.length){
+    track.appearances.forEach(function(ap,idx){
+      histHtml+='<div style="border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--bg-alt);">'
+        +'<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:8px;">'
+        +'<span style="padding:2px 8px;border-radius:6px;background:var(--amb);color:#fff;font-size:11px;font-weight:800;">'+ap.year+' '+ap.month+'</span>'
+        +'<span style="padding:2px 8px;border-radius:6px;background:#222;color:#fff;font-size:11px;font-weight:800;">Question '+ap.qNum+'</span>'
+        +'<span style="margin-left:auto;font-size:11px;color:var(--fg3);">Record #'+(idx+1)+'</span>'
+        +'</div>'
+        +'<div style="font-size:11px;color:var(--fg2);background:var(--bg);padding:7px 10px;border-radius:7px;border:1px solid var(--border);margin-bottom:7px;"><strong>IEEE:</strong> '+ap.ieee+'</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+        +'<div style="font-size:11px;padding:8px;border-radius:7px;border:1.5px dashed var(--amb);background:#1E854008;">'
+        +'<div style="font-size:9px;font-weight:800;text-transform:uppercase;color:var(--amb);margin-bottom:3px;">Question Frame</div>'
+        +ap.questionPreview+'</div>'
+        +'<div style="font-size:11px;padding:8px;border-radius:7px;border:1.5px dashed var(--border);background:var(--bg);">'
+        +'<div style="font-size:9px;font-weight:800;text-transform:uppercase;color:var(--fg3);margin-bottom:3px;">Memo / Answer Frame</div>'
+        +ap.memoPreview+'</div>'
+        +'</div>'
+        +'</div>';
+    });
+  } else {
+    histHtml='<div style="color:var(--fg3);font-size:12px;padding:16px 0;text-align:center;">No sitting records yet for this track.</div>';
+  }
+  document.getElementById('ebk-history').innerHTML = histHtml;
+
+  panel.style.display='block';
+  setTimeout(function(){panel.scrollIntoView({behavior:'smooth',block:'start'});},80);
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -2564,12 +2881,14 @@ function _buildTrackDash(prog){
 
       var topicCountTxt=track.placeholder?'quiz data being developed':n+' topic'+(n===1?'':'s');
 
+      var ebkBtn=track.ebookTitle?'<button onclick="event.stopPropagation();lmsOpenEbook('+track.num+');" style="margin-left:auto;padding:3px 9px;border-radius:7px;border:1px solid var(--amb);background:#1E854011;color:var(--amb);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">📖 eBook</button>':'';
       blk.innerHTML='<div class="lms-subject-hdr" onclick="lmsToggleBlock(\''+blkId+'\')">'
         +'<div class="lms-subject-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="'+track.color+'">'+track.icon+'</svg></div>'
         +'<div class="lms-subject-meta">'
           +'<div class="lms-subject-title">'+trackBadge+esc(track.label)+slotTag+comingSoon+'</div>'
           +'<div class="lms-subject-prog-row"><div class="lms-subject-mini-bar"><div class="lms-subject-mini-fill" id="'+barId+'" style="width:'+pct+'%;background:'+track.color+';"></div></div><span class="lms-subject-prog-txt" id="'+txtId+'">'+(track.placeholder?'—':passed+'/'+n)+'</span></div>'
         +'</div>'
+        +ebkBtn
         +'<span class="lms-subject-chevron">▾</span>'
         +'</div>'
         +'<div class="lms-subject-body"><div class="lms-modules" id="'+modsId+'"></div></div>';
@@ -2856,6 +3175,160 @@ document.addEventListener('keydown',function(e){
     e.preventDefault();
   }
 });
+
+/* ═══════════════════════════════════════════════════════
+   ECSA Pr TECHNI ENG — TER Ledger, Outcomes, Evidence
+   ═══════════════════════════════════════════════════════ */
+var ECSA_TER_NS = 'biz_ter_';
+var ECSA_MS_NS  = 'biz_ms_';
+
+var ECSA_OUTCOMES_11 = [
+  'Outcome 1: Problem Solving',
+  'Outcome 2: Application of Knowledge',
+  'Outcome 3: Engineering Design',
+  'Outcome 4: Investigations & Experiments',
+  'Outcome 5: Engineering Methods & Tools',
+  'Outcome 6: Professional & Technical Comm.',
+  'Outcome 7: Sustainability & Impact',
+  'Outcome 8: Individual, Team & Multidisciplinary',
+  'Outcome 9: Independent Learning',
+  'Outcome 10: Engineering Professionalism',
+  'Outcome 11: Engineering Management'
+];
+
+var ECSA_DEFAULT_MILESTONES = [
+  {name:'Application Form & Academic Record',pct:100,due:'Completed'},
+  {name:'TER 1 – TER 5 & Work Ledger Mapping',pct:75,due:'2027-02-15'},
+  {name:'Outcomes 1–11 Evidence Gap Closure',pct:50,due:'2027-04-01'},
+  {name:'Engineering Report & Mentor Sign-Off',pct:25,due:'2027-06-30'}
+];
+
+function _ecsa_loadTer(){
+  try{ return JSON.parse(localStorage.getItem(ECSA_TER_NS+'entries')||'null'); }catch(e){}
+  return null;
+}
+function _ecsa_saveTer(arr){
+  try{ localStorage.setItem(ECSA_TER_NS+'entries', JSON.stringify(arr)); }catch(e){}
+}
+function _ecsa_loadMs(){
+  try{ return JSON.parse(localStorage.getItem(ECSA_MS_NS+'list')||'null'); }catch(e){}
+  return null;
+}
+function _ecsa_saveMs(arr){
+  try{ localStorage.setItem(ECSA_MS_NS+'list', JSON.stringify(arr)); }catch(e){}
+}
+
+function ecsaSubTab(name){
+  ['ter','outcomes','milestones','evidence'].forEach(function(t){
+    var pane = document.getElementById('ecsa-pane-'+t);
+    var btn  = document.getElementById('ecsa-sub-'+t);
+    if(!pane||!btn) return;
+    var active = (t===name);
+    pane.style.display = active ? '' : 'none';
+    btn.style.background = active ? 'var(--amb)' : 'var(--bg-alt)';
+    btn.style.color = active ? '#fff' : 'var(--fg2)';
+    btn.style.fontWeight = active ? '700' : '400';
+  });
+  if(name==='ter') ecsaRenderTer();
+  if(name==='outcomes') ecsaRenderOutcomes();
+  if(name==='milestones') ecsaRenderMilestones();
+}
+
+function ecsaRenderTer(){
+  var entries = _ecsa_loadTer() || [
+    {id:'TER-01',project:'Distribution Board Supply & Feeder Upgrade — Commercial Site',deliverable:'Executed circuit design, cable sizing, DB layout and COC documentation for a 3-phase 125A MSB.',period:'2023-03 to 2024-08',dor:'Level C',outcomes:['Outcome 1','Outcome 2','Outcome 6','Outcome 7'],signatory:'Project Engineer (Pr. Eng.)',evidence:'Signed COC, as-built drawings, calculation sheets, DB schedules.'},
+    {id:'TER-02',project:'Commissioning & Verification — New Build Residential Complex',deliverable:'Insulation resistance, continuity and RCD trip-time testing on 48 circuits; compiled verification report.',period:'2024-09 to 2025-04',dor:'Level D',outcomes:['Outcome 3','Outcome 5','Outcome 7','Outcome 8','Outcome 10'],signatory:'Site Electrical Manager',evidence:'Test result sheets, instrument calibration certificate, handover report.'}
+  ];
+  var el = document.getElementById('ecsa-ter-list');
+  if(!el) return;
+  if(!entries.length){el.innerHTML='<div style="color:var(--fg3);font-size:12px;padding:12px 0;">No TER entries yet. Click "+ Add TER Entry" to begin.</div>';return;}
+  el.innerHTML = entries.map(function(e,i){
+    return '<div style="border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--bg-alt);">'
+      +'<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;margin-bottom:7px;">'
+      +'<span style="font-size:12px;font-weight:800;color:var(--amb);">'+e.id+' · '+e.period+'</span>'
+      +'<span style="padding:2px 10px;border-radius:20px;background:#222;color:#fff;font-size:11px;font-weight:700;">DoR: '+e.dor+'</span>'
+      +'</div>'
+      +'<div style="font-size:13px;font-weight:800;color:var(--fg);margin-bottom:3px;">'+e.project+'</div>'
+      +'<div style="font-size:12px;color:var(--fg2);margin-bottom:7px;">'+e.deliverable+'</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;">'
+      +e.outcomes.map(function(o){return '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:16px;background:#1E854015;color:var(--amb);border:1px solid #1E854044;">'+o+'</span>';}).join('')
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--fg3);"><strong>Signatory:</strong> '+e.signatory+' &nbsp;·&nbsp; <strong>Evidence:</strong> '+e.evidence+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function ecsaAddTer(){
+  var entries = _ecsa_loadTer() || [];
+  var nextNum = entries.length + 1;
+  entries.push({
+    id:'TER-0'+nextNum,
+    project:'New Engineering Activity #'+nextNum,
+    deliverable:'Enter deliverable description — what you designed, tested, or verified.',
+    period:'2026-'+('0'+(new Date().getMonth()+1)).slice(-2)+' to present',
+    dor:'Level C',
+    outcomes:['Outcome 1','Outcome 9'],
+    signatory:'Mentor / Pr Techni Eng Signatory',
+    evidence:'Enter evidence references (drawings, test reports, letters, photos).'
+  });
+  _ecsa_saveTer(entries);
+  ecsaRenderTer();
+}
+
+function ecsaRenderOutcomes(){
+  var entries = _ecsa_loadTer() || [];
+  var coveredSet = new Set(entries.flatMap ? entries.flatMap(function(e){return e.outcomes;}) : [].concat.apply([],entries.map(function(e){return e.outcomes;})));
+  var el = document.getElementById('ecsa-outcomes-matrix');
+  if(!el) return;
+  el.innerHTML = ECSA_OUTCOMES_11.map(function(label){
+    var code = label.split(':')[0];
+    var hit = coveredSet.has(code);
+    return '<div style="padding:8px 10px;border-radius:8px;border:1px solid '+(hit?'#1E854044':'#cc770044')+';background:'+(hit?'#1E854010':'#ff990008')+';font-size:11.5px;">'
+      +'<div style="font-weight:800;color:'+(hit?'var(--amb)':'#cc7700')+';">'+(hit?'✓ ':'⚠ ')+code+'</div>'
+      +'<div style="color:var(--fg3);margin-top:1px;font-size:10.5px;">'+label.split(': ')[1]+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function ecsaRenderMilestones(){
+  var ms = _ecsa_loadMs() || ECSA_DEFAULT_MILESTONES;
+  var avgPct = Math.round(ms.reduce(function(s,m){return s+m.pct;},0)/ms.length);
+  var bar = document.getElementById('ecsa-ms-bar');
+  var pct = document.getElementById('ecsa-ms-pct');
+  if(bar) bar.style.width = avgPct+'%';
+  if(pct) pct.textContent = avgPct+'%';
+  var el = document.getElementById('ecsa-ms-list');
+  if(!el) return;
+  el.innerHTML = ms.map(function(m){
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:var(--bg-alt);border:1px solid var(--border);">'
+      +'<div style="font-size:12px;font-weight:600;color:var(--fg);">'+m.name+'</div>'
+      +'<div style="font-size:12px;font-weight:800;color:var(--amb);white-space:nowrap;margin-left:8px;">'+m.pct+'% ('+m.due+')</div>'
+      +'</div>';
+  }).join('');
+}
+
+function ecsaRunEvidence(){
+  var text = (document.getElementById('ecsa-draft-txt')||{}).value || '';
+  var box = document.getElementById('ecsa-evidence-result');
+  if(!box) return;
+  box.style.display = 'block';
+  if(!text.trim()){
+    box.innerHTML='<span style="color:#cc7700;font-weight:700;">No text entered.</span> Paste a TER paragraph above to check it.';
+    return;
+  }
+  var hasStandard = /sans|ohs|eir|regulation|test|commissioning|voltage|earth|schedule|section|clause/i.test(text);
+  var hasMetric   = /\d+/.test(text);
+  var warnings = [];
+  if(!hasStandard) warnings.push('⚠ <strong>[MISSING EVIDENCE]</strong> Reference the applicable standard, regulation or section (e.g. SANS 10142-1 Section 6.4, OHS Act Reg. 9).');
+  if(!hasMetric)   warnings.push('⚠ <strong>[MISSING EVIDENCE]</strong> Include a measurable parameter — test reading, rating, circuit count, duration, or distance.');
+  if(!warnings.length){
+    box.style.border = '1.5px solid var(--amb)';
+    box.innerHTML='<span style="color:var(--amb);font-weight:800;">✓ Evidence Check Passed.</span> Draft references a technical standard/regulation and contains quantitative parameters aligned with Pr Techni Eng expectations.';
+  } else {
+    box.style.border = '1.5px solid #cc7700';
+    box.innerHTML='<div style="color:#8a4800;display:flex;flex-direction:column;gap:5px;">'+warnings.map(function(w){return '<div>'+w+'</div>';}).join('')+'</div>';
+  }
+}
 
 /* ---- Load admin.js eagerly so Admin button always uses the correct version ---- */
 (function(){
