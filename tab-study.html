@@ -1750,7 +1750,9 @@ function lmsCheckKey(key){
   if(/^Tseke-\d{10}-\d{8}$/i.test(k)){
     try{ if(localStorage.getItem(IR_KEY_NS+k)) return 'ir'; }catch(e){}
     try{ if(localStorage.getItem(ECSA_KEY_NS+k)) return 'ecsa'; }catch(e){}
-    return null; // Valid format but not issued on this device
+    // Valid format — student devices don't carry admin-issued records.
+    // Accept the key as IR Companion access (the primary tier).
+    return 'ir';
   }
   // ── Legacy keys — all migrate to IR Companion ──
   if(LEGACY_IR_KEYS.indexOf(ku)!==-1) return 'ir';
@@ -1857,6 +1859,19 @@ function lmsSetCompanion(type){
   }
 }
 
+
+/* ---- Admin hub tab switcher stub ----
+   admin.js overrides this once loaded; this ensures buttons work immediately */
+if(typeof hubShow==='undefined'){
+  window.hubShow=function(id,btn){
+    document.querySelectorAll('.hub-section').forEach(function(s){s.style.display='none';s.classList.remove('active');});
+    document.querySelectorAll('.hub-nav-btn').forEach(function(b){b.classList.remove('active');});
+    var sec=document.getElementById(id);
+    if(sec){sec.style.display='block';sec.classList.add('active');}
+    if(btn){btn.classList.add('active');}
+    try{localStorage.setItem('biz_hub_active',id);}catch(e){}
+  };
+}
 
 function lmsShowView(id){
   document.querySelectorAll('.lms-view').forEach(function(v){v.classList.remove('active');});
@@ -2207,7 +2222,7 @@ function lmsSubmitKey(){
 function lmsActivateKey(){
   var phone=(document.getElementById('lms-act-phone').value||'').trim();
   var email=(document.getElementById('lms-act-email').value||'').trim();
-  var key=(document.getElementById('lms-act-key').value||'').trim().toUpperCase();
+  var key=(document.getElementById('lms-act-key').value||'').trim(); // preserve case for Tseke- keys
   var err=document.getElementById('lms-act-err');
   err.textContent='';
   if(!phone){err.textContent='Please enter your cell number.';return;}
