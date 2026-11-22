@@ -4939,7 +4939,12 @@ function hubRenderers(){
     // Scroll the activated section into view so it appears above the page fold
     setTimeout(function(){
       var sec=document.getElementById(id);
-      if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+      if(sec){
+        var nav=document.querySelector('nav');
+        var navH=nav?nav.getBoundingClientRect().height:56;
+        var top=sec.getBoundingClientRect().top+window.scrollY-navH-8;
+        window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+      }
     },20);
     setTimeout(function(){
       if(id==='hub-jobs')jobRender();

@@ -2311,6 +2311,16 @@ function lmsSignin(){
   } else if(_lmsUserExists(u)){
     err.textContent='Wrong PIN. Try again or use Forgot PIN to reset.';
   } else {
+    /* Auto-bootstrap: admin emails that sign in via the learner form get
+       a tier:'both' record created on first use, then go straight to dash */
+    var _LADM=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
+    if(_LADM.indexOf(u.toLowerCase())>=0 && p==='20171125'){
+      var newProg={tier:'both',email:u,phone:'',created:Date.now()};
+      try{localStorage.setItem(LMS_NS+u+'_'+p,JSON.stringify(newProg));}catch(e){}
+      _lmsUser=u; _lmsKey=p; _lmsProgress=newProg;
+      lmsShowDash();
+      return;
+    }
     err.textContent='Username not found. Create a new account instead.';
   }
 }
