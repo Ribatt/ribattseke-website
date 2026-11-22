@@ -2607,9 +2607,19 @@ function jobRender(){
 function jobNew(){jobEdit(null);}
 function jobEdit(id){
   var j=id?bizGet('job_'+id):{};
-  var clients=bizList('cli');
+  var clients=bizList('cl');
+  if(!clients.length){
+    var ov=document.createElement('div');ov.className='biz-modal-bg';
+    ov.innerHTML='<div class="biz-modal"><h4>No Clients Yet</h4>'
+      +'<p style="font-size:13.5px;color:var(--fg2);">Please add a client first before creating a job card.</p>'
+      +'<div class="biz-modal-actions">'
+      +'<button class="biz-btn biz-btn-primary" onclick="this.closest(\'.biz-modal-bg\').remove();hubShow(\'hub-clients\')">Go to Clients</button>'
+      +'<button class="biz-btn" onclick="this.closest(\'.biz-modal-bg\').remove()">Cancel</button>'
+      +'</div></div>';
+    document.body.appendChild(ov);return;
+  }
   var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(j.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
-  var html='<div class="biz-modal-backdrop" id="job-modal">'
+  var html='<div class="biz-modal-bg" id="job-modal">'
     +'<div class="biz-modal">'
     +'<h3>'+(id?'Edit':'New')+' Job Card</h3>'
     +'<label>Client *<select id="jm-client"><option value="">— Select Client —</option>'+cOpts+'</select></label>'
@@ -2678,7 +2688,7 @@ function jobSave(id){
   var site=val('jm-site').trim();
   if(!clientId){alert('Please select a client.');return;}
   if(!site){alert('Site address is required.');return;}
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cli=clients.find(function(c){return c.id===clientId;})||{};
   var seq=id?null:bizSeq('job');
   var jobNo=id?(bizGet('job_'+id)||{}).jobNo:('JC-'+String(seq).padStart(4,'0'));
@@ -2751,7 +2761,7 @@ function cocEdit(id,preClientId,preSite,preJobRef){
   if(existingModal) existingModal.remove();
   var c=id?bizGet('coc_'+id):{}; 
   var cliId=preClientId||c.clientId||'';
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cOpts=clients.map(function(cl){return '<option value="'+cl.id+'"'+(cliId===cl.id?' selected':'')+'>'+esc(cl.name)+'</option>';}).join('');
   var html='<div class="biz-modal-backdrop" id="coc-modal">'
     +'<div class="biz-modal">'
@@ -2786,7 +2796,7 @@ function cocSave(id){
   var site=val('cm-site').trim();
   if(!clientId){alert('Please select a client.');return;}
   if(!site){alert('Site address is required.');return;}
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cli=clients.find(function(c){return c.id===clientId;})||{};
   var seq=id?null:bizSeq('coc');
   var cocNo=id?(bizGet('coc_'+id)||{}).cocNo:('COC-'+String(seq).padStart(4,'0'));
@@ -2892,7 +2902,7 @@ function poeNew(preClientId,preCocRef,preSite){poeEdit(null,preClientId,preCocRe
 function poeEdit(id,preClientId,preCocRef,preSite){
   var p=id?bizGet('poe_'+id):{};
   var cliId=preClientId||p.clientId||'';
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(cliId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
   var checks=p.checks||POE_CHECKLIST.map(function(){return false;});
   var checkHtml=POE_CHECKLIST.map(function(item,i){
@@ -2921,7 +2931,7 @@ function poeEdit(id,preClientId,preCocRef,preSite){
 function poeSave(id){
   var clientId=val('pm-client');
   if(!clientId){alert('Please select a client.');return;}
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cli=clients.find(function(c){return c.id===clientId;})||{};
   var checks=POE_CHECKLIST.map(function(_,i){return document.getElementById('poe-chk-'+i)?document.getElementById('poe-chk-'+i).checked:false;});
   var seq=id?null:bizSeq('poe');
@@ -2989,7 +2999,7 @@ function projRender(){
 function projNew(){projEdit(null);}
 function projEdit(id){
   var p=id?bizGet('proj_'+id):{};
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(p.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
   var html='<div class="biz-modal-backdrop" id="proj-modal">'
     +'<div class="biz-modal" style="max-width:580px">'
@@ -3015,7 +3025,7 @@ function projSave(id){
   var name=val('pjm-name').trim();
   if(!name){alert('Project name is required.');return;}
   var clientId=val('pjm-client');
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cli=clients.find(function(c){return c.id===clientId;})||{};
   var seq=id?null:bizSeq('proj');
   var projNo=id?(bizGet('proj_'+id)||{}).projNo:('PRJ-'+String(seq).padStart(3,'0'));
@@ -3439,7 +3449,7 @@ function tstRender(){
 function tstNew(){tstEdit(null);}
 function tstEdit(id){
   var t=id?bizGet('tst_'+id):{};
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(t.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
   var circs=t.circuits||[];
   var circRows=circs.map(function(c,i){
@@ -3489,7 +3499,7 @@ function tstRemoveCirc(id,idx){
 }
 function tstSave(id){
   var clientId=val('tm-client');
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cli=clients.find(function(c){return c.id===clientId;})||{};
   var saved=id?bizGet('tst_'+id):{};
   var seq=id?null:bizSeq('tst');
@@ -3547,7 +3557,7 @@ function pvtRender(){
 function pvtNew(){pvtEdit(null);}
 function pvtEdit(id){
   var p=id?bizGet('pvt_'+id):{};
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cOpts=clients.map(function(c){return '<option value="'+c.id+'"'+(p.clientId===c.id?' selected':'')+'>'+esc(c.name)+'</option>';}).join('');
   var strings=p.strings||[];
   var strRows=strings.map(function(s,i){
@@ -3598,7 +3608,7 @@ function pvtRemoveStr(id,idx){
 }
 function pvtSave(id){
   var clientId=val('pv-client');
-  var clients=bizList('cli');
+  var clients=bizList('cl_');
   var cli=clients.find(function(c){return c.id===clientId;})||{};
   var saved=id?bizGet('pvt_'+id):{};
   var seq=id?null:bizSeq('pvt');
@@ -4470,14 +4480,14 @@ function ecsaPrint(){
 function cliFind(query){
   if(!query||query.length<2)return[];
   var q=query.toLowerCase();
-  return bizList('cli').filter(function(c){
+  return bizList('cl_').filter(function(c){
     return (c.name||'').toLowerCase().indexOf(q)>=0
       ||(c.email||'').toLowerCase().indexOf(q)>=0
       ||(c.phone||'').replace(/\s/g,'').indexOf(q.replace(/\s/g,''))>=0;
   });
 }
 function cliFindDuplicate(name,email,phone){
-  var all=bizList('cli');
+  var all=bizList('cl_');
   var n=(name||'').toLowerCase().trim();
   var e=(email||'').toLowerCase().trim();
   var p=(phone||'').replace(/\D/g,'');
