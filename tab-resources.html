@@ -166,12 +166,16 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
     <h3 style="margin:0 0 4px;font-size:17px;color:var(--fg);">Order Atchar</h3>
     <p style="font-size:12.5px;color:var(--fg3);margin:0 0 14px;">Homemade in Gauteng. We deliver. Tseke will confirm price, qty and delivery via WhatsApp.</p>
 
+    <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:6px;">Flavour <span style="color:#c0392b;">*</span></label>
+    <div style="display:flex;gap:8px;margin-bottom:12px;" id="atchar-flavour-btns">
+      <button class="atchar-fl-sel" data-flavour="Original Taste" onclick="pickAtcharFl(this)" style="padding:7px 14px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">Original Taste</button>
+      <button class="atchar-fl-sel" data-flavour="Hot" onclick="pickAtcharFl(this)" style="padding:7px 14px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">&#128293; Hot</button>
+    </div>
     <label style="font-size:12px;font-weight:600;color:var(--fg2);display:block;margin-bottom:6px;">Size <span style="color:#c0392b;">*</span></label>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;" id="atchar-size-btns">
       <button class="atchar-sz-sel" data-size="250 ml" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">250 ml</button>
       <button class="atchar-sz-sel" data-size="500 ml" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">500 ml</button>
       <button class="atchar-sz-sel" data-size="1 L" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">1 L</button>
-      <button class="atchar-sz-sel" data-size="2 L" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">2 L</button>
       <button class="atchar-sz-sel" data-size="5 L" onclick="pickAtcharSz(this)" style="padding:7px 12px;border-radius:18px;border:1px solid var(--border,#ddd);background:none;color:var(--fg2);font-size:12.5px;font-weight:600;cursor:pointer;">5 L</button>
     </div>
 
@@ -195,9 +199,12 @@ document.getElementById('yoco-modal-bg').addEventListener('click',function(e){if
 <script>
 var _atcharSelSize='';
 var _atcharSelPrice='';
+var _atcharSelFlavour='';
 function openAtcharOrder(size,price){
   _atcharSelSize=size||'';
   _atcharSelPrice=price||'';
+  _atcharSelFlavour='';
+  document.querySelectorAll('.atchar-fl-sel').forEach(function(b){b.style.background='none';b.style.color='var(--fg2)';b.style.borderColor='var(--border,#ddd)';});
   document.querySelectorAll('.atchar-sz-sel').forEach(function(b){
     b.style.background='none';b.style.color='var(--fg2)';b.style.borderColor='var(--border,#ddd)';
     if(size && b.dataset.size===size){b.style.background='#1E8540';b.style.color='#fff';b.style.borderColor='#1E8540';}
@@ -210,6 +217,11 @@ function openAtcharOrder(size,price){
   setTimeout(function(){document.getElementById('atchar-name').focus();},100);
 }
 function closeAtcharOrder(){document.getElementById('atchar-modal-bg').style.display='none';}
+function pickAtcharFl(btn){
+  _atcharSelFlavour=btn.dataset.flavour;
+  document.querySelectorAll('.atchar-fl-sel').forEach(function(b){b.style.background='none';b.style.color='var(--fg2)';b.style.borderColor='var(--border,#ddd)';});
+  btn.style.background='#c97b2a';btn.style.color='#fff';btn.style.borderColor='#c97b2a';
+}
 function pickAtcharSz(btn){
   _atcharSelSize=btn.dataset.size;_atcharSelPrice=btn.dataset.price;
   document.querySelectorAll('.atchar-sz-sel').forEach(function(b){b.style.background='none';b.style.color='var(--fg2)';b.style.borderColor='var(--border,#ddd)';});
@@ -218,13 +230,14 @@ function pickAtcharSz(btn){
 function submitAtcharOrder(){
   var errEl=document.getElementById('atchar-err');
   errEl.style.display='none';
+  if(!_atcharSelFlavour){errEl.textContent='Please select a flavour (Original Taste or Hot).';errEl.style.display='block';return;}
   if(!_atcharSelSize){errEl.textContent='Please select a jar size.';errEl.style.display='block';return;}
   var name=document.getElementById('atchar-name').value.trim();
   var cell=document.getElementById('atchar-cell').value.trim();
   var addr=document.getElementById('atchar-addr').value.trim();
   if(!name){errEl.textContent='Please enter your name.';errEl.style.display='block';return;}
   if(!cell){errEl.textContent='Please enter your cell number.';errEl.style.display='block';return;}
-  var msg='Hi Tseke, I would like to order Atchar.\n\nSize: '+_atcharSelSize+'\nName: '+name+'\nCell: '+cell+(addr?'\nDelivery area: '+addr:'')+'\n\nPlease confirm price and delivery.';
+  var msg='Hi Tseke, I would like to order Atchar.\n\nFlavour: '+_atcharSelFlavour+'\nSize: '+_atcharSelSize+'\nName: '+name+'\nCell: '+cell+(addr?'\nDelivery area: '+addr:'')+'\n\nPlease confirm price and delivery.';
   var url='https://wa.me/27724748888?text='+encodeURIComponent(msg);
   window.open(url,'_blank');
   closeAtcharOrder();
@@ -259,7 +272,7 @@ document.getElementById('atchar-modal-bg').addEventListener('click',function(e){
         </div>
         <div class="book-row book-row--priced">
           <div>
-            <div class="book-title">SANS 10142-1 (Ed 3.3) <a href="https://store.sabs.co.za/catalogsearch/result/?q=10142-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-title">SANS 10142-1 (Ed 3.3) <a href="https://store.sabs.co.za/catalogsearch/result/?q=10142-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a> <a href="https://sapvia.co.za/wp-content/uploads/2026/02/SANS10142-1ED3.3_TC067SC06_DSS_1.pdf#page=1,3" target="_blank" rel="noopener" class="draft-link">&#128065; Draft p.1&ndash;3</a></div>
             <div class="book-sub">Wiring of Premises, Low Voltage Installations · Paper 1: Sections 1, 2, 3, 4, 5, 7 · Annexures C, E · Paper 2: Sections 6, 8 · Annexures A, B, D, G, H, I, J, K, L, N</div>
           </div>
           <div class="book-price-btns">
@@ -279,7 +292,7 @@ document.getElementById('atchar-modal-bg').addEventListener('click',function(e){
         </div>
         <div class="book-row book-row--priced">
           <div>
-            <div class="book-title">SANS 10198-1 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10198-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-title">SANS 10198-1 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10198-1" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a> <a href="https://i7.antpedia.com/standard/files/pdfs_ora/20230517/SANS/SANS%252010198-1-2004.pdf#page=1,3" target="_blank" rel="noopener" class="draft-link">&#128065; Draft p.1&ndash;3</a></div>
             <div class="book-sub">Selection, handling and installation of electric power cables · Part 1: Definitions and statutory requirements · Paper 1</div>
           </div>
           <div class="book-price-btns">
@@ -289,7 +302,7 @@ document.getElementById('atchar-modal-bg').addEventListener('click',function(e){
         </div>
         <div class="book-row book-row--priced">
           <div>
-            <div class="book-title">SANS 10198-2 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10198-2" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a></div>
+            <div class="book-title">SANS 10198-2 <a href="https://store.sabs.co.za/catalogsearch/result/?q=10198-2" target="_blank" rel="noopener" class="sabs-link">SABS&nbsp;&#8599;</a> <a href="https://i7.antpedia.com/standard/files/pdfs_ora/20230520/SANS%2010198-2-2021.pdf#page=1,3" target="_blank" rel="noopener" class="draft-link">&#128065; Draft p.1&ndash;3</a></div>
             <div class="book-sub">Selection, handling and installation of electric power cables · Part 2: Selection of cable type · Paper 1 (no calculation questions)</div>
           </div>
           <div class="book-price-btns">
@@ -373,6 +386,8 @@ document.getElementById('atchar-modal-bg').addEventListener('click',function(e){
 .btn-book-buy:hover { opacity:.88; }
 .sabs-link { font-size:.7rem; font-weight:600; color:var(--amb,#1E8540); text-decoration:none; white-space:nowrap; }
 .sabs-link:hover { color:#156830; text-decoration:underline; }
+.draft-link { font-size:.7rem; font-weight:700; color:#1E8540; text-decoration:none; white-space:nowrap; border:1px solid #1E8540; border-radius:4px; padding:1px 6px; display:inline-block; margin-left:4px; }
+.draft-link:hover { background:#1E8540; color:#fff; }
 </style>
 
 <script>
@@ -442,9 +457,13 @@ function submitBookCheckout() {
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
     <!-- PROKT Toolkit -->
     <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <div style="background:linear-gradient(135deg,#f26522,#c94f10);padding:12px 15px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">HellermannTyton</div>
-        <div style="font-size:14px;font-weight:800;color:#fff;margin-top:2px;">PROKT Toolkit Set</div>
+      <div style="position:relative;height:150px;background:linear-gradient(145deg,#c94f10,#f26522,#f7a060);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        <span style="font-size:72px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.35));line-height:1;">&#128296;</span>
+        <span style="position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.35;">&#128295;</span>
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.38);backdrop-filter:blur(2px);padding:7px 14px;">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);">HellermannTyton</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.1;">PROKT Toolkit Set</div>
+        </div>
       </div>
       <div style="padding:13px 15px;background:var(--bg);">
         <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 10px;">Industry-standard electrician's toolkit. Insulated screwdrivers, pliers, cable stripper, voltage tester, and carry bag. SANS-compliant insulation ratings.</p>
@@ -503,9 +522,13 @@ function submitBookCheckout() {
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
     <!-- Still Water -->
     <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <div style="background:linear-gradient(135deg,#2a9fd6,#1a6fa0);padding:12px 15px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Beverages</div>
-        <div style="font-size:14px;font-weight:800;color:#fff;margin-top:2px;">Still Water</div>
+      <div style="position:relative;height:150px;background:linear-gradient(145deg,#1a6fa0,#2a9fd6,#5bbef2);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        <span style="font-size:80px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.3));line-height:1;">&#128167;</span>
+        <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:44px;opacity:.28;">&#128167;</span>
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.38);backdrop-filter:blur(2px);padding:7px 14px;">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);">Beverages</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.1;">Still Water</div>
+        </div>
       </div>
       <div style="padding:13px 15px;background:var(--bg);">
         <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 10px;">Cold still water in multiple sizes — 500 ml, 1 L, 2 L, and 5 L. Available for sessions, events, or delivery.</p>
@@ -520,17 +543,24 @@ function submitBookCheckout() {
 
     <!-- Homemade Atchar -->
     <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
-      <div style="background:linear-gradient(135deg,#c97b2a,#8b4a10);padding:12px 15px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Homemade</div>
-        <div style="font-size:14px;font-weight:800;color:#fff;margin-top:2px;">Atchar</div>
+      <div style="position:relative;height:150px;background:linear-gradient(145deg,#8b4a10,#c97b2a,#e8a254);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        <span style="font-size:80px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.35));line-height:1;">&#127798;</span>
+        <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:44px;opacity:.28;">&#128293;</span>
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.38);backdrop-filter:blur(2px);padding:7px 14px;">
+          <div style="font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);">Homemade</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.1;">Atchar</div>
+        </div>
       </div>
       <div style="padding:13px 15px;background:var(--bg);">
-        <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 10px;">Traditional homemade atchar. Hot, medium, and mild. Available in 250 ml, 500 ml, 1 L, and 5 L jars.</p>
+        <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 10px;">Traditional homemade atchar. Two flavours: Original Taste and Hot. Available in 250 ml, 500 ml, 1 L, and 5 L jars.</p>
         <div style="font-size:12px;color:var(--fg2);line-height:1.8;margin-bottom:12px;">
           <div>&#127798; 250 ml — single jar</div>
           <div>&#127798; 500 ml / 1 L — family jars</div>
           <div>&#127798; 5 L — catering / reseller bulk</div>
-          <div style="margin-top:4px;font-style:italic;color:var(--fg3);">Hot · Medium · Mild available</div>
+          <div style="margin-top:5px;display:flex;gap:7px;">
+            <span style="background:#c97b2a;color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;">Original Taste</span>
+            <span style="background:#b03010;color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;">&#128293; Hot</span>
+          </div>
         </div>
         <a href="https://wa.me/27724748888?text=Hi%20Tseke%2C%20I%20want%20to%20order%20homemade%20atchar." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#25d366;color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-size:12.5px;font-weight:700;">&#128172; WhatsApp to Order</a>
       </div>

@@ -4738,6 +4738,9 @@ function hubRenderers(){
       else if(id==='hub-handover')handoverRender();
       else if(id==='hub-warranty')warrantyRender();
       else if(id==='hub-orders')ordersRender();
+      else if(id==='hub-kyc')kycRender();
+      else if(id==='hub-expiry')expiryRender();
+      else if(id==='hub-financials')finRender();
     },50);
   };
 })();
@@ -5255,3 +5258,371 @@ function ordersDownloadCsv() {
   a.href = url; a.download = 'ribattseke-orders.csv'; a.click();
   setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
 }
+
+/* ===== KYC & COMPLIANCE VAULT ===== */
+function kycRender(){
+  var el=document.getElementById('kyc-body');
+  if(!el) return;
+  var sections=[
+    {
+      title:'&#128100; Director KYC & Credentials',
+      color:'#1E8540',
+      items:[
+        {key:'kyc_id_doc',label:'ID / Passport',icon:'&#128194;'},
+        {key:'kyc_proof_addr',label:'Proof of Address',icon:'&#127968;'},
+        {key:'kyc_cv',label:'CV / Curriculum Vitae',icon:'&#128203;'},
+        {key:'kyc_qualifications',label:'Qualifications & Trade Certificates',icon:'&#127891;'},
+        {key:'kyc_membership_certs',label:'Membership Certificates',icon:'&#127818;'}
+      ]
+    },
+    {
+      title:'&#127970; Corporate Documents',
+      color:'#2563eb',
+      items:[
+        {key:'kyc_cipc',label:'CIPC Certificate',icon:'&#128196;'},
+        {key:'kyc_sole_prop',label:'Sole Proprietor Agreements / Docs',icon:'&#128203;'},
+        {key:'kyc_bbbee',label:'B-BBEE Affidavit / Certificate',icon:'&#10003;'},
+        {key:'kyc_coida',label:'COIDA Letter of Good Standing',icon:'&#128396;'},
+        {key:'kyc_pub_liability',label:'Public Liability Insurance',icon:'&#128737;'},
+        {key:'kyc_prof_indem',label:'Professional Indemnity Insurance',icon:'&#128737;'}
+      ]
+    },
+    {
+      title:'&#128268; Technical Documents',
+      color:'#f26522',
+      items:[
+        {key:'kyc_doel_wl',label:'DoEL Wireman\'s / Installation Electrician Licence',icon:'&#9889;'},
+        {key:'kyc_contractor_reg',label:'Contractor Registration(s)',icon:'&#128196;'},
+        {key:'kyc_ecsa_cert',label:'ECSA Registration Certificate (Pr Techni Eng)',icon:'&#127818;'}
+      ]
+    },
+    {
+      title:'&#9888; HSE Documents',
+      color:'#dc2626',
+      items:[
+        {key:'kyc_s37_agr',label:'Section 37(2) Agreement(s)',icon:'&#128203;'},
+        {key:'kyc_hse_file',label:'HSE File',icon:'&#128196;'},
+        {key:'kyc_risk_assess',label:'Risk Assessments',icon:'&#128397;'},
+        {key:'kyc_medical_fit',label:'Medical Fitness Cert (incl. Working at Heights)',icon:'&#128138;'},
+        {key:'kyc_first_aid',label:'First Aid & Firefighting Records',icon:'&#127973;'},
+        {key:'kyc_ppe_log',label:'PPE Stock / Issue Log',icon:'&#128115;'},
+        {key:'kyc_tool_inspect',label:'Tool & Instrument Inspection Register',icon:'&#128296;'}
+      ]
+    },
+    {
+      title:'&#128179; Payment Gateway & Standards KYC',
+      color:'#7c3aed',
+      items:[
+        {key:'kyc_yoco',label:'Yoco KYC Documents',icon:'&#128179;'},
+        {key:'kyc_payflex',label:'Payflex KYC Documents',icon:'&#128179;'},
+        {key:'kyc_sabs',label:'SABS Account / Standards KYC',icon:'&#128218;'}
+      ]
+    }
+  ];
+
+  var html='';
+  sections.forEach(function(sec){
+    html+='<div style="background:var(--bg-alt);border-radius:10px;padding:14px 16px;border-left:3px solid '+sec.color+';">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:10px;">'+sec.title+'</div>'
+      +'<div style="display:grid;gap:7px;">';
+    sec.items.forEach(function(item){
+      var stored;
+      try{ stored=JSON.parse(localStorage.getItem(BIZ_NS+item.key)||'null'); }catch(e){ stored=null; }
+      var hasDoc=stored&&stored.name;
+      var statusClr=hasDoc?'#1E8540':'#e55';
+      var statusTxt=hasDoc?'&#10003; '+esc(stored.name):'&#8212; Not uploaded';
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">'
+        +'<div style="font-size:12px;color:var(--fg2);">'+item.icon+' '+item.label+'</div>'
+        +'<div style="display:flex;align-items:center;gap:6px;">'
+        +'<span style="font-size:11px;color:'+statusClr+';">'+statusTxt+'</span>'
+        +'<button onclick="kycAddDoc(\''+item.key+'\',\''+item.label.replace(/'/g,"\\'")+'\')" style="font-size:10.5px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);cursor:pointer;">'+( hasDoc?'Update':'+ Add')+'</button>'
+        +(hasDoc?'<button onclick="kycDelDoc(\''+item.key+'\')" style="font-size:10.5px;padding:3px 7px;border-radius:12px;border:1px solid #e55;background:none;color:#e55;cursor:pointer;">&#10005;</button>':'')
+        +'</div></div>';
+    });
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function kycAddDoc(key,label){
+  var name='';
+  var old;
+  try{ old=JSON.parse(localStorage.getItem(BIZ_NS+key)||'null'); }catch(e){ old=null; }
+  /* Inline form injection */
+  var formId='kyc-form-'+key.replace(/[^a-z0-9]/gi,'_');
+  var existing=document.getElementById(formId);
+  if(existing){ existing.remove(); return; }
+  var row=event&&event.target?event.target.closest('div[style*="border-bottom"]'):null;
+  if(!row) { kycRender(); return; }
+  var form=document.createElement('div');
+  form.id=formId;
+  form.style.cssText='margin-top:6px;padding:8px;background:var(--surface);border-radius:8px;border:1px solid var(--border);';
+  form.innerHTML='<div style="font-size:11.5px;font-weight:600;color:var(--fg);margin-bottom:6px;">'+label+'</div>'
+    +'<input id="'+formId+'-name" type="text" placeholder="Document name / reference" value="'+(old&&old.name?esc(old.name):'')+'" style="width:100%;box-sizing:border-box;padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:#111;color:#fff;font-size:12px;margin-bottom:6px;">'
+    +'<input id="'+formId+'-url" type="url" placeholder="Link (Drive, Dropbox, etc.) — optional" value="'+(old&&old.url?esc(old.url):'')+'" style="width:100%;box-sizing:border-box;padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:#111;color:#fff;font-size:12px;margin-bottom:6px;">'
+    +'<input id="'+formId+'-exp" type="date" title="Expiry date (optional)" value="'+(old&&old.exp?old.exp:'')+'" style="width:100%;box-sizing:border-box;padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:#111;color:#fff;font-size:12px;margin-bottom:8px;">'
+    +'<div style="display:flex;gap:6px;">'
+    +'<button onclick="kycSaveDoc(\''+key+'\',\''+label.replace(/'/g,"\\'")+'\')" style="flex:1;padding:7px;border-radius:6px;border:none;background:#1E8540;color:#fff;cursor:pointer;font-size:12px;">Save</button>'
+    +'<button onclick="document.getElementById(\''+formId+'\').remove()" style="padding:7px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);cursor:pointer;font-size:12px;">Cancel</button>'
+    +'</div>';
+  row.after(form);
+  setTimeout(function(){ var inp=document.getElementById(formId+'-name'); if(inp)inp.focus(); },80);
+}
+
+function kycSaveDoc(key,label){
+  var formId='kyc-form-'+key.replace(/[^a-z0-9]/gi,'_');
+  var nameEl=document.getElementById(formId+'-name');
+  var urlEl=document.getElementById(formId+'-url');
+  var expEl=document.getElementById(formId+'-exp');
+  if(!nameEl||!nameEl.value.trim()){ alert('Please enter a document name.'); return; }
+  var rec={name:nameEl.value.trim(), url:(urlEl?urlEl.value.trim():''), exp:(expEl?expEl.value:''), updated:new Date().toISOString()};
+  try{ localStorage.setItem(BIZ_NS+key,JSON.stringify(rec)); }catch(e){}
+  /* If expiry set, auto-create expiry record */
+  if(rec.exp){
+    var expKey='exp_kyc_'+key;
+    var existing2;
+    try{ existing2=JSON.parse(localStorage.getItem(BIZ_NS+expKey)||'null'); }catch(e){ existing2=null; }
+    if(!existing2){
+      var newExp={id:expKey,doc:label,owner:'Riba T Tseke',issued:'',expiry:rec.exp,status:'active'};
+      try{ localStorage.setItem(BIZ_NS+expKey,JSON.stringify(newExp)); }catch(e){}
+    }
+  }
+  kycRender();
+}
+
+function kycDelDoc(key){
+  if(!confirm('Remove this document record?')) return;
+  try{ localStorage.removeItem(BIZ_NS+key); }catch(e){}
+  kycRender();
+}
+/* ===== END KYC ===== */
+
+/* ===== 30-DAY EXPIRY TRACKER ===== */
+function expiryRender(){
+  var el=document.getElementById('expiry-body');
+  if(!el) return;
+  var records=[];
+  try{
+    for(var i=0;i<localStorage.length;i++){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(BIZ_NS+'exp_')===0){
+        try{ var r=JSON.parse(localStorage.getItem(k)); if(r&&r.expiry) records.push(r); }catch(e){}
+      }
+    }
+  }catch(e){}
+
+  var now=new Date(); now.setHours(0,0,0,0);
+  records.sort(function(a,b){ return new Date(a.expiry)-new Date(b.expiry); });
+
+  if(!records.length){
+    el.innerHTML='<p style="font-size:12px;color:var(--fg3);text-align:center;padding:20px 0;">No expiry records yet. Click <strong>+ Add Record</strong> to track a document.</p>';
+    return;
+  }
+
+  var expired=[],warning=[],ok=[];
+  records.forEach(function(r){
+    var exp=new Date(r.expiry); exp.setHours(0,0,0,0);
+    var diff=Math.round((exp-now)/(1000*60*60*24));
+    r._diff=diff;
+    if(diff<0) expired.push(r);
+    else if(diff<=30) warning.push(r);
+    else ok.push(r);
+  });
+
+  function renderGroup(title,color,icon,list){
+    if(!list.length) return '';
+    var h='<div style="margin-bottom:14px;">'
+      +'<div style="font-size:12px;font-weight:700;color:'+color+';margin-bottom:7px;">'+icon+' '+title+' ('+list.length+')</div>'
+      +'<div style="display:grid;gap:7px;">';
+    list.forEach(function(r){
+      var daysStr=r._diff<0?'Expired '+(Math.abs(r._diff))+' day'+(Math.abs(r._diff)===1?'':'s')+' ago':r._diff===0?'Expires today':'Expires in '+r._diff+' day'+(r._diff===1?'':'s');
+      h+='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 12px;border-left:3px solid '+color+';display:flex;align-items:center;justify-content:space-between;gap:8px;">'
+        +'<div>'
+        +'<div style="font-size:12.5px;font-weight:600;color:var(--fg);">'+esc(r.doc||'Untitled')+'</div>'
+        +'<div style="font-size:11px;color:var(--fg3);margin-top:2px;">Owner: '+esc(r.owner||'—')+' &middot; '+daysStr+'</div>'
+        +(r.issued?'<div style="font-size:11px;color:var(--fg3);">Issued: '+esc(r.issued)+' &middot; Expires: '+esc(r.expiry)+'</div>':'<div style="font-size:11px;color:var(--fg3);">Expires: '+esc(r.expiry)+'</div>')
+        +'</div>'
+        +'<div style="display:flex;gap:5px;flex-shrink:0;">'
+        +'<button onclick="expiryEdit(\''+esc(r.id)+'\')" style="font-size:10.5px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);cursor:pointer;">Edit</button>'
+        +'<button onclick="expiryDel(\''+esc(r.id)+'\')" style="font-size:10.5px;padding:3px 7px;border-radius:12px;border:1px solid #e55;background:none;color:#e55;cursor:pointer;">&#10005;</button>'
+        +'</div></div>';
+    });
+    h+='</div></div>';
+    return h;
+  }
+
+  el.innerHTML=renderGroup('EXPIRED','#dc2626','&#128308;',expired)
+    +renderGroup('Expiring within 30 days','#f59e0b','&#128993;',warning)
+    +renderGroup('Valid','#1E8540','&#128994;',ok);
+}
+
+function expiryAdd(){
+  var modal=document.getElementById('expiry-modal-bg');
+  if(!modal){
+    modal=document.createElement('div');
+    modal.id='expiry-modal-bg';
+    modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9800;display:flex;align-items:center;justify-content:center;';
+    modal.innerHTML='<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:22px 20px;width:340px;max-width:95vw;">'
+      +'<div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:14px;">Add Expiry Record</div>'
+      +'<input id="exp-doc" type="text" placeholder="Document / certificate name *" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font-size:12px;margin-bottom:7px;">'
+      +'<input id="exp-owner" type="text" placeholder="Owner (default: Riba T Tseke)" value="Riba T Tseke" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font-size:12px;margin-bottom:7px;">'
+      +'<label style="font-size:11px;color:#aaa;display:block;margin-bottom:3px;">Issue date</label>'
+      +'<input id="exp-issued" type="date" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font-size:12px;margin-bottom:7px;">'
+      +'<label style="font-size:11px;color:#aaa;display:block;margin-bottom:3px;">Expiry date *</label>'
+      +'<input id="exp-expiry" type="date" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font-size:12px;margin-bottom:7px;">'
+      +'<select id="exp-status" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:6px;border:1px solid #555;background:#111;color:#fff;font-size:12px;margin-bottom:12px;">'
+      +'<option value="active">Active</option><option value="pending">Pending renewal</option><option value="expired">Expired</option></select>'
+      +'<p id="exp-err" style="color:#e55;font-size:11.5px;margin:0 0 8px;display:none;"></p>'
+      +'<div style="display:flex;gap:8px;">'
+      +'<button onclick="expirySave(null)" style="flex:1;padding:9px;border-radius:7px;border:none;background:#1E8540;color:#fff;cursor:pointer;font-weight:600;font-size:13px;">Save</button>'
+      +'<button onclick="document.getElementById(\'expiry-modal-bg\').remove()" style="padding:9px 14px;border-radius:7px;border:1px solid #555;background:#222;color:#aaa;cursor:pointer;">Cancel</button>'
+      +'</div></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click',function(e){ if(e.target===modal) modal.remove(); });
+  } else { modal.style.display='flex'; }
+  setTimeout(function(){ var inp=document.getElementById('exp-doc'); if(inp) inp.focus(); },80);
+}
+
+function expiryEdit(id){
+  var rec;
+  try{ rec=JSON.parse(localStorage.getItem(BIZ_NS+'exp_'+id)||'null'); }catch(e){ rec=null; }
+  if(!rec) return;
+  expiryAdd();
+  setTimeout(function(){
+    var setV=function(eid,val){ var el=document.getElementById(eid); if(el) el.value=val||''; };
+    setV('exp-doc',rec.doc); setV('exp-owner',rec.owner); setV('exp-issued',rec.issued);
+    setV('exp-expiry',rec.expiry);
+    var sel=document.getElementById('exp-status'); if(sel) sel.value=rec.status||'active';
+    var btn=document.querySelector('#expiry-modal-bg button[onclick*="expirySave"]');
+    if(btn) btn.setAttribute('onclick','expirySave(\''+id+'\')');
+  },120);
+}
+
+function expirySave(existingId){
+  var doc=(document.getElementById('exp-doc')||{}).value||'';
+  var owner=(document.getElementById('exp-owner')||{}).value||'';
+  var issued=(document.getElementById('exp-issued')||{}).value||'';
+  var expiry=(document.getElementById('exp-expiry')||{}).value||'';
+  var status=(document.getElementById('exp-status')||{}).value||'active';
+  var err=document.getElementById('exp-err');
+  if(!doc.trim()){ if(err){err.textContent='Document name is required.';err.style.display='block';} return; }
+  if(!expiry){ if(err){err.textContent='Expiry date is required.';err.style.display='block';} return; }
+  var id=existingId||('exp_'+Date.now());
+  var rec={id:id,doc:doc.trim(),owner:owner.trim()||'Riba T Tseke',issued:issued,expiry:expiry,status:status};
+  try{ localStorage.setItem(BIZ_NS+'exp_'+id,JSON.stringify(rec)); }catch(e){}
+  var modal=document.getElementById('expiry-modal-bg'); if(modal) modal.remove();
+  expiryRender();
+}
+
+function expiryDel(id){
+  if(!confirm('Delete this expiry record?')) return;
+  try{ localStorage.removeItem(BIZ_NS+'exp_'+id); }catch(e){}
+  expiryRender();
+}
+/* ===== END EXPIRY TRACKER ===== */
+
+/* ===== FINANCIALS TRACKER ===== */
+function finRender(){
+  var el=document.getElementById('fin-body');
+  if(!el) return;
+
+  /* Aggregate from existing biz_ stores */
+  var quotes=bizList('qt_');
+  var invoices=bizList('inv_');
+  var clients=bizList('cl_');
+
+  function clientName(id){ var c=clients.find(function(x){return x.id===id;}); return c?c.name:'Unknown'; }
+
+  /* Stats */
+  var totalQuotes=quotes.length;
+  var totalInvAmt=0, totalPaid=0, totalUnpaid=0, totalOverdue=0;
+  var today=new Date(); today.setHours(0,0,0,0);
+  invoices.forEach(function(inv){
+    var amt=parseFloat(inv.total||inv.amount||0);
+    totalInvAmt+=amt;
+    if(inv.paid||inv.status==='paid') totalPaid+=amt;
+    else {
+      totalUnpaid+=amt;
+      if(inv.due&&new Date(inv.due)<today) totalOverdue+=amt;
+    }
+  });
+
+  function fmt(n){ return 'R\u00a0'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+  var html='';
+  /* Summary cards */
+  html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px;">';
+  [
+    {label:'Quotes Issued',val:totalQuotes,clr:'#2563eb',suffix:''},
+    {label:'Total Invoiced',val:fmt(totalInvAmt),clr:'#1E8540',suffix:''},
+    {label:'Collected',val:fmt(totalPaid),clr:'#059669',suffix:''},
+    {label:'Outstanding',val:fmt(totalUnpaid),clr:'#f59e0b',suffix:''},
+    {label:'Overdue',val:fmt(totalOverdue),clr:'#dc2626',suffix:''}
+  ].forEach(function(c){
+    html+='<div style="background:var(--bg-alt);border-radius:9px;padding:12px 14px;border-top:3px solid '+c.clr+';">'
+      +'<div style="font-size:11px;color:var(--fg3);margin-bottom:4px;">'+c.label+'</div>'
+      +'<div style="font-size:17px;font-weight:800;color:'+c.clr+';">'+c.val+'</div>'
+      +'</div>';
+  });
+  html+='</div>';
+
+  /* Invoices table */
+  html+='<div style="background:var(--bg-alt);border-radius:10px;padding:14px 16px;">'
+    +'<div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:10px;">&#128203; Invoice Register</div>';
+  if(!invoices.length){
+    html+='<p style="font-size:12px;color:var(--fg3);">No invoices yet. Create them from the Quotes or Invoices hub.</p>';
+  } else {
+    html+='<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">'
+      +'<thead><tr style="color:var(--fg3);border-bottom:1px solid var(--border);">'
+      +'<th style="text-align:left;padding:5px 7px;">Ref</th><th style="text-align:left;padding:5px 7px;">Client</th>'
+      +'<th style="text-align:right;padding:5px 7px;">Amount</th><th style="text-align:left;padding:5px 7px;">Status</th>'
+      +'<th style="text-align:left;padding:5px 7px;">Due</th></tr></thead><tbody>';
+    invoices.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); }).forEach(function(inv){
+      var amt=parseFloat(inv.total||inv.amount||0);
+      var paid=inv.paid||inv.status==='paid';
+      var due=inv.due;
+      var overdue=!paid&&due&&new Date(due)<today;
+      var statusClr=paid?'#1E8540':overdue?'#dc2626':'#f59e0b';
+      var statusTxt=paid?'Paid':overdue?'Overdue':'Outstanding';
+      html+='<tr style="border-bottom:1px solid var(--border);">'
+        +'<td style="padding:5px 7px;font-weight:600;">'+esc(inv.ref||inv.number||inv.id||'—')+'</td>'
+        +'<td style="padding:5px 7px;">'+esc(clientName(inv.clientId))+'</td>'
+        +'<td style="padding:5px 7px;text-align:right;">'+fmt(amt)+'</td>'
+        +'<td style="padding:5px 7px;"><span style="color:'+statusClr+';font-weight:600;">'+statusTxt+'</span></td>'
+        +'<td style="padding:5px 7px;color:var(--fg3);">'+(due||'—')+'</td>'
+        +'</tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  html+='</div>';
+
+  /* Quotes summary */
+  html+='<div style="background:var(--bg-alt);border-radius:10px;padding:14px 16px;">'
+    +'<div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:10px;">&#128196; Quotes Issued</div>';
+  if(!quotes.length){
+    html+='<p style="font-size:12px;color:var(--fg3);">No quotes yet. Use the Quotes hub to create them.</p>';
+  } else {
+    html+='<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">'
+      +'<thead><tr style="color:var(--fg3);border-bottom:1px solid var(--border);">'
+      +'<th style="text-align:left;padding:5px 7px;">Ref</th><th style="text-align:left;padding:5px 7px;">Client</th>'
+      +'<th style="text-align:right;padding:5px 7px;">Amount</th><th style="text-align:left;padding:5px 7px;">Status</th>'
+      +'<th style="text-align:left;padding:5px 7px;">Date</th></tr></thead><tbody>';
+    quotes.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); }).forEach(function(qt){
+      var amt=parseFloat(qt.total||qt.amount||0);
+      var status=qt.status||'draft';
+      var statusClr=status==='accepted'?'#1E8540':status==='declined'?'#dc2626':'#f59e0b';
+      html+='<tr style="border-bottom:1px solid var(--border);">'
+        +'<td style="padding:5px 7px;font-weight:600;">'+esc(qt.ref||qt.number||qt.id||'—')+'</td>'
+        +'<td style="padding:5px 7px;">'+esc(clientName(qt.clientId))+'</td>'
+        +'<td style="padding:5px 7px;text-align:right;">'+fmt(amt)+'</td>'
+        +'<td style="padding:5px 7px;"><span style="color:'+statusClr+';font-weight:600;text-transform:capitalize;">'+esc(status)+'</span></td>'
+        +'<td style="padding:5px 7px;color:var(--fg3);">'+(qt.date||'—')+'</td>'
+        +'</tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+  html+='</div>';
+
+  el.innerHTML=html;
+}
+/* ===== END FINANCIALS ===== */

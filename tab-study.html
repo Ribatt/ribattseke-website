@@ -692,6 +692,9 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">Reg &amp; Compliance</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-orders',this)">&#128722; Sales</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-kyc',this)">&#128273; KYC &amp; Compliance</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-expiry',this)">&#9201; Expiry Alerts</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-financials',this)">&#128200; Financials</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -1100,6 +1103,35 @@
           <div id="hub-orders-body" style="font-size:13px;color:var(--fg3);">Loading…</div>
         </div>
 
+
+        <!-- KYC & Compliance hub -->
+        <div id="hub-kyc" class="hub-section" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:14px;font-weight:700;margin:0;">&#128273; KYC &amp; Compliance Vault</h3>
+          </div>
+          <div style="display:grid;gap:14px;" id="kyc-body">
+            <p style="font-size:12px;color:var(--fg3);margin:0;">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Expiry Alerts hub -->
+        <div id="hub-expiry" class="hub-section" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:14px;font-weight:700;margin:0;">&#9201; 30-Day Expiry Tracker</h3>
+            <button class="biz-btn biz-btn-primary" onclick="expiryAdd()" style="font-size:11.5px;">+ Add Record</button>
+          </div>
+          <div id="expiry-body" style="font-size:13px;color:var(--fg3);">Loading…</div>
+        </div>
+
+        <!-- Financials hub -->
+        <div id="hub-financials" class="hub-section" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <h3 style="font-size:14px;font-weight:700;margin:0;">&#128200; Financials Tracker</h3>
+          </div>
+          <div style="display:grid;gap:14px;" id="fin-body">
+            <p style="font-size:12px;color:var(--fg3);margin:0;">Loading…</p>
+          </div>
+        </div>
 
       <!-- PRINT AREA (hidden, shown on print only) -->
       <div id="biz-print-area"></div>
