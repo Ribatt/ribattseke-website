@@ -1490,32 +1490,43 @@ window.addEventListener('popstate',function(e){
 
 // Logo tap → show friendly notice first, then open admin entry for the owner
 function navOpenAdmin(){
-  /* Show a friendly overlay — students learn to leave it alone; owner dismisses and logs in */
+  /* Start loading admin.js immediately so it is ready when the owner clicks Enter */
+  _loadAdmin();
   var old=document.getElementById('_nav-adm-notice');
   if(old) old.remove();
   var ov=document.createElement('div');
   ov.id='_nav-adm-notice';
   ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:20px;';
-  ov.innerHTML='<div style="background:#111;border-radius:16px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.6);">'
-    +'<div style="font-size:36px;margin-bottom:12px;">🔒</div>'
-    +'<h3 style="color:#fff;font-size:16px;margin:0 0 10px;font-family:\'Playfair Display\',serif;">This is Tseke\'s admin area</h3>'
-    +'<p style="color:#aaa;font-size:13px;line-height:1.6;margin:0 0 20px;">This section is for the owner of this site. If you are a student, please leave this area and use the <strong style="color:#fff;">Study</strong> tab — Tseke keeps things running here so the site stays great for you.</p>'
-    +'<div style="display:flex;gap:10px;justify-content:center;">'
-    +'<button onclick="document.getElementById(\'_nav-adm-notice\').remove();" style="flex:1;padding:11px 0;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#aaa;font-size:13px;cursor:pointer;">I\'m a student — close</button>'
-    +'<button id="_nav-adm-login-btn" style="flex:1;padding:11px 0;border-radius:8px;border:none;background:#1E8540;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Owner login</button>'
-    +'</div>'
-    +'</div>';
-  document.body.appendChild(ov);
-
-  /* Owner login button — load Study tab + open admin entry */
-  document.getElementById('_nav-adm-login-btn').onclick=function(){
+  var box=document.createElement('div');
+  box.style.cssText='background:#111;border-radius:16px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.6);';
+  box.innerHTML=[
+    '<div style="font-size:36px;margin-bottom:12px;">🔒</div>',
+    '<h3 style="color:#fff;font-size:16px;margin:0 0 10px;font-family:sans-serif;">Business Hub</h3>',
+    '<p style="color:#aaa;font-size:13px;line-height:1.6;margin:0 0 20px;">This area is restricted to the site owner. If you are a student, head back to the Study tab to access your Learning Companion.</p>',
+    '<div style="display:flex;gap:10px;">'
+  ].join('');
+  var btnBack=document.createElement('button');
+  btnBack.style.cssText='flex:1;padding:11px 0;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#ccc;font-size:13px;cursor:pointer;';
+  btnBack.textContent='📚 Back to Study';
+  btnBack.onclick=function(){ov.remove();if(window._currentTab!=='study')showTab('study');};
+  var btnOwner=document.createElement('button');
+  btnOwner.style.cssText='flex:1;padding:11px 0;border-radius:8px;border:none;background:#1E8540;color:#fff;font-size:13px;font-weight:600;cursor:pointer;';
+  btnOwner.textContent='🔐 Owner Login';
+  btnOwner.onclick=function(){
     ov.remove();
     if(window._currentTab!=='study') showTab('study');
     var _t=0;(function _wa(){
       if(typeof lmsAdminEntry==='function'){lmsAdminEntry();return;}
-      if(_t++<60) setTimeout(_wa,200);
+      if(_t++<80) setTimeout(_wa,150);
     })();
   };
+  var btnRow=box.querySelector('div:last-child');
+  btnRow.appendChild(btnBack);
+  btnRow.appendChild(btnOwner);
+  box.appendChild(document.createElement('div'));  /* closes the flex div */
+  ov.appendChild(box);
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+  document.body.appendChild(ov);
 }
 
 // Donate — open Yoco payment page directly

@@ -2292,7 +2292,12 @@ function lmsSignin(){
   err.textContent='';
   if(!u){err.textContent='Please enter your username.';return;}
   if(!p){err.textContent='Please enter your PIN.';return;}
-  /* Student login only - admin/owner uses lmsAdminSignin() */
+  /* Guard: admin emails must not use the student form */
+  var _ADMS=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
+  if(_ADMS.indexOf(u.toLowerCase())>=0){
+    err.textContent='This is an admin email. Please tap the site logo to access the Business Hub.';
+    return;
+  }
   var existing=_lmsLoad(u,p);
   if(existing){
     // (No trial expiry — 2-tier system: IR Companion / ECSA Companion)
