@@ -697,10 +697,10 @@ function today(){ return new Date().toISOString().split('T')[0]; }
 
 /* ---- Hub nav ---- */
 function hubShow(id,btn){
-  document.querySelectorAll('.hub-section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.hub-section').forEach(function(s){ s.classList.remove('active'); s.style.display=''; });
   document.querySelectorAll('.hub-nav-btn').forEach(function(b){ b.classList.remove('active'); });
   var sec=document.getElementById(id);
-  if(sec) sec.classList.add('active');
+  if(sec){ sec.classList.add('active'); sec.style.display='block'; }
   if(btn) btn.classList.add('active');
   if(id==='hub-clients') clRender();
   if(id==='hub-quotes') qtRender();
@@ -833,11 +833,20 @@ var BIZ_RATE_DEFAULTS = {
   ],
   travel: { aaRatePerKm:4.84, margin:1.20 },
   books: [
-    {id:'10142-hc', name:'SANS 10142-1 (Ed 3.3) Hardcopy',    sellPrice:1350, paystack:'https://paystack.com/buy/sans-10142-1-2026-edition-33-hardcopy-levwkw'},
-    {id:'10142-sc', name:'SANS 10142-1 (Ed 3.3) Softcopy PDF', sellPrice:900,  paystack:'https://paystack.com/buy/sans-10142-1-2026-edition-303-softcopy-pdf-tviglk'},
-    {id:'10292',    name:'SANS 10292',                         sellPrice:650,  paystack:''},
-    {id:'10198-1',  name:'SANS 10198-1',                       sellPrice:600,  paystack:''},
-    {id:'10198-2',  name:'SANS 10198-2',                       sellPrice:600,  paystack:''}
+    {id:'10142-hc', name:'SANS 10142-1 (Ed 3.3) Hardcopy',    sellPrice:1900,   paystack:'https://paystack.com/buy/sans-10142-1-2026-edition-33-hardcopy-levwkw'},
+    {id:'10142-sc', name:'SANS 10142-1 (Ed 3.3) Softcopy PDF', sellPrice:1478.26,paystack:'https://paystack.com/buy/sans-10142-1-2026-edition-303-softcopy-pdf-tviglk'},
+    {id:'10292-hc', name:'SANS 10292 Hardcopy',                sellPrice:1200,   paystack:''},
+    {id:'10292-sc', name:'SANS 10292 Softcopy PDF',            sellPrice:917.28, paystack:''},
+    {id:'10198-1-hc',name:'SANS 10198-1 Hardcopy',            sellPrice:500,    paystack:''},
+    {id:'10198-1-sc',name:'SANS 10198-1 Softcopy PDF',        sellPrice:415.80, paystack:''},
+    {id:'10198-2-hc',name:'SANS 10198-2 Hardcopy',            sellPrice:1100,   paystack:''},
+    {id:'10198-2-sc',name:'SANS 10198-2 Softcopy PDF',        sellPrice:874.44, paystack:''},
+    {id:'10313-hc', name:'SANS 10313 Hardcopy',                sellPrice:800,    paystack:''},
+    {id:'10313-sc', name:'SANS 10313 Softcopy PDF',            sellPrice:616.15, paystack:''},
+    {id:'1507-1-hc',name:'SANS 1507-1 Hardcopy',              sellPrice:700,    paystack:''},
+    {id:'1507-1-sc',name:'SANS 1507-1 Softcopy PDF',          sellPrice:530.45, paystack:''},
+    {id:'1973-3-hc',name:'SANS 1973-3 Hardcopy',              sellPrice:1000,   paystack:''},
+    {id:'1973-3-sc',name:'SANS 1973-3 Softcopy PDF',          sellPrice:773.65, paystack:''}
   ],
   report:   { compilationHourly:280 },
   insurance:{ ratePercent:2.5 },
@@ -863,6 +872,12 @@ function bizGetRates(){
       });
       if(!s.nbcei) s.nbcei=JSON.parse(JSON.stringify(BIZ_RATE_DEFAULTS.nbcei));
       if(!s.coc)   s.coc  =JSON.parse(JSON.stringify(BIZ_RATE_DEFAULTS.coc));
+      // Merge in any new default books not in saved data
+      if(!s.books) s.books=[];
+      var saved_bids=s.books.map(function(b){return b.id;});
+      BIZ_RATE_DEFAULTS.books.forEach(function(def){
+        if(saved_bids.indexOf(def.id)<0) s.books.push(JSON.parse(JSON.stringify(def)));
+      });
       return s;
     }
   }catch(e){}

@@ -138,9 +138,9 @@
             <button type="button" onclick="(function(){var i=document.getElementById('lms-p');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
           <div class="lms-err" id="lms-login-err"></div>
-          <button class="lms-btn" onclick="lmsSignin()">Sign In</button>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
+          <button type="button" class="lms-btn" onclick="lmsSignin()">Sign In</button>
+          <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
+          <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
         </div>
       </div>
 
@@ -797,21 +797,21 @@
 
         <!-- ===== HUB: LMS KEYS ===== -->
         <!-- Purchase Orders hub section -->
-        <div id="hub-po" class="hub-section" style="display:none;">
+        <div id="hub-po" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Purchase Orders</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Track purchase orders raised with suppliers.</p>
           <div id="hub-po-list" style="font-size:13px;color:var(--fg3);">No purchase orders recorded yet.</div>
           <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="poAdd()">+ New Purchase Order</button>
         </div>
         <!-- Purchase Requests hub section -->
-        <div id="hub-pr" class="hub-section" style="display:none;">
+        <div id="hub-pr" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Purchase Requests</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Internal purchase requests pending approval.</p>
           <div id="hub-pr-list" style="font-size:13px;color:var(--fg3);">No purchase requests recorded yet.</div>
           <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="prAdd()">+ New Purchase Request</button>
         </div>
         <!-- Travel Management hub section -->
-        <div id="hub-travel" class="hub-section" style="display:none;">
+        <div id="hub-travel" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Travel Management</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Log travel expenses, claims and site visit records.</p>
           <div id="hub-travel-list" style="font-size:13px;color:var(--fg3);">No travel records yet.</div>
@@ -1137,7 +1137,7 @@
         </div>
 
         <!-- Companion Enquiries hub section -->
-        <div id="hub-enquiries" class="hub-section" style="display:none;">
+        <div id="hub-enquiries" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 4px;">Companion Enquiries</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Questions asked via the Companion chat widget — review and follow up.</p>
           <div id="hub-enq-list" style="font-size:13px;color:var(--fg3);">
@@ -1146,7 +1146,7 @@
         </div>
 
         <!-- Company Registration hub section -->
-        <div id="hub-regdocs" class="hub-section" style="display:none;">
+        <div id="hub-regdocs" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Company Registration &amp; Compliance</h3>
           <div style="display:grid;gap:10px;">
             <div style="background:var(--bg-alt);border-radius:8px;padding:12px 14px;">
@@ -1175,7 +1175,7 @@
         </div>
 
         <!-- Stock & Materials hub section -->
-        <div id="hub-stock" class="hub-section" style="display:none;">
+        <div id="hub-stock" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Stock &amp; Materials</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track materials on hand, issued to jobs, and to order.</p>
           <div id="hub-stock-list" style="font-size:13px;color:var(--fg3);">No stock items recorded yet.</div>
@@ -1183,7 +1183,7 @@
         </div>
 
         <!-- Delivery Notes hub section -->
-        <div id="hub-delivery" class="hub-section" style="display:none;">
+        <div id="hub-delivery" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Delivery Notes</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Record materials delivered to and from site.</p>
           <div id="hub-delivery-list" style="font-size:13px;color:var(--fg3);">No delivery notes recorded yet.</div>
@@ -1191,7 +1191,7 @@
         </div>
 
         <!-- Site Handovers hub section -->
-        <div id="hub-handover" class="hub-section" style="display:none;">
+        <div id="hub-handover" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Site Handovers</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Record final handover sign-offs for completed installations.</p>
           <div id="hub-handover-list" style="font-size:13px;color:var(--fg3);">No handover records yet.</div>
@@ -1199,21 +1199,21 @@
         </div>
 
         <!-- Warranties hub section -->
-        <div id="hub-warranty" class="hub-section" style="display:none;">
+        <div id="hub-warranty" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Warranties &amp; Defects</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track warranty periods and defects liability for completed jobs.</p>
           <div id="hub-warranty-list" style="font-size:13px;color:var(--fg3);">No warranty records yet.</div>
           <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="warrantyAdd()">+ Log Warranty</button>
         </div>
 
-        <div id="hub-orders" class="hub-section" style="display:none;">
+        <div id="hub-orders" class="hub-section">
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">&#128722; Yoco Sales Dashboard</h3>
           <div id="hub-orders-body" style="font-size:13px;color:var(--fg3);">Loading…</div>
         </div>
 
 
         <!-- KYC & Compliance hub -->
-        <div id="hub-kyc" class="hub-section" style="display:none;">
+        <div id="hub-kyc" class="hub-section">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#128273; KYC &amp; Compliance Vault</h3>
           </div>
@@ -1223,7 +1223,7 @@
         </div>
 
         <!-- Expiry Alerts hub -->
-        <div id="hub-expiry" class="hub-section" style="display:none;">
+        <div id="hub-expiry" class="hub-section">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#9201; 30-Day Expiry Tracker</h3>
             <button class="biz-btn biz-btn-primary" onclick="expiryAdd()" style="font-size:11.5px;">+ Add Record</button>
@@ -1232,7 +1232,7 @@
         </div>
 
         <!-- Financials hub -->
-        <div id="hub-financials" class="hub-section" style="display:none;">
+        <div id="hub-financials" class="hub-section">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#128200; Financials Tracker</h3>
           </div>
@@ -2286,42 +2286,59 @@ function _lmsUserExists(u){
 }
 
 function lmsSignin(){
-  var u=(document.getElementById('lms-u').value||'').trim();
-  var p=(document.getElementById('lms-p').value||'').trim();
-  /* remember last username across page loads */
-  try{if(u)localStorage.setItem(LMS_NS+'_last_u',u);}catch(e){}
   var err=document.getElementById('lms-login-err');
-  err.textContent='';
-  if(!u){err.textContent='Please enter your username.';return;}
-  if(!p){err.textContent='Please enter your PIN.';return;}
-  var existing=_lmsLoad(u,p);
-  if(existing){
-    // (No trial expiry — 2-tier system: IR Companion / ECSA Companion)
-    _lmsUser=u; _lmsKey=p; _lmsProgress=existing;
-    if(existing.tier==='pending'||!existing.tier){
-      // Registered but no key yet — go to activation screen
-      _lmsPhone=existing.phone||'';
-      _lmsEmail=existing.email||'';
-      var actEl=document.getElementById('lms-act-phone');
-      if(actEl&&_lmsPhone) actEl.value=_lmsPhone;
-      lmsShowView('lms-activate');
+  if(err) err.textContent='';
+  try{
+    var uRaw=(document.getElementById('lms-u').value||'').trim();
+    var u=uRaw.toLowerCase(); /* normalise casing so ribatt3 == Ribatt3 */
+    var p=(document.getElementById('lms-p').value||'').trim();
+    /* remember last username across page loads */
+    try{if(u)localStorage.setItem(LMS_NS+'_last_u',u);}catch(e){}
+    if(!u){if(err)err.textContent='Please enter your username.';return;}
+    if(!p){if(err)err.textContent='Please enter your PIN.';return;}
+    /* try exact match first, then case-insensitive scan for legacy mixed-case keys */
+    var existing=_lmsLoad(u,p);
+    if(!existing){
+      /* scan for a key with the same email but different case (legacy records) */
+      try{
+        var prefix=LMS_NS;
+        for(var i=0;i<localStorage.length;i++){
+          var k=localStorage.key(i);
+          if(k&&k.toLowerCase()===prefix+u+'_'+p){
+            existing=JSON.parse(localStorage.getItem(k));
+            break;
+          }
+        }
+      }catch(e){}
+    }
+    if(existing){
+      _lmsUser=u; _lmsKey=p; _lmsProgress=existing;
+      if(existing.tier==='pending'||!existing.tier){
+        _lmsPhone=existing.phone||'';
+        _lmsEmail=existing.email||'';
+        var actEl=document.getElementById('lms-act-phone');
+        if(actEl&&_lmsPhone) actEl.value=_lmsPhone;
+        lmsShowView('lms-activate');
+      } else {
+        lmsShowDash();
+      }
+    } else if(_lmsUserExists(u)||_lmsUserExists(uRaw)){
+      if(err)err.textContent='Wrong PIN. Try again or use Forgot PIN to reset.';
     } else {
-      lmsShowDash();
+      /* Auto-bootstrap: admin emails that sign in via the learner form get
+         a tier:'both' record created on first use, then go straight to dash */
+      var _LADM=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
+      if(_LADM.indexOf(u)>=0 && p==='20171125'){
+        var newProg={tier:'both',email:u,phone:'',created:Date.now()};
+        try{localStorage.setItem(LMS_NS+u+'_'+p,JSON.stringify(newProg));}catch(e){}
+        _lmsUser=u; _lmsKey=p; _lmsProgress=newProg;
+        lmsShowDash();
+        return;
+      }
+      if(err)err.textContent='Username not found. Create a new account instead.';
     }
-  } else if(_lmsUserExists(u)){
-    err.textContent='Wrong PIN. Try again or use Forgot PIN to reset.';
-  } else {
-    /* Auto-bootstrap: admin emails that sign in via the learner form get
-       a tier:'both' record created on first use, then go straight to dash */
-    var _LADM=['ribattseke@gmail.com','ribatt3@gmail.com','60523255@mylife.unisa.ac.za'];
-    if(_LADM.indexOf(u.toLowerCase())>=0 && p==='20171125'){
-      var newProg={tier:'both',email:u,phone:'',created:Date.now()};
-      try{localStorage.setItem(LMS_NS+u+'_'+p,JSON.stringify(newProg));}catch(e){}
-      _lmsUser=u; _lmsKey=p; _lmsProgress=newProg;
-      lmsShowDash();
-      return;
-    }
-    err.textContent='Username not found. Create a new account instead.';
+  }catch(ex){
+    if(err)err.textContent='Sign-in error: '+(ex.message||ex);
   }
 }
 
@@ -2854,7 +2871,8 @@ function lmsShowDash(){
     lmsShowPaymentScreen();
     return;
   }
-  document.getElementById('lms-dash-name').textContent='Welcome, '+_lmsUser;
+  var _dn=document.getElementById('lms-dash-name');
+  if(_dn) _dn.textContent='Welcome, '+_lmsUser;
   var tier=(_lmsProgress||{}).tier||'';
   var tierLabels={ir:'IR Companion',ecsa:'ECSA Companion'};
   var tierEl=document.getElementById('lms-tier-badge');
@@ -2888,12 +2906,12 @@ function lmsShowDash(){
   _lmsCompanionType = hasECSAKey && !hasIRKey ? 'ecsa' : 'ir';
   setTimeout(function(){ lmsSetCompanion(_lmsCompanionType); }, 50);
   // Build volume progress overview and render volume blocks
-  _buildTrackDash(prog);
+  try{ _buildTrackDash(prog); }catch(e){}
   lmsShowView('lms-dash');
   // Restore saved level (default 1 for new students)
   var savedLevel=1;
   try{ var sl=localStorage.getItem('lms4_level'); if(sl) savedLevel=parseInt(sl)||1; }catch(e){}
-  lmsSetLevel(savedLevel);
+  try{ lmsSetLevel(savedLevel); }catch(e){}
   setTimeout(function(){if(typeof engageCheckPopups==='function')engageCheckPopups();}, 500);
 }
 
