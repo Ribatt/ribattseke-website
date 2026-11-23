@@ -460,26 +460,31 @@
           <button class="lms-lvl-btn active" id="lvl-btn-1" onclick="lmsSetLevel(1)"
             style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--amb);background:var(--amb);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            eBook 00 — Orientation &amp; Regulatory Framework
+            eBook 1 — Level 1 — Orientation &amp; Regulatory Framework
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-2" onclick="lmsSetLevel(2)"
             style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
-            Level 2 — Electrical Fundamentals
+            eBook 2 — Level 2 — Electrical Fundamentals
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-3" onclick="lmsSetLevel(3)"
             style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
-            Level 3 — Standards &amp; Tracks
+            eBook 3 — Level 3 — P1 Standards &amp; Tracks
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-4" onclick="lmsSetLevel(4)"
             style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+            eBook 4 — Level 4 — P2 Standards &amp; Tracks
+          </button>
+          <button class="lms-lvl-btn" id="lvl-btn-5" onclick="lmsSetLevel(5)"
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-            Level 4 — Mock Exam &amp; Predictor
+            eBook 5 — Level 5 — Mock Exam &amp; Predictor
           </button>
         </div>
 
-        <!-- ══ eBook 00 — ORIENTATION ══ -->
+        <!-- ══ eBook 1 — LEVEL 1 — ORIENTATION ══ -->
         <div id="lms-level1-panel" style="display:block;">
           <!-- What is this exam -->
           <div style="background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.03));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
@@ -729,10 +734,24 @@
           <div id="lms-tracks-container"></div>
         </div>
 
-        <!-- ══ LEVEL 4 — MOCK EXAM & TRIMESTER PREDICTOR ══ -->
+        <!-- ══ eBook 4 — LEVEL 4 — P2 STANDARDS & TRACKS ══ -->
         <div id="lms-level4-panel" style="display:none;">
+          <div style="background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.03));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">eBook 4 · Level 4</div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">P2 Standards &amp; Tracks</div>
+            <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">Level 4 content is currently being prepared. This level covers Paper 2 (Level 4) standards and practice tracks. Check back soon.</p>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;color:var(--fg2);font-size:13px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--amb)" stroke-width="1.5" style="margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <div style="font-weight:700;color:var(--fg);margin-bottom:6px;">Coming Soon</div>
+            <div>eBook 4 — P2 Standards &amp; Tracks is under development. Complete eBook 3 (Level 3) first to build a strong foundation.</div>
+          </div>
+        </div>
+
+        <!-- ══ eBook 5 — LEVEL 5 — MOCK EXAM & TRIMESTER PREDICTOR ══ -->
+        <div id="lms-level5-panel" style="display:none;">
           <div style="background:linear-gradient(135deg,rgba(42,91,168,.08),rgba(42,91,168,.03));border:1px solid rgba(42,91,168,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2a5ba8;margin-bottom:6px;">Level 4</div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2a5ba8;margin-bottom:6px;">eBook 5 · Level 5</div>
             <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">Mock Exam &amp; Trimester Predictor</div>
             <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">Simulate the full DHET examination under timed conditions and get a data-driven prediction of your readiness for the upcoming trimester sitting. Available after completing at least 60% of Level 3 tracks.</p>
           </div>
@@ -2932,17 +2951,17 @@ var _lmsCurrentLevel = 1;
 function lmsSetLevel(n){
   _lmsCurrentLevel = n;
   try{ localStorage.setItem('lms4_level', n); }catch(e){}
-  var panels = {1:'lms-level1-panel',2:'lms-level2-panel',3:'lms-level3-panel',4:'lms-level4-panel'};
+  var panels = {1:'lms-level1-panel',2:'lms-level2-panel',3:'lms-level3-panel',4:'lms-level4-panel',5:'lms-level5-panel'};
   for(var k in panels){
     var el = document.getElementById(panels[k]);
     if(el) el.style.display = (parseInt(k)===n) ? 'block' : 'none';
   }
-  var btns = [1,2,3,4];
+  var btns = [1,2,3,4,5];
   btns.forEach(function(i){
     var btn = document.getElementById('lvl-btn-'+i);
     if(!btn) return;
     if(i===n){
-      var accentCol = (i===4) ? '#2a5ba8' : 'var(--amb)';
+      var accentCol = (i===5) ? '#2a5ba8' : 'var(--amb)';
       btn.style.background = accentCol; btn.style.color = '#fff';
       btn.style.border = '1.5px solid '+accentCol;
     } else {
