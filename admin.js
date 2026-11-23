@@ -78,9 +78,10 @@ function rttRandomChars(n){
   return result;
 }
 
-function rttGenerateKey(firstName, secondName, email, phone, scope){
-  /* scope: 'ir' → 'IR', 'ecsa' → 'EC' */
-  var initials=rttInitials(firstName, secondName);
+function rttGenerateKey(firstName, secondName, email, phone, scope, surname){
+  /* scope: 'ir' → 'IR', 'ecsa' → 'EC'
+   * I1 = first name initial, I2 = surname initial (secondName is middle name, ignored for key) */
+  var initials=rttInitials(firstName, surname||secondName);
   var h1=rttHashChar(email, phone);
   var r1r2=rttRandomChars(2);
   var sfx=(scope==='ecsa')?'EC':'IR';
@@ -5018,9 +5019,12 @@ function admIssueKey(){
     var key;
     if(existing && existing.length===13){
       key=existing;
-      htmlKeys+='<div style="font-size:11px;color:#e67e22;margin-bottom:3px;">⚠ Existing active key ('+sc.toUpperCase()+'):</div>';
+      var ns2=(sc==='ecsa')?ECSA_KEY_NS:IR_KEY_NS;
+      htmlKeys+='<div style="font-size:11px;color:#e67e22;margin-bottom:3px;">⚠ Existing active key ('+sc.toUpperCase()+') — wrong initials? '
+        +'<button onclick="try{localStorage.removeItem(\''+ns2+existing+'\');}catch(e){} this.closest(\'div\').innerHTML=\'<span style=&quot;color:green;font-size:11px;&quot;>Revoked. Re-generate now.</span>\';" '
+        +'style="font-size:10px;padding:2px 7px;background:#c0392b;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-left:4px;">Revoke &amp; re-generate</button></div>';
     } else {
-      key=rttGenerateKey(firstName, secondName, email, phone, sc);
+      key=rttGenerateKey(firstName, secondName, email, phone, sc, surname);
       var ns=(sc==='ecsa')?ECSA_KEY_NS:IR_KEY_NS;
       try{
         var keyRec={who:fullName,phone:phone,email:email,issuedAt:Date.now(),scope:sc};
