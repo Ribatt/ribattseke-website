@@ -457,30 +457,30 @@
 
         <!-- ══ LEVEL NAVIGATOR ══ -->
         <div id="lms-level-nav" style="display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;padding-bottom:2px;">
-          <button class="lms-lvl-btn active" id="lvl-btn-1" onclick="lmsSetLevel(1)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--amb);background:var(--amb);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+          <button class="lms-lvl-btn" id="lvl-btn-1" onclick="lmsSetLevel(1)"
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#1a1a1a;color:#fff;border:1.5px solid #444;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             eBook 1 — Level 1 — Orientation &amp; Regulatory Framework
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-2" onclick="lmsSetLevel(2)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#e8e8e8;color:#111;border:1.5px solid #bbb;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
             eBook 2 — Level 2 — Electrical Fundamentals
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-3" onclick="lmsSetLevel(3)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#c0392b;color:#fff;border:1.5px solid #a93226;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
             eBook 3 — Level 3 — P1 Standards &amp; Tracks
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-4" onclick="lmsSetLevel(4)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#e67e22;color:#fff;border:1.5px solid #ca6f1e;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
             eBook 4 — Level 4 — P2 Standards &amp; Tracks
           </button>
           <button class="lms-lvl-btn" id="lvl-btn-5" onclick="lmsSetLevel(5)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg-alt);color:var(--fg2);font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
+            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#27ae60;color:#fff;border:1.5px solid #1e8449;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-            eBook 5 — Level 5 — Mock Exam &amp; Predictor
+            eBook 5 — Level 5 — Mock Exam &amp; Predictor ✓ Master
           </button>
         </div>
 
@@ -803,8 +803,8 @@
               if(pct>=100){
                 var vl=document.getElementById('eb00-video-lock');
                 var ql=document.getElementById('eb00-quiz-lock');
-                if(vl)vl.hidden=true;
-                if(ql)ql.hidden=true;
+                if(vl)vl.style.display='none';
+                if(ql)ql.style.display='none';
               }
             }
 
@@ -1022,8 +1022,8 @@
               if(pct>=100){
                 var vl=document.getElementById('eb01-video-lock');
                 var ql=document.getElementById('eb01-quiz-lock');
-                if(vl)vl.hidden=true;
-                if(ql)ql.hidden=true;
+                if(vl)vl.style.display='none';
+                if(ql)ql.style.display='none';
               }
             }
 
@@ -3398,16 +3398,41 @@ function lmsSetLevel(n){
     if(el) el.style.display = (parseInt(k)===n) ? 'block' : 'none';
   }
   var btns = [1,2,3,4,5];
+  // Default brand colours per eBook tab
+  var tabBg   = {1:'#1a1a1a', 2:'#e8e8e8', 3:'#c0392b', 4:'#e67e22', 5:'#27ae60'};
+  var tabFg   = {1:'#ffffff', 2:'#111111', 3:'#ffffff', 4:'#ffffff', 5:'#ffffff'};
+  var tabBord = {1:'#444',    2:'#bbb',    3:'#a93226', 4:'#ca6f1e', 5:'#1e8449'};
+  // Pull completion state: eb00=level1 eb01=level2 etc
+  function _ebPct(lvl){
+    try{
+      var ns=(lvl===1)?'lms4_eb00_':(lvl===2)?'lms4_eb01_':(lvl===3)?'lms4_eb02_':(lvl===4)?'lms4_eb03_':'lms4_eb04_';
+      var d=JSON.parse(localStorage.getItem(ns+'done')||'[]');
+      return Math.round(d.length/8*100);
+    }catch(e){return 0;}
+  }
   btns.forEach(function(i){
     var btn = document.getElementById('lvl-btn-'+i);
     if(!btn) return;
+    var pct=_ebPct(i);
+    var isDone=pct>=100;
+    var bg  = isDone ? '#27ae60' : tabBg[i];
+    var fg  = isDone ? '#fff'    : tabFg[i];
+    var brd = isDone ? '#1e8449' : tabBord[i];
     if(i===n){
-      var accentCol = (i===5) ? '#2a5ba8' : 'var(--amb)';
-      btn.style.background = accentCol; btn.style.color = '#fff';
-      btn.style.border = '1.5px solid '+accentCol;
+      // Active: slightly brighter — add white semi-transparent overlay effect via outline
+      btn.style.background = bg;
+      btn.style.color = fg;
+      btn.style.border = '2.5px solid #fff';
+      btn.style.outline = '2px solid '+brd;
+      btn.style.outlineOffset = '-1px';
+      btn.style.boxShadow = '0 0 0 3px '+brd+'55';
     } else {
-      btn.style.background = 'var(--bg-alt)'; btn.style.color = 'var(--fg2)';
-      btn.style.border = '1.5px solid var(--border)';
+      btn.style.background = bg;
+      btn.style.color = fg;
+      btn.style.border = '1.5px solid '+brd;
+      btn.style.outline = '';
+      btn.style.outlineOffset = '';
+      btn.style.boxShadow = '';
     }
   });
   // Show mistake review when entering Level 3
@@ -3460,6 +3485,8 @@ function _lmsShowMistakeReview(){
 
 function lmsShowDash(){
   if(!_lmsUser){lmsShowView('lms-login');return;}
+  // Apply brand tab colours and active ring on each dash show
+  try{ var _sv=parseInt(localStorage.getItem('lms4_level')||'1')||1; lmsSetLevel(_sv); }catch(e){ lmsSetLevel(1); }
   // Show payment prompt once for existing accounts who signed up before the payment screen existed
   var payShown=false;
   try{payShown=!!localStorage.getItem(LMS_NS+'pay_prompted_'+_lmsUser);}catch(e){}
