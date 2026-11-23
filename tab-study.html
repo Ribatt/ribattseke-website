@@ -745,13 +745,9 @@
             </a>
           </div>
 
-          <!-- QUIZ CTA (locked until 100%) -->
+          <!-- QUIZ CTA (always accessible) -->
           <div id="eb00-quiz-cta" style="border:1.5px solid rgba(30,133,64,.25);border-radius:12px;padding:18px 16px;margin-bottom:4px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(30,133,64,.06),rgba(30,133,64,.02));">
-            <div id="eb00-quiz-lock" style="position:absolute;inset:0;background:var(--bg-alt);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;z-index:2;border-radius:11px;">
-              <span style="font-size:26px;">🔒</span>
-              <span style="font-size:12px;font-weight:700;color:var(--fg2);">Complete all 8 segments to unlock</span>
-              <span id="eb00-quiz-lock-pct" style="font-size:10.5px;color:var(--fg3);">0% done</span>
-            </div>
+            <div id="eb00-quiz-progress-hint" style="font-size:11px;color:var(--fg3);margin-bottom:6px;display:none;"><span id="eb00-quiz-lock-pct"></span> — complete remaining segments after the quiz for full mastery</div>
             <div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">Level 1 Checkpoint</div>
             <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:8px;">Orientation Quiz</div>
             <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your understanding of the regulatory framework, DoEL and ECSA registration, DHET exam structure and SANS 10142-1 navigation before moving to Level 2.</p>
@@ -872,9 +868,12 @@
 
             function _unlockCheck(){
               var pct=_pct();
-              if(pct>=100){
-                var vl=document.getElementById('eb00-video-lock');if(vl)vl.style.display='none';
-                var ql=document.getElementById('eb00-quiz-lock');if(ql)ql.style.display='none';
+              var vl=document.getElementById('eb00-video-lock');if(vl)vl.style.display='none';
+              var hint=document.getElementById('eb00-quiz-progress-hint');
+              var pctEl=document.getElementById('eb00-quiz-lock-pct');
+              if(hint){
+                if(pct>=100){hint.style.display='none';}
+                else{hint.style.display='block';if(pctEl)pctEl.textContent=Math.round(pct)+'% done';}
               }
             }
 
@@ -1354,6 +1353,8 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-expiry',this)">&#9201; Expiry Alerts</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-financials',this)">&#128200; Financials</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-certs',this)">&#127891; Certificates</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-tickets',this)">&#127903; Support Tickets</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-testlab',this)">&#128300; Student Lab</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -1812,6 +1813,40 @@
           </div>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 14px;">All Level 1 and Level 2 certificates issued to students.</p>
           <div id="hub-certs-body" style="font-size:13px;color:var(--fg3);">Loading…</div>
+        </div>
+
+        <!-- ===== HUB: SUPPORT TICKETS ===== -->
+        <div id="hub-tickets" class="hub-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <h3 style="font-size:14px;font-weight:700;margin:0;">&#127903; Support Tickets</h3>
+            <button class="lms-btn" style="font-size:12px;padding:6px 14px;background:var(--amb);" onclick="ticketNew()">+ New Ticket</button>
+          </div>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 14px;">Log, track and close support issues for students (e.g. quiz locked, sync problems, key issues).</p>
+          <!-- New ticket form (hidden by default) -->
+          <div id="ticket-form" style="display:none;border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;background:var(--bg-alt);">
+            <div style="font-size:13px;font-weight:700;margin-bottom:12px;">New Ticket</div>
+            <label style="font-size:11.5px;color:var(--fg2);display:block;margin-bottom:4px;">Student Email</label>
+            <input id="tk-email" type="email" placeholder="student@example.com" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);margin-bottom:10px;">
+            <label style="font-size:11.5px;color:var(--fg2);display:block;margin-bottom:4px;">Issue Description</label>
+            <textarea id="tk-issue" rows="3" placeholder="Describe the problem..." style="width:100%;box-sizing:border-box;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);resize:vertical;margin-bottom:10px;"></textarea>
+            <div style="display:flex;gap:8px;">
+              <button class="lms-btn" style="font-size:12px;padding:7px 16px;background:var(--amb);" onclick="ticketSave()">Save Ticket</button>
+              <button class="lms-btn" style="font-size:12px;padding:7px 16px;background:var(--border);color:var(--fg);" onclick="document.getElementById('ticket-form').style.display='none'">Cancel</button>
+            </div>
+          </div>
+          <!-- Ticket list -->
+          <div id="hub-tickets-body"></div>
+        </div>
+
+        <!-- ===== HUB: STUDENT TEST LAB ===== -->
+        <div id="hub-testlab" class="hub-section">
+          <h3 style="font-size:14px;font-weight:700;margin:0 0 6px;">&#128300; Student LMS Test Lab</h3>
+          <p style="font-size:12px;color:var(--fg3);margin:0 0 14px;">Enter a student email to inspect their exact LMS state from localStorage. Use this to verify what the system actually shows for them before saying it is working.</p>
+          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+            <input id="lab-email" type="email" placeholder="student@example.com" style="flex:1;min-width:200px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:var(--amb);" onclick="labInspect()">&#128269; Inspect</button>
+          </div>
+          <div id="lab-result"></div>
         </div>
 
       <!-- PRINT AREA (hidden, shown on print only) -->
@@ -2858,6 +2893,7 @@ if(typeof hubShow==='undefined'){
         else if(id==='hub-orders'&&typeof ordersRender==='function')ordersRender();
         else if(id==='hub-clients'&&typeof clRender==='function')clRender();
         else if(id==='hub-certs')certsRefresh();
+        else if(id==='hub-tickets')ticketsRefresh();
       }catch(err){}
     },30);
   };
@@ -2905,6 +2941,165 @@ function certsRefresh(){
   html+='</tbody></table>';
   html+='<p style="font-size:11px;color:var(--fg3);margin-top:10px;">Showing '+rows.length+' certificate(s) from this device\'s storage. Cross-device sync requires Firebase (coming soon).</p>';
   body.innerHTML=html;
+}
+
+/* ===== SUPPORT TICKETS ===== */
+var TICKET_NS='biz_tickets_';
+function _ticketLoad(){try{var d=localStorage.getItem(TICKET_NS+'list');return d?JSON.parse(d):[];}catch(e){return[];}}
+function _ticketSave(arr){try{localStorage.setItem(TICKET_NS+'list',JSON.stringify(arr));}catch(e){}}
+function ticketsRefresh(){
+  var body=document.getElementById('hub-tickets-body');
+  if(!body)return;
+  var tickets=_ticketLoad();
+  if(tickets.length===0){body.innerHTML='<p style="font-size:13px;color:var(--fg3);">No tickets yet. Click &ldquo;New Ticket&rdquo; to log a support issue.</p>';return;}
+  var sorted=tickets.slice().sort(function(a,b){return b.created-a.created;});
+  var statusColors={open:'#c8360c',in_progress:'#b07c00',closed:'#1e8540'};
+  var statusLabels={open:'Open',in_progress:'In Progress',closed:'Closed'};
+  var html='';
+  sorted.forEach(function(t,i){
+    var sCol=statusColors[t.status]||'var(--fg3)';
+    var sLbl=statusLabels[t.status]||t.status;
+    var dateStr=new Date(t.created).toLocaleString('en-ZA',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    html+='<div style="border:1.5px solid var(--border);border-radius:11px;padding:14px 15px;margin-bottom:10px;background:var(--bg-alt);">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:8px;">'
+      +'<div style="display:flex;align-items:center;gap:8px;">'
+      +'<span style="font-size:11px;font-weight:800;color:var(--fg3);">#'+t.id+'</span>'
+      +'<span style="font-size:12.5px;font-weight:700;color:var(--fg);">'+_esc(t.email)+'</span>'
+      +'</div>'
+      +'<span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:'+sCol+'22;color:'+sCol+';">'+sLbl+'</span>'
+      +'</div>'
+      +'<p style="font-size:12.5px;color:var(--fg2);margin:0 0 8px;">'+_esc(t.issue)+'</p>'
+      +(t.resolution?'<p style="font-size:12px;color:var(--fg3);margin:0 0 8px;border-left:3px solid var(--amb);padding-left:8px;"><strong>Resolution:</strong> '+_esc(t.resolution)+'</p>':'')
+      +'<div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">Opened: '+dateStr+'</div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap;">';
+    if(t.status!=='closed'){
+      html+='<button onclick="ticketAddResolution(\''+t.id+'\')" style="font-size:11px;padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);cursor:pointer;">Add Resolution</button>';
+      if(t.status==='open')html+='<button onclick="ticketSetStatus(\''+t.id+'\',\'in_progress\')" style="font-size:11px;padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);cursor:pointer;">Mark In Progress</button>';
+      html+='<button onclick="ticketSetStatus(\''+t.id+'\',\'closed\')" style="font-size:11px;padding:4px 11px;border:1px solid #1e8540;border-radius:7px;background:rgba(30,133,64,.1);color:#1e8540;cursor:pointer;">Close Ticket</button>';
+    }else{
+      html+='<button onclick="ticketSetStatus(\''+t.id+'\',\'open\')" style="font-size:11px;padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg3);cursor:pointer;">Reopen</button>';
+    }
+    html+='</div></div>';
+  });
+  body.innerHTML=html;
+}
+function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function ticketNew(){
+  var f=document.getElementById('ticket-form');
+  if(f){f.style.display=f.style.display==='none'?'block':'none';document.getElementById('tk-email').value='';document.getElementById('tk-issue').value='';}
+}
+function ticketSave(){
+  var email=(document.getElementById('tk-email').value||'').trim().toLowerCase();
+  var issue=(document.getElementById('tk-issue').value||'').trim();
+  if(!email||!issue){alert('Please fill in both email and issue.');return;}
+  var tickets=_ticketLoad();
+  var id=Date.now().toString(36).toUpperCase();
+  tickets.push({id:id,email:email,issue:issue,resolution:'',status:'open',created:Date.now(),updated:Date.now()});
+  _ticketSave(tickets);
+  document.getElementById('ticket-form').style.display='none';
+  ticketsRefresh();
+}
+function ticketSetStatus(id,status){
+  var tickets=_ticketLoad();
+  var t=tickets.find(function(x){return x.id===id;});
+  if(t){t.status=status;t.updated=Date.now();_ticketSave(tickets);}
+  ticketsRefresh();
+}
+function ticketAddResolution(id){
+  var res=window.prompt('Enter resolution notes for ticket #'+id+':');
+  if(res===null)return;
+  var tickets=_ticketLoad();
+  var t=tickets.find(function(x){return x.id===id;});
+  if(t){t.resolution=res;t.updated=Date.now();_ticketSave(tickets);}
+  ticketsRefresh();
+}
+
+/* ===== STUDENT TEST LAB ===== */
+function labInspect(){
+  var emailRaw=(document.getElementById('lab-email').value||'').trim();
+  var email=emailRaw.toLowerCase();
+  if(!email){alert('Enter a student email.');return;}
+  var result=document.getElementById('lab-result');
+  var ns='lms4_';
+  var prefix=ns+email+'_';
+  var keys=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))keys.push(k);}}catch(e){}
+  if(keys.length===0){
+    result.innerHTML='<div style="border:1.5px solid var(--border);border-radius:11px;padding:14px;background:var(--bg-alt);">'
+      +'<p style="font-size:13px;color:var(--fg3);margin:0;">&#128683; No LMS data found for <strong>'+_esc(email)+'</strong> on this device.</p>'
+      +'<p style="font-size:12px;color:var(--fg3);margin:8px 0 0;">This could mean: (1) student hasn\'t logged in here, (2) they use a different device, or (3) localStorage was cleared.</p>'
+      +'<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">'
+      +'<button onclick="labAdminUnlock(\''+_esc(email)+'\')" style="font-size:12px;padding:6px 14px;border:1.5px solid var(--amb);border-radius:8px;background:rgba(30,133,64,.1);color:var(--amb);cursor:pointer;">&#128275; Admin Unlock Level 1 Quiz</button>'
+      +'</div></div>';
+    return;
+  }
+  /* Build state table */
+  var segKeys={},quizKeys={},otherKeys={};
+  keys.forEach(function(k){
+    var inner=k.slice(prefix.length);
+    if(inner.startsWith('eb00_done')||inner.startsWith('eb01_done'))segKeys[inner]=localStorage.getItem(k);
+    else if(inner.indexOf('quiz')>=0)quizKeys[inner]=localStorage.getItem(k);
+    else otherKeys[inner]=localStorage.getItem(k);
+  });
+  var html='<div style="border:1.5px solid var(--amb);border-radius:12px;padding:16px;background:var(--bg-alt);">'
+    +'<div style="font-size:13px;font-weight:700;margin-bottom:12px;">&#128300; LMS State — '+_esc(email)+'</div>';
+  /* Segment progress */
+  html+='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin-bottom:6px;">Segment Completion</div>';
+  ['eb00','eb01'].forEach(function(paper){
+    var doneKey=paper+'_done';
+    if(segKeys[doneKey]!==undefined){
+      var done=[];try{done=JSON.parse(segKeys[doneKey])||[];}catch(e){}
+      html+='<div style="margin-bottom:4px;font-size:12.5px;">'+paper+': <strong>'+done.length+'/8 segments</strong> done — ['+done.join(', ')+']</div>';
+    }else{
+      html+='<div style="margin-bottom:4px;font-size:12.5px;color:var(--fg3);">'+paper+': no progress recorded</div>';
+    }
+  });
+  /* Quiz passes */
+  html+='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin:10px 0 6px;">Quiz Status</div>';
+  ['eb00_quiz_passed','eb01_quiz_passed'].forEach(function(qk){
+    var val=quizKeys[qk];
+    if(val!==undefined){
+      html+='<div style="margin-bottom:4px;font-size:12.5px;">'+qk+': <strong style="color:var(--amb);">PASSED</strong> <span style="color:var(--fg3);">'+_esc(val)+'</span></div>';
+    }else{
+      html+='<div style="margin-bottom:4px;font-size:12.5px;color:var(--fg3);">'+qk+': <span style="color:#c8360c;">not passed on this device</span></div>';
+    }
+  });
+  /* Other keys */
+  if(Object.keys(otherKeys).length>0){
+    html+='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin:10px 0 6px;">Other Keys</div>';
+    Object.keys(otherKeys).forEach(function(k){
+      html+='<div style="margin-bottom:3px;font-size:12px;color:var(--fg3);">'+_esc(k)+': '+_esc(otherKeys[k])+'</div>';
+    });
+  }
+  html+='<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">'
+    +'<button onclick="labAdminUnlock(\''+_esc(email)+'\')" style="font-size:12px;padding:6px 14px;border:1.5px solid var(--amb);border-radius:8px;background:rgba(30,133,64,.1);color:var(--amb);cursor:pointer;">&#128275; Admin Unlock Level 1 Quiz</button>'
+    +'<button onclick="labAdminPassLevel1(\''+_esc(email)+'\')" style="font-size:12px;padding:6px 14px;border:1.5px solid #2a5ba8;border-radius:8px;background:rgba(42,91,168,.1);color:#2a5ba8;cursor:pointer;">&#127891; Mark Level 1 Quiz Passed</button>'
+    +'<button onclick="labClearStudent(\''+_esc(email)+'\')" style="font-size:12px;padding:6px 14px;border:1.5px solid #c8360c;border-radius:8px;background:rgba(200,54,12,.1);color:#c8360c;cursor:pointer;">&#128465; Clear All Data</button>'
+    +'</div></div>';
+  result.innerHTML=html;
+}
+function labAdminUnlock(email){
+  /* Sets all 8 segments as done so progress = 100% → quiz unlocks */
+  var key='lms4_'+email+'_eb00_done';
+  try{localStorage.setItem(key,JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){alert('localStorage write failed: '+e.message);return;}
+  alert('Level 1 segments marked complete for '+email+'. Quiz is now unlocked on this device.');
+  labInspect();
+}
+function labAdminPassLevel1(email){
+  var key='lms4_'+email+'_eb00_quiz_passed';
+  var ts=new Date().toISOString();
+  try{localStorage.setItem(key,JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){alert('localStorage write failed: '+e.message);return;}
+  alert('Level 1 quiz marked as PASSED for '+email+' (admin override). Certificate and Level 2 access are now unlocked on this device.');
+  labInspect();
+}
+function labClearStudent(email){
+  if(!confirm('Delete ALL LMS data for '+email+' on this device? This cannot be undone.'))return;
+  var prefix='lms4_'+email+'_';
+  var toRemove=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))toRemove.push(k);}}catch(e){}
+  toRemove.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+  alert('Cleared '+toRemove.length+' key(s) for '+email+'.');
+  document.getElementById('lab-result').innerHTML='';
 }
 
 function lmsShowView(id){
