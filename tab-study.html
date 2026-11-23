@@ -1261,7 +1261,7 @@
           <!-- Issue / Upgrade Key — RTT-13 format -->
           <div class="admin-tier-block" style="border-top:2px solid var(--amb);padding-top:16px;margin-top:8px;">
             <div class="admin-tier-title">Issue New RTT Key</div>
-            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Generates <strong>RTT-{I1}{I2}-{H}{YY}-IR/EC</strong> — always exactly 13 characters. YY = issue year (e.g. 26). Duplicate keys for the same email+phone+scope are blocked.</p>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Generates <strong>RTT-{I1}{I2}-{P}{YY}-IR/EC</strong> — always exactly 13 characters. P = last digit of phone, YY = issue year (e.g. 726 → phone ends in 7, issued 2026). Duplicate keys for the same email+phone+scope are blocked.</p>
             <div style="display:grid;gap:8px;max-width:420px;">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                 <div>
@@ -1281,8 +1281,8 @@
               <input id="adm-new-key-email" type="email" class="biz-input" placeholder="e.g. student@gmail.com" style="font-size:13px;">
               <label style="font-size:12px;font-weight:600;">Key type</label>
               <select id="adm-new-key-tier" class="biz-input" style="font-size:13px;">
-                <option value="ir">IR Companion (Installation Rules) — RTT-{I1}{I2}-{H}{YY}-IR</option>
-                <option value="ecsa">ECSA Companion (Pr. Technician) — RTT-{I1}{I2}-{H}{YY}-EC</option>
+                <option value="ir">IR Companion (Installation Rules) — RTT-{I1}{I2}-{P}{YY}-IR</option>
+                <option value="ecsa">ECSA Companion (Pr. Technician) — RTT-{I1}{I2}-{P}{YY}-EC</option>
                 <option value="both">Both Companions (IR + ECSA) — two keys</option>
               </select>
               <button class="lms-btn" style="font-size:13px;" onclick="admIssueKey()">&#9889; Generate RTT Key</button>
