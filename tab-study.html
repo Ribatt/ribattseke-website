@@ -3752,6 +3752,17 @@ function _buildTrackDash(prog){
       }
     });
   });
+
+  // Also count eBook 00 segment completion (8 segments, weight-based progress)
+  var eb00Segs=8, eb00Done=0;
+  try{
+    var eb00Key=LMS_NS+(_lmsUser||'').toLowerCase()+'_eb00_done';
+    var eb00Raw=localStorage.getItem(eb00Key);
+    if(eb00Raw){var eb00Arr=JSON.parse(eb00Raw);eb00Done=Array.isArray(eb00Arr)?eb00Arr.length:0;}
+  }catch(e){}
+  totalAll+=eb00Segs;
+  doneAll+=eb00Done;
+
   var ovPct=totalAll?Math.round((doneAll/totalAll)*100):0;
   document.getElementById('lms-ov-done').textContent=doneAll;
   document.getElementById('lms-ov-total').textContent=totalAll;
@@ -3759,7 +3770,10 @@ function _buildTrackDash(prog){
   document.getElementById('lms-ov-best').textContent=bestAll?bestAll+'%':'—';
   document.getElementById('lms-ov-bar').style.width=ovPct+'%';
   var activeTracks=LMS_TRACKS.filter(function(t){return !t.placeholder;}).length;
-  document.getElementById('lms-dash-sub').textContent=doneAll+' of '+totalAll+' topics passed across '+activeTracks+' tracks.';
+  var quizDone=doneAll-eb00Done, quizTotal=totalAll-eb00Segs;
+  document.getElementById('lms-dash-sub').textContent=
+    'eBook 00: '+eb00Done+'/'+eb00Segs+' segments'+(eb00Done===eb00Segs?' ✓':'')+
+    ' · Quiz: '+quizDone+' of '+quizTotal+' topics passed across '+activeTracks+' tracks.';
 
   // Render track blocks into container, grouped by exam paper
   var container=document.getElementById('lms-tracks-container');
