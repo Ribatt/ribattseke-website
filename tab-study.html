@@ -1506,41 +1506,58 @@
 
         <!-- HUB NAV -->
         <div class="hub-nav">
-          <button class="hub-nav-btn active" onclick="hubShow('hub-lms',this)">LMS Keys</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-clients',this)">Clients</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-quotes',this)">Quotes</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-loi',this)">LOI / NTP</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-agr',this)">&#128203; Agreements</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-invoices',this)">Invoices</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-jobs',this)">Job Cards</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-coc',this)">CoC Register</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-poe',this)">Portfolio</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-projects',this)">Projects</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-hs',this)">H&amp;S</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-tests',this)">Test Records</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-hr',this)">HR / Payroll</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-sops',this)">SOPs</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">CPD &amp; Memberships</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-mentor',this)">&#128172; Mentoring</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-rates',this)">&#128204; Rate Card</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-po',this)">Purchase Orders</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-pr',this)">Purchase Requests</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-travel',this)">&#9992; Travel Mgmt</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-stock',this)">Stock</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-delivery',this)">Delivery Notes</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-handover',this)">Handovers</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-warranty',this)">Warranties</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">Reg &amp; Compliance</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
+          <!-- PIPELINE -->
+          <span class="hub-nav-grp">&#128200; PIPELINE</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-leads',this)">&#128270; Leads</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-clients',this)">&#128101; Clients</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-quotes',this)">&#128196; Quotes</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-loi',this)">&#128203; LOI / NTP</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-agr',this)">&#9997;&#65039; Agreements</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-orders',this)">&#128722; Sales</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-kyc',this)">&#128273; KYC &amp; Compliance</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-expiry',this)">&#9201; Expiry Alerts</button>
+          <!-- DELIVERY -->
+          <span class="hub-nav-grp">&#128736;&#65039; DELIVERY</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-jobs',this)">&#128197; Job Cards</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-projects',this)">&#128295; Projects</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-hs',this)">&#9889; H&amp;S</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-tests',this)">&#128202; Test Records</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-coc',this)">&#128196; CoC Register</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-handover',this)">&#128221; Handovers</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-warranty',this)">&#9989; Warranties</button>
+          <!-- FINANCE -->
+          <span class="hub-nav-grp">&#128181; FINANCE</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-invoices',this)">&#128176; Invoices</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-po',this)">&#128230; Purchase Orders</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-pr',this)">&#128232; Purchase Requests</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-rates',this)">&#128204; Rate Card</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-financials',this)">&#128200; Financials</button>
+          <!-- COMPLIANCE & KYC -->
+          <span class="hub-nav-grp">&#9878;&#65039; COMPLIANCE</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-kyc',this)">&#128273; KYC</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">&#128209; Reg &amp; Docs</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-expiry',this)">&#9201; Expiry Alerts</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-certs',this)">&#127891; Certificates</button>
+          <!-- LOGISTICS -->
+          <span class="hub-nav-grp">&#128667; LOGISTICS</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-stock',this)">&#128230; Stock</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-delivery',this)">&#128666; Delivery Notes</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-travel',this)">&#9992;&#65039; Travel &amp; Accom</button>
+          <!-- PEOPLE -->
+          <span class="hub-nav-grp">&#128100; PEOPLE</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-hr',this)">&#128188; HR / Payroll</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-mentor',this)">&#128172; Mentoring</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-tickets',this)">&#127903; Support Tickets</button>
+          <!-- TRAINING & LMS -->
+          <span class="hub-nav-grp">&#127891; TRAINING</span>
+          <button class="hub-nav-btn active" onclick="hubShow('hub-lms',this)">LMS Keys</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-testlab',this)">&#128300; Student Lab</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-poe',this)">&#128218; Portfolio</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-sops',this)">&#128209; SOPs</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">&#127941; CPD &amp; Memberships</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-qbank',this);qbankInit()">&#128218; Question Bank</button>
+          <!-- DESIGN & IT -->
+          <span class="hub-nav-grp">&#128296; DESIGN &amp; IT</span>
+          <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -1560,11 +1577,118 @@
         </div>
         <!-- Travel Management hub section -->
         <div id="hub-travel" class="hub-section">
-          <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Travel Management</h3>
-          <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Log travel expenses, claims and site visit records.</p>
-          <div id="hub-travel-list" style="font-size:13px;color:var(--fg3);">No travel records yet.</div>
-          <button class="lms-btn" style="margin-top:14px;font-size:13px;" onclick="travelAdd()">+ Log Travel</button>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span style="font-size:22px;">&#9992;&#65039;</span>
+            <div>
+              <h3 style="font-size:15px;font-weight:800;margin:0;">Travel &amp; Accommodation</h3>
+              <p style="font-size:11.5px;color:var(--fg3);margin:0;">Log site visits, travel claims, accommodation bookings and per-diem records. Full audit trail per project.</p>
+            </div>
+          </div>
+
+          <!-- Sub-tabs -->
+          <div style="display:flex;gap:6px;margin:14px 0 10px;border-bottom:1px solid var(--border);padding-bottom:10px;flex-wrap:wrap;">
+            <button class="lms-btn" id="tvl-tab-travel" style="font-size:11.5px;padding:5px 14px;background:var(--amb);" onclick="tvlSubTab('travel',this)">&#128666; Travel Logs</button>
+            <button class="lms-btn" id="tvl-tab-accom" style="font-size:11.5px;padding:5px 14px;background:var(--surface);color:var(--fg2);border:1px solid var(--border);" onclick="tvlSubTab('accom',this)">&#127968; Accommodation</button>
+            <button class="lms-btn" id="tvl-tab-perdiem" style="font-size:11.5px;padding:5px 14px;background:var(--surface);color:var(--fg2);border:1px solid var(--border);" onclick="tvlSubTab('perdiem',this)">&#128181; Per Diem</button>
+          </div>
+
+          <!-- Travel Logs -->
+          <div id="tvl-pane-travel">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <input id="tvl-t-date" type="date" style="flex:1;min-width:130px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-t-from" type="text" placeholder="From (city / site)" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-t-to" type="text" placeholder="To (city / site)" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-t-km" type="number" placeholder="km" style="width:80px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <select id="tvl-t-purpose" style="flex:1;min-width:130px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+                <option value="">Purpose…</option>
+                <option>Site Visit</option>
+                <option>Client Meeting</option>
+                <option>Training</option>
+                <option>Inspection</option>
+                <option>Commissioning</option>
+                <option>Other</option>
+              </select>
+              <input id="tvl-t-project" type="text" placeholder="Project ref" style="flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            </div>
+            <button class="lms-btn" style="font-size:12px;padding:8px 18px;background:var(--amb);" onclick="tvlAddTravel()">&#43; Log Trip</button>
+            <div id="tvl-t-out" style="font-size:12px;color:var(--fg3);margin-top:8px;"></div>
+            <div id="tvl-t-list" style="margin-top:14px;font-size:12.5px;"></div>
+          </div>
+
+          <!-- Accommodation -->
+          <div id="tvl-pane-accom" style="display:none;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <input id="tvl-a-checkin" type="date" placeholder="Check-in" style="flex:1;min-width:130px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-a-checkout" type="date" placeholder="Check-out" style="flex:1;min-width:130px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-a-venue" type="text" placeholder="Hotel / guest house name" style="flex:2;min-width:180px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-a-city" type="text" placeholder="City" style="flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-a-rate" type="number" placeholder="Rate per night (R)" style="flex:1;min-width:130px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-a-ref" type="text" placeholder="Booking ref / project" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <select id="tvl-a-status" style="flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+                <option value="booked">Booked</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <button class="lms-btn" style="font-size:12px;padding:8px 18px;background:#2a5ba8;" onclick="tvlAddAccom()">&#43; Add Booking</button>
+            <div id="tvl-a-out" style="font-size:12px;color:var(--fg3);margin-top:8px;"></div>
+            <div id="tvl-a-list" style="margin-top:14px;font-size:12.5px;"></div>
+          </div>
+
+          <!-- Per Diem -->
+          <div id="tvl-pane-perdiem" style="display:none;">
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Per diem is calculated at R450/day (standard) or project-specific rate. Log days away from home base.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <input id="tvl-p-date" type="date" style="flex:1;min-width:130px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-p-days" type="number" min="1" placeholder="Days" style="width:80px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-p-rate" type="number" placeholder="Rate/day (R)" value="450" style="width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <input id="tvl-p-project" type="text" placeholder="Project / client" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            </div>
+            <button class="lms-btn" style="font-size:12px;padding:8px 18px;background:#27ae60;" onclick="tvlAddPerDiem()">&#43; Log Per Diem</button>
+            <div id="tvl-p-out" style="font-size:12px;color:var(--fg3);margin-top:8px;"></div>
+            <div id="tvl-p-list" style="margin-top:14px;font-size:12.5px;"></div>
+          </div>
         </div>
+        <!-- LEADS hub section -->
+        <div id="hub-leads" class="hub-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span style="font-size:22px;">&#128270;</span>
+            <div>
+              <h3 style="font-size:15px;font-weight:800;margin:0;">Leads Pipeline</h3>
+              <p style="font-size:11.5px;color:var(--fg3);margin:0;">Track all incoming enquiries from first contact to converted client.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px;">
+            <input id="lead-name" type="text" placeholder="Contact name" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            <input id="lead-company" type="text" placeholder="Company / site" style="flex:1;min-width:140px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            <input id="lead-phone" type="tel" placeholder="Phone" style="flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            <select id="lead-source" style="flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <option value="">Source…</option>
+              <option>WhatsApp</option>
+              <option>Referral</option>
+              <option>Website</option>
+              <option>Social Media</option>
+              <option>Cold Call</option>
+              <option>Event</option>
+              <option>Email</option>
+            </select>
+            <select id="lead-status" style="flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+              <option value="quoted">Quoted</option>
+              <option value="won">Won</option>
+              <option value="lost">Lost</option>
+            </select>
+          </div>
+          <textarea id="lead-notes" rows="2" placeholder="Notes / next action…" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;resize:vertical;margin-bottom:10px;"></textarea>
+          <button class="lms-btn" style="font-size:12px;padding:8px 18px;background:var(--amb);" onclick="leadAdd()">&#43; Add Lead</button>
+          <div id="hub-leads-out" style="font-size:12px;color:var(--fg3);margin-top:10px;"></div>
+          <div id="hub-leads-list" style="margin-top:14px;"></div>
+        </div>
+        <!-- END LEADS -->
+
         <!-- LMS Keys hub section -->
         <div id="hub-lms" class="hub-section active">
           <div class="admin-stats">
@@ -3188,9 +3312,15 @@ function lmsCheckKey(key, phoneForVerify){
   }
 
   /* Converts a Firestore question_bank doc to the LMS pool item format:
-     { q, opts:[a,b,c,d], ans } → { question, options, answer } */
+     Firestore: { q, opts:[a,b,c,d], ans:0-3, seg }
+     Engine expects: { q, a, b, c, d, ans:'a'|'b'|'c'|'d', ref } */
   function _fbDocToPool(d){
-    return { question: d.q||'', options: d.opts||[], answer: typeof d.ans==='number'?d.ans:0 };
+    var opts=d.opts||['','','',''];
+    var ansIdx=typeof d.ans==='number'?d.ans:0;
+    var keys=['a','b','c','d'];
+    var out={ q:d.q||'', ref:d.seg||'', ans:keys[ansIdx]||'a' };
+    keys.forEach(function(k,i){ out[k]=opts[i]||''; });
+    return out;
   }
 
   /* Merge Firestore questions for `paper` into the given local pool array.
@@ -5775,11 +5905,16 @@ function lmsRenderQ(){
   document.getElementById('lms-q-text').textContent=q.q;
   var opts=document.getElementById('lms-opts');
   opts.innerHTML='';
-  ['a','b','c','d'].forEach(function(key){
+  /* Shuffle display order of options A-D so answers rotate each render */
+  var keys=['a','b','c','d'];
+  for(var si=keys.length-1;si>0;si--){var sj=Math.floor(Math.random()*(si+1));var st=keys[si];keys[si]=keys[sj];keys[sj]=st;}
+  var dispLabels=['A','B','C','D'];
+  keys.forEach(function(key,dispIdx){
     var btn=document.createElement('button');
     btn.className='lms-opt';
-    btn.innerHTML='<span class="lms-opt-key">'+key.toUpperCase()+'</span><span class="lms-opt-txt">'+esc(q[key])+'</span>';
-    btn.onclick=function(){if(!_lmsAnswered)lmsAnswer(key,btn);};
+    btn.dataset.origKey=key;
+    btn.innerHTML='<span class="lms-opt-key">'+dispLabels[dispIdx]+'</span><span class="lms-opt-txt">'+esc(q[key])+'</span>';
+    btn.onclick=(function(k,b){return function(){if(!_lmsAnswered)lmsAnswer(k,b);};})(key,btn);
     opts.appendChild(btn);
   });
   document.getElementById('lms-feedback').hidden=true;
@@ -5795,17 +5930,19 @@ function lmsAnswer(key,btn){
   var correct=q.ans.toLowerCase();
   var opts=document.querySelectorAll('.lms-opt');
   opts.forEach(function(o){o.disabled=true;});
-  if(key===correct){
+  var isCorrect=(key===correct);
+  if(isCorrect){
     btn.classList.add('correct');
     _lmsCorrect++;
     _lmsDotResults[_lmsIdx]='correct';
-    document.getElementById('lms-feedback').innerHTML='<span class="fb-correct">✓ Correct.</span> '+esc(q[correct])+'<br><span class="fb-ref">Ref: '+esc(q.ref)+'</span>';
+    document.getElementById('lms-feedback').innerHTML='<span class="fb-correct">✓ Correct!</span> '+esc(q[correct])+(q.ref?'<br><span class="fb-ref">Ref: '+esc(q.ref)+'</span>':'');
   } else {
     btn.classList.add('wrong');
-    opts[['a','b','c','d'].indexOf(correct)].classList.add('correct');
+    /* Highlight the correct answer button (find by data-origKey) */
+    opts.forEach(function(o){ if(o.dataset.origKey===correct) o.classList.add('correct'); });
     _lmsDotResults[_lmsIdx]='wrong';
-    document.getElementById('lms-feedback').innerHTML='<span class="fb-wrong">✗ Incorrect.</span> The correct answer is <strong>'+correct.toUpperCase()+': '+esc(q[correct])+'</strong><br><span class="fb-ref">Ref: '+esc(q.ref)+'</span>';
-    // Track mistake for next-session review
+    document.getElementById('lms-feedback').innerHTML='<span class="fb-wrong">✗ Incorrect.</span> The correct answer is <strong>'+esc(q[correct])+'</strong>'+(q.ref?'<br><span class="fb-ref">Ref: '+esc(q.ref)+'</span>':'');
+    /* Track mistake for next-session review */
     try{
       var mk=localStorage.getItem('lms4_mistakes_'+(_lmsUser||''));
       var ma=mk?JSON.parse(mk):[];
@@ -5817,8 +5954,15 @@ function lmsAnswer(key,btn){
   _lmsRenderDots();
   document.getElementById('lms-feedback').hidden=false;
   var nav=document.getElementById('lms-quiz-nav');
-  nav.hidden=false;
-  document.getElementById('lms-next-btn').textContent=(_lmsIdx===_lmsPool.length-1)?'See Results':'Next';
+  var isLast=(_lmsIdx===_lmsPool.length-1);
+  if(isCorrect&&!isLast){
+    /* Auto-advance after 1.3 s on correct answer — nav stays hidden */
+    nav.hidden=true;
+    setTimeout(function(){ if(_lmsAnswered) lmsNext(); }, 1300);
+  } else {
+    nav.hidden=false;
+    document.getElementById('lms-next-btn').textContent=isLast?'See Results':'Next →';
+  }
 }
 
 function lmsNext(){

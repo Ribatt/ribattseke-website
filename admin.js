@@ -5063,7 +5063,8 @@ function hubRenderers(){
       else if(id==='hub-enquiries')enquiriesRender();
       else if(id==='hub-po')poRender();
       else if(id==='hub-pr')prRender();
-      else if(id==='hub-travel')travelRender();
+      else if(id==='hub-travel'){ if(typeof travelInit==='function')travelInit(); else if(typeof travelRender==='function')travelRender(); }
+      else if(id==='hub-leads'){ if(typeof leadsInit==='function')leadsInit(); }
       else if(id==='hub-stock')stockRender();
       else if(id==='hub-delivery')deliveryRender();
       else if(id==='hub-handover')handoverRender();
@@ -5072,6 +5073,7 @@ function hubRenderers(){
       else if(id==='hub-kyc')kycRender();
       else if(id==='hub-expiry')expiryRender();
       else if(id==='hub-financials')finRender();
+      else if(id==='hub-qbank'){ if(typeof qbankInit==='function')qbankInit(); }
     },50);
   };
 })();
@@ -6254,3 +6256,223 @@ function finRender(){
 
 })();
 /* ===== END QUESTION BANK ===== */
+
+/* ===== LEADS — Admin CRM ===== */
+(function(){
+  var LS_KEY='biz_leads';
+
+  function _leadsLoad(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch(e){ return []; }
+  }
+  function _leadsSave(arr){
+    try{ localStorage.setItem(LS_KEY,JSON.stringify(arr)); }catch(e){}
+  }
+  function _g(id){ return document.getElementById(id); }
+
+  window.leadAdd=function(){
+    var name=(_g('lead-name')||{}).value||'';
+    var company=(_g('lead-company')||{}).value||'';
+    var phone=(_g('lead-phone')||{}).value||'';
+    var source=(_g('lead-source')||{}).value||'';
+    var status=(_g('lead-status')||{}).value||'new';
+    var notes=(_g('lead-notes')||{}).value||'';
+    if(!name.trim()){ _g('hub-leads-out').textContent='Please enter a contact name.'; return; }
+    var arr=_leadsLoad();
+    arr.unshift({ id:Date.now(), name:name.trim(), company:company.trim(), phone:phone.trim(), source:source, status:status, notes:notes.trim(), created:new Date().toISOString() });
+    _leadsSave(arr);
+    ['lead-name','lead-company','lead-phone','lead-notes'].forEach(function(id){ var el=_g(id); if(el) el.value=''; });
+    _g('hub-leads-out').textContent='';
+    leadRender();
+  };
+
+  window.leadUpdateStatus=function(id,status){
+    var arr=_leadsLoad();
+    var lead=arr.find(function(l){ return l.id===id; });
+    if(lead){ lead.status=status; _leadsSave(arr); leadRender(); }
+  };
+
+  window.leadDelete=function(id){
+    if(!confirm('Remove this lead?')) return;
+    _leadsSave(_leadsLoad().filter(function(l){ return l.id!==id; }));
+    leadRender();
+  };
+
+  window.leadRender=function(){
+    var list=_g('hub-leads-list'); if(!list) return;
+    var arr=_leadsLoad();
+    if(!arr.length){ list.innerHTML='<p style="font-size:12px;color:var(--fg3);">No leads yet. Add your first lead above.</p>'; return; }
+    var STATUS_COLORS={ new:'#2a7be4', contacted:'#f39c12', qualified:'#8e44ad', quoted:'#e67e22', won:'#27ae60', lost:'#e74c3c' };
+    var rows=arr.map(function(l){
+      var col=STATUS_COLORS[l.status]||'#666';
+      return '<div style="border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:8px;background:var(--surface);">'+
+        '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">'+
+        '<strong style="font-size:13px;">'+l.name+'</strong>'+
+        (l.company?'<span style="font-size:11px;color:var(--fg3);">'+l.company+'</span>':'')+
+        '<span style="font-size:11px;font-weight:700;color:#fff;background:'+col+';padding:2px 9px;border-radius:20px;">'+l.status+'</span>'+
+        '</div>'+
+        (l.phone?'<div style="font-size:11.5px;color:var(--fg2);margin-bottom:4px;">&#128222; '+l.phone+' &nbsp;&#8226;&nbsp; Source: '+l.source+'</div>':'')+
+        (l.notes?'<div style="font-size:11.5px;color:var(--fg3);margin-bottom:6px;">'+l.notes+'</div>':'')+
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">'+
+        '<select onchange="leadUpdateStatus('+l.id+',this.value)" style="font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--fg);">'+
+        ['new','contacted','qualified','quoted','won','lost'].map(function(s){ return '<option value="'+s+'"'+(l.status===s?' selected':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</option>'; }).join('')+
+        '</select>'+
+        '<button onclick="leadDelete('+l.id+')" style="font-size:11px;padding:4px 10px;border:1px solid #e74c3c;border-radius:6px;color:#e74c3c;background:transparent;cursor:pointer;">Remove</button>'+
+        '<span style="font-size:10.5px;color:var(--fg3);margin-left:auto;">'+new Date(l.created).toLocaleDateString()+'</span>'+
+        '</div>'+
+        '</div>';
+    });
+    list.innerHTML=rows.join('');
+  };
+
+  /* Auto-render when section becomes visible */
+  window.leadsInit=function(){ leadRender(); };
+})();
+/* ===== END LEADS ===== */
+
+/* ===== TRAVEL & ACCOMMODATION ===== */
+(function(){
+  var LS_TRAVEL='biz_travel_trips';
+  var LS_ACCOM='biz_travel_accom';
+  var LS_PERDIEM='biz_travel_perdiem';
+
+  function _load(key){ try{ return JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){ return []; } }
+  function _save(key,arr){ try{ localStorage.setItem(key,JSON.stringify(arr)); }catch(e){} }
+  function _g(id){ return document.getElementById(id); }
+
+  /* Sub-tab switcher */
+  window.tvlSubTab=function(tab,btn){
+    ['travel','accom','perdiem'].forEach(function(t){
+      var p=_g('tvl-pane-'+t); if(p) p.style.display='none';
+      var b=_g('tvl-tab-'+t);
+      if(b){ b.style.background='var(--surface)'; b.style.color='var(--fg2)'; b.style.border='1px solid var(--border)'; }
+    });
+    var pane=_g('tvl-pane-'+tab); if(pane) pane.style.display='block';
+    if(btn){ btn.style.background='var(--amb)'; btn.style.color='#fff'; btn.style.border='none'; }
+    if(tab==='travel') tvlRenderTravel();
+    if(tab==='accom') tvlRenderAccom();
+    if(tab==='perdiem') tvlRenderPerDiem();
+  };
+
+  /* Travel Logs */
+  window.tvlAddTravel=function(){
+    var date=(_g('tvl-t-date')||{}).value||'';
+    var from=(_g('tvl-t-from')||{}).value||'';
+    var to=(_g('tvl-t-to')||{}).value||'';
+    var km=parseFloat((_g('tvl-t-km')||{}).value)||0;
+    var purpose=(_g('tvl-t-purpose')||{}).value||'';
+    var project=(_g('tvl-t-project')||{}).value||'';
+    if(!date||!from.trim()||!to.trim()){ _g('tvl-t-out').textContent='Please fill in date, from, and to.'; return; }
+    var arr=_load(LS_TRAVEL);
+    arr.unshift({ id:Date.now(), date:date, from:from.trim(), to:to.trim(), km:km, purpose:purpose, project:project.trim(), created:new Date().toISOString() });
+    _save(LS_TRAVEL,arr);
+    ['tvl-t-from','tvl-t-to','tvl-t-km','tvl-t-project'].forEach(function(id){ var el=_g(id); if(el) el.value=''; });
+    _g('tvl-t-out').textContent='Trip logged!';
+    setTimeout(function(){ var el=_g('tvl-t-out'); if(el) el.textContent=''; },2000);
+    tvlRenderTravel();
+  };
+
+  window.tvlRenderTravel=function(){
+    var list=_g('tvl-t-list'); if(!list) return;
+    var arr=_load(LS_TRAVEL);
+    if(!arr.length){ list.innerHTML='<p style="font-size:12px;color:var(--fg3);">No trips logged yet.</p>'; return; }
+    var totalKm=arr.reduce(function(s,r){ return s+(r.km||0); },0);
+    var rows=arr.map(function(r){
+      return '<div style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:7px;background:var(--surface);flex-wrap:wrap;">'+
+        '<span style="font-size:22px;">&#128666;</span>'+
+        '<div style="flex:1;min-width:0;">'+
+        '<div style="font-size:12.5px;font-weight:700;margin-bottom:2px;">'+r.from+' → '+r.to+'</div>'+
+        '<div style="font-size:11.5px;color:var(--fg2);">'+r.date+(r.km?' &nbsp;&#8226;&nbsp; '+r.km+' km':'')+' &nbsp;&#8226;&nbsp; '+r.purpose+(r.project?' &nbsp;&#8226;&nbsp; '+r.project:'')+'</div>'+
+        '</div>'+
+        '<button onclick="tvlDeleteTrip('+r.id+')" style="font-size:11px;padding:3px 9px;border:1px solid #e74c3c;border-radius:6px;color:#e74c3c;background:transparent;cursor:pointer;">Remove</button>'+
+        '</div>';
+    }).join('');
+    list.innerHTML='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin-bottom:8px;">Total: '+arr.length+' trip(s) &nbsp;&#8226;&nbsp; '+totalKm.toFixed(0)+' km</div>'+rows;
+  };
+
+  window.tvlDeleteTrip=function(id){ _save(LS_TRAVEL,_load(LS_TRAVEL).filter(function(r){ return r.id!==id; })); tvlRenderTravel(); };
+
+  /* Accommodation */
+  window.tvlAddAccom=function(){
+    var ci=(_g('tvl-a-checkin')||{}).value||'';
+    var co=(_g('tvl-a-checkout')||{}).value||'';
+    var venue=(_g('tvl-a-venue')||{}).value||'';
+    var city=(_g('tvl-a-city')||{}).value||'';
+    var rate=parseFloat((_g('tvl-a-rate')||{}).value)||0;
+    var ref=(_g('tvl-a-ref')||{}).value||'';
+    var status=(_g('tvl-a-status')||{}).value||'booked';
+    if(!ci||!co||!venue.trim()){ _g('tvl-a-out').textContent='Please fill in check-in, check-out and venue.'; return; }
+    var nights=Math.round((new Date(co)-new Date(ci))/(86400000))||1;
+    var arr=_load(LS_ACCOM);
+    arr.unshift({ id:Date.now(), checkin:ci, checkout:co, nights:nights, venue:venue.trim(), city:city.trim(), rate:rate, total:nights*rate, ref:ref.trim(), status:status, created:new Date().toISOString() });
+    _save(LS_ACCOM,arr);
+    ['tvl-a-venue','tvl-a-city','tvl-a-rate','tvl-a-ref'].forEach(function(id){ var el=_g(id); if(el) el.value=''; });
+    _g('tvl-a-out').textContent='Booking saved! '+nights+' night(s), R'+(nights*rate).toFixed(2);
+    setTimeout(function(){ var el=_g('tvl-a-out'); if(el) el.textContent=''; },3000);
+    tvlRenderAccom();
+  };
+
+  window.tvlRenderAccom=function(){
+    var list=_g('tvl-a-list'); if(!list) return;
+    var arr=_load(LS_ACCOM);
+    if(!arr.length){ list.innerHTML='<p style="font-size:12px;color:var(--fg3);">No accommodation bookings yet.</p>'; return; }
+    var STATUS_COL={ booked:'#2a7be4', confirmed:'#8e44ad', completed:'#27ae60', cancelled:'#e74c3c' };
+    var rows=arr.map(function(r){
+      var col=STATUS_COL[r.status]||'#666';
+      return '<div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:7px;background:var(--surface);">'+
+        '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">'+
+        '<span style="font-size:16px;">&#127968;</span>'+
+        '<strong style="font-size:13px;">'+r.venue+'</strong>'+
+        (r.city?'<span style="font-size:11.5px;color:var(--fg3);">'+r.city+'</span>':'')+
+        '<span style="font-size:11px;font-weight:700;color:#fff;background:'+col+';padding:2px 9px;border-radius:20px;">'+r.status+'</span>'+
+        '</div>'+
+        '<div style="font-size:11.5px;color:var(--fg2);">'+r.checkin+' → '+r.checkout+' ('+r.nights+' night'+(r.nights!==1?'s':'')+')'+(r.rate?' &nbsp;&#8226;&nbsp; R'+r.rate+'/night &nbsp;&#8226;&nbsp; Total: R'+r.total.toFixed(2):'')+(r.ref?' &nbsp;&#8226;&nbsp; Ref: '+r.ref:'')+'</div>'+
+        '<div style="margin-top:7px;"><button onclick="tvlDeleteAccom('+r.id+')" style="font-size:11px;padding:3px 9px;border:1px solid #e74c3c;border-radius:6px;color:#e74c3c;background:transparent;cursor:pointer;">Remove</button></div>'+
+        '</div>';
+    }).join('');
+    var total=arr.reduce(function(s,r){ return s+(r.total||0); },0);
+    list.innerHTML='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin-bottom:8px;">'+arr.length+' booking(s) &nbsp;&#8226;&nbsp; Total spend: R'+total.toFixed(2)+'</div>'+rows;
+  };
+
+  window.tvlDeleteAccom=function(id){ _save(LS_ACCOM,_load(LS_ACCOM).filter(function(r){ return r.id!==id; })); tvlRenderAccom(); };
+
+  /* Per Diem */
+  window.tvlAddPerDiem=function(){
+    var date=(_g('tvl-p-date')||{}).value||'';
+    var days=parseInt((_g('tvl-p-days')||{}).value)||1;
+    var rate=parseFloat((_g('tvl-p-rate')||{}).value)||450;
+    var project=(_g('tvl-p-project')||{}).value||'';
+    if(!date||days<1){ _g('tvl-p-out').textContent='Please fill in date and days.'; return; }
+    var arr=_load(LS_PERDIEM);
+    arr.unshift({ id:Date.now(), date:date, days:days, rate:rate, total:days*rate, project:project.trim(), created:new Date().toISOString() });
+    _save(LS_PERDIEM,arr);
+    ['tvl-p-days','tvl-p-project'].forEach(function(id){ var el=_g(id); if(el) el.value=''; });
+    _g('tvl-p-out').textContent='Per diem logged: R'+(days*rate).toFixed(2);
+    setTimeout(function(){ var el=_g('tvl-p-out'); if(el) el.textContent=''; },2500);
+    tvlRenderPerDiem();
+  };
+
+  window.tvlRenderPerDiem=function(){
+    var list=_g('tvl-p-list'); if(!list) return;
+    var arr=_load(LS_PERDIEM);
+    if(!arr.length){ list.innerHTML='<p style="font-size:12px;color:var(--fg3);">No per diem records yet.</p>'; return; }
+    var rows=arr.map(function(r){
+      return '<div style="display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:7px;background:var(--surface);flex-wrap:wrap;">'+
+        '<span style="font-size:16px;">&#128181;</span>'+
+        '<div style="flex:1;min-width:0;">'+
+        '<div style="font-size:12.5px;font-weight:700;">'+r.date+' &nbsp;&#8226;&nbsp; '+r.days+' day'+(r.days!==1?'s':'')+' @ R'+r.rate+'/day</div>'+
+        '<div style="font-size:11.5px;color:var(--fg2);">R'+r.total.toFixed(2)+(r.project?' &nbsp;&#8226;&nbsp; '+r.project:'')+'</div>'+
+        '</div>'+
+        '<button onclick="tvlDeletePD('+r.id+')" style="font-size:11px;padding:3px 9px;border:1px solid #e74c3c;border-radius:6px;color:#e74c3c;background:transparent;cursor:pointer;">Remove</button>'+
+        '</div>';
+    }).join('');
+    var total=arr.reduce(function(s,r){ return s+(r.total||0); },0);
+    list.innerHTML='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin-bottom:8px;">Total per diem: R'+total.toFixed(2)+'</div>'+rows;
+  };
+
+  window.tvlDeletePD=function(id){ _save(LS_PERDIEM,_load(LS_PERDIEM).filter(function(r){ return r.id!==id; })); tvlRenderPerDiem(); };
+
+  /* Init — called when section opens */
+  window.travelInit=function(){ tvlSubTab('travel',_g('tvl-tab-travel')); };
+
+})();
+/* ===== END TRAVEL & ACCOMMODATION ===== */
