@@ -486,136 +486,173 @@
 
         <!-- ══ eBook 1 — LEVEL 1 — ORIENTATION ══ -->
         <div id="lms-level1-panel" style="display:block;">
-          <!-- What is this exam -->
-          <div style="background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.03));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">What you are preparing for</div>
-            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">DHET Installation Rules Examination</div>
-            <div style="display:inline-block;background:rgba(30,133,64,.12);border-radius:5px;padding:2px 8px;font-size:10.5px;font-weight:700;color:var(--amb);letter-spacing:.05em;margin-bottom:7px;">Programme No. 51108848</div>
-            <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">The Installation Rules examination is administered by the Department of Higher Education and Training (DHET) under the Technical and Vocational Education and Training (TVET) system. It qualifies you as a competent person in terms of SANS 10142-1 (Wiring of Premises). Two 3-hour national papers are written, each carrying 100 marks and 10 questions. Pass mark: 50%. A score of 75% or more on a single paper earns permanent exemption from that paper; the second paper must be passed within 12 months. No condonation applies.</p>
-          </div>
 
-          <!-- Paper 1 syllabus -->
-          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
-            <div style="background:var(--amb);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;">
-              <div>
-                <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">T880 · Paper 1 · Code 11040412</span>
-                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Legislation, Regulations &amp; Theory</div>
-              </div>
-              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">10 questions · 100 marks</span>
+          <!-- WELCOME BANNER (JS-rendered) -->
+          <div id="eb00-welcome-banner"></div>
+
+          <!-- PROGRESS CARD -->
+          <div style="background:linear-gradient(135deg,#1E8540,#155f2e);border-radius:12px;padding:14px 16px;margin-bottom:14px;color:#fff;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.8;">eBook 00 · Level 1 — Reading Progress</span>
+              <span id="eb00-pct-label" style="font-size:13.5px;font-weight:800;">0% Complete</span>
             </div>
-            <div style="padding:14px 16px;background:var(--bg);">
-              <div style="display:grid;grid-template-columns:28px 1fr;gap:6px 10px;font-size:12px;color:var(--fg2);line-height:1.5;">
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q1</span><span>OHS Act 85 of 1993 — Sections 1, 8, 9, 10, 22 (definitions, employer/employee duties, HSRs, incident notification)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q2</span><span>Electrical Installation Regulations (EIR) — Regulations 1 to 14 (competent persons, CoC obligations, testing)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q3</span><span>Electrical Machinery Regulations (EMR) — Regulations 1, 3, 5, 6, 11 (scope, general safety, maintenance)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q4</span><span>Construction Regulations — Regulation 22 (temporary electrical installations on construction sites)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q5</span><span>SANS 10142-1:2008 — Sections 1, 2, 3 (scope, normative references, definitions)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q6</span><span>SANS 10142-1:2008 — Sections 4, 5 (general requirements, circuit design)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q7</span><span>SANS 10142-1:2008 — Section 7 + Annexures D, F, G (installation methods; discharge lamps; suspended ceilings; inspection &amp; testing)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q8</span><span>SANS 10142-1:2008 — Annexures J, M, P, Q (ELV systems; medical locations; Form of Approval; installation test report)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q9</span><span>SANS 10198-1:2004 and SANS 10198-2:2004 — overhead power lines (no calculations required on SANS 10198-2)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;">Q10</span><span>SANS 10292:2001 — earthing of LV distribution systems; installation testing; switchgear assemblies</span>
-              </div>
-              <div style="margin-top:9px;padding:7px 10px;background:rgba(30,133,64,.06);border-radius:7px;font-size:11px;color:var(--fg3);line-height:1.5;">
-                ⚠ Indicative Q-by-Q allocation only — exact question topics vary per sitting. DHET Examination Instruction 08 of 2009 defines syllabus scope per paper, not per question. SANS 10313 is NOT a Paper 1 syllabus item.
-              </div>
+            <div style="background:rgba(255,255,255,.22);border-radius:5px;height:10px;overflow:hidden;margin-bottom:8px;">
+              <div id="eb00-progress-bar" style="height:100%;background:#fff;border-radius:5px;width:0%;transition:width .5s ease;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;opacity:.85;flex-wrap:wrap;gap:4px;">
+              <span id="eb00-seg-label">0 of 8 segments completed</span>
+              <span id="eb00-step-hint">Start with Segment 1 →</span>
             </div>
           </div>
 
-          <!-- Paper 2 syllabus -->
-          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
-            <div style="background:#2a5ba8;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;">
-              <div>
-                <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">T890 · Paper 2 · Code 11040432</span>
-                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Sections 6 &amp; 8 — Earthing, Conductors &amp; Special Locations</div>
-              </div>
-              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">10 questions · 100 marks</span>
-            </div>
-            <div style="padding:14px 16px;background:var(--bg);">
-              <div style="display:grid;grid-template-columns:28px 1fr;gap:6px 10px;font-size:12px;color:var(--fg2);line-height:1.5;">
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q1</span><span>SANS 10142-1:2008 Section 6 — earthing systems: general requirements, earth electrodes, earth electrode resistance</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q2</span><span>SANS 10142-1:2008 Section 6 — protective bonding, earth fault loop impedance, fault protection, residual current devices</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q3</span><span>SANS 10142-1:2008 Section 8 — conductor selection, current-carrying capacity, correction factors, voltage drop</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q4</span><span>SANS 10142-1:2008 Section 8 — wiring systems, cables, flexible cords, installation methods</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q5</span><span>SANS 10142-1:2008 Annexure B — [verify content against SANS 10142-1:2008]</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q6</span><span>SANS 10142-1:2008 Annexure C — [verify content against SANS 10142-1:2008]</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q7</span><span>SANS 10142-1:2008 Annexure E — [verify content against SANS 10142-1:2008]</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q8</span><span>SANS 10142-1:2008 Annexures K, L — [verify content against SANS 10142-1:2008]</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q9</span><span>SANS 10142-1:2008 Annexures N, O — [verify content against SANS 10142-1:2008]</span>
-                <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q10</span><span>SANS 1973-3:2008 — surge protective devices (SPDs) for LV electrical installations</span>
-              </div>
-              <div style="margin-top:9px;padding:7px 10px;background:rgba(42,91,168,.06);border-radius:7px;font-size:11px;color:var(--fg3);line-height:1.5;">
-                ⚠ Q5–Q9 annexure content descriptions require manual verification against SANS 10142-1:2008. Indicative Q-by-Q allocation only — exact question topics vary per sitting.
-              </div>
-            </div>
-          </div>
+          <!-- SEGMENT LIST (8 cards, JS-rendered) -->
+          <div id="eb00-segment-list" style="margin-bottom:14px;"></div>
 
-          <!-- MIE Pathway note -->
-          <div style="border-left:3px solid var(--amb);border-radius:0 10px 10px 0;background:rgba(201,123,42,.06);padding:11px 14px;margin-bottom:14px;">
-            <div style="font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--amb);margin-bottom:5px;">What comes after Installation Rules?</div>
-            <p style="font-size:12.5px;color:var(--fg);line-height:1.65;margin:0 0 7px;">Once you hold both Paper 1 (11040412) and Paper 2 (11040432) passes for the Installation Rules programme, you qualify to register as an <strong>Installation Electrician (IE)</strong> with the Department of Employment and Labour (DoEL) under the OHS Act.</p>
-            <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">The <strong>Specialised Electrical Installation Codes</strong> (Programme No. 51108849) are the next examination series. Passing those two papers allows registration as a <strong>Master Installation Electrician (MIE)</strong>, which authorises work in hazardous and classified locations. The Specialised Codes are covered in a separate study companion and are not in scope here.</p>
-          </div>
-
-          <!-- History & Benefits row -->
-          <div style="margin-bottom:14px;">
-            <div style="border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--bg-alt);margin-bottom:12px;">
-              <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:9px;">SANS 10142-1 — History &amp; Edition Progression</div>
-              <div style="display:grid;grid-template-columns:52px 1fr;gap:4px 10px;font-size:11.5px;line-height:1.5;">
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1922</span><span style="color:var(--fg2);">Factory Act — first statutory electrical safety provisions for premises installations in South Africa</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1940</span><span style="color:var(--fg2);">SAIEE Red Code — first South African Electrical Wiring Code, published by the South African Institute of Electrical Engineers (SAIEE)</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1952</span><span style="color:var(--fg2);">SAIEE Blue Code — revised wiring code</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1978</span><span style="color:var(--fg2);">SAIEE Green Code — major revision, widely adopted across industry</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2001</span><span style="color:var(--fg2);">SABS 0142:2001 "Grey Code" — last edition under SABS 0142 numbering system</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2003</span><span style="color:var(--fg2);"><strong>SANS 10142-1 Ed 1.1</strong> — "Black Folder"; first edition under SANS numbering; legislative force via OHS Act 85 of 1993 and Electrical Installation Regulations</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2012</span><span style="color:var(--fg2);">SANS 10142-1 Ed 1.8 — final amendment of the Edition 1.x series (Editions 1.1 through 1.8)</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2017</span><span style="color:var(--fg2);"><strong>SANS 10142-1 Ed 2</strong> — comprehensive revision; improved circuit design, earthing &amp; certificate of compliance provisions</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2020</span><span style="color:var(--fg2);"><strong>SANS 10142-1 Ed 3</strong> — ~20 Working Group meetings, ~3½ years in development; expanded scope including small-scale embedded generation (SSEG)</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2021</span><span style="color:var(--fg2);">Ed 3.1 (Amendment 1) — first amendment to Edition 3</span>
-                <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2024</span><span style="color:var(--fg2);">Ed 3.2 (Amendment 2) — Part 1-1 (medical locations) and Part 1-2 (SSEG connected in parallel to LV distribution systems) formally subdivided</span>
-                <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2026</span><span style="color:var(--fg2);"><strong>Ed 3.3 (Amendment 3, June 2026)</strong> — supersedes Ed 3.2; new generating-plant (GP / PV-battery) annex and installation test report added; 12-month parallel transition window for existing test-report forms</span>
-              </div>
-              <div style="margin-top:9px;padding:7px 10px;background:rgba(30,133,64,.06);border-radius:7px;font-size:11px;color:var(--fg3);line-height:1.5;">
-                Sources: SAIEE Archives; SANS 10142-1:2026 Ed 3.3; SABS publication records. Note: the DHET examination currently references SANS 10142-1:2008 — exam papers test that edition, not Edition 3.
-              </div>
-            </div>
-            <div style="border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--bg-alt);">
-              <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">Why it matters</div>
-              <div style="font-size:12px;color:var(--fg2);line-height:1.6;">
-                <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Legal authorisation to wire premises and issue CoCs</span></div>
-                <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Prerequisite for EWSETA / QCTO trade test pathway</span></div>
-                <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Gateway to higher earning &amp; self-employment</span></div>
-                <div style="display:flex;gap:7px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Foundation for ECA(SA) Professional Registration (Pr. Tech Eng)</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- eBook 00 — embedded reader -->
-          <div style="border:1.5px solid rgba(30,133,64,.4);border-radius:12px;overflow:hidden;margin-bottom:14px;background:rgba(30,133,64,.03);">
+          <!-- PDF READER (shown when a segment is opened) -->
+          <div id="eb00-reader-wrap" style="display:none;border:1.5px solid rgba(30,133,64,.4);border-radius:12px;overflow:hidden;margin-bottom:14px;background:rgba(30,133,64,.03);">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(135deg,#1E8540,#155f2e);">
               <div>
-                <div style="font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:1px;">📖 eBook 00 · FREE</div>
+                <div id="eb00-reader-seg-label" style="font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:1px;"></div>
                 <div style="font-size:13px;font-weight:700;color:#fff;">Orientation &amp; Regulatory Framework</div>
               </div>
-              <a href="https://drive.google.com/file/d/10j1G3KFRWLjrU5RKwyW0h-oIo2hf929g/view" target="_blank" rel="noopener" title="Open full screen" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);color:#fff;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:6px;text-decoration:none;white-space:nowrap;">
+              <a href="https://drive.google.com/file/d/10j1G3KFRWLjrU5RKwyW0h-oIo2hf929g/view" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);color:#fff;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:6px;text-decoration:none;white-space:nowrap;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
                 Full screen
               </a>
             </div>
-            <iframe
-              src="https://drive.google.com/file/d/10j1G3KFRWLjrU5RKwyW0h-oIo2hf929g/preview"
-              style="width:100%;height:520px;border:none;display:block;"
-              allow="autoplay"
-              loading="lazy"
-              title="eBook 00 — Orientation &amp; Regulatory Framework">
-            </iframe>
-            <div style="padding:9px 14px;background:rgba(30,133,64,.06);font-size:11px;color:var(--fg3);line-height:1.5;">
+            <div id="eb00-pages-banner" style="padding:7px 14px;background:rgba(30,133,64,.1);font-size:11.5px;font-weight:700;color:#1E8540;border-bottom:1px solid rgba(30,133,64,.15);"></div>
+            <iframe src="https://drive.google.com/file/d/10j1G3KFRWLjrU5RKwyW0h-oIo2hf929g/preview" style="width:100%;height:520px;border:none;display:block;" allow="autoplay" loading="lazy" title="eBook 00 — Orientation &amp; Regulatory Framework"></iframe>
+            <div style="padding:12px 14px;background:var(--bg-alt);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+              <span id="eb00-reader-hint" style="font-size:11.5px;color:var(--fg2);flex:1;min-width:0;">Read the pages above, then mark this segment complete.</span>
+              <button id="eb00-mark-btn" onclick="eb00MarkActive()" style="flex-shrink:0;background:var(--amb);color:#fff;border:none;padding:9px 18px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;transition:background .15s;">Mark segment complete ✓</button>
+            </div>
+            <div style="padding:8px 14px;background:rgba(30,133,64,.06);font-size:10.5px;color:var(--fg3);line-height:1.5;">
               Read-only · Installation Rules Study Companion · DHET Programme No.&nbsp;51108848 · Edition&nbsp;1 · Nov&nbsp;2025
             </div>
           </div>
 
-          <!-- Recorded video slot -->
-          <div style="border:1.5px dashed rgba(30,133,64,.25);border-radius:12px;padding:14px 16px;margin-bottom:4px;background:var(--bg-alt);">
+          <!-- QUICK REFERENCE (collapsible) -->
+          <details style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
+            <summary style="padding:12px 15px;background:var(--bg-alt);cursor:pointer;font-size:12px;font-weight:700;color:var(--fg2);list-style:none;display:flex;align-items:center;justify-content:space-between;-webkit-user-select:none;user-select:none;">
+              <span>📋 Quick Reference — Exam Syllabus, Pathways &amp; SANS History</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div style="padding:14px 15px;background:var(--bg);display:flex;flex-direction:column;gap:14px;">
+
+              <!-- What is this exam -->
+              <div style="background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.03));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:16px 18px;">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">What you are preparing for</div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">DHET Installation Rules Examination</div>
+                <div style="display:inline-block;background:rgba(30,133,64,.12);border-radius:5px;padding:2px 8px;font-size:10.5px;font-weight:700;color:var(--amb);letter-spacing:.05em;margin-bottom:7px;">Programme No. 51108848</div>
+                <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">The Installation Rules examination is administered by the Department of Higher Education and Training (DHET) under the Technical and Vocational Education and Training (TVET) system. It qualifies you as a competent person in terms of SANS 10142-1 (Wiring of Premises). Two 3-hour national papers are written, each carrying 100 marks and 10 questions. Pass mark: 50%. A score of 75% or more on a single paper earns permanent exemption from that paper; the second paper must be passed within 12 months. No condonation applies.</p>
+              </div>
+
+              <!-- Paper 1 syllabus -->
+              <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+                <div style="background:var(--amb);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+                  <div>
+                    <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">T880 · Paper 1 · Code 11040412</span>
+                    <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Legislation, Regulations &amp; Theory</div>
+                  </div>
+                  <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">10 questions · 100 marks</span>
+                </div>
+                <div style="padding:14px 16px;background:var(--bg);">
+                  <div style="display:grid;grid-template-columns:28px 1fr;gap:6px 10px;font-size:12px;color:var(--fg2);line-height:1.5;">
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q1</span><span>OHS Act 85 of 1993 — Sections 1, 8, 9, 10, 22 (definitions, employer/employee duties, HSRs, incident notification)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q2</span><span>Electrical Installation Regulations (EIR) — Regulations 1 to 14 (competent persons, CoC obligations, testing)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q3</span><span>Electrical Machinery Regulations (EMR) — Regulations 1, 3, 5, 6, 11 (scope, general safety, maintenance)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q4</span><span>Construction Regulations — Regulation 22 (temporary electrical installations on construction sites)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q5</span><span>SANS 10142-1:2008 — Sections 1, 2, 3 (scope, normative references, definitions)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q6</span><span>SANS 10142-1:2008 — Sections 4, 5 (general requirements, circuit design)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q7</span><span>SANS 10142-1:2008 — Section 7 + Annexures D, F, G (installation methods; discharge lamps; suspended ceilings; inspection &amp; testing)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q8</span><span>SANS 10142-1:2008 — Annexures J, M, P, Q (ELV systems; medical locations; Form of Approval; installation test report)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q9</span><span>SANS 10198-1:2004 and SANS 10198-2:2004 — overhead power lines (no calculations required on SANS 10198-2)</span>
+                    <span style="font-weight:800;color:var(--amb);text-align:right;">Q10</span><span>SANS 10292:2001 — earthing of LV distribution systems; installation testing; switchgear assemblies</span>
+                  </div>
+                  <div style="margin-top:9px;padding:7px 10px;background:rgba(30,133,64,.06);border-radius:7px;font-size:11px;color:var(--fg3);line-height:1.5;">
+                    ⚠ Indicative Q-by-Q allocation only. DHET Examination Instruction 08 of 2009 defines syllabus scope per paper, not per question. SANS 10313 is NOT a Paper 1 syllabus item.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Paper 2 syllabus -->
+              <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+                <div style="background:#2a5ba8;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+                  <div>
+                    <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">T890 · Paper 2 · Code 11040432</span>
+                    <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Sections 6 &amp; 8 — Earthing, Conductors &amp; Special Locations</div>
+                  </div>
+                  <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">10 questions · 100 marks</span>
+                </div>
+                <div style="padding:14px 16px;background:var(--bg);">
+                  <div style="display:grid;grid-template-columns:28px 1fr;gap:6px 10px;font-size:12px;color:var(--fg2);line-height:1.5;">
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q1</span><span>SANS 10142-1:2008 Section 6 — earthing systems: general requirements, earth electrodes, earth electrode resistance</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q2</span><span>SANS 10142-1:2008 Section 6 — protective bonding, earth fault loop impedance, fault protection, residual current devices</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q3</span><span>SANS 10142-1:2008 Section 8 — conductor selection, current-carrying capacity, correction factors, voltage drop</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q4</span><span>SANS 10142-1:2008 Section 8 — wiring systems, cables, flexible cords, installation methods</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q5</span><span>SANS 10142-1:2008 Annexure B — [verify content against SANS 10142-1:2008]</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q6</span><span>SANS 10142-1:2008 Annexure C — [verify content against SANS 10142-1:2008]</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q7</span><span>SANS 10142-1:2008 Annexure E — [verify content against SANS 10142-1:2008]</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q8</span><span>SANS 10142-1:2008 Annexures K, L — [verify content against SANS 10142-1:2008]</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q9</span><span>SANS 10142-1:2008 Annexures N, O — [verify content against SANS 10142-1:2008]</span>
+                    <span style="font-weight:800;color:#2a5ba8;text-align:right;">Q10</span><span>SANS 1973-3:2008 — surge protective devices (SPDs) for LV electrical installations</span>
+                  </div>
+                  <div style="margin-top:9px;padding:7px 10px;background:rgba(42,91,168,.06);border-radius:7px;font-size:11px;color:var(--fg3);line-height:1.5;">
+                    ⚠ Q5–Q9 annexure content descriptions require manual verification against SANS 10142-1:2008. Indicative Q-by-Q allocation only.
+                  </div>
+                </div>
+              </div>
+
+              <!-- MIE Pathway note -->
+              <div style="border-left:3px solid var(--amb);border-radius:0 10px 10px 0;background:rgba(201,123,42,.06);padding:11px 14px;">
+                <div style="font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--amb);margin-bottom:5px;">What comes after Installation Rules?</div>
+                <p style="font-size:12.5px;color:var(--fg);line-height:1.65;margin:0 0 7px;">Once you hold both Paper 1 (11040412) and Paper 2 (11040432) passes, you qualify to register as an <strong>Installation Electrician (IE)</strong> with the Department of Employment and Labour (DoEL) under the OHS Act.</p>
+                <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">The <strong>Specialised Electrical Installation Codes</strong> (Programme No. 51108849) are the next examination series. Passing those two papers allows registration as a <strong>Master Installation Electrician (MIE)</strong>, which authorises work in hazardous and classified locations.</p>
+              </div>
+
+              <!-- SANS history -->
+              <div style="border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--bg-alt);">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:9px;">SANS 10142-1 — History &amp; Edition Progression</div>
+                <div style="display:grid;grid-template-columns:52px 1fr;gap:4px 10px;font-size:11.5px;line-height:1.5;">
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1922</span><span style="color:var(--fg2);">Factory Act — first statutory electrical safety provisions for premises installations in South Africa</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1940</span><span style="color:var(--fg2);">SAIEE Red Code — first South African Electrical Wiring Code, published by SAIEE</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1952</span><span style="color:var(--fg2);">SAIEE Blue Code — revised wiring code</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">1978</span><span style="color:var(--fg2);">SAIEE Green Code — major revision, widely adopted across industry</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2001</span><span style="color:var(--fg2);">SABS 0142:2001 "Grey Code" — last edition under SABS 0142 numbering</span>
+                  <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2003</span><span style="color:var(--fg2);"><strong>SANS 10142-1 Ed 1.1</strong> — "Black Folder"; first under SANS numbering; legislative force via OHS Act and EIR</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2012</span><span style="color:var(--fg2);">SANS 10142-1 Ed 1.8 — final amendment of the Edition 1.x series</span>
+                  <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2017</span><span style="color:var(--fg2);"><strong>SANS 10142-1 Ed 2</strong> — comprehensive revision; improved circuit design, earthing &amp; CoC provisions</span>
+                  <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2020</span><span style="color:var(--fg2);"><strong>SANS 10142-1 Ed 3</strong> — ~20 Working Group meetings; expanded scope including SSEG</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2021</span><span style="color:var(--fg2);">Ed 3.1 (Amendment 1)</span>
+                  <span style="font-weight:800;color:var(--fg3);text-align:right;padding-top:1px;">2024</span><span style="color:var(--fg2);">Ed 3.2 (Amendment 2) — Part 1-1 (medical) and Part 1-2 (SSEG parallel) subdivided</span>
+                  <span style="font-weight:800;color:var(--amb);text-align:right;padding-top:1px;">2026</span><span style="color:var(--fg2);"><strong>Ed 3.3 (Amendment 3, June 2026)</strong> — new GP/PV-battery annex and test report; 12-month parallel transition window</span>
+                </div>
+                <div style="margin-top:9px;padding:7px 10px;background:rgba(30,133,64,.06);border-radius:7px;font-size:11px;color:var(--fg3);line-height:1.5;">
+                  Note: the DHET examination currently references SANS 10142-1:2008. Exam papers test that edition, not Edition 3.
+                </div>
+              </div>
+
+              <!-- Why it matters -->
+              <div style="border:1px solid var(--border);border-radius:12px;padding:14px 15px;background:var(--bg-alt);">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">Why it matters</div>
+                <div style="font-size:12px;color:var(--fg2);line-height:1.6;">
+                  <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Legal authorisation to wire premises and issue CoCs</span></div>
+                  <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Prerequisite for EWSETA / QCTO trade test pathway</span></div>
+                  <div style="display:flex;gap:7px;margin-bottom:5px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Gateway to higher earning &amp; self-employment</span></div>
+                  <div style="display:flex;gap:7px;"><span style="color:var(--amb);font-weight:800;">✓</span><span>Foundation for ECA(SA) Professional Registration (Pr. Tech Eng)</span></div>
+                </div>
+              </div>
+
+            </div>
+          </details>
+
+          <!-- VIDEO SECTION (locked until 100%) -->
+          <div id="eb00-video-section" style="border:1.5px dashed rgba(30,133,64,.25);border-radius:12px;padding:14px 16px;margin-bottom:14px;background:var(--bg-alt);position:relative;overflow:hidden;">
+            <div id="eb00-video-lock" style="position:absolute;inset:0;background:var(--bg-alt);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;z-index:2;border-radius:11px;">
+              <span style="font-size:26px;">🔒</span>
+              <span style="font-size:12px;font-weight:700;color:var(--fg2);">Complete all 8 segments to unlock</span>
+              <span id="eb00-video-lock-pct" style="font-size:10.5px;color:var(--fg3);">0% done</span>
+            </div>
             <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:7px;">🎬 eBook 00 — Videos &amp; Sessions</div>
             <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">All eBook 00 orientation videos and sessions are freely available on YouTube. No account or key required.</p>
             <a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#ff0000;color:#fff;text-decoration:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;">
@@ -623,6 +660,139 @@
               Watch on YouTube →
             </a>
           </div>
+
+          <!-- QUIZ CTA (locked until 100%) -->
+          <div id="eb00-quiz-cta" style="border:1.5px solid rgba(30,133,64,.25);border-radius:12px;padding:18px 16px;margin-bottom:4px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(30,133,64,.06),rgba(30,133,64,.02));">
+            <div id="eb00-quiz-lock" style="position:absolute;inset:0;background:var(--bg-alt);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;z-index:2;border-radius:11px;">
+              <span style="font-size:26px;">🔒</span>
+              <span style="font-size:12px;font-weight:700;color:var(--fg2);">Complete all 8 segments to unlock</span>
+              <span id="eb00-quiz-lock-pct" style="font-size:10.5px;color:var(--fg3);">0% done</span>
+            </div>
+            <div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">Level 1 Checkpoint</div>
+            <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:8px;">Orientation Quiz</div>
+            <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your understanding of the regulatory framework, DoEL and ECSA registration, DHET exam structure and SANS 10142-1 navigation before moving to Level 2.</p>
+            <button style="background:var(--amb);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">Start Level 1 Quiz →</button>
+          </div>
+
+          <!-- SEGMENT ENGINE -->
+          <script>
+          (function(){
+            var NS='lms4_eb00_';
+            var SEGS=[
+              {id:1,title:'Getting Started & Companion Overview',pages:'1–6',w:10,desc:'Edition context, author credentials, acknowledgements, legal notices and table of contents'},
+              {id:2,title:'Scope & Normative References',pages:'7–11',w:10,desc:'DHET Programme 51108848 scope, exclusions, dated/undated references, SANS 10142-1 Ed. 3.3 notes'},
+              {id:3,title:'Definitions & Abbreviations',pages:'12–16',w:10,desc:'Key terms: CoC, Registered person, Installation work, SANS code, and regulatory abbreviations'},
+              {id:4,title:'South African Regulatory Framework',pages:'17–23',w:15,desc:'Legal hierarchy pyramid, Acts vs. subordinate regulations, how SANS codes become enforceable, CoC duties'},
+              {id:5,title:'DoEL & ECSA Registration',pages:'24–32',w:15,desc:'SPT, IE and MIE scopes under EIR Reg. 6, CoC liability, ECSA categories'},
+              {id:6,title:'Exam Structure & SANS 10142-1',pages:'33–40',w:15,desc:'Paper 1 (T880) and Paper 2 (T890) breakdown, exam rules, mark taxonomy, SANS navigation and amendments'},
+              {id:7,title:'Progression, LMS & Print',pages:'41–45',w:15,desc:'Trade test to IE and MIE pathway, 5-level LMS learning journey, printed companion / quiz transition'},
+              {id:8,title:'Bibliography & Reference Index',pages:'46–50',w:10,desc:'Complete IEEE-numbered reference list ([1]–[19]) and quick lookup index'}
+            ];
+            var _done=[],_active=null;
+            function _load(){try{var c=localStorage.getItem(NS+'done');if(c)_done=JSON.parse(c);var a=localStorage.getItem(NS+'active');if(a)_active=parseInt(a)||null;}catch(e){}}
+            function _save(){try{localStorage.setItem(NS+'done',JSON.stringify(_done));localStorage.setItem(NS+'ts',Date.now());}catch(e){}}
+            function _pct(){var t=0;_done.forEach(function(id){var s=SEGS.find(function(x){return x.id===id;});if(s)t+=s.w;});return t;}
+            function _seg(id){return SEGS.find(function(x){return x.id===id;});}
+
+            function _renderWelcome(){
+              var el=document.getElementById('eb00-welcome-banner');if(!el)return;
+              var pct=_pct(),s=_seg(_active);
+              if(pct===0){
+                el.innerHTML='<div style="background:linear-gradient(135deg,rgba(30,133,64,.1),rgba(30,133,64,.04));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:5px;">Welcome to eBook 00</div><p style="font-size:12.5px;color:var(--fg);line-height:1.65;margin:0;">This companion walks you through the South African regulatory framework, DoEL and ECSA registration, DHET Programme No. 51108848 exam structure, and SANS 10142-1. Work through all 8 segments in order. Progress is tracked and auto-saved as you read. Tap <strong>Segment 1</strong> below to begin.</p></div>';
+              } else {
+                el.innerHTML='<div style="background:linear-gradient(135deg,rgba(30,133,64,.1),rgba(30,133,64,.04));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;"><div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:5px;">Welcome back</div><p style="font-size:12.5px;color:var(--fg);line-height:1.65;margin:0;">You are at <strong>'+pct+'% completion</strong>'+(s?' — Segment '+_active+': <em>'+s.title+'</em> in progress':'')+'. Your progress has been auto-saved. Continue below or tap a completed segment to review.</p></div>';
+              }
+            }
+
+            function _renderProgress(){
+              var pct=_pct();
+              var bar=document.getElementById('eb00-progress-bar');
+              var lbl=document.getElementById('eb00-pct-label');
+              var slbl=document.getElementById('eb00-seg-label');
+              var hint=document.getElementById('eb00-step-hint');
+              var vlp=document.getElementById('eb00-video-lock-pct');
+              var qlp=document.getElementById('eb00-quiz-lock-pct');
+              if(bar)bar.style.width=pct+'%';
+              if(lbl)lbl.textContent=pct+'% Complete';
+              if(slbl)slbl.textContent=_done.length+' of 8 segments completed';
+              if(hint)hint.textContent=pct>=100?'All done! Videos & Quiz unlocked below ↓':(pct>0?'Continue with Segment '+(_done.length+1)+' →':'Start with Segment 1 →');
+              if(vlp)vlp.textContent=pct+'% done';
+              if(qlp)qlp.textContent=pct+'% done';
+            }
+
+            function _renderList(){
+              var c=document.getElementById('eb00-segment-list');if(!c)return;
+              var html='';
+              SEGS.forEach(function(seg){
+                var done=_done.indexOf(seg.id)>-1;
+                var active=_active===seg.id&&!done;
+                var rowBg=done?'rgba(30,133,64,.06)':(active?'rgba(30,133,64,.03)':'var(--bg-alt)');
+                var rowBorder=done?'rgba(30,133,64,.3)':(active?'rgba(30,133,64,.18)':'var(--border)');
+                var numBg=done?'#1E8540':(active?'rgba(30,133,64,.15)':'rgba(0,0,0,.05)');
+                var numColor=done?'#fff':(active?'#1E8540':'var(--fg3)');
+                var chip=done?
+                  '<span style="font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:4px;background:#1E8540;color:#fff;">✓ Done</span>':
+                  (active?'<span style="font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:4px;background:rgba(30,133,64,.12);color:#1E8540;border:1px solid rgba(30,133,64,.25);">▶ In Progress</span>':
+                  '<span style="font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--fg3);border:1px solid var(--border);">Not Started</span>');
+                html+='<div onclick="eb00Open('+seg.id+')" style="display:flex;align-items:flex-start;gap:11px;border:1.5px solid '+rowBorder+';border-radius:11px;padding:11px 13px;margin-bottom:8px;background:'+rowBg+';cursor:pointer;transition:all .15s;">'+
+                  '<div style="flex-shrink:0;width:28px;height:28px;border-radius:7px;background:'+numBg+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:'+numColor+';margin-top:1px;">'+seg.id+'</div>'+
+                  '<div style="flex:1;min-width:0;">'+
+                    '<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:3px;"><span style="font-size:12.5px;font-weight:700;color:var(--fg);">'+seg.title+'</span>'+chip+'</div>'+
+                    '<div style="font-size:10.5px;color:var(--fg3);">Pages '+seg.pages+' &nbsp;·&nbsp; '+seg.w+'% weight &nbsp;·&nbsp; '+seg.desc+'</div>'+
+                  '</div>'+
+                  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--fg3)" stroke-width="2.5" style="flex-shrink:0;margin-top:7px;"><path d="M9 18l6-6-6-6"/></svg>'+
+                '</div>';
+              });
+              c.innerHTML=html;
+            }
+
+            function _unlockCheck(){
+              var pct=_pct();
+              if(pct>=100){
+                var vl=document.getElementById('eb00-video-lock');if(vl)vl.style.display='none';
+                var ql=document.getElementById('eb00-quiz-lock');if(ql)ql.style.display='none';
+              }
+            }
+
+            function _render(){_renderWelcome();_renderProgress();_renderList();_unlockCheck();}
+
+            window.eb00Open=function(id){
+              _active=id;try{localStorage.setItem(NS+'active',id);}catch(e){}
+              _renderList();
+              var wrap=document.getElementById('eb00-reader-wrap');if(!wrap)return;
+              wrap.style.display='block';
+              var seg=_seg(id);
+              var slbl=document.getElementById('eb00-reader-seg-label');
+              var pbanner=document.getElementById('eb00-pages-banner');
+              var btn=document.getElementById('eb00-mark-btn');
+              var hint=document.getElementById('eb00-reader-hint');
+              if(slbl&&seg)slbl.textContent='Segment '+id+' of 8  ·  '+seg.w+'% weight';
+              if(pbanner&&seg)pbanner.textContent='📄  Navigate to pages '+seg.pages+' in the reader below';
+              var isDone=_done.indexOf(id)>-1;
+              if(btn){btn.disabled=isDone;btn.textContent=isDone?'✓ Already completed':'Mark segment complete ✓';btn.style.background=isDone?'rgba(30,133,64,.12)':'var(--amb)';btn.style.color=isDone?'var(--amb)':'#fff';btn.style.cursor=isDone?'default':'pointer';}
+              if(hint&&seg)hint.textContent=isDone?'This segment is complete. Review pages '+seg.pages+' or move to the next.':'Read pages '+seg.pages+' in the PDF above, then mark this segment complete.';
+              wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+            };
+
+            window.eb00MarkActive=function(){
+              if(!_active)return;
+              if(_done.indexOf(_active)===-1){_done.push(_active);_save();}
+              _render();
+              var next=_active<8?_active+1:null;
+              if(next&&_done.indexOf(next)===-1){eb00Open(next);}
+              else{
+                var btn=document.getElementById('eb00-mark-btn');
+                if(btn){btn.disabled=true;btn.textContent='✓ Already completed';btn.style.background='rgba(30,133,64,.12)';btn.style.color='var(--amb)';btn.style.cursor='default';}
+                var hint=document.getElementById('eb00-reader-hint');
+                if(hint)hint.textContent='All segments completed! Scroll down to watch the videos and take the quiz.';
+              }
+            };
+
+            document.addEventListener('visibilitychange',function(){if(document.hidden)_save();});
+            window.addEventListener('beforeunload',function(){_save();});
+            _load();setTimeout(_render,0);
+          })();
+          </script>
         </div>
 
         <!-- ══ LEVEL 2 — ELECTRICAL FUNDAMENTALS ══ -->
