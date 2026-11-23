@@ -1197,6 +1197,34 @@
             _renderList();
           })();
           </script>
+
+          <!-- ── LEVEL 2 QUIZ CARD ── -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:14px;">
+            <div style="background:linear-gradient(135deg,#2a5ba8,#1a3a78);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div>
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Assessment</div>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Level 2 Quiz — Electrical Fundamentals</div>
+              </div>
+              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">20 Questions</span>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);">
+              <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your understanding of Ohm's Law, power calculations, cable selection, voltage drop, fault currents and compliance testing. Pass to unlock Level 3.</p>
+              <button onclick="lmsStartQuiz('eb01',0)" style="width:100%;padding:11px;border:none;border-radius:9px;background:linear-gradient(135deg,#2a5ba8,#1a3a78);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">&#9654; Start Level 2 Quiz</button>
+            </div>
+          </div>
+
+          <!-- ── LEVEL 2 CERTIFICATE BLOCK (shown after quiz pass) ── -->
+          <div id="eb01-cert-block" style="display:none;border:2px solid #2a5ba8;border-radius:14px;padding:18px 16px 14px;margin-top:14px;background:linear-gradient(135deg,rgba(42,91,168,.08),rgba(42,91,168,.02));text-align:center;">
+            <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#2a5ba8;margin-bottom:4px;">Level 2 Complete</div>
+            <div style="font-size:22px;margin:4px 0;">&#127891;</div>
+            <div style="font-size:14px;font-weight:800;color:var(--fg);margin-bottom:4px;">Electrical Fundamentals Mastery Achieved</div>
+            <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have passed the Level 2 quiz and unlocked Level 3 — Protective Devices.</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="lmsCertView('eb01')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127891; View Certificate</button>
+              <button onclick="lmsSetLevel(3)" style="background:#2a5ba8;color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#8594; Go to Level 3</button>
+            </div>
+          </div>
+
         </div>
 
         <!-- ══ LEVEL 3 — STANDARDS & TRACKS (original content) ══ -->
@@ -1218,19 +1246,92 @@
 
           <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
           <div id="lms-tracks-container"></div>
+
+          <!-- ── LEVEL 3 QUIZ CARD ── -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:14px;">
+            <div style="background:linear-gradient(135deg,#c0392b,#922b21);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div>
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Assessment</div>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Level 3 Quiz — Protective Devices</div>
+              </div>
+              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">20 Questions</span>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);">
+              <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your knowledge of MCBs, RCDs, SPDs, fuses, coordination and distribution board requirements. Pass to unlock Level 4.</p>
+              <button onclick="lmsStartQuiz('eb02',0)" style="width:100%;padding:11px;border:none;border-radius:9px;background:linear-gradient(135deg,#c0392b,#922b21);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">&#9654; Start Level 3 Quiz</button>
+            </div>
+          </div>
+
+          <!-- ── LEVEL 3 CERTIFICATE BLOCK ── -->
+          <div id="eb02-cert-block" style="display:none;border:2px solid #c0392b;border-radius:14px;padding:18px 16px 14px;margin-top:14px;background:linear-gradient(135deg,rgba(192,57,43,.08),rgba(192,57,43,.02));text-align:center;">
+            <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#c0392b;margin-bottom:4px;">Level 3 Complete</div>
+            <div style="font-size:22px;margin:4px 0;">&#127891;</div>
+            <div style="font-size:14px;font-weight:800;color:var(--fg);margin-bottom:4px;">Protective Devices Mastery Achieved</div>
+            <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have passed the Level 3 quiz and unlocked Level 4 — Earthing, Bonding &amp; Special Installations.</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="lmsCertView('eb02')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127891; View Certificate</button>
+              <button onclick="lmsSetLevel(4)" style="background:#c0392b;color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#8594; Go to Level 4</button>
+            </div>
+          </div>
         </div>
 
-        <!-- ══ eBook 4 — LEVEL 4 — P2 STANDARDS & TRACKS ══ -->
+        <!-- ══ eBook 4 — LEVEL 4 — EARTHING, BONDING & SPECIAL INSTALLATIONS ══ -->
         <div id="lms-level4-panel" style="display:none;">
-          <div style="background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.03));border:1px solid rgba(30,133,64,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">eBook 4 · Level 4</div>
-            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">P2 Standards &amp; Tracks</div>
-            <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">Level 4 content is currently being prepared. This level covers Paper 2 (Level 4) standards and practice tracks. Check back soon.</p>
+          <div style="background:linear-gradient(135deg,rgba(230,126,34,.08),rgba(230,126,34,.03));border:1px solid rgba(230,126,34,.2);border-radius:12px;padding:16px 18px;margin-bottom:14px;">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#e67e22;margin-bottom:6px;">eBook 03 · Level 4</div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">Earthing, Bonding &amp; Special Installations</div>
+            <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin:0;">This level covers TN/TT/IT earthing systems, main and supplementary bonding, earth electrode testing, lightning protection, touch voltages, and special locations including bathrooms, swimming pools, agricultural and marina installations per SANS 10142-1 and SANS 62305.</p>
           </div>
-          <div style="border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;color:var(--fg2);font-size:13px;">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--amb)" stroke-width="1.5" style="margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            <div style="font-weight:700;color:var(--fg);margin-bottom:6px;">Coming Soon</div>
-            <div>eBook 4 — P2 Standards &amp; Tracks is under development. Complete eBook 3 (Level 3) first to build a strong foundation.</div>
+
+          <!-- Level 4 topics grid -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:14px;">
+            <div style="background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;">
+              <div style="font-size:18px;margin-bottom:5px;">&#127758;</div>
+              <div style="font-size:11.5px;font-weight:700;color:var(--fg);margin-bottom:3px;">Earthing Systems</div>
+              <div style="font-size:10.5px;color:var(--fg3);">TN-S, TN-C-S, TT, IT</div>
+            </div>
+            <div style="background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;">
+              <div style="font-size:18px;margin-bottom:5px;">&#128279;</div>
+              <div style="font-size:11.5px;font-weight:700;color:var(--fg);margin-bottom:3px;">Bonding</div>
+              <div style="font-size:10.5px;color:var(--fg3);">Main &amp; supplementary</div>
+            </div>
+            <div style="background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;">
+              <div style="font-size:18px;margin-bottom:5px;">&#9889;</div>
+              <div style="font-size:11.5px;font-weight:700;color:var(--fg);margin-bottom:3px;">Lightning</div>
+              <div style="font-size:10.5px;color:var(--fg3);">SANS 62305, SPD zones</div>
+            </div>
+            <div style="background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;">
+              <div style="font-size:18px;margin-bottom:5px;">&#128704;</div>
+              <div style="font-size:11.5px;font-weight:700;color:var(--fg);margin-bottom:3px;">Special Locations</div>
+              <div style="font-size:10.5px;color:var(--fg3);">Bathrooms, pools, farms</div>
+            </div>
+          </div>
+
+          <!-- Level 4 quiz card -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:4px;">
+            <div style="background:linear-gradient(135deg,#e67e22,#ca6f1e);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div>
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Assessment</div>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Level 4 Quiz — Earthing &amp; Bonding</div>
+              </div>
+              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">20 Questions</span>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);">
+              <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your knowledge of earthing system types, bonding requirements, touch voltages, earth electrode testing and special installations. Pass to unlock Level 5.</p>
+              <button onclick="lmsStartQuiz('eb03',0)" style="width:100%;padding:11px;border:none;border-radius:9px;background:linear-gradient(135deg,#e67e22,#ca6f1e);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">&#9654; Start Level 4 Quiz</button>
+            </div>
+          </div>
+
+          <!-- Level 4 cert block -->
+          <div id="eb03-cert-block" style="display:none;border:2px solid #e67e22;border-radius:14px;padding:18px 16px 14px;margin-top:14px;background:linear-gradient(135deg,rgba(230,126,34,.08),rgba(230,126,34,.02));text-align:center;">
+            <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#e67e22;margin-bottom:4px;">Level 4 Complete</div>
+            <div style="font-size:22px;margin:4px 0;">&#127891;</div>
+            <div style="font-size:14px;font-weight:800;color:var(--fg);margin-bottom:4px;">Earthing &amp; Bonding Mastery Achieved</div>
+            <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have passed the Level 4 quiz and unlocked Level 5 — Inspection, Testing &amp; CoC.</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="lmsCertView('eb03')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127891; View Certificate</button>
+              <button onclick="lmsSetLevel(5)" style="background:#e67e22;color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#8594; Go to Level 5</button>
+            </div>
           </div>
         </div>
 
@@ -1281,13 +1382,39 @@
             </div>
           </div>
 
-          <!-- eBook + Video slots for Level 4 -->
+          <!-- eBook + Video slots for Level 5 -->
           <div style="border:1.5px dashed rgba(42,91,168,.35);border-radius:12px;padding:14px 16px;margin-bottom:14px;background:rgba(42,91,168,.03);">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2a5ba8;margin-bottom:9px;">📖 Level 4 — Exam Prep eBook</div>
-            <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">The Level 4 Exam Prep eBook includes full past-paper memos with clause-by-clause references, common examiner traps, and a trimester revision checklist. Available in the Study Packs section.</p>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#2a5ba8;margin-bottom:9px;">&#128218; Level 5 — Exam Prep eBook</div>
+            <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">The Level 5 Exam Prep eBook includes full past-paper memos with clause-by-clause references, common examiner traps, and a trimester revision checklist. Available in the Study Packs section.</p>
             <a href="https://pay.yoco.com/riba-t-tseke" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#2a5ba8;color:#fff;text-decoration:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;">
-              Get the Level 4 eBook
+              Get the Level 5 eBook
             </a>
+          </div>
+
+          <!-- Level 5 quiz card -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:4px;">
+            <div style="background:linear-gradient(135deg,#27ae60,#1e8540);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div>
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Assessment</div>
+                <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Level 5 Quiz — Inspection, Testing &amp; CoC</div>
+              </div>
+              <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">20 Questions</span>
+            </div>
+            <div style="padding:14px 16px;background:var(--bg);">
+              <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your knowledge of continuity, insulation resistance, polarity, loop impedance, RCD tests, visual inspection, CoC issuing and periodic inspection requirements.</p>
+              <button onclick="lmsStartQuiz('eb04',0)" style="width:100%;padding:11px;border:none;border-radius:9px;background:linear-gradient(135deg,#27ae60,#1e8540);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">&#9654; Start Level 5 Quiz</button>
+            </div>
+          </div>
+
+          <!-- Level 5 cert block (programme completion) -->
+          <div id="eb04-cert-block" style="display:none;border:2px solid var(--amb);border-radius:14px;padding:18px 16px 14px;margin-top:14px;background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.02));text-align:center;">
+            <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amb);margin-bottom:4px;">Programme Complete</div>
+            <div style="font-size:28px;margin:4px 0;">&#127942;</div>
+            <div style="font-size:14px;font-weight:800;color:var(--fg);margin-bottom:4px;">DHET Installation Rules Programme Completed!</div>
+            <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have completed all five levels of the Riba T Tseke Installation Rules Study Programme. You are now fully prepared to sit the DHET Trade Test (51108848).</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="lmsCertView('eb04')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127942; View Completion Certificate</button>
+            </div>
           </div>
         </div>
 
@@ -1929,6 +2056,12 @@
               <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubPassL1()">&#127891; Mark L1 Quiz Passed</button>
               <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#7b3fa5;" onclick="ithubUnlockL2()">&#128275; Unlock Level 2 Quiz</button>
               <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubPassL2()">&#127891; Mark L2 Quiz Passed</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c0392b;" onclick="ithubUnlockByPaper('eb02')">&#128275; Unlock L3 Quiz</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c0392b;" onclick="ithubPassByPaper('eb02')">&#127891; Mark L3 Passed</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#e67e22;" onclick="ithubUnlockByPaper('eb03')">&#128275; Unlock L4 Quiz</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#e67e22;" onclick="ithubPassByPaper('eb03')">&#127891; Mark L4 Passed</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#27ae60;" onclick="ithubUnlockByPaper('eb04')">&#128275; Unlock L5 Quiz</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#27ae60;" onclick="ithubPassByPaper('eb04')">&#127891; Mark L5 Passed</button>
               <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c8360c;" onclick="ithubClearProgress()">&#128465; Clear All Progress</button>
               <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#555;" onclick="ithubForceResync()">&#8635; Force Cloud Resync</button>
             </div>
@@ -3302,6 +3435,19 @@ function ithubPassL2(){
   if(typeof lmsSync_push==='function')lmsSync_push(em);
   _ithubToast('Level 2 quiz marked PASSED for '+em,'ok');
 }
+function ithubUnlockByPaper(paper){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  try{localStorage.setItem('lms4_'+em+'_'+paper+'_done',JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  if(typeof lmsSync_push==='function')lmsSync_push(em);
+  _ithubToast(paper.toUpperCase()+' quiz unlocked for '+em,'ok');
+}
+function ithubPassByPaper(paper){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  var ts=new Date().toISOString();
+  try{localStorage.setItem('lms4_'+em+'_'+paper+'_quiz_passed',JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  if(typeof lmsSync_push==='function')lmsSync_push(em);
+  _ithubToast(paper.toUpperCase()+' quiz marked PASSED for '+em,'ok');
+}
 function ithubClearProgress(){
   var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
   var mo=document.createElement('div');
@@ -3433,6 +3579,9 @@ function ithubShowSegInfo(paper){
   var data=null;
   if(paper==='eb00'&&typeof LMS_DATA_EB00!=='undefined') data=LMS_DATA_EB00;
   if(paper==='eb01'&&typeof LMS_DATA_EB01!=='undefined') data=LMS_DATA_EB01;
+  if(paper==='eb02'&&typeof LMS_DATA_EB02!=='undefined') data=LMS_DATA_EB02;
+  if(paper==='eb03'&&typeof LMS_DATA_EB03!=='undefined') data=LMS_DATA_EB03;
+  if(paper==='eb04'&&typeof LMS_DATA_EB04!=='undefined') data=LMS_DATA_EB04;
   if(!data){document.getElementById('ithub-seg-result').innerHTML='<em>Data not loaded.</em>';return;}
   var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;">';
   html+='<strong>'+paper.toUpperCase()+'</strong> — '+data.length+' session(s)<br>';
@@ -3442,7 +3591,7 @@ function ithubShowSegInfo(paper){
 }
 function ithubQuizCount(){
   var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;">';
-  var sets=[['eb00','LMS_DATA_EB00'],['eb01','LMS_DATA_EB01']];
+  var sets=[['eb00','LMS_DATA_EB00'],['eb01','LMS_DATA_EB01'],['eb02','LMS_DATA_EB02'],['eb03','LMS_DATA_EB03'],['eb04','LMS_DATA_EB04']];
   sets.forEach(function(pair){
     try{var d=window[pair[1]];if(d&&d.length){html+=pair[0].toUpperCase()+': '+d.map(function(s){return s.pool.length+' q';}).join(', ')+'<br>';}}catch(e){}
   });
@@ -4107,7 +4256,7 @@ function lmsToggleBlock(id){
 /* ── Certificate viewer ───────────────────────────────────────── */
 function lmsCertView(paper){
   if(!_lmsUser){_lmsToast('Please sign in to view your certificate.','err');return;}
-  var titles={eb00:'Level 1 — Orientation & Regulatory Framework',eb01:'Level 2 — Installation Theory & Practice'};
+  var titles={eb00:'Level 1 — Orientation & Regulatory Framework',eb01:'Level 2 — Electrical Fundamentals',eb02:'Level 3 — Protective Devices',eb03:'Level 4 — Earthing, Bonding & Special Installations',eb04:'Level 5 — Inspection, Testing & Certificate of Compliance'};
   var title=titles[paper]||paper;
   var passKey='lms4_'+_lmsUser.toLowerCase()+'_'+paper+'_quiz_passed';
   var passData=null;
@@ -4161,13 +4310,16 @@ function lmsSetLevel(n){
   try{ localStorage.setItem('lms4_level', n); }catch(e){}
   // Also persist per-user so different users on the same device don't share level state
   if(_lmsUser){ try{ localStorage.setItem('lms4_'+_lmsUser.toLowerCase()+'_level', n); }catch(e){} }
-  // Show/hide Level 1 cert block based on quiz pass state
+  // Show/hide cert blocks for all levels based on quiz pass state
   try{
-    var eb00CertBlock=document.getElementById('eb00-cert-block');
-    if(eb00CertBlock && _lmsUser){
-      var eb00PassKey='lms4_'+_lmsUser.toLowerCase()+'_eb00_quiz_passed';
-      eb00CertBlock.style.display=localStorage.getItem(eb00PassKey)?'block':'none';
-    }
+    var _certPapers=[['eb00','eb00-cert-block'],['eb01','eb01-cert-block'],['eb02','eb02-cert-block'],['eb03','eb03-cert-block'],['eb04','eb04-cert-block']];
+    _certPapers.forEach(function(pair){
+      var blk=document.getElementById(pair[1]);
+      if(blk && _lmsUser){
+        var key='lms4_'+_lmsUser.toLowerCase()+'_'+pair[0]+'_quiz_passed';
+        blk.style.display=localStorage.getItem(key)?'block':'none';
+      }
+    });
   }catch(e){}
   var panels = {1:'lms-level1-panel',2:'lms-level2-panel',3:'lms-level3-panel',4:'lms-level4-panel',5:'lms-level5-panel'};
   for(var k in panels){
@@ -5081,9 +5233,102 @@ var LMS_DATA_EB01=[{
   ]
 }];
 
+var LMS_DATA_EB02=[{
+  title:'Level 3 — Protective Devices',
+  pool:[
+    {q:'Which SANS standard governs the selection and application of miniature circuit breakers (MCBs) in South African low-voltage installations?',a:'SANS 1012',b:'SANS 60898-1',c:'SANS 10142-1 Section 7',d:'SANS 10400-XA',ans:'B',ref:'eBook 02 Seg 1 — Protective Device Standards'},
+    {q:'A Type B MCB trips magnetically within 0.1 seconds at a fault current of:',a:'1 to 3 times In',b:'3 to 5 times In',c:'5 to 10 times In',d:'10 to 50 times In',ans:'B',ref:'eBook 02 Seg 1 — MCB Trip Characteristics'},
+    {q:'A Type C MCB is typically used for loads that have:',a:'No inrush current (pure resistive)',b:'Moderate inrush such as fluorescent lighting and small motors',c:'Very high inrush such as large motors and transformers',d:'Constant DC loads only',ans:'B',ref:'eBook 02 Seg 1 — MCB Trip Characteristics'},
+    {q:'A Type D MCB is selected for:',a:'Lighting circuits only',b:'Welding machines, X-ray equipment and large motor DOL starters with very high inrush',c:'Domestic socket outlets',d:'Low-fault-level rural networks',ans:'B',ref:'eBook 02 Seg 1 — MCB Trip Characteristics'},
+    {q:'What does "In" represent for a circuit breaker?',a:'Installation nominal voltage',b:'Instantaneous fault current',c:'Rated current (normal operating current)',d:'Insulation resistance value',ans:'C',ref:'eBook 02 Seg 1 — MCB Ratings'},
+    {q:'The rated short-circuit breaking capacity (Icn) of a circuit breaker is expressed in:',a:'Amperes (A)',b:'Volts (V)',c:'Kiloamperes (kA)',d:'Volt-amperes (VA)',ans:'C',ref:'eBook 02 Seg 1 — MCB Ratings'},
+    {q:'What is the minimum Icn required for a MCB installed at a point of supply where the PSCC is 6 kA?',a:'At least 3 kA',b:'At least 4.5 kA',c:'At least 6 kA',d:'At least 10 kA',ans:'C',ref:'eBook 02 Seg 1 — MCB Ratings & PSCC'},
+    {q:'An RCD (Residual Current Device) operates by detecting:',a:'Overcurrent in the phase conductor',b:'The difference between current in the live and neutral conductors (earth leakage)',c:'Voltage spikes on the supply',d:'Phase reversal',ans:'B',ref:'eBook 02 Seg 2 — RCD Operation'},
+    {q:'In South Africa, SANS 10142-1 requires RCD protection with a rated residual operating current (IΔn) not exceeding 30 mA for:',a:'All circuits in an installation without exception',b:'Socket-outlet circuits not exceeding 20 A used for general use',c:'Only bathroom circuits',d:'Three-phase motor circuits only',ans:'B',ref:'eBook 02 Seg 2 — RCD Requirements'},
+    {q:'What is the maximum disconnection time for a 30 mA RCD under a residual current of 150 mA (5 × IΔn)?',a:'0.5 s',b:'1.0 s',c:'0.04 s',d:'0.3 s',ans:'C',ref:'eBook 02 Seg 2 — RCD Disconnection Times'},
+    {q:'An RCBO combines the functions of:',a:'An MCB and a contactor',b:'A fuse and a voltage surge device',c:'An MCB and an RCD in one device',d:'A timer and an overcurrent relay',ans:'C',ref:'eBook 02 Seg 2 — RCBO'},
+    {q:'Which type of RCD provides protection against both AC residual currents and pulsating DC residual currents?',a:'Type AC',b:'Type A',c:'Type B',d:'Type S',ans:'B',ref:'eBook 02 Seg 2 — RCD Types'},
+    {q:'A Type S (selective) RCD is installed as:',a:'A final circuit protective device',b:'An upstream device to allow discrimination with downstream RCDs',c:'A replacement for fuses',d:'A voltage protection relay',ans:'B',ref:'eBook 02 Seg 2 — RCD Discrimination'},
+    {q:'Surge protection devices (SPDs) are classified into Type 1, Type 2 and Type 3. Which type is installed at the main distribution board?',a:'Type 3 only',b:'Type 1 (or combined Type 1+2)',c:'Type 2 only',d:'All types must be installed at the main board',ans:'B',ref:'eBook 02 Seg 3 — SPD Classification'},
+    {q:'A Type 2 SPD is installed at:',a:'The main incoming supply point',b:'Sub-distribution boards to protect final circuits',c:'Individual equipment as a point-of-use device',d:'Only at lightning-prone outdoor installations',ans:'B',ref:'eBook 02 Seg 3 — SPD Classification'},
+    {q:'The protection coordination principle requires that a downstream protective device:',a:'Has a higher rated current than the upstream device',b:'Operates before the upstream device for faults on its protected circuit (discrimination)',c:'Is always a fuse rather than an MCB',d:'Must have the same Icn as the upstream device',ans:'B',ref:'eBook 02 Seg 4 — Coordination & Discrimination'},
+    {q:'Current-limiting fuses are used in preference to MCBs where:',a:'The fault level is very low',b:'The fault level is very high and the current-limiting action reduces let-through energy',c:'Only resistive loads are present',d:'Socket-outlet circuits need RCD protection',ans:'B',ref:'eBook 02 Seg 4 — Fuses vs MCBs'},
+    {q:'The breaking capacity of a protective device must be:',a:'Greater than the rated current of the circuit',b:'At least equal to the prospective short-circuit current (PSCC) at the point of installation',c:'Always 10 kA regardless of PSCC',d:'Determined by the cable cross-sectional area only',ans:'B',ref:'eBook 02 Seg 4 — Breaking Capacity'},
+    {q:'What does "back-up protection" mean in the context of circuit breakers?',a:'Using two circuit breakers in series with the same rating',b:'Using a higher-rated upstream device with sufficient breaking capacity to protect a downstream device that cannot interrupt the full fault current on its own',c:'Installing a spare circuit breaker in the distribution board',d:'Using an MCB to back up an RCD',ans:'B',ref:'eBook 02 Seg 4 — Back-up Protection'},
+    {q:'Under SANS 10142-1, every socket-outlet circuit in a new residential installation with a rating not exceeding 20 A must be protected by an RCD with IΔn not exceeding:',a:'100 mA',b:'300 mA',c:'30 mA',d:'10 mA',ans:'C',ref:'eBook 02 Seg 2 — RCD Requirements Residential'},
+    {q:'What is the purpose of the earth leakage test button on an RCD?',a:'To simulate a phase-to-earth fault to verify that the RCD trips within its rated time',b:'To reset the RCD after a trip',c:'To measure the insulation resistance of the installation',d:'To test the voltage supply to the RCD',ans:'A',ref:'eBook 02 Seg 2 — RCD Testing'},
+    {q:'A distribution board (DB) must be installed such that the busbar arrangement prevents:',a:'Overloading of the main switch',b:'Accidental access to live parts when replacing a circuit breaker (finger-safe design)',c:'More than 10 circuits per phase',d:'The use of RCBOs',ans:'B',ref:'eBook 02 Seg 5 — Distribution Board Requirements'},
+    {q:'Under SANS 10142-1, the main switch of a distribution board must be able to:',a:'Disconnect only the outgoing circuits',b:'Disconnect all live conductors (phases and neutral) of the installation simultaneously',c:'Disconnect only the phase conductors',d:'Operate as an RCD',ans:'B',ref:'eBook 02 Seg 5 — Main Switch Requirements'},
+    {q:'Which protective device responds FASTEST to a bolted short-circuit fault?',a:'MCB thermal element',b:'MCB magnetic (instantaneous) element',c:'Time-delay fuse',d:'RCD',ans:'B',ref:'eBook 02 Seg 1 — MCB Operating Sequence'}
+  ]
+}];
+
+var LMS_DATA_EB03=[{
+  title:'Level 4 — Earthing, Bonding & Special Installations',
+  pool:[
+    {q:'What is the primary purpose of an earthing system in an electrical installation?',a:'To improve power factor',b:'To provide a low-impedance fault path so that protective devices operate quickly and limit touch voltages during a fault',c:'To reduce harmonic distortion',d:'To ensure the neutral conductor carries no current',ans:'B',ref:'eBook 03 Seg 1 — Earthing Principles'},
+    {q:'In a TN-S system, the neutral and protective earth (PE) conductors are:',a:'Combined as a single PEN conductor throughout the installation',b:'Separated throughout the entire system from the transformer to the consumer',c:'Combined only at the main earth terminal',d:'Separated only within the consumer installation',ans:'B',ref:'eBook 03 Seg 1 — Earthing System Types'},
+    {q:'In a TN-C-S system (PME), the PEN conductor is:',a:'Separate from the neutral throughout',b:'Combined as a PEN from the source to a point in the installation, then separated into N and PE',c:'Always underground only',d:'Used only on three-phase circuits',ans:'B',ref:'eBook 03 Seg 1 — Earthing System Types'},
+    {q:'In a TT system, the installation earth is provided by:',a:'The supply authority neutral conductor',b:'A separate local earth electrode independent of the supply earthing',c:'The metallic water pipe only',d:'A combined PEN conductor',ans:'B',ref:'eBook 03 Seg 1 — Earthing System Types'},
+    {q:'What is the maximum earth electrode resistance recommended for a TT system where RCD protection (IΔn ≤ 30 mA) is used, to limit touch voltage to 50 V?',a:'500 Ω',b:'100 Ω',c:'1 667 Ω',d:'200 Ω',ans:'C',ref:'eBook 03 Seg 2 — Earth Electrode Resistance'},
+    {q:'Main protective bonding conductors must connect:',a:'Only the water service pipe to the main earthing terminal',b:'Extraneous-conductive-parts (gas, water and other metallic services entering the building) to the main earthing terminal',c:'Socket outlet earth pins to the distribution board',d:'The armour of cables to the neutral bar',ans:'B',ref:'eBook 03 Seg 3 — Main Protective Bonding'},
+    {q:'Supplementary bonding is required:',a:'Only in bathrooms when two simultaneously accessible extraneous-conductive-parts or exposed-conductive-parts cannot be shown to have a sufficiently low impedance between them',b:'On every circuit in the building',c:'Only in kitchens',d:'Only on three-phase circuits',ans:'A',ref:'eBook 03 Seg 3 — Supplementary Bonding'},
+    {q:'The minimum cross-sectional area of a main protective bonding conductor is:',a:'1.5 mm²',b:'Half the phase conductor area, with a minimum of 6 mm² and maximum of 25 mm² (copper)',c:'Equal to the phase conductor area',d:'10 mm² always',ans:'B',ref:'eBook 03 Seg 3 — Bonding Conductor Sizing'},
+    {q:'Which SANS standard covers lightning protection systems for structures in South Africa?',a:'SANS 10142-1',b:'SANS 62305 (IEC 62305 series)',c:'SANS 10400-T',d:'SANS 60079',ans:'B',ref:'eBook 03 Seg 4 — Lightning Protection'},
+    {q:'An equipotential bonding zone (EBZ) is created in a structure to protect electronic equipment from:',a:'Overload currents from the supply authority',b:'Dangerous potential differences during a lightning strike or switching transient',c:'Harmonic currents from non-linear loads',d:'Power factor penalties',ans:'B',ref:'eBook 03 Seg 4 — Lightning Protection Zones'},
+    {q:'Which of the following is classified as an "extraneous-conductive-part" in SANS 10142-1?',a:'The earth terminal of a socket outlet',b:'A metallic gas pipe entering the building from outside',c:'The CPC (earth wire) in a cable',d:'The armour of a cable installed inside the building',ans:'B',ref:'eBook 03 Seg 3 — Extraneous-Conductive-Parts'},
+    {q:'In a bathroom (zone classification under SANS 10142-1), what is the minimum IP rating required for electrical equipment in Zone 1?',a:'IPX0',b:'IPX4',c:'IPX5',d:'IPX7',ans:'B',ref:'eBook 03 Seg 5 — Special Locations — Bathrooms'},
+    {q:'Which electrical equipment is NOT permitted in Zone 0 of a bathroom?',a:'SELV luminaire rated for the zone',b:'Any equipment except current-using equipment specifically designed for Zone 0',c:'Supplementary bonding conductors',d:'PELV shaver socket',ans:'B',ref:'eBook 03 Seg 5 — Bathroom Zones'},
+    {q:'In an agricultural installation, additional protection against electric shock is required because:',a:'Agricultural supplies run at higher voltage',b:'Animals are more susceptible to electric shock and step-and-touch potentials in damp environments',c:'Fuses are preferred over MCBs on farms',d:'Earthing electrodes are not required',ans:'B',ref:'eBook 03 Seg 6 — Agricultural Installations'},
+    {q:'What is the preferred method of earthing a swimming pool in South Africa per SANS 10142-1?',a:'Using the pool steel reinforcing as the earth electrode only',b:'Supplementary equipotential bonding of all metallic parts within the pool zone plus connection to the installation earthing',c:'No earthing is required for pool installations',d:'Connecting the pool pump to the neutral conductor',ans:'B',ref:'eBook 03 Seg 5 — Swimming Pools'},
+    {q:'Which test is used to verify the resistance of an earth electrode on-site?',a:'Insulation resistance test using a 500 V Megger',b:'Earth electrode resistance test using a dedicated earth tester (fall-of-potential or clamp method)',c:'Loop impedance test using a Zs meter',d:'Continuity test at 200 mA',ans:'B',ref:'eBook 03 Seg 2 — Earth Electrode Testing'},
+    {q:'The protective earth conductor (PE) in a fixed wiring circuit must be:',a:'Coloured red throughout',b:'Identified by green-and-yellow insulation or bare copper with green-and-yellow sleeving at terminations',c:'Coloured black and labelled "EARTH"',d:'Not identified — left as bare copper only',ans:'B',ref:'eBook 03 Seg 1 — Conductor Identification'},
+    {q:'What is the purpose of a surge protection device (SPD) bonding conductor?',a:'To carry the rated supply current',b:'To carry the surge discharge current to earth during a lightning or switching event, limiting voltage stress on equipment',c:'To provide RCD protection',d:'To bond the neutral bar to the phase bars',ans:'B',ref:'eBook 03 Seg 4 — SPD Bonding'},
+    {q:'An IT earthing system (isolated neutral) is typically used in:',a:'Residential domestic installations',b:'Hospitals (medical IT system) and industrial process installations requiring continuity of supply during a first fault',c:'All South African residential installations',d:'Outdoor lighting circuits only',ans:'B',ref:'eBook 03 Seg 1 — IT System'},
+    {q:'The main earthing terminal (MET) must be positioned:',a:'At the first socket outlet in the installation',b:'As close as practicable to the point of entry of the supply into the building, accessible for testing and inspection',c:'Only at the distribution board, regardless of supply entry point',d:'Outside the building near the earth electrode',ans:'B',ref:'eBook 03 Seg 2 — Main Earthing Terminal'},
+    {q:'Caravan parks and marinas require RCD protection with IΔn not exceeding 30 mA on all socket outlet circuits because:',a:'The supply authority requires it for billing purposes',b:'Users have increased exposure to earth leakage paths through wet or damp environments and mobile equipment',c:'The supply voltage is higher than standard',d:'It is optional and left to the installation designer',ans:'B',ref:'eBook 03 Seg 6 — Marinas & Caravan Parks'},
+    {q:'Which conductor colour represents the protective earth (PE) conductor under SANS 10142-1 (post-2009 edition)?',a:'Yellow only',b:'Green-and-yellow',c:'Bare copper only',d:'Blue',ans:'B',ref:'eBook 03 Seg 1 — Colour Coding'},
+    {q:'Touch voltage limits under SANS 10142-1 for AC dry conditions must not exceed:',a:'25 V',b:'50 V',c:'110 V',d:'230 V',ans:'B',ref:'eBook 03 Seg 2 — Touch Voltage Limits'},
+    {q:'A combined PEN conductor (used in TN-C systems) must have a minimum cross-sectional area of:',a:'1.5 mm² copper',b:'4 mm² copper (or 10 mm² aluminium)',c:'10 mm² copper',d:'2.5 mm² copper',ans:'C',ref:'eBook 03 Seg 1 — PEN Conductor Requirements'}
+  ]
+}];
+
+var LMS_DATA_EB04=[{
+  title:'Level 5 — Inspection, Testing & Certificate of Compliance',
+  pool:[
+    {q:'Which SANS document provides the pro-forma Certificate of Compliance (CoC) for electrical installations?',a:'SANS 10142-1 Annex A',b:'SANS 10142-1 Annex H',c:'SANS 10400-T',d:'SANS 60898-1',ans:'B',ref:'eBook 04 Seg 1 — CoC Requirements'},
+    {q:'Under the EIR, who is legally permitted to issue a Certificate of Compliance (CoC) for a low-voltage electrical installation?',a:'Any person who installed the electrical work',b:'A registered person (Installation Electrician or Master Installation Electrician) registered with DoEL under EIR Regulation 6',c:'Any SANS-qualified artisan',d:'Only a Professional Engineer registered with ECSA',ans:'B',ref:'eBook 04 Seg 1 — CoC Issuing Authority'},
+    {q:'Before a CoC is issued, the registered person must carry out which of the following sequences of tests?',a:'Only a visual inspection',b:'Visual inspection, followed by all required electrical tests (continuity, IR, polarity, loop impedance, RCD operation where applicable)',c:'Only the insulation resistance test',d:'Polarity and loop impedance tests only',ans:'B',ref:'eBook 04 Seg 1 — Pre-CoC Testing Sequence'},
+    {q:'The continuity test of a circuit protective conductor (CPC) is performed using a test current of at least:',a:'1 mA',b:'200 mA (to overcome contact resistance)',c:'500 mA',d:'1 A',ans:'B',ref:'eBook 04 Seg 2 — Continuity Test Method'},
+    {q:'For the insulation resistance (IR) test on a 230/400 V installation, what test voltage is applied between conductors and between conductors and earth?',a:'250 V DC',b:'500 V DC',c:'1 000 V DC',d:'230 V AC',ans:'B',ref:'eBook 04 Seg 2 — Insulation Resistance Test'},
+    {q:'What minimum insulation resistance value must be achieved for each circuit on a 230/400 V installation during the IR test?',a:'0.1 MΩ',b:'1 MΩ',c:'0.5 MΩ',d:'10 MΩ',ans:'B',ref:'eBook 04 Seg 2 — IR Test Minimum Value'},
+    {q:'The polarity test verifies that:',a:'The phase and neutral conductors have the correct insulation colours',b:'Single-pole protective and switching devices are connected in the phase conductor only, and that socket-outlet pins are correctly wired',c:'The cable cross-sectional area matches the design',d:'The earth electrode has adequate resistance',ans:'B',ref:'eBook 04 Seg 2 — Polarity Test'},
+    {q:'Earth fault loop impedance (Zs) is measured to verify that:',a:'The installation earthing is bonded to the water pipe',b:'The fault current will be large enough to operate the protective device within the required disconnection time',c:'The cable insulation is intact',d:'The phase sequence is correct',ans:'B',ref:'eBook 04 Seg 2 — Loop Impedance Test Purpose'},
+    {q:'The earth fault loop impedance test is performed using a dedicated Zs meter. The measured value must be:',a:'Greater than the maximum Zs tabulated in SANS 10142-1 for the protective device',b:'Less than or equal to the maximum Zs tabulated in SANS 10142-1 for the type and rating of the protective device protecting the circuit',c:'Equal to the external loop impedance Ze only',d:'Not less than 0.5 Ω',ans:'B',ref:'eBook 04 Seg 2 — Loop Impedance Test Result'},
+    {q:'The RCD operation test verifies that the RCD trips within its rated disconnection time when a residual current of:',a:'Less than 0.5 × IΔn is applied',b:'IΔn (rated residual operating current) is applied',c:'10 × IΔn is applied only',d:'The full load current is applied',ans:'B',ref:'eBook 04 Seg 2 — RCD Test'},
+    {q:'Which compliance test should be performed FIRST to avoid falsely low insulation resistance readings caused by test instrument damage?',a:'Loop impedance test',b:'Continuity test',c:'Polarity test',d:'RCD test',ans:'B',ref:'eBook 04 Seg 2 — Test Sequence'},
+    {q:'During a visual inspection before testing, the registered person must verify:',a:'Only that the circuit breaker ratings are correct',b:'That the installation complies with SANS 10142-1 in all visible aspects: wiring, terminations, labelling, clearances, protection, DB condition and earthing',c:'Only that the earth electrode is installed',d:'Only that socket outlets are correctly positioned',ans:'B',ref:'eBook 04 Seg 1 — Visual Inspection Scope'},
+    {q:'A CoC must be retained by:',a:'The registered person only for a period of 2 years',b:'Both the registered person and the owner of the installation, each for a period of not less than 6 years (from the date of installation)',c:'The local municipality only',d:'Only the owner for 1 year',ans:'B',ref:'eBook 04 Seg 3 — CoC Retention Period'},
+    {q:'A CoC becomes invalid and a new CoC is required when:',a:'The installation is painted',b:'Any addition or alteration is made to the existing installation (the new CoC covers the altered or additional work)',c:'The registered person changes employment',d:'The building changes ownership without any electrical work being done',ans:'B',ref:'eBook 04 Seg 3 — CoC Validity'},
+    {q:'What action must be taken if a defect is discovered during the final inspection that cannot be rectified immediately?',a:'Issue the CoC noting the defect in the remarks section',b:'Withhold the CoC until the defect is rectified and the affected tests are repeated to satisfactory results',c:'Issue the CoC anyway and notify the client verbally',d:'Apply for an exemption from DoEL',ans:'B',ref:'eBook 04 Seg 3 — Defect Handling'},
+    {q:'Which instrument is used to measure earth fault loop impedance (Zs) on-site?',a:'Clamp meter',b:'Low-impedance loop tester (Zs meter)',c:'Insulation resistance tester (Megger)',d:'Power quality analyser',ans:'B',ref:'eBook 04 Seg 2 — Test Instruments'},
+    {q:'A "periodic inspection" of an existing electrical installation is required to:',a:'Issue a new CoC every year automatically',b:'Assess whether the installation remains safe and complies with the current edition of SANS 10142-1 applicable at the time of the original installation',c:'Replace all circuit breakers on a fixed schedule',d:'Upgrade the installation to the latest SANS 10142-1 edition at the owner\'s expense',ans:'B',ref:'eBook 04 Seg 4 — Periodic Inspection'},
+    {q:'Test results must be recorded on the electrical installation test schedule (Annex H of SANS 10142-1). This schedule must include:',a:'Only the IR test results',b:'The results of all required tests for each circuit, the instruments used, their calibration dates, and the name and registration number of the registered person',c:'Only the loop impedance results for the main circuit',d:'Only a pass/fail summary',ans:'B',ref:'eBook 04 Seg 1 — Test Schedule Requirements'},
+    {q:'Before performing the insulation resistance test, all electronic equipment (dimmers, RCD testers, surge devices) should be:',a:'Left connected and energised',b:'Disconnected or isolated to prevent damage from the 500 V DC test voltage',c:'Earthed to the main earth terminal',d:'Protected by a 30 mA RCD during the test',ans:'B',ref:'eBook 04 Seg 2 — IR Test Precautions'},
+    {q:'The function of an inspection and test before final connection and energisation is to:',a:'Satisfy the network operator\'s billing requirements',b:'Confirm that the installation has been built as designed, is safe, and will operate correctly when energised',c:'Provide data for the energy audit',d:'Only document the cable sizes installed',ans:'B',ref:'eBook 04 Seg 1 — Inspection & Test Purpose'},
+    {q:'What is the purpose of phase sequence testing on a three-phase installation?',a:'To verify insulation resistance between phases',b:'To confirm that the phase sequence (L1-L2-L3 / R-Y-B) is correct so that motors rotate in the intended direction and phase-sequence-sensitive equipment operates correctly',c:'To measure fault current level',d:'To calibrate the electricity meter',ans:'B',ref:'eBook 04 Seg 2 — Phase Sequence Test'},
+    {q:'A registered person may carry out electrical work on an installation without issuing a CoC if:',a:'The work is minor maintenance only (replacement of a socket outlet faceplate like-for-like) that does not constitute an addition or alteration',b:'The client has signed a waiver',c:'There is no supply to the installation',d:'There is no such exemption — a CoC is always required',ans:'A',ref:'eBook 04 Seg 3 — CoC Exemptions'},
+    {q:'Which of the following correctly describes the external loop impedance Ze?',a:'The total loop impedance including phase and CPC conductors of the circuit under test',b:'The loop impedance measured at the origin of the installation (before the installation\'s own phase and CPC conductors are included)',c:'The resistance of the earth electrode only',d:'The impedance of the neutral conductor',ans:'B',ref:'eBook 04 Seg 2 — External Loop Impedance'},
+    {q:'What must an Installation Electrician include on a Certificate of Compliance?',a:'Only the address and date',b:'Their full name, DoEL registration number, signature, the installation address, test results summary, and the date of issue',c:'Only the registration number and date',d:'The ECSA membership number only',ans:'B',ref:'eBook 04 Seg 1 — CoC Contents'}
+  ]
+}];
+
 function _getSessionData(paper,idx){
   if(paper==='eb00') return LMS_DATA_EB00[idx];
   if(paper==='eb01') return LMS_DATA_EB01[idx];
+  if(paper==='eb02') return LMS_DATA_EB02[idx];
+  if(paper==='eb03') return LMS_DATA_EB03[idx];
+  if(paper==='eb04') return LMS_DATA_EB04[idx];
   if(paper==='p1') return LMS_DATA.p1[idx];
   if(paper==='p2') return LMS_DATA.p2[idx];
   if(paper==='eir1') return LMS_DATA2.eir1[idx];
@@ -5180,6 +5425,7 @@ function _lmsLaunchQuizNow(paper,sessIdx){
     var pool=sess.pool.slice();
     for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
     _lmsPool=pool.slice(0,Math.min(QUIZ_Q,pool.length));
+    if(!_lmsPool||!_lmsPool.length){_lmsToast('Quiz pool empty — no questions found. Please contact support.','err');return;}
     _lmsIdx=0; _lmsCorrect=0;
     _lmsDotResults=new Array(_lmsPool.length).fill(null);
     var _vt=_lmsQuizTrackLabel||('Topic '+(sessIdx+1));
@@ -5208,7 +5454,9 @@ function _lmsRenderDots(){
 }
 
 function lmsRenderQ(){
+  if(!_lmsPool||!_lmsPool.length||_lmsIdx>=_lmsPool.length){_lmsToast('Quiz error: question not found. Please refresh and try again.','err');return;}
   var q=_lmsPool[_lmsIdx];
+  if(!q){_lmsToast('Quiz error: question data missing. Please contact support.','err');return;}
   var total=_lmsPool.length;
   document.getElementById('lms-prog').style.width=((_lmsIdx/total)*100)+'%';
   document.getElementById('lms-q-num').textContent='Question '+(_lmsIdx+1)+' of '+total;
@@ -5428,6 +5676,9 @@ function lmsGoLevel2(){
 function _getSessionCount(paper){
   if(paper==='eb00') return LMS_DATA_EB00.length;
   if(paper==='eb01') return LMS_DATA_EB01.length;
+  if(paper==='eb02') return LMS_DATA_EB02.length;
+  if(paper==='eb03') return LMS_DATA_EB03.length;
+  if(paper==='eb04') return LMS_DATA_EB04.length;
   if(paper==='p1') return LMS_DATA.p1.length;
   if(paper==='p2') return LMS_DATA.p2.length;
   if(paper==='eir1') return LMS_DATA2.eir1.length;
