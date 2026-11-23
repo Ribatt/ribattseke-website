@@ -5074,6 +5074,7 @@ function hubRenderers(){
       else if(id==='hub-expiry')expiryRender();
       else if(id==='hub-financials')finRender();
       else if(id==='hub-qbank'){ if(typeof qbankInit==='function')qbankInit(); }
+      else if(id==='hub-attempts'){ if(typeof attemptsInit==='function')attemptsInit(); }
     },50);
   };
 })();
@@ -6476,3 +6477,111 @@ function finRender(){
 
 })();
 /* ===== END TRAVEL & ACCOMMODATION ===== */
+
+/* ===== ATTEMPT HISTORY — Admin viewer ===== */
+(function(){
+  var SUBJECT={eb00:'Orientation',eb01:'Fundamentals',eb02:'Level 3',eb03:'Level 4',eb04:'Level 5',p1:'Paper 1',p2:'Paper 2',eir1:'EIR 1992',eir2:'Construction Regs',s101981:'SANS 10198',s10292:'SANS 10292',s10313:'SANS 10313'};
+
+  function _g(id){ return document.getElementById(id); }
+
+  function _renderAttempts(arr, email){
+    var list=_g('atm-list'), summary=_g('atm-summary'); if(!list) return;
+    if(!arr||!arr.length){
+      list.innerHTML='<p style="font-size:12px;color:var(--fg3);">No attempts found for '+email+'</p>';
+      if(summary) summary.innerHTML='';
+      return;
+    }
+    /* Sort newest first */
+    arr=arr.slice().sort(function(a,b){ return (b.ts||'').localeCompare(a.ts||''); });
+    var total=arr.length;
+    var passed=arr.filter(function(a){return a.passed;}).length;
+    var avgScore=Math.round(arr.reduce(function(s,a){return s+(a.score||0);},0)/total);
+    var byPaper={};
+    arr.forEach(function(a){ if(!byPaper[a.paper]) byPaper[a.paper]=[]; byPaper[a.paper].push(a); });
+
+    if(summary){
+      summary.innerHTML='<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">'+
+        '<div style="flex:1;min-width:100px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-align:center;">'+
+          '<div style="font-size:20px;font-weight:800;color:var(--amb);">'+total+'</div>'+
+          '<div style="font-size:11px;color:var(--fg3);">Total Attempts</div></div>'+
+        '<div style="flex:1;min-width:100px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-align:center;">'+
+          '<div style="font-size:20px;font-weight:800;color:#27ae60;">'+passed+'</div>'+
+          '<div style="font-size:11px;color:var(--fg3);">Passed</div></div>'+
+        '<div style="flex:1;min-width:100px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-align:center;">'+
+          '<div style="font-size:20px;font-weight:800;color:#e74c3c;">'+(total-passed)+'</div>'+
+          '<div style="font-size:11px;color:var(--fg3);">Failed</div></div>'+
+        '<div style="flex:1;min-width:100px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-align:center;">'+
+          '<div style="font-size:20px;font-weight:800;color:var(--fg);">'+avgScore+'%</div>'+
+          '<div style="font-size:11px;color:var(--fg3);">Avg Score</div></div>'+
+        '</div>'+
+        '<div style="font-size:11px;font-weight:700;color:var(--fg2);margin-bottom:6px;">By paper:</div>'+
+        '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;">'+
+        Object.keys(byPaper).map(function(p){
+          var pa=byPaper[p], pp=pa.filter(function(a){return a.passed;}).length;
+          return '<span style="font-size:11px;padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--fg2);">'+
+            (SUBJECT[p]||p)+' <strong style="color:var(--amb);">'+pa.length+'</strong> att · <strong style="color:#27ae60;">'+pp+'</strong> pass</span>';
+        }).join('')+
+        '</div>';
+    }
+
+    var rows=arr.map(function(a){
+      var d=new Date(a.ts);
+      var dateStr=isNaN(d)?a.ts:d.toLocaleString('en-ZA',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      var mins=Math.floor((a.timeSec||0)/60), secs=(a.timeSec||0)%60;
+      var col=a.passed?'#27ae60':'#e74c3c';
+      return '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);margin-bottom:6px;">'+
+        '<span style="font-size:11px;font-weight:800;color:#fff;background:'+col+';padding:2px 9px;border-radius:12px;">'+(a.passed?'PASS':'FAIL')+'</span>'+
+        '<span style="font-size:12.5px;font-weight:700;min-width:38px;">'+a.score+'%</span>'+
+        '<span style="font-size:12px;color:var(--fg2);flex:1;min-width:100px;">'+(SUBJECT[a.paper]||a.paper)+' · Session '+(a.sess+1)+'</span>'+
+        '<span style="font-size:11px;color:var(--fg3);">'+a.correct+'/'+a.total+' correct</span>'+
+        (a.timeSec?'<span style="font-size:11px;color:var(--fg3);">'+mins+'m '+secs+'s</span>':'')+
+        '<span style="font-size:10.5px;color:var(--fg3);margin-left:auto;">'+dateStr+'</span>'+
+        '</div>';
+    }).join('');
+    list.innerHTML=rows;
+  }
+
+  window.atmLoad=function(){
+    var email=(_g('atm-email')||{}).value||'';
+    var paper=(_g('atm-paper')||{}).value||'';
+    var out=_g('atm-out');
+    if(!email){ if(out) out.textContent='Enter a learner email to look up.'; return; }
+    var key='lms4_'+email.toLowerCase()+'_attempts';
+    var arr=[];
+    try{ arr=JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){}
+    if(paper) arr=arr.filter(function(a){ return a.paper===paper; });
+    if(out) out.textContent=arr.length?'':'No local attempts found for this email. Try "Load from Cloud" to fetch Firestore data.';
+    _renderAttempts(arr, email);
+  };
+
+  window.atmLoadFirestore=function(){
+    var email=(_g('atm-email')||{}).value||'';
+    var paper=(_g('atm-paper')||{}).value||'';
+    var out=_g('atm-out');
+    if(!email){ if(out) out.textContent='Enter a learner email to look up.'; return; }
+    if(out) out.textContent='Loading from Firestore...';
+    _loadFirebase(function(){
+      var db=(typeof _lmsFbDb!=='undefined')?_lmsFbDb:null;
+      if(!db){ if(out) out.textContent='Firestore not available.'; return; }
+      db.collection('lms_attempts').doc(_fbEmailKey(email)).get().then(function(doc){
+        if(!doc.exists){ if(out) out.textContent='No Firestore attempt records for '+email+'.'; _renderAttempts([],email); return; }
+        var arr=(doc.data().attempts||[]).slice();
+        /* Also merge local records */
+        try{
+          var localArr=JSON.parse(localStorage.getItem('lms4_'+email.toLowerCase()+'_attempts')||'[]');
+          localArr.forEach(function(r){
+            var exists=arr.some(function(a){ return a.ts===r.ts&&a.paper===r.paper&&a.sess===r.sess; });
+            if(!exists) arr.push(r);
+          });
+        }catch(e){}
+        if(paper) arr=arr.filter(function(a){ return a.paper===paper; });
+        if(out) out.textContent='Loaded '+arr.length+' attempt(s) from cloud'+(paper?' (filtered to '+paper+')':'')+'.';
+        _renderAttempts(arr, email);
+      }).catch(function(e){ if(out) out.textContent='Firestore error: '+e.message; });
+    });
+  };
+
+  /* Auto-trigger when section opens */
+  window.attemptsInit=function(){ var e=(_g('atm-email')||{}).value; if(e) atmLoad(); };
+})();
+/* ===== END ATTEMPT HISTORY ===== */
