@@ -5664,7 +5664,7 @@ function lmsFinish(){
     var nextBtn2=document.getElementById('sc-next-btn');
     if(nextBtn2) nextBtn2.hidden=true;
   }
-  lmsFirebaseLogActivity(_lmsUser, _lmsPhone||'', _lmsPaper, _lmsSess, pct, passed);
+  if(typeof lmsFirebaseLogActivity==='function') lmsFirebaseLogActivity(_lmsUser, _lmsPhone||'', _lmsPaper, _lmsSess, pct, passed);
   lmsShowView('lms-score');
 }
 
