@@ -141,7 +141,10 @@
           <button type="button" class="lms-btn" onclick="lmsSignin()">Sign In</button>
           <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
           <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:1px solid var(--border);"></span><span style="font-size:11px;color:var(--fg3);white-space:nowrap;">or sign in with your Access Key</span><span style="flex:1;border-top:1px solid var(--border);"></span></div>
-          <input class="lms-input" id="lms-key-input" type="text" placeholder="Access Key — e.g. RTT-KM-726-IR" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:.04em;" oninput="this.value=this.value.toUpperCase()">
+          <label class="lms-label">Your first name</label>
+          <input class="lms-input" id="lms-key-name" type="text" placeholder="e.g. Khanyisile" autocomplete="given-name" autocapitalize="words" style="margin-bottom:8px;">
+          <label class="lms-label" style="margin-top:0;">Access Key</label>
+          <input class="lms-input" id="lms-key-input" type="text" placeholder="Enter your Access Key" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:.04em;" oninput="this.value=this.value.toUpperCase()">
           <div class="lms-err" id="lms-key-err"></div>
           <button type="button" class="lms-btn-sec" onclick="lmsSigninByKey()" style="font-weight:700;">Sign in with Access Key</button>
           <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
@@ -918,19 +921,24 @@
             window.eb00Reload=function(em){
               var newNS='lms4_'+em.toLowerCase()+'_eb00_';
               if(newNS===NS){_load();setTimeout(_render,0);return;}
-              try{
-                var old=localStorage.getItem('lms4_eb00_done');
-                if(old&&!localStorage.getItem(newNS+'done')){
-                  localStorage.setItem(newNS+'done',old);
-                  var oldTs=localStorage.getItem('lms4_eb00_ts');
-                  if(oldTs)localStorage.setItem(newNS+'ts',oldTs);
-                  var oldAct=localStorage.getItem('lms4_eb00_active');
-                  if(oldAct)localStorage.setItem(newNS+'active',oldAct);
-                  localStorage.removeItem('lms4_eb00_done');
-                  localStorage.removeItem('lms4_eb00_ts');
-                  localStorage.removeItem('lms4_eb00_active');
-                }
-              }catch(e){}
+              /* Only migrate anonymous progress for email logins — never for access keys.
+                 Key users share a device; migrating anonymous data would bleed one user's
+                 progress into another's key-namespaced record. */
+              if(em.indexOf('@')>-1){
+                try{
+                  var old=localStorage.getItem('lms4_eb00_done');
+                  if(old&&!localStorage.getItem(newNS+'done')){
+                    localStorage.setItem(newNS+'done',old);
+                    var oldTs=localStorage.getItem('lms4_eb00_ts');
+                    if(oldTs)localStorage.setItem(newNS+'ts',oldTs);
+                    var oldAct=localStorage.getItem('lms4_eb00_active');
+                    if(oldAct)localStorage.setItem(newNS+'active',oldAct);
+                    localStorage.removeItem('lms4_eb00_done');
+                    localStorage.removeItem('lms4_eb00_ts');
+                    localStorage.removeItem('lms4_eb00_active');
+                  }
+                }catch(e){}
+              }
               NS=newNS;_done=[];_active=null;
               _load();_render();
             };
@@ -1161,19 +1169,22 @@
             window.eb01Reload=function(em){
               var newNS='lms4_'+em.toLowerCase()+'_eb01_';
               if(newNS===NS){_load();_renderWelcome();_renderProgress();_renderList();return;}
-              try{
-                var old=localStorage.getItem('lms4_eb01_done');
-                if(old&&!localStorage.getItem(newNS+'done')){
-                  localStorage.setItem(newNS+'done',old);
-                  var oldTs=localStorage.getItem('lms4_eb01_ts');
-                  if(oldTs)localStorage.setItem(newNS+'ts',oldTs);
-                  var oldAct=localStorage.getItem('lms4_eb01_active');
-                  if(oldAct)localStorage.setItem(newNS+'active',oldAct);
-                  localStorage.removeItem('lms4_eb01_done');
-                  localStorage.removeItem('lms4_eb01_ts');
-                  localStorage.removeItem('lms4_eb01_active');
-                }
-              }catch(e){}
+              /* Only migrate anonymous progress for email logins — never for access keys */
+              if(em.indexOf('@')>-1){
+                try{
+                  var old=localStorage.getItem('lms4_eb01_done');
+                  if(old&&!localStorage.getItem(newNS+'done')){
+                    localStorage.setItem(newNS+'done',old);
+                    var oldTs=localStorage.getItem('lms4_eb01_ts');
+                    if(oldTs)localStorage.setItem(newNS+'ts',oldTs);
+                    var oldAct=localStorage.getItem('lms4_eb01_active');
+                    if(oldAct)localStorage.setItem(newNS+'active',oldAct);
+                    localStorage.removeItem('lms4_eb01_done');
+                    localStorage.removeItem('lms4_eb01_ts');
+                    localStorage.removeItem('lms4_eb01_active');
+                  }
+                }catch(e){}
+              }
               NS=newNS;_done=[];_active=null;
               _load();_renderWelcome();_renderProgress();_renderList();
             };
@@ -3662,8 +3673,10 @@ function lmsActivateKey(){
 
 function lmsSigninByKey(){
   var key=(document.getElementById('lms-key-input').value||'').trim().toUpperCase();
+  var nameInput=(document.getElementById('lms-key-name').value||'').trim();
   var err=document.getElementById('lms-key-err');
   if(err) err.textContent='';
+  if(!nameInput){if(err)err.textContent='Please enter your first name.';document.getElementById('lms-key-name').focus();return;}
   if(!key){if(err)err.textContent='Please enter your access key.';return;}
   /* validate key format — skip phone check for seamless login */
   var tier=lmsCheckKey(key,null);
@@ -3675,6 +3688,8 @@ function lmsSigninByKey(){
   var existing=_lmsLoad(u,'0');
   if(existing){
     _lmsUser=u;_lmsKey='0';_lmsProgress=existing;
+    // Update name if provided and not yet stored
+    if(nameInput && !_lmsProgress.name) { _lmsProgress.name=nameInput; _lmsStore(); }
     if(typeof lmsSync_pull==='function'){
       lmsSync_pull(u,function(){lmsShowDash();});
     } else {
@@ -3682,7 +3697,7 @@ function lmsSigninByKey(){
     }
   } else {
     _lmsUser=u;_lmsKey='0';
-    _lmsProgress={tier:tier,p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},activatedAt:Date.now()};
+    _lmsProgress={name:nameInput,tier:tier,p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},activatedAt:Date.now()};
     _lmsStore();
     if(typeof lmsSync_pull==='function'){
       lmsSync_pull(u,function(){lmsShowDash();});
@@ -3800,11 +3815,12 @@ function lmsSetLevel(n){
   var tabBg   = {1:'#1a1a1a', 2:'#e8e8e8', 3:'#c0392b', 4:'#e67e22', 5:'#27ae60'};
   var tabFg   = {1:'#ffffff', 2:'#111111', 3:'#ffffff', 4:'#ffffff', 5:'#ffffff'};
   var tabBord = {1:'#444',    2:'#bbb',    3:'#a93226', 4:'#ca6f1e', 5:'#1e8449'};
-  // Pull completion state: eb00=level1 eb01=level2 etc
+  // Pull completion state: eb00=level1 eb01=level2 etc — always read from user-namespaced key
   function _ebPct(lvl){
     try{
-      var ns=(lvl===1)?'lms4_eb00_':(lvl===2)?'lms4_eb01_':(lvl===3)?'lms4_eb02_':(lvl===4)?'lms4_eb03_':'lms4_eb04_';
-      var d=JSON.parse(localStorage.getItem(ns+'done')||'[]');
+      var prefix=_lmsUser?'lms4_'+_lmsUser.toLowerCase()+'_':'lms4_';
+      var suffix=(lvl===1)?'eb00_':(lvl===2)?'eb01_':(lvl===3)?'eb02_':(lvl===4)?'eb03_':'eb04_';
+      var d=JSON.parse(localStorage.getItem(prefix+suffix+'done')||'[]');
       return Math.round(d.length/8*100);
     }catch(e){return 0;}
   }
@@ -3897,7 +3913,7 @@ function lmsShowDash(){
     return;
   }
   var _dn=document.getElementById('lms-dash-name');
-  if(_dn) _dn.textContent='Welcome, '+_lmsUser;
+  if(_dn) _dn.textContent='Welcome, '+((_lmsProgress&&_lmsProgress.name)||_lmsUser);
   var tier=(_lmsProgress||{}).tier||'';
   var tierLabels={ir:'IR Companion',ecsa:'ECSA Companion'};
   var tierEl=document.getElementById('lms-tier-badge');
