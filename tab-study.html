@@ -5684,33 +5684,73 @@ function lmsSetLevel(n){
   });
   // Show mistake review when entering Level 3
   if(n===3) _lmsShowMistakeReview();
-  // Compute readiness predictor when entering Level 4
-  if(n===4) _lmsComputePredictor();
+  // Compute readiness predictor when entering Level 5
+  if(n===5) _lmsComputePredictor();
 }
 function _lmsComputePredictor(){
   try{
-    if(!_lmsProgress) return;
-    var p1Tracks=[1,2,3,4,5,6,7,8,9,10,11,12,13,14]; // Paper 1 tracks
-    var p2Tracks=[15,16,17,18,19];                     // Paper 2 tracks
-    function avgScore(tNums){
-      var total=0,count=0;
-      tNums.forEach(function(n){
-        var key='track'+n+'_pct';
-        if(_lmsProgress[key]!==undefined){total+=parseFloat(_lmsProgress[key])||0;count++;}
-      });
-      return count>0?Math.round(total/count):null;
-    }
-    var s1=avgScore(p1Tracks), s2=avgScore(p2Tracks);
     var el1=document.getElementById('lv4-p1-pred');
     var el2=document.getElementById('lv4-p2-pred');
-    if(el1) el1.textContent = s1!==null ? s1+'%' : '—';
-    if(el2) el2.textContent = s2!==null ? s2+'%' : '—';
-    // Colour code
+    if(!el1&&!el2) return;
+    var user=(_lmsUser||'').toLowerCase();
+    var ns='lms4_'+user+'_';
+
+    /* ── helper: get quiz score from progress or localStorage ── */
+    function getQuizPct(storageKey){
+      /* stored by lmsEndQuiz as JSON {passed,score,total,...} or legacy '1' */
+      var raw=null;
+      try{raw=localStorage.getItem(ns+storageKey);}catch(e){}
+      if(!raw) return null;
+      /* legacy '1' means passed — treat as 100% */
+      if(raw==='1') return 100;
+      try{
+        var obj=JSON.parse(raw);
+        if(obj&&typeof obj.pct==='number') return obj.pct;
+        if(obj&&obj.passed) return 100; /* passed but no pct stored */
+      }catch(e){}
+      return null;
+    }
+
+    /* ── collect all available scores ── */
+    /* Track quiz scores (Level 3 / Level 4 tracks) */
+    var p1Tracks=[1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    var p2Tracks=[15,16,17,18,19];
+    var p1Scores=[], p2Scores=[];
+
+    p1Tracks.forEach(function(n){
+      var key='track'+n+'_pct';
+      var v=(_lmsProgress&&_lmsProgress[key]!==undefined)?parseFloat(_lmsProgress[key]):null;
+      if(v!==null&&!isNaN(v)) p1Scores.push(v);
+    });
+    p2Tracks.forEach(function(n){
+      var key='track'+n+'_pct';
+      var v=(_lmsProgress&&_lmsProgress[key]!==undefined)?parseFloat(_lmsProgress[key]):null;
+      if(v!==null&&!isNaN(v)) p2Scores.push(v);
+    });
+
+    /* Augment with Level 1 and Level 2 quiz scores (foundation for both papers) */
+    var l1pct=getQuizPct('eb00_quiz_passed');
+    var l2pct=getQuizPct('eb01_quiz_passed');
+    if(l1pct!==null){ p1Scores.push(l1pct); p2Scores.push(l1pct); }
+    if(l2pct!==null){ p1Scores.push(l2pct); p2Scores.push(l2pct); }
+
+    /* p1/p2 paper quiz scores if available */
+    var pp1=getQuizPct('p1_quiz_passed'), pp2=getQuizPct('p2_quiz_passed');
+    if(pp1!==null) p1Scores.push(pp1);
+    if(pp2!==null) p2Scores.push(pp2);
+
+    function avg(arr){
+      if(!arr.length) return null;
+      return Math.round(arr.reduce(function(a,b){return a+b;},0)/arr.length);
+    }
+    var s1=avg(p1Scores), s2=avg(p2Scores);
+
     function colourEl(el,score){
       if(!el||score===null) return;
       el.style.color = score>=75?'#1e8540':score>=50?'#c97b2a':'#c0392b';
     }
-    colourEl(el1,s1); colourEl(el2,s2);
+    if(el1){ el1.textContent = s1!==null ? s1+'%' : '—'; colourEl(el1,s1); }
+    if(el2){ el2.textContent = s2!==null ? s2+'%' : '—'; colourEl(el2,s2); }
   }catch(e){}
 }
 function _lmsShowMistakeReview(){
@@ -7006,7 +7046,7 @@ function lmsFinish(){
         certNextBtn.setAttribute('onclick',certCfg.nextFn);
       }
       certBlock.style.display='block';
-      try{localStorage.setItem('lms4_'+(_lmsUser||'')+'_'+certCfg.storageKey,'1');}catch(e){}
+      try{var _cd=JSON.stringify({passed:true,date:Date.now(),pct:pct});localStorage.setItem('lms4_'+(_lmsUser||'')+'_'+certCfg.storageKey,_cd);}catch(e){}
       if(typeof lmsSync_push==='function'&&_lmsUser) lmsSync_push(_lmsUser);
     }
   } else {
