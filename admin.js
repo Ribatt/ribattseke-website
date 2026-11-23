@@ -4996,18 +4996,21 @@ function admIssueKey(){
   var phone=(document.getElementById('adm-new-key-phone')||{}).value||'';
   var firstName=(document.getElementById('adm-new-key-fname')||{}).value||'';
   var secondName=(document.getElementById('adm-new-key-sname')||{}).value||'';
+  var surname=(document.getElementById('adm-new-key-surname')||{}).value||'';
   var email=(document.getElementById('adm-new-key-email')||{}).value||'';
   var tier=(document.getElementById('adm-new-key-tier')||{}).value||'ir';
   var out=document.getElementById('adm-new-key-out');
   phone=phone.replace(/\D/g,'');
   firstName=firstName.trim();
+  surname=surname.trim();
   if(!phone||phone.length<9){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter a valid phone number.</span>';return;}
   if(!firstName){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter the recipient first name.</span>';return;}
+  if(!surname){if(out)out.innerHTML='<span style="color:red;font-size:12px;">Enter the recipient surname.</span>';return;}
   // Check for duplicate before generating
   var scopes=(tier==='both')?['ir','ecsa']:[tier];
   var keys={};
   var label={'ir':'IR Companion','ecsa':'ECSA Companion','both':'Both Companions'}[tier]||tier;
-  var fullName=firstName+(secondName?' '+secondName:'');
+  var fullName=firstName+(secondName?' '+secondName:'')+' '+surname;
   var phone10=phone.replace(/^0/,'').slice(-10).padStart(10,'0');
   var htmlKeys='';
   scopes.forEach(function(sc){
