@@ -3556,7 +3556,7 @@ function lmsCheckKey(key, phoneForVerify){
   };
   var _SKEYS=['eb00_done','eb00_quiz_passed','eb01_done','eb01_quiz_passed',
               'eb02_done','eb02_quiz_passed','eb03_done','eb03_quiz_passed',
-              'eb04_done','eb04_quiz_passed','p1_all_passed','p2_all_passed','level'];
+              'eb04_done','eb04_quiz_passed','p1_all_passed','p2_all_passed','level','0'];
 
   function _loadFb(cb){
     if(_fbReady){if(cb)cb();return;}
@@ -3630,6 +3630,35 @@ function lmsCheckKey(key, phoneForVerify){
                 if(!ex||!ex.passed){
                   try{localStorage.setItem(lk,JSON.stringify(typeof d[k]==='object'?d[k]:{passed:true,date:new Date().toISOString(),syncedFromCloud:true}));}catch(e){}
                 }
+              }
+            } else if(k==='0'){
+              /* Main progress blob — deep merge at session level */
+              var localBlob=null;
+              try{localBlob=JSON.parse(localStorage.getItem(lk));}catch(e){}
+              var remBlob=null;
+              try{remBlob=(typeof d[k]==='object')?d[k]:JSON.parse(d[k]);}catch(e){}
+              if(!remBlob){/* nothing remote — keep local */}
+              else if(!localBlob){
+                try{localStorage.setItem(lk,JSON.stringify(remBlob));}catch(e){}
+              } else {
+                /* Merge: for each paper, keep all sessions that passed on either side */
+                var _PAPERS=['p1','p2','eir1','eir2','s101981','s10292','s10313'];
+                _PAPERS.forEach(function(pap){
+                  if(!remBlob[pap])return;
+                  if(!localBlob[pap])localBlob[pap]={};
+                  Object.keys(remBlob[pap]).forEach(function(sid){
+                    var rem=remBlob[pap][sid];
+                    var loc=localBlob[pap][sid];
+                    if(!loc){localBlob[pap][sid]=rem;}
+                    else if(rem&&rem.passed&&!loc.passed){localBlob[pap][sid]=rem;}
+                    else if(rem&&rem.score&&loc.score&&rem.score>loc.score){
+                      localBlob[pap][sid]=Object.assign({},loc,{score:rem.score,attempts:Math.max(loc.attempts||0,rem.attempts||0)});
+                    }
+                  });
+                });
+                if(!localBlob.name&&remBlob.name)localBlob.name=remBlob.name;
+                if(!localBlob.tier&&remBlob.tier)localBlob.tier=remBlob.tier;
+                try{localStorage.setItem(lk,JSON.stringify(localBlob));}catch(e){}
               }
             } else {
               var ll=parseInt(localStorage.getItem(lk)||'0',10)||0;
@@ -5734,10 +5763,15 @@ function _lmsComputePredictor(){
     if(l1pct!==null){ p1Scores.push(l1pct); p2Scores.push(l1pct); }
     if(l2pct!==null){ p1Scores.push(l2pct); p2Scores.push(l2pct); }
 
-    /* p1/p2 paper quiz scores if available */
-    var pp1=getQuizPct('p1_quiz_passed'), pp2=getQuizPct('p2_quiz_passed');
+    /* p1/p2 paper quiz scores if available (storageKey is p1_all_passed / p2_all_passed) */
+    var pp1=getQuizPct('p1_all_passed'), pp2=getQuizPct('p2_all_passed');
     if(pp1!==null) p1Scores.push(pp1);
     if(pp2!==null) p2Scores.push(pp2);
+    /* also count Level 3/4 eBook quizzes if completed */
+    var l3pct=getQuizPct('eb02_quiz_passed'), l4pct=getQuizPct('eb03_quiz_passed'), l5pct=getQuizPct('eb04_quiz_passed');
+    if(l3pct!==null) p1Scores.push(l3pct);
+    if(l4pct!==null){ p1Scores.push(l4pct); p2Scores.push(l4pct); }
+    if(l5pct!==null){ p1Scores.push(l5pct); p2Scores.push(l5pct); }
 
     function avg(arr){
       if(!arr.length) return null;
