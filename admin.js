@@ -34,12 +34,14 @@ var IR_KEY_NS='biz_ir_issued_';
 var ECSA_KEY_NS='biz_ecsa_issued_';
 
 /* ===== RTT 13-CHARACTER KEY GENERATION =====
- * Format: RTT-{I1}{I2}-{H1}{R1}{R2}-{IR|EC}  — always exactly 13 chars
+ * Format: RTT-{I1}{I2}-{H1}{YY}-{IR|EC}  — always exactly 13 chars
  * I1 = first letter of first name (uppercase)
- * I2 = first letter of second name (uppercase), or "-" if no second name
- * H1 = deterministic char derived from SHA-256-like hash of normalizedEmail+digitsOnlyPhone+"RTT2026"
- * R1,R2 = crypto.getRandomValues — no ambiguous chars (no 0,O,1,I,l)
+ * I2 = first letter of surname (uppercase), or "-" if no surname
+ * H1 = deterministic char derived from hash of normalizedEmail+digitsOnlyPhone+"RTT2026"
+ * YY = 2-digit issue year (e.g. 26 for 2026, 27 for 2027)
  * Scope suffix: "IR" (Installation Rules) or "EC" (ECSA Companion)
+ *
+ * Example: RTT-KM-F26-IR = Khanyisile Magasela, issued 2026, IR Companion
  *
  * Uniqueness: block duplicate active key for same email+phone+scope in localStorage
  * Validation: reject any key not found in IR_KEY_NS or ECSA_KEY_NS storage
@@ -80,12 +82,13 @@ function rttRandomChars(n){
 
 function rttGenerateKey(firstName, secondName, email, phone, scope, surname){
   /* scope: 'ir' → 'IR', 'ecsa' → 'EC'
-   * I1 = first name initial, I2 = surname initial (secondName is middle name, ignored for key) */
+   * Format: RTT-{I1}{I2}-{H}{YY}-{IR|EC}  = 13 chars
+   * I1 = first name initial, I2 = surname initial */
   var initials=rttInitials(firstName, surname||secondName);
   var h1=rttHashChar(email, phone);
-  var r1r2=rttRandomChars(2);
+  var yy=String(new Date().getFullYear()).slice(-2); // "26", "27", etc.
   var sfx=(scope==='ecsa')?'EC':'IR';
-  var key='RTT-'+initials+'-'+h1+r1r2+'-'+sfx;
+  var key='RTT-'+initials+'-'+h1+yy+'-'+sfx;
   /* Verify exactly 13 chars */
   if(key.length!==13){
     console.error('RTT key length error:',key,'length='+key.length);
