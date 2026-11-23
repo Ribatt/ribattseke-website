@@ -307,8 +307,8 @@
         <div class="lms-card">
           <h3>Activate your access</h3>
           <p style="font-size:12.5px;color:var(--fg2);margin-bottom:14px;">Enter the key Tseke sent you via WhatsApp. If you do not have one yet, choose a tier below.</p>
-          <label class="lms-label">Cell number (the one Tseke has for you)</label>
-          <input class="lms-input" id="lms-act-phone" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
+          <label class="lms-label">Last 4 digits of your cell number</label>
+          <input class="lms-input" id="lms-act-phone" type="tel" placeholder="e.g. 3277" maxlength="4" autocomplete="off" inputmode="numeric">
           <label class="lms-label" style="margin-top:10px;">Email address (recovery backup)</label>
           <input class="lms-input" id="lms-act-email" type="email" placeholder="e.g. student@gmail.com" autocomplete="email">
           <label class="lms-label" style="margin-top:10px;">Access key</label>
@@ -343,8 +343,8 @@
         <div class="lms-card">
           <h3>Access key required</h3>
           <p>Enter the access key Tseke sent you to activate your account. Keys are issued per tier after registration or payment confirmation.</p>
-          <label class="lms-label">Cell number (linked to your key)</label>
-          <input class="lms-input" id="lms-access-phone" type="tel" placeholder="e.g. 0824567890" autocomplete="tel">
+          <label class="lms-label">Last 4 digits of your cell number</label>
+          <input class="lms-input" id="lms-access-phone" type="tel" placeholder="e.g. 3277" maxlength="4" autocomplete="off" inputmode="numeric">
           <label class="lms-label" style="margin-top:10px;">Email address (recovery backup)</label>
           <input class="lms-input" id="lms-access-email" type="email" placeholder="e.g. student@gmail.com" autocomplete="email">
           <label class="lms-label" style="margin-top:10px;">Access key</label>
@@ -3149,13 +3149,13 @@ function lmsSubmitKey(){
   var email=(document.getElementById('lms-access-email').value||'').trim().toLowerCase();
   var err=document.getElementById('lms-access-err');
   err.textContent='';
-  if(!phone){err.textContent='Please enter your cell number.';return;}
-  if(!phone.match(/^0[6-9]\d{8}$/)){err.textContent='Enter a valid SA cell number (e.g. 0824567890).';return;}
+  if(!phone){err.textContent='Please enter the last 4 digits of your cell number.';return;}
+  if(!phone.match(/^\d{4}$/)){err.textContent='Enter exactly 4 digits (the last 4 of your cell number, e.g. 3277).';return;}
   if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){err.textContent='Please enter a valid email address for account recovery.';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
   var tier=lmsCheckKey(key, phone);
   if(tier==='phone_mismatch'){
-    err.textContent='This key was issued for a different number. Enter the number Tseke registered for you.';
+    err.textContent='These digits do not match the key Tseke issued. Enter the last 4 digits of the number you gave Tseke.';
     return;
   }
   if(!tier){
@@ -3184,11 +3184,11 @@ function lmsActivateKey(){
   var key=(document.getElementById('lms-act-key').value||'').trim(); // preserve case for Tseke- keys
   var err=document.getElementById('lms-act-err');
   err.textContent='';
-  if(!phone){err.textContent='Please enter your cell number.';return;}
+  if(!phone||!phone.match(/^\d{4}$/)){err.textContent='Enter the last 4 digits of your cell number (e.g. 3277).';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
   var tier=lmsCheckKey(key, phone);
   if(tier==='phone_mismatch'){
-    err.textContent='This key was issued for a different number. Use the number you gave Tseke when you registered.';
+    err.textContent='These digits do not match the key Tseke issued. Enter the last 4 digits of the number you gave Tseke.';
     return;
   }
   if(!tier){err.textContent='Key not recognised. Check the key Tseke sent you.';return;}
