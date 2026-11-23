@@ -3790,13 +3790,16 @@ function lmsSetLevel(n){
       if(!l1passed){
         if(gateMsg) gateMsg.style.display='block';
         setTimeout(function(){if(gateMsg)gateMsg.style.display='none';},3500);
-        return; // Block access
+        // Fall back to Level 1 so the Level 1 panel (and quiz button) stays visible
+        n=1;
       }
       if(gateMsg) gateMsg.style.display='none';
     }catch(e){}
   }
   _lmsCurrentLevel = n;
   try{ localStorage.setItem('lms4_level', n); }catch(e){}
+  // Also persist per-user so different users on the same device don't share level state
+  if(_lmsUser){ try{ localStorage.setItem('lms4_'+_lmsUser.toLowerCase()+'_level', n); }catch(e){} }
   // Show/hide Level 1 cert block based on quiz pass state
   try{
     var eb00CertBlock=document.getElementById('eb00-cert-block');
@@ -3900,7 +3903,12 @@ function _lmsShowMistakeReview(){
 function lmsShowDash(){
   if(!_lmsUser){lmsShowView('lms-login');return;}
   // Apply brand tab colours and active ring on each dash show
-  try{ var _sv=parseInt(localStorage.getItem('lms4_level')||'1')||1; lmsSetLevel(_sv); }catch(e){ lmsSetLevel(1); }
+  // Read user-namespaced level first; shared key is a fallback for legacy compatibility
+  try{
+    var _svKey=_lmsUser?('lms4_'+_lmsUser.toLowerCase()+'_level'):null;
+    var _sv=parseInt((_svKey&&localStorage.getItem(_svKey))||localStorage.getItem('lms4_level')||'1')||1;
+    lmsSetLevel(_sv);
+  }catch(e){ lmsSetLevel(1); }
   // Show payment prompt once for existing accounts who signed up before the payment screen existed
   var payShown=false;
   try{payShown=!!localStorage.getItem(LMS_NS+'pay_prompted_'+_lmsUser);}catch(e){}
@@ -3949,9 +3957,13 @@ function lmsShowDash(){
   // Build volume progress overview and render volume blocks
   try{ _buildTrackDash(prog); }catch(e){}
   lmsShowView('lms-dash');
-  // Restore saved level (default 1 for new students)
+  // Restore saved level (default 1 for new students) — user-namespaced key takes priority
   var savedLevel=1;
-  try{ var sl=localStorage.getItem('lms4_level'); if(sl) savedLevel=parseInt(sl)||1; }catch(e){}
+  try{
+    var _slKey=_lmsUser?('lms4_'+_lmsUser.toLowerCase()+'_level'):null;
+    var sl=(_slKey&&localStorage.getItem(_slKey))||localStorage.getItem('lms4_level');
+    if(sl) savedLevel=parseInt(sl)||1;
+  }catch(e){}
   try{ lmsSetLevel(savedLevel); }catch(e){}
   if(_lmsUser){try{if(typeof window.eb00Reload==='function')window.eb00Reload(_lmsUser);}catch(e){}}
   if(_lmsUser){try{if(typeof window.eb01Reload==='function')window.eb01Reload(_lmsUser);}catch(e){}}
