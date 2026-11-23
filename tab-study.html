@@ -138,6 +138,10 @@
             <button type="button" onclick="(function(){var i=document.getElementById('lms-p');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
           <div class="lms-err" id="lms-login-err"></div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--fg2);margin:8px 0 10px;cursor:pointer;">
+            <input type="checkbox" id="lms-remember" style="width:15px;height:15px;cursor:pointer;" onchange="(function(c){try{localStorage.setItem('lms4__remember',c.checked?'1':'0');}catch(e){}})(this)">
+            Remember me on this device
+          </label>
           <button type="button" class="lms-btn" onclick="lmsSignin()">Sign In</button>
           <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
           <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:1px solid var(--border);"></span><span style="font-size:11px;color:var(--fg3);white-space:nowrap;">or sign in with your Access Key</span><span style="flex:1;border-top:1px solid var(--border);"></span></div>
@@ -2591,7 +2595,7 @@
 
           <div style="background:linear-gradient(135deg,rgba(42,91,168,.1),rgba(42,91,168,.04));border:1.5px solid rgba(42,91,168,.25);border-radius:12px;padding:14px 16px;margin-bottom:16px;">
             <div style="font-size:12px;font-weight:800;color:#2a5ba8;margin-bottom:6px;">&#128202; How the Prediction Works</div>
-            <div style="font-size:12px;color:var(--fg2);line-height:1.65;">This engine analyses the full LMS question pool (2024–Aug 2026 sitting cycle) using two signals: <strong>frequency</strong> (how often a topic appears historically) and <strong>gap density</strong> (how thin coverage is relative to the SANS section depth — indicating overdue topics). Combined score = 50% frequency + 50% gap × section weight. Three strategically different exam papers are generated per sitting.</div>
+            <div style="font-size:12px;color:var(--fg2);line-height:1.65;">This engine analyses the full LMS question pool (2004–Aug 2026 sitting cycle) using two signals: <strong>frequency</strong> (how often a topic appears historically) and <strong>gap density</strong> (how thin coverage is relative to the SANS section depth — indicating overdue topics). Combined score = 50% frequency + 50% gap × section weight. Three strategically different exam papers are generated per sitting.</div>
           </div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
@@ -4928,12 +4932,25 @@ function lmsShowView(id){
   if(t) t.style.display=hide?'none':'';
   var d=document.getElementById('lms-public-desc');
   if(d) d.style.display=hide?'none':'';
-  // Remember last username on sign-in screen
+  // Remember me: restore credentials on sign-in screen
   if(id==='lms-signin'){
     try{
-      var saved=localStorage.getItem(LMS_NS+'_last_u');
+      var remOn=localStorage.getItem('lms4__remember')==='1';
+      var savedU=localStorage.getItem('lms4__saved_u')||'';
+      var savedP=localStorage.getItem('lms4__saved_p')||'';
       var uInp=document.getElementById('lms-u');
-      if(saved&&uInp&&!uInp.value) uInp.value=saved;
+      var pInp=document.getElementById('lms-p');
+      var remCb=document.getElementById('lms-remember');
+      if(remCb) remCb.checked=remOn;
+      if(remOn&&savedU&&savedP){
+        if(uInp&&!uInp.value) uInp.value=savedU;
+        if(pInp&&!pInp.value) pInp.value=savedP;
+        /* auto-login silently */
+        setTimeout(function(){lmsSignin();},120);
+      } else {
+        var lastU=localStorage.getItem(LMS_NS+'_last_u');
+        if(lastU&&uInp&&!uInp.value) uInp.value=lastU;
+      }
     }catch(e){}
   }
 }
@@ -4966,6 +4983,19 @@ function lmsSignin(){
     var p=(document.getElementById('lms-p').value||'').trim();
     /* remember last username across page loads */
     try{if(u)localStorage.setItem(LMS_NS+'_last_u',u);}catch(e){}
+    /* save or clear full credentials if Remember Me is checked */
+    try{
+      var remCb=document.getElementById('lms-remember');
+      if(remCb&&remCb.checked){
+        localStorage.setItem('lms4__saved_u',u);
+        localStorage.setItem('lms4__saved_p',p);
+        localStorage.setItem('lms4__remember','1');
+      } else {
+        localStorage.removeItem('lms4__saved_u');
+        localStorage.removeItem('lms4__saved_p');
+        localStorage.setItem('lms4__remember','0');
+      }
+    }catch(e){}
     if(!u){if(err)err.textContent='Please enter your username.';return;}
     if(!p){if(err)err.textContent='Please enter your PIN.';return;}
     /* try exact match first, then case-insensitive scan for legacy mixed-case keys */
