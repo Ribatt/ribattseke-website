@@ -753,7 +753,7 @@
           </div>
 
           <!-- QUIZ CTA (always accessible) -->
-          <div id="eb00-quiz-cta" style="border:1.5px solid rgba(30,133,64,.25);border-radius:12px;padding:18px 16px;margin-bottom:4px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(30,133,64,.06),rgba(30,133,64,.02));">
+          <div id="eb00-quiz-cta" style="border:1.5px solid rgba(30,133,64,.25);border-radius:12px;padding:18px 16px;margin-bottom:10px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(30,133,64,.06),rgba(30,133,64,.02));">
             <div id="eb00-quiz-progress-hint" style="font-size:11px;color:var(--fg3);margin-bottom:6px;display:none;"><span id="eb00-quiz-lock-pct"></span> — complete remaining segments after the quiz for full mastery</div>
             <div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">Level 1 Checkpoint</div>
             <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:8px;">Orientation Quiz</div>
@@ -967,11 +967,14 @@
           <!-- ── LEVEL 1 CERTIFICATE BLOCK (shown after quiz pass) ── -->
           <div id="eb00-cert-block" style="display:none;border:2px solid var(--amb);border-radius:14px;padding:18px 16px 14px;margin-top:14px;background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.02));text-align:center;">
             <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amb);margin-bottom:4px;">Level 1 Complete</div>
-            <div style="font-size:22px;margin:4px 0;">🏆</div>
+            <div style="font-size:22px;margin:4px 0;">&#127891;</div>
             <div style="font-size:14px;font-weight:800;color:var(--fg);margin-bottom:4px;">Orientation Mastery Achieved</div>
             <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have passed the Level 1 quiz and unlocked Level 2 — Electrical Fundamentals.</div>
-            <div style="font-size:10.5px;color:var(--fg2);margin-bottom:12px;line-height:1.6;">Your Statement of Attainment is available in the quiz results screen. <strong>Level 2 is now unlocked</strong> — tap it in the sidebar to continue your learning journey.</div>
-            <button onclick="lmsSetLevel(2)" style="background:var(--amb);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">→ Go to Level 2</button>
+            <div style="font-size:10.5px;color:var(--fg2);margin-bottom:12px;line-height:1.6;"><strong>Level 2 is now unlocked</strong> — tap it in the sidebar to continue your learning journey.</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button onclick="lmsCertView('eb00')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127891; View Certificate</button>
+              <button onclick="lmsSetLevel(2)" style="background:var(--amb);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#8594; Go to Level 2</button>
+            </div>
           </div>
 
         </div>
@@ -1409,6 +1412,7 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-certs',this)">&#127891; Certificates</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-tickets',this)">&#127903; Support Tickets</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-testlab',this)">&#128300; Student Lab</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -1902,6 +1906,90 @@
           </div>
           <div id="lab-result"></div>
         </div>
+
+        <!-- ===== HUB: IT DEVELOPER HUB ===== -->
+        <div id="hub-ithub" class="hub-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span style="font-size:22px;">&#128295;</span>
+            <div>
+              <h3 style="font-size:15px;font-weight:800;margin:0;">IT Developer Hub</h3>
+              <p style="font-size:11.5px;color:var(--fg3);margin:0;">One-click tools to fix common LMS issues without opening browser DevTools.</p>
+            </div>
+          </div>
+          <div id="ithub-toast" style="display:none;padding:9px 14px;border-radius:8px;font-size:12.5px;font-weight:600;margin:12px 0;background:#1e8540;color:#fff;"></div>
+
+          <!-- SECTION: STUDENT PROGRESS -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:16px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--amb);margin-bottom:12px;">&#127891; Student Progress</div>
+            <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+              <input id="ithub-email" type="email" placeholder="student@example.com" style="flex:1;min-width:200px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:var(--amb);" onclick="ithubUnlockL1()">&#128275; Unlock Level 1 Quiz</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubPassL1()">&#127891; Mark L1 Quiz Passed</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#7b3fa5;" onclick="ithubUnlockL2()">&#128275; Unlock Level 2 Quiz</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubPassL2()">&#127891; Mark L2 Quiz Passed</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c8360c;" onclick="ithubClearProgress()">&#128465; Clear All Progress</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#555;" onclick="ithubForceResync()">&#8635; Force Cloud Resync</button>
+            </div>
+          </div>
+
+          <!-- SECTION: KEY MANAGEMENT -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--amb);margin-bottom:12px;">&#128273; Access Key Management</div>
+            <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+              <input id="ithub-key" type="text" placeholder="Key code e.g. RTT-KM-726-IR" style="flex:1;min-width:180px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);font-family:monospace;">
+              <input id="ithub-key-name" type="text" placeholder="Student name (for new key)" style="flex:1;min-width:160px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:var(--amb);" onclick="ithubAddKey()">&#43; Add Key</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c8360c;" onclick="ithubRemoveKey()">&#8722; Remove Key</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#555;" onclick="ithubCheckKey()">&#128269; Check Key Status</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubListKeys()">&#128229; List All Keys</button>
+            </div>
+            <div id="ithub-key-result" style="margin-top:12px;font-size:12.5px;"></div>
+          </div>
+
+          <!-- SECTION: CONTAMINATED DATA FIX -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#c8360c;margin-bottom:8px;">&#9888;&#65039; Contaminated Data Fixer</div>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">If a student is seeing another user&apos;s progress (cross-contamination), use these tools to clean it up. Enter the contaminated key-namespace (e.g. <code style="background:var(--bg-alt);padding:1px 5px;border-radius:4px;">rtt-km-726-ir</code>) to target it.</p>
+            <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+              <input id="ithub-contam-ns" type="text" placeholder="Key namespace (e.g. rtt-km-726-ir)" style="flex:1;min-width:200px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);font-family:monospace;">
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c8360c;" onclick="ithubClearNamespace()">&#128465; Clear Key Namespace</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#555;" onclick="ithubInspectNamespace()">&#128269; Inspect Namespace</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubScanAll()">&#128270; Scan All Local Keys</button>
+            </div>
+            <div id="ithub-contam-result" style="margin-top:12px;font-size:12px;line-height:1.6;max-height:200px;overflow-y:auto;"></div>
+          </div>
+
+          <!-- SECTION: EBOOK CONTENT -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--amb);margin-bottom:12px;">&#128218; eBook Page Management</div>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Segment counts and page ranges are defined in the SEGS array inside the Level panel scripts. To add, remove or edit a page range: open DevTools → Sources → find the IIFE for the level, or update the source file directly. Future: inline edit form below.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:var(--amb);" onclick="ithubShowSegInfo('eb00')">&#128196; View L1 Segment Info</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubShowSegInfo('eb01')">&#128196; View L2 Segment Info</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#555;" onclick="ithubQuizCount()">&#128202; Quiz Question Counts</button>
+            </div>
+            <div id="ithub-seg-result" style="margin-top:12px;font-size:12px;line-height:1.6;"></div>
+          </div>
+
+          <!-- SECTION: SYSTEM DIAGNOSTICS -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--amb);margin-bottom:12px;">&#128208; System Diagnostics</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:var(--amb);" onclick="ithubSysInfo()">&#9881;&#65039; System Info</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#2a5ba8;" onclick="ithubFirebaseStatus()">&#9729;&#65039; Firebase Status</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#555;" onclick="ithubLocalStorageSize()">&#128190; Storage Size</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;background:#c8360c;" onclick="ithubClearAdminCache()">&#128465; Clear Admin Cache</button>
+            </div>
+            <div id="ithub-sys-result" style="font-size:12px;line-height:1.6;"></div>
+          </div>
+        </div>
+        <!-- END IT DEV HUB -->
 
       <!-- PRINT AREA (hidden, shown on print only) -->
       <div id="biz-print-area"></div>
@@ -3135,28 +3223,266 @@ function labInspect(){
 function labAdminUnlock(email){
   /* Sets all 8 segments as done so progress = 100% → quiz unlocks */
   var key='lms4_'+email+'_eb00_done';
-  try{localStorage.setItem(key,JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){alert('localStorage write failed: '+e.message);return;}
+  try{localStorage.setItem(key,JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){_lmsToast('Write failed: '+e.message,'err');return;}
   if(typeof lmsSync_push==='function') lmsSync_push(email);
-  alert('Level 1 segments marked complete for '+email+'. Quiz is now unlocked — syncing to cloud so the student sees it on all devices.');
+  _lmsToast('Level 1 segments unlocked for '+email+' — syncing to cloud.','ok');
   labInspect();
 }
 function labAdminPassLevel1(email){
   var key='lms4_'+email+'_eb00_quiz_passed';
   var ts=new Date().toISOString();
-  try{localStorage.setItem(key,JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){alert('localStorage write failed: '+e.message);return;}
+  try{localStorage.setItem(key,JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){_lmsToast('Write failed: '+e.message,'err');return;}
   if(typeof lmsSync_push==='function') lmsSync_push(email);
-  alert('Level 1 quiz marked as PASSED for '+email+' (admin override). Certificate and Level 2 access are now unlocked — syncing to cloud so the student sees it on all devices.');
+  _lmsToast('Level 1 quiz marked PASSED for '+email+' (admin override) — syncing.','ok');
   labInspect();
 }
 function labClearStudent(email){
-  if(!confirm('Delete ALL LMS data for '+email+' on this device? This cannot be undone.'))return;
-  var prefix='lms4_'+email+'_';
-  var toRemove=[];
-  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))toRemove.push(k);}}catch(e){}
-  toRemove.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
-  alert('Cleared '+toRemove.length+' key(s) for '+email+'.');
-  document.getElementById('lab-result').innerHTML='';
+  /* Modal confirmation instead of browser confirm() */
+  var mo=document.createElement('div');
+  mo.style.cssText='position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;';
+  mo.innerHTML='<div style="background:var(--bg,#fff);border-radius:14px;padding:26px 22px;max-width:360px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3);">'
+    +'<div style="font-size:26px;margin-bottom:10px;">&#128465;&#65039;</div>'
+    +'<div style="font-size:14px;font-weight:700;margin-bottom:8px;">Clear All Data</div>'
+    +'<p style="font-size:12.5px;color:var(--fg2,#555);margin:0 0 18px;">Delete ALL LMS data for <strong>'+email+'</strong> on this device? This cannot be undone.</p>'
+    +'<div style="display:flex;gap:10px;justify-content:center;">'
+    +'<button onclick="this.closest(\'div[style]\').parentElement.remove()" style="padding:9px 18px;border:1.5px solid var(--border,#ddd);border-radius:8px;background:transparent;color:var(--fg,#333);font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>'
+    +'<button id="lab-clear-confirm-btn" style="padding:9px 18px;border:none;border-radius:8px;background:#c0392b;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Delete</button>'
+    +'</div></div>';
+  document.body.appendChild(mo);
+  mo.querySelector('#lab-clear-confirm-btn').onclick=function(){
+    mo.remove();
+    var prefix='lms4_'+email+'_';
+    var toRemove=[];
+    try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))toRemove.push(k);}}catch(e){}
+    toRemove.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+    _lmsToast('Cleared '+toRemove.length+' key(s) for '+email+'.','ok');
+    document.getElementById('lab-result').innerHTML='';
+  };
 }
+
+/* ═══════════════════════════════════════════════════════
+   IT DEVELOPER HUB — one-click admin tools
+   ═══════════════════════════════════════════════════════ */
+function _ithubToast(msg,type){
+  var el=document.getElementById('ithub-toast');
+  if(!el)return;
+  el.textContent=msg;
+  el.style.display='block';
+  el.style.background=(type==='err')?'#c0392b':(type==='ok')?'#1e8540':'#333';
+  clearTimeout(el._t);
+  el._t=setTimeout(function(){el.style.display='none';},4000);
+}
+function _ithubEmail(){return (document.getElementById('ithub-email')||{}).value.trim().toLowerCase();}
+function _ithubKey(){return (document.getElementById('ithub-key')||{}).value.trim();}
+function ithubUnlockL1(){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  try{localStorage.setItem('lms4_'+em+'_eb00_done',JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  if(typeof lmsSync_push==='function')lmsSync_push(em);
+  _ithubToast('Level 1 quiz unlocked for '+em,'ok');
+  var ri=document.getElementById('lab-email');if(ri){ri.value=em;labInspect();}
+}
+function ithubPassL1(){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  var ts=new Date().toISOString();
+  try{localStorage.setItem('lms4_'+em+'_eb00_quiz_passed',JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  if(typeof lmsSync_push==='function')lmsSync_push(em);
+  _ithubToast('Level 1 quiz marked PASSED for '+em,'ok');
+  var ri=document.getElementById('lab-email');if(ri){ri.value=em;labInspect();}
+}
+function ithubUnlockL2(){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  try{localStorage.setItem('lms4_'+em+'_eb01_done',JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  if(typeof lmsSync_push==='function')lmsSync_push(em);
+  _ithubToast('Level 2 quiz unlocked for '+em,'ok');
+}
+function ithubPassL2(){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  var ts=new Date().toISOString();
+  try{localStorage.setItem('lms4_'+em+'_eb01_quiz_passed',JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  if(typeof lmsSync_push==='function')lmsSync_push(em);
+  _ithubToast('Level 2 quiz marked PASSED for '+em,'ok');
+}
+function ithubClearProgress(){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  var mo=document.createElement('div');
+  mo.style.cssText='position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;';
+  mo.innerHTML='<div style="background:var(--bg,#fff);border-radius:14px;padding:26px 22px;max-width:360px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3);">'
+    +'<div style="font-size:26px;margin-bottom:10px;">&#128465;&#65039;</div>'
+    +'<div style="font-size:14px;font-weight:700;margin-bottom:8px;">Clear All Progress</div>'
+    +'<p style="font-size:12.5px;color:var(--fg2,#555);margin:0 0 18px;">Delete ALL LMS data for <strong>'+em+'</strong> on this device?</p>'
+    +'<div style="display:flex;gap:10px;justify-content:center;">'
+    +'<button onclick="this.closest(\'div[style]\').parentElement.remove()" style="padding:9px 18px;border:1.5px solid var(--border,#ddd);border-radius:8px;background:transparent;color:var(--fg,#333);font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>'
+    +'<button id="ithub-clear-btn" style="padding:9px 18px;border:none;border-radius:8px;background:#c0392b;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Delete</button>'
+    +'</div></div>';
+  document.body.appendChild(mo);
+  mo.querySelector('#ithub-clear-btn').onclick=function(){
+    mo.remove();
+    var prefix='lms4_'+em+'_';var toRemove=[];
+    try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))toRemove.push(k);}}catch(e){}
+    toRemove.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+    _ithubToast('Cleared '+toRemove.length+' key(s) for '+em,'ok');
+  };
+}
+function ithubForceResync(){
+  var em=_ithubEmail();if(!em){_ithubToast('Enter a student email first.','err');return;}
+  if(typeof lmsSync_pull==='function'){
+    lmsSync_pull(em,function(){_ithubToast('Cloud resync done for '+em,'ok');});
+  }else{_ithubToast('Sync function not available.','err');}
+}
+function ithubAddKey(){
+  var key=_ithubKey();var name=(document.getElementById('ithub-key-name')||{}).value.trim();
+  if(!key){_ithubToast('Enter a key code first.','err');return;}
+  var k=key.toLowerCase();
+  var existing=null;
+  try{existing=localStorage.getItem('biz_key_'+k);}catch(e){}
+  if(existing){_ithubToast('Key '+key+' already exists.','err');return;}
+  var rec={key:k,name:name||'',created:new Date().toISOString(),active:true};
+  try{localStorage.setItem('biz_key_'+k,JSON.stringify(rec));}catch(e){_ithubToast('Write failed: '+e.message,'err');return;}
+  _ithubToast('Key '+key+' added'+(name?' for '+name:''),'ok');
+  document.getElementById('ithub-key-result').innerHTML='<span style="color:var(--amb);">&#10003; Key <strong>'+key+'</strong> created'+(name?' — '+name:'')+'</span>';
+}
+function ithubRemoveKey(){
+  var key=_ithubKey();if(!key){_ithubToast('Enter a key code first.','err');return;}
+  var k=key.toLowerCase();
+  try{localStorage.removeItem('biz_key_'+k);}catch(e){_ithubToast('Remove failed: '+e.message,'err');return;}
+  _ithubToast('Key '+key+' removed','ok');
+  document.getElementById('ithub-key-result').innerHTML='<span style="color:#c8360c;">&#128465; Key <strong>'+key+'</strong> removed from local store.</span>';
+}
+function ithubCheckKey(){
+  var key=_ithubKey();if(!key){_ithubToast('Enter a key code first.','err');return;}
+  var k=key.toLowerCase();
+  var rec=null;try{rec=JSON.parse(localStorage.getItem('biz_key_'+k)||'null');}catch(e){}
+  var html='';
+  if(rec){
+    html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);">'
+      +'<strong>'+key+'</strong> — Found<br>'
+      +'Name: '+(rec.name||'<em>no name</em>')+'<br>'
+      +'Created: '+(rec.created||'unknown')+'<br>'
+      +'Active: '+(rec.active?'&#10003; Yes':'&#10007; No')
+      +'</div>';
+  }else{
+    html='<div style="color:#c8360c;">Key <strong>'+key+'</strong> not found in local store. It may live in Firestore — check the cloud.</div>';
+  }
+  document.getElementById('ithub-key-result').innerHTML=html;
+}
+function ithubListKeys(){
+  var keys=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith('biz_key_'))keys.push(k);}}catch(e){}
+  if(!keys.length){document.getElementById('ithub-key-result').innerHTML='<em style="color:var(--fg3);">No keys found in local store.</em>';return;}
+  var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);max-height:200px;overflow-y:auto;">';
+  keys.forEach(function(k){
+    var rec=null;try{rec=JSON.parse(localStorage.getItem(k)||'null');}catch(e){}
+    var code=k.replace('biz_key_','').toUpperCase();
+    html+='<div style="padding:4px 0;border-bottom:1px solid var(--border);font-size:12px;">'
+      +'<strong>'+code+'</strong>'+(rec&&rec.name?' — '+rec.name:'')+'</div>';
+  });
+  html+='</div><div style="font-size:11px;color:var(--fg3);margin-top:6px;">'+keys.length+' key(s) in local store. Cloud keys not shown here.</div>';
+  document.getElementById('ithub-key-result').innerHTML=html;
+}
+function ithubClearNamespace(){
+  var ns=(document.getElementById('ithub-contam-ns')||{}).value.trim().toLowerCase();
+  if(!ns){_ithubToast('Enter a key namespace first.','err');return;}
+  var prefix='lms4_'+ns+'_';var toRemove=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))toRemove.push(k);}}catch(e){}
+  if(!toRemove.length){_ithubToast('No keys found for namespace: '+ns,'err');return;}
+  var mo=document.createElement('div');
+  mo.style.cssText='position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;';
+  mo.innerHTML='<div style="background:var(--bg,#fff);border-radius:14px;padding:26px 22px;max-width:380px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3);">'
+    +'<div style="font-size:14px;font-weight:700;margin-bottom:10px;">Clear Namespace: <code>'+ns+'</code></div>'
+    +'<p style="font-size:12.5px;color:var(--fg2,#555);margin:0 0 18px;">Found <strong>'+toRemove.length+'</strong> key(s). Delete all?</p>'
+    +'<div style="display:flex;gap:10px;justify-content:center;">'
+    +'<button onclick="this.closest(\'div[style]\').parentElement.remove()" style="padding:9px 18px;border:1.5px solid var(--border,#ddd);border-radius:8px;background:transparent;color:var(--fg,#333);font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>'
+    +'<button id="ithub-ns-del-btn" style="padding:9px 18px;border:none;border-radius:8px;background:#c0392b;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Delete All</button>'
+    +'</div></div>';
+  document.body.appendChild(mo);
+  mo.querySelector('#ithub-ns-del-btn').onclick=function(){
+    mo.remove();
+    toRemove.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+    _ithubToast('Cleared '+toRemove.length+' key(s) for namespace '+ns,'ok');
+    document.getElementById('ithub-contam-result').innerHTML='<span style="color:var(--amb);">&#10003; Cleared '+toRemove.length+' entries for <code>'+ns+'</code></span>';
+  };
+}
+function ithubInspectNamespace(){
+  var ns=(document.getElementById('ithub-contam-ns')||{}).value.trim().toLowerCase();
+  if(!ns){_ithubToast('Enter a key namespace first.','err');return;}
+  var prefix='lms4_'+ns+'_';var entries=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith(prefix))entries.push({k:k,v:localStorage.getItem(k)});}}catch(e){}
+  if(!entries.length){document.getElementById('ithub-contam-result').innerHTML='<em style="color:var(--fg3);">No entries for namespace: lms4_'+ns+'_</em>';return;}
+  var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);">';
+  entries.forEach(function(e){
+    html+='<div style="padding:3px 0;border-bottom:1px solid var(--border);font-size:11px;word-break:break-all;">'
+      +'<span style="color:var(--amb);font-weight:600;">'+e.k+'</span> = <span style="color:var(--fg2);">'+e.v+'</span></div>';
+  });
+  html+='</div><div style="font-size:11px;color:var(--fg3);margin-top:4px;">'+entries.length+' entries</div>';
+  document.getElementById('ithub-contam-result').innerHTML=html;
+}
+function ithubScanAll(){
+  var entries=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith('lms4_'))entries.push(k);}}catch(e){}
+  var byNs={};
+  entries.forEach(function(k){var parts=k.replace('lms4_','').split('_');var ns=parts[0];if(!byNs[ns])byNs[ns]=[];byNs[ns].push(k);});
+  var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);max-height:260px;overflow-y:auto;font-size:11.5px;">';
+  Object.keys(byNs).sort().forEach(function(ns){
+    html+='<div style="font-weight:700;color:var(--amb);padding:4px 0 2px;">lms4_'+ns+'_ ('+byNs[ns].length+' keys)</div>';
+    byNs[ns].forEach(function(k){html+='<div style="padding-left:14px;color:var(--fg2);word-break:break-all;">'+k+'</div>';});
+  });
+  html+='</div><div style="font-size:11px;color:var(--fg3);margin-top:4px;">'+entries.length+' total LMS keys across '+Object.keys(byNs).length+' namespace(s)</div>';
+  document.getElementById('ithub-contam-result').innerHTML=html;
+}
+function ithubShowSegInfo(paper){
+  var data=null;
+  if(paper==='eb00'&&typeof LMS_DATA_EB00!=='undefined') data=LMS_DATA_EB00;
+  if(paper==='eb01'&&typeof LMS_DATA_EB01!=='undefined') data=LMS_DATA_EB01;
+  if(!data){document.getElementById('ithub-seg-result').innerHTML='<em>Data not loaded.</em>';return;}
+  var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;">';
+  html+='<strong>'+paper.toUpperCase()+'</strong> — '+data.length+' session(s)<br>';
+  data.forEach(function(s,i){html+='Session '+i+': <em>'+s.title+'</em> — '+s.pool.length+' questions<br>';});
+  html+='</div>';
+  document.getElementById('ithub-seg-result').innerHTML=html;
+}
+function ithubQuizCount(){
+  var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;">';
+  var sets=[['eb00','LMS_DATA_EB00'],['eb01','LMS_DATA_EB01']];
+  sets.forEach(function(pair){
+    try{var d=window[pair[1]];if(d&&d.length){html+=pair[0].toUpperCase()+': '+d.map(function(s){return s.pool.length+' q';}).join(', ')+'<br>';}}catch(e){}
+  });
+  try{if(typeof QUIZ_Q!=='undefined')html+='QUIZ_Q (questions per quiz): '+QUIZ_Q;}catch(e){}
+  html+='</div>';
+  document.getElementById('ithub-seg-result').innerHTML=html;
+}
+function ithubSysInfo(){
+  var html='<div style="background:var(--bg-alt);border-radius:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;line-height:1.8;">';
+  html+='User: '+(_lmsUser||'<em>not logged in</em>')+'<br>';
+  html+='Level: '+(_lmsCurrentLevel||'?')+'<br>';
+  html+='Progress loaded: '+(!!_lmsProgress)+'<br>';
+  html+='LMS_NS: '+(typeof LMS_NS!=='undefined'?LMS_NS:'<em>undefined</em>')+'<br>';
+  try{var total=0;for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);total+=k.length+(localStorage.getItem(k)||'').length;}html+='localStorage bytes (est.): '+total+'<br>';}catch(e){}
+  html+='Firebase loaded: '+(typeof _lmsFbDb!=='undefined'&&!!_lmsFbDb)+'<br>';
+  html+='</div>';
+  document.getElementById('ithub-sys-result').innerHTML=html;
+}
+function ithubFirebaseStatus(){
+  var html='';
+  if(typeof _lmsFbDb!=='undefined'&&_lmsFbDb){html='<span style="color:var(--amb);">&#9989; Firebase connected.</span>';}
+  else{html='<span style="color:#c8360c;">&#10060; Firebase not connected. Check config in admin.js.</span>';}
+  document.getElementById('ithub-sys-result').innerHTML=html;
+}
+function ithubLocalStorageSize(){
+  try{
+    var total=0,lms=0;
+    for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);var sz=k.length+(localStorage.getItem(k)||'').length;total+=sz;if(k.startsWith('lms4_')||k.startsWith('biz_'))lms+=sz;}
+    document.getElementById('ithub-sys-result').innerHTML='<span>Total localStorage: ~'+Math.round(total/1024)+' KB &nbsp;|&nbsp; LMS/biz data: ~'+Math.round(lms/1024)+' KB &nbsp;|&nbsp; Keys: '+localStorage.length+'</span>';
+  }catch(e){document.getElementById('ithub-sys-result').innerHTML='<span style="color:#c8360c;">Could not read storage size.</span>';}
+}
+function ithubClearAdminCache(){
+  var toRemove=[];
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&(k.startsWith('biz_cache_')||k.startsWith('admin_cache_')))toRemove.push(k);}}catch(e){}
+  toRemove.forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+  _ithubToast('Admin cache cleared ('+toRemove.length+' entries).','ok');
+}
+/* ═══════════════════════════════════════════════════════
+   END IT DEVELOPER HUB
+   ═══════════════════════════════════════════════════════ */
 
 function lmsShowView(id){
   document.querySelectorAll('.lms-view').forEach(function(v){v.classList.remove('active');});
@@ -3776,6 +4102,41 @@ function lmsToggleBlock(id){
   document.querySelectorAll('.lms-subject-block').forEach(function(b){ b.classList.add('collapsed'); });
   // If it was closed, open it; if it was open, leave it closed (toggled shut)
   if(!wasOpen) el.classList.remove('collapsed');
+}
+
+/* ── Certificate viewer ───────────────────────────────────────── */
+function lmsCertView(paper){
+  if(!_lmsUser){_lmsToast('Please sign in to view your certificate.','err');return;}
+  var titles={eb00:'Level 1 — Orientation & Regulatory Framework',eb01:'Level 2 — Installation Theory & Practice'};
+  var title=titles[paper]||paper;
+  var passKey='lms4_'+_lmsUser.toLowerCase()+'_'+paper+'_quiz_passed';
+  var passData=null;
+  try{passData=JSON.parse(localStorage.getItem(passKey)||'null');}catch(e){}
+  if(!passData||!passData.passed){_lmsToast('Certificate not yet earned — complete the quiz first.','err');return;}
+  var dateStr='';
+  try{if(passData.date)dateStr=new Date(passData.date).toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'});}catch(e){}
+  var mo=document.createElement('div');
+  mo.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;';
+  var nameDisp=(_lmsProgress&&_lmsProgress.name)||_lmsUser||'Student';
+  mo.innerHTML='<div style="background:#fff;border-radius:16px;padding:0;max-width:540px;width:100%;overflow:hidden;box-shadow:0 12px 60px rgba(0,0,0,.4);">'
+    +'<div style="background:linear-gradient(135deg,#b8860b,#d4a017);padding:24px;text-align:center;">'
+    +'<div style="font-size:36px;margin-bottom:4px;">&#127891;</div>'
+    +'<div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:4px;">Certificate of Completion</div>'
+    +'<div style="font-size:18px;font-weight:700;color:#fff;">Riba T Tseke Electrical Training</div>'
+    +'</div>'
+    +'<div style="padding:28px;text-align:center;">'
+    +'<p style="font-size:12px;color:#888;margin:0 0 8px;">This certifies that</p>'
+    +'<div style="font-size:22px;font-weight:700;color:#1a1a1a;margin-bottom:8px;">'+nameDisp+'</div>'
+    +'<p style="font-size:12px;color:#888;margin:0 0 8px;">has successfully completed</p>'
+    +'<div style="font-size:15px;font-weight:600;color:#333;margin-bottom:14px;">'+title+'</div>'
+    +(dateStr?'<p style="font-size:12px;color:#aaa;margin:0 0 20px;">Completed: '+dateStr+'</p>':'')
+    +'<div style="border-top:1.5px solid #eee;padding-top:16px;">'
+    +'<p style="font-size:11px;color:#bbb;margin:0 0 16px;">This certificate is issued by Riba T Tseke Electrical Training. Contact ribattseke@gmail.com for verification.</p>'
+    +'<button onclick="this.closest(\'div[style]\').parentElement.remove()" style="padding:10px 28px;border:1.5px solid #ddd;border-radius:9px;background:transparent;color:#333;font-size:13px;font-weight:600;cursor:pointer;">Close</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
+  document.body.appendChild(mo);
 }
 
 /* ── Level navigation ──────────────────────────────────────────── */
@@ -4760,30 +5121,79 @@ function lmsStartQuizTrack(paper,sessIdx,trackNum,topicNum){
   _lmsQuizTrackLabel='Track '+trackNum+' · Topic '+topicNum;
   lmsStartQuiz(paper,sessIdx);
 }
-function lmsStartQuiz(paper,sessIdx){
-  if(!_lmsProgress) return;
-  var sess=_getSessionData(paper,sessIdx);
-  if(!sess){ alert('Quiz data not available yet. Please try again or contact support.'); return; }
-  var sid='s'+sessIdx;
-  if(!_lmsProgress[paper]) _lmsProgress[paper]={};
-  if(!_lmsProgress[paper][sid]) _lmsProgress[paper][sid]={attempts:0,passed:false,score:0,failCount:0};
-  var rec=_lmsProgress[paper][sid];
-  if(rec.failCount>=3){
-    if(!confirm('You have failed this session 3 or more times.\n\nPlease arrange one-on-one support with Tseke:\nribattseke@gmail.com\n\nDo you want to try again anyway?')) return;
+function _lmsToast(msg,type){
+  var el=document.getElementById('lms-toast-bar');
+  if(!el){
+    el=document.createElement('div');
+    el.id='lms-toast-bar';
+    el.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;color:#fff;max-width:90vw;text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.22);pointer-events:none;transition:opacity .3s;';
+    document.body.appendChild(el);
   }
-  _lmsPaper=paper; _lmsSess=sessIdx;
-  var pool=sess.pool.slice();
-  for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
-  _lmsPool=pool.slice(0,Math.min(QUIZ_Q,pool.length));
-  _lmsIdx=0; _lmsCorrect=0;
-  _lmsDotResults=new Array(_lmsPool.length).fill(null);
-  var _vt=_lmsQuizTrackLabel||('Topic '+(sessIdx+1));
-  document.getElementById('lms-quiz-title').textContent=_vt+': '+sess.title;
-  _lmsQuizTrackLabel=null;
-  _lmsStartTimer();
-  _lmsRenderDots();
-  lmsRenderQ();
-  lmsShowView('lms-quiz');
+  el.textContent=msg;
+  el.style.background=(type==='err')?'#c0392b':(type==='ok')?'#1e8540':'#333';
+  el.style.opacity='1';
+  clearTimeout(el._t);
+  el._t=setTimeout(function(){el.style.opacity='0';},3200);
+}
+function lmsStartQuiz(paper,sessIdx){
+  try{
+    if(!_lmsProgress){
+      _lmsToast('Please sign in first to take the quiz.','err');
+      lmsShowView('lms-signin');
+      return;
+    }
+    var sess=_getSessionData(paper,sessIdx);
+    if(!sess){ _lmsToast('Quiz data not available yet — please refresh the page or contact support.','err'); return; }
+    var sid='s'+sessIdx;
+    if(!_lmsProgress[paper]) _lmsProgress[paper]={};
+    if(!_lmsProgress[paper][sid]) _lmsProgress[paper][sid]={attempts:0,passed:false,score:0,failCount:0};
+    var rec=_lmsProgress[paper][sid];
+    if(rec.failCount>=3){
+      var el=document.getElementById('lms-quiz-fail-modal');
+      if(!el){
+        el=document.createElement('div');
+        el.id='lms-quiz-fail-modal';
+        el.style.cssText='position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;';
+        el.innerHTML='<div style="background:var(--bg,#fff);border-radius:14px;padding:28px 24px;max-width:380px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.3);">'
+          +'<div style="font-size:28px;margin-bottom:10px;">&#9888;&#65039;</div>'
+          +'<div style="font-size:15px;font-weight:700;margin-bottom:10px;">Multiple Attempts</div>'
+          +'<p style="font-size:13px;color:var(--fg2,#555);line-height:1.6;margin:0 0 18px;">You have failed this session 3 or more times. Please arrange one-on-one support with Tseke:<br><a href="mailto:ribattseke@gmail.com" style="color:var(--amb,#1e8540);">ribattseke@gmail.com</a></p>'
+          +'<div style="display:flex;gap:10px;justify-content:center;">'
+          +'<button onclick="document.getElementById(\'lms-quiz-fail-modal\').remove()" style="padding:9px 18px;border:1.5px solid var(--border,#ddd);border-radius:8px;background:transparent;color:var(--fg,#333);font-size:13px;font-weight:600;cursor:pointer;">Cancel</button>'
+          +'<button onclick="document.getElementById(\'lms-quiz-fail-modal\').remove();_lmsLaunchQuizNow(\''+paper+'\','+sessIdx+')" style="padding:9px 18px;border:none;border-radius:8px;background:var(--amb,#1e8540);color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Try Anyway</button>'
+          +'</div></div>';
+        document.body.appendChild(el);
+      }
+      return;
+    }
+    _lmsLaunchQuizNow(paper,sessIdx);
+  }catch(err){
+    _lmsToast('Quiz error: '+(err&&err.message?err.message:String(err)),'err');
+    console.error('lmsStartQuiz error',err);
+  }
+}
+function _lmsLaunchQuizNow(paper,sessIdx){
+  try{
+    var sess=_getSessionData(paper,sessIdx);
+    if(!sess){_lmsToast('Quiz data missing — contact support.','err');return;}
+    _lmsPaper=paper; _lmsSess=sessIdx;
+    var pool=sess.pool.slice();
+    for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
+    _lmsPool=pool.slice(0,Math.min(QUIZ_Q,pool.length));
+    _lmsIdx=0; _lmsCorrect=0;
+    _lmsDotResults=new Array(_lmsPool.length).fill(null);
+    var _vt=_lmsQuizTrackLabel||('Topic '+(sessIdx+1));
+    var titleEl=document.getElementById('lms-quiz-title');
+    if(titleEl) titleEl.textContent=_vt+': '+sess.title;
+    _lmsQuizTrackLabel=null;
+    _lmsStartTimer();
+    _lmsRenderDots();
+    lmsRenderQ();
+    lmsShowView('lms-quiz');
+  }catch(err){
+    _lmsToast('Failed to load quiz: '+(err&&err.message?err.message:String(err)),'err');
+    console.error('_lmsLaunchQuizNow error',err);
+  }
 }
 
 function _lmsRenderDots(){
