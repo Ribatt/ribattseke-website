@@ -5076,6 +5076,7 @@ function hubRenderers(){
       else if(id==='hub-qbank'){ if(typeof qbankInit==='function')qbankInit(); }
       else if(id==='hub-predictor'){ /* predRun() is triggered by button */ }
       else if(id==='hub-attempts'){ if(typeof attemptsInit==='function')attemptsInit(); }
+      else if(id==='hub-content'){ if(typeof contentInit==='function')contentInit(); }
     },50);
   };
 })();
@@ -6944,3 +6945,129 @@ function finRender(){
 
 })();
 /* ===== END EXAM PREDICTOR ===== */
+
+/* ===== CONTENT EDITOR ===== */
+(function(){
+  'use strict';
+  var _ctLevel=1;
+  var _ctDb=null;
+
+  function _g(id){return document.getElementById(id);}
+
+  function _ctToast(msg,err){
+    var t=_g('content-toast');
+    if(!t)return;
+    t.textContent=msg;
+    t.style.background=err?'#c0392b':'#1e8540';
+    t.style.display='block';
+    setTimeout(function(){t.style.display='none';},3500);
+  }
+
+  function _getDb(cb){
+    if(_ctDb){cb(_ctDb);return;}
+    if(typeof firebase==='undefined'){
+      var s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.1/firebase-app.min.js';
+      s.onload=function(){
+        var s2=document.createElement('script');
+        s2.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/8.10.1/firebase-firestore.min.js';
+        s2.onload=function(){
+          try{
+            if(!firebase.apps.length){
+              firebase.initializeApp({apiKey:'AIzaSyA2dqoAc6ugjVazW4YIAqxDUsqHeUcCAo0',authDomain:'fir-config-552cc.firebaseapp.com',projectId:'fir-config-552cc',appId:'1:656750326751:web:588eeb8c380a64361aca6a'});
+            }
+          }catch(e){}
+          _ctDb=firebase.firestore();
+          cb(_ctDb);
+        };
+        document.head.appendChild(s2);
+      };
+      document.head.appendChild(s);
+    } else {
+      try{
+        if(!firebase.apps.length){
+          firebase.initializeApp({apiKey:'AIzaSyA2dqoAc6ugjVazW4YIAqxDUsqHeUcCAo0',authDomain:'fir-config-552cc.firebaseapp.com',projectId:'fir-config-552cc',appId:'1:656750326751:web:588eeb8c380a64361aca6a'});
+        }
+      }catch(e){}
+      _ctDb=firebase.firestore();
+      cb(_ctDb);
+    }
+  }
+
+  function _docId(lvl){return 'level'+lvl;}
+
+  function _fillForm(d){
+    ['title','summary','yt','pdf','extra','sans','pass','notes'].forEach(function(k){
+      var el=_g('cf-'+k);
+      if(el) el.value=(d&&d[k]!=null)?d[k]:'';
+    });
+  }
+
+  function _readForm(){
+    var obj={};
+    ['title','summary','yt','pdf','extra','sans','pass','notes'].forEach(function(k){
+      var el=_g('cf-'+k);
+      if(el) obj[k]=el.value||'';
+    });
+    obj.level=_ctLevel;
+    obj.updatedAt=(typeof firebase!=='undefined')?firebase.firestore.FieldValue.serverTimestamp():new Date().toISOString();
+    return obj;
+  }
+
+  window.contentTab=function(lvl,btn){
+    _ctLevel=lvl;
+    [1,2,3,4,5].forEach(function(n){
+      var b=_g('ctab-btn-'+n);
+      if(b){b.style.background=n===lvl?'#2a5ba8':'var(--surface)';b.style.color=n===lvl?'#fff':'var(--fg2)';}
+    });
+    var t=_g('content-panel-title');
+    if(t) t.textContent='Level '+lvl+' Content';
+    _fillForm(null);
+    var st=_g('content-load-status');
+    if(st) st.textContent='Switched to Level '+lvl+'. Use "Load from Cloud" to fetch saved data.';
+  };
+
+  window.contentLoad=function(){
+    var st=_g('content-load-status');
+    if(st) st.textContent='Loading...';
+    _getDb(function(db){
+      db.collection('lms_content').doc(_docId(_ctLevel)).get()
+        .then(function(snap){
+          if(snap.exists){
+            _fillForm(snap.data());
+            if(st) st.textContent='Loaded from cloud — Level '+_ctLevel+'.';
+          } else {
+            _fillForm(null);
+            if(st) st.textContent='No data saved yet for Level '+_ctLevel+'.';
+          }
+        })
+        .catch(function(err){
+          if(st) st.textContent='Error: '+err.message;
+          _ctToast('Load failed: '+err.message,true);
+        });
+    });
+  };
+
+  window.contentSave=function(){
+    var data=_readForm();
+    _getDb(function(db){
+      db.collection('lms_content').doc(_docId(_ctLevel)).set(data,{merge:true})
+        .then(function(){
+          _ctToast('Level '+_ctLevel+' content saved to cloud.');
+          var st=_g('content-load-status');
+          if(st) st.textContent='Saved — Level '+_ctLevel+'.';
+        })
+        .catch(function(err){ _ctToast('Save failed: '+err.message,true); });
+    });
+  };
+
+  window.contentClear=function(){
+    _fillForm(null);
+  };
+
+  window.contentInit=function(){
+    contentTab(1,_g('ctab-btn-1'));
+    contentLoad();
+  };
+})();
+/* ===== END CONTENT EDITOR ===== */
