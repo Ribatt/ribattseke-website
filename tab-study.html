@@ -140,6 +140,10 @@
           <div class="lms-err" id="lms-login-err"></div>
           <button type="button" class="lms-btn" onclick="lmsSignin()">Sign In</button>
           <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset account</button>
+          <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:1px solid var(--border);"></span><span style="font-size:11px;color:var(--fg3);white-space:nowrap;">or sign in with your Access Key</span><span style="flex:1;border-top:1px solid var(--border);"></span></div>
+          <input class="lms-input" id="lms-key-input" type="text" placeholder="Access Key — e.g. RTT-KM-726-IR" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:.04em;" oninput="this.value=this.value.toUpperCase()">
+          <div class="lms-err" id="lms-key-err"></div>
+          <button type="button" class="lms-btn-sec" onclick="lmsSigninByKey()" style="font-weight:700;">Sign in with Access Key</button>
           <button type="button" class="lms-btn-sec" onclick="lmsShowView('lms-login')">Back</button>
         </div>
       </div>
@@ -911,6 +915,25 @@
 
             document.addEventListener('visibilitychange',function(){if(document.hidden)_save();});
             window.addEventListener('beforeunload',function(){_save();});
+            window.eb00Reload=function(em){
+              var newNS='lms4_'+em.toLowerCase()+'_eb00_';
+              if(newNS===NS){_load();setTimeout(_render,0);return;}
+              try{
+                var old=localStorage.getItem('lms4_eb00_done');
+                if(old&&!localStorage.getItem(newNS+'done')){
+                  localStorage.setItem(newNS+'done',old);
+                  var oldTs=localStorage.getItem('lms4_eb00_ts');
+                  if(oldTs)localStorage.setItem(newNS+'ts',oldTs);
+                  var oldAct=localStorage.getItem('lms4_eb00_active');
+                  if(oldAct)localStorage.setItem(newNS+'active',oldAct);
+                  localStorage.removeItem('lms4_eb00_done');
+                  localStorage.removeItem('lms4_eb00_ts');
+                  localStorage.removeItem('lms4_eb00_active');
+                }
+              }catch(e){}
+              NS=newNS;_done=[];_active=null;
+              _load();_render();
+            };
             _load();setTimeout(_render,0);
           })();
           </script>
@@ -928,9 +951,8 @@
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <button onclick="window.open('https://drive.google.com/file/d/10j1G3KFRWLjrU5RKwyW0h-oIo2hf929g/view','_blank')" style="display:inline-flex;align-items:center;gap:6px;background:var(--amb);color:#fff;border:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zm-1 9H8v-2h4v2zm4 4H8v-2h8v2z"/></svg>
-                Open PDF on Google Drive →
+                Open eBook Reader
               </button>
-              <span style="font-size:10.5px;color:var(--fg3);align-self:center;font-style:italic;">Also available as a printed companion — see pricing above</span>
             </div>
           </div>
 
@@ -1136,6 +1158,25 @@
               _renderList();
             };
 
+            window.eb01Reload=function(em){
+              var newNS='lms4_'+em.toLowerCase()+'_eb01_';
+              if(newNS===NS){_load();_renderWelcome();_renderProgress();_renderList();return;}
+              try{
+                var old=localStorage.getItem('lms4_eb01_done');
+                if(old&&!localStorage.getItem(newNS+'done')){
+                  localStorage.setItem(newNS+'done',old);
+                  var oldTs=localStorage.getItem('lms4_eb01_ts');
+                  if(oldTs)localStorage.setItem(newNS+'ts',oldTs);
+                  var oldAct=localStorage.getItem('lms4_eb01_active');
+                  if(oldAct)localStorage.setItem(newNS+'active',oldAct);
+                  localStorage.removeItem('lms4_eb01_done');
+                  localStorage.removeItem('lms4_eb01_ts');
+                  localStorage.removeItem('lms4_eb01_active');
+                }
+              }catch(e){}
+              NS=newNS;_done=[];_active=null;
+              _load();_renderWelcome();_renderProgress();_renderList();
+            };
             _load();
             _renderWelcome();
             _renderProgress();
@@ -3619,6 +3660,38 @@ function lmsActivateKey(){
   lmsShowView('lms-welcome');
 }
 
+function lmsSigninByKey(){
+  var key=(document.getElementById('lms-key-input').value||'').trim().toUpperCase();
+  var err=document.getElementById('lms-key-err');
+  if(err) err.textContent='';
+  if(!key){if(err)err.textContent='Please enter your access key.';return;}
+  /* validate key format — skip phone check for seamless login */
+  var tier=lmsCheckKey(key,null);
+  if(!tier||tier==='phone_mismatch'){
+    if(err)err.textContent='Key not recognised. Check the key Tseke sent you.';
+    return;
+  }
+  var u=key.toLowerCase();
+  var existing=_lmsLoad(u,'0');
+  if(existing){
+    _lmsUser=u;_lmsKey='0';_lmsProgress=existing;
+    if(typeof lmsSync_pull==='function'){
+      lmsSync_pull(u,function(){lmsShowDash();});
+    } else {
+      lmsShowDash();
+    }
+  } else {
+    _lmsUser=u;_lmsKey='0';
+    _lmsProgress={tier:tier,p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},activatedAt:Date.now()};
+    _lmsStore();
+    if(typeof lmsSync_pull==='function'){
+      lmsSync_pull(u,function(){lmsShowDash();});
+    } else {
+      lmsShowDash();
+    }
+  }
+}
+
 function lmsDoReset(){
   var u=(document.getElementById('lms-fp-u').value||'').trim();
   var cell=(document.getElementById('lms-fp-cell').value||'').trim().replace(/\s/g,'');
@@ -3864,6 +3937,8 @@ function lmsShowDash(){
   var savedLevel=1;
   try{ var sl=localStorage.getItem('lms4_level'); if(sl) savedLevel=parseInt(sl)||1; }catch(e){}
   try{ lmsSetLevel(savedLevel); }catch(e){}
+  if(_lmsUser){try{if(typeof window.eb00Reload==='function')window.eb00Reload(_lmsUser);}catch(e){}}
+  if(_lmsUser){try{if(typeof window.eb01Reload==='function')window.eb01Reload(_lmsUser);}catch(e){}}
   setTimeout(function(){if(typeof engageCheckPopups==='function')engageCheckPopups();}, 500);
 }
 
