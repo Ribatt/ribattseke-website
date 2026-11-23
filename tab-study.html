@@ -752,7 +752,7 @@
             <div style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:6px;">Level 1 Checkpoint</div>
             <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:8px;">Orientation Quiz</div>
             <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin:0 0 12px;">Test your understanding of the regulatory framework, DoEL and ECSA registration, DHET exam structure and SANS 10142-1 navigation before moving to Level 2.</p>
-            <button style="background:var(--amb);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">Start Level 1 Quiz →</button>
+            <button onclick="lmsStartQuiz('eb00',0)" style="background:var(--amb);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">Start Level 1 Quiz →</button>
           </div>
 
           <!-- SEGMENT ENGINE -->
@@ -1693,6 +1693,19 @@
           </div>
           <p class="lms-score-msg" id="sc-msg"></p>
           <p class="lms-score-sub" id="sc-sub"></p>
+
+          <!-- Level 1 Certificate (shown only when eb00 quiz is passed) -->
+          <div id="sc-cert-block" hidden style="border:2px solid var(--amb);border-radius:12px;padding:20px 18px;margin:14px 0 10px;background:linear-gradient(135deg,rgba(30,133,64,.07),rgba(30,133,64,.02));text-align:center;">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--amb);margin-bottom:8px;">Certificate of Achievement</div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:5px;">Level 1 — Orientation &amp; Regulatory Framework</div>
+            <div style="font-size:12.5px;color:var(--fg2);margin-bottom:5px;">Awarded to</div>
+            <div id="sc-cert-name" style="font-size:17px;font-weight:800;color:var(--amb);margin-bottom:5px;"></div>
+            <div id="sc-cert-date" style="font-size:11.5px;color:var(--fg3);margin-bottom:14px;"></div>
+            <div style="font-size:11.5px;color:var(--fg2);line-height:1.6;margin-bottom:14px;">This student has demonstrated an understanding of the South African regulatory framework, DoEL and ECSA registration pathways, DHET examination structure, and SANS 10142-1 navigation at the orientation level.</div>
+            <div style="font-size:10.5px;color:var(--fg3);margin-bottom:16px;font-style:italic;">ribattseke.co.za · IR Companion · eBook 00</div>
+            <button onclick="lmsGoLevel2()" style="background:var(--amb);color:#fff;border:none;padding:12px 28px;border-radius:9px;font-size:13.5px;font-weight:800;cursor:pointer;width:100%;max-width:280px;">→ Proceed to Level 2</button>
+          </div>
+
           <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
             <button class="lms-btn-retry" onclick="lmsRetry()">Try Again</button>
             <button id="sc-next-btn" class="lms-btn-next" onclick="lmsNextSession()" hidden>Next Session</button>
@@ -4030,7 +4043,45 @@ var _d3s10313=[
   {title:'Air Termination, Down Conductors & Earth Termination',pool:LMS_DATA3.s10313b},
   {title:'Bonding, SPDs, Internal LPS & Maintenance',pool:LMS_DATA3.s10313c}
 ];
+/* ── Level 1 Orientation Quiz data ───────────────────────────── */
+var LMS_DATA_EB00=[{
+  title:'Level 1 Orientation — Regulatory Framework, Registration & Exam',
+  pool:[
+    // === South African Regulatory Framework ===
+    {q:'Which Act of Parliament is the primary legislation under which the Electrical Installation Regulations (EIR) are promulgated?',a:'Electricity Act 41 of 1987',b:'Occupational Health and Safety Act 85 of 1993',c:'National Energy Regulator Act 40 of 2004',d:'Construction Industry Development Board Act 38 of 2000',ans:'B',ref:'eBook 00 Seg 4 — South African Regulatory Framework'},
+    {q:'In the South African legal hierarchy, which of the following ranks HIGHEST?',a:'Ministerial directives',b:'Subordinate regulations',c:'Acts of Parliament',d:'SANS codes and standards',ans:'C',ref:'eBook 00 Seg 4 — South African Regulatory Framework'},
+    {q:'The Electrical Installation Regulations (EIR) are classified as:',a:'Primary legislation',b:'Subordinate regulations under the OHS Act',c:'SANS standards published by SABS',d:'ECSA bylaws',ans:'B',ref:'eBook 00 Seg 4 — South African Regulatory Framework'},
+    {q:'SANS 10142-1 becomes legally enforceable for electrical installations when:',a:'ECSA formally endorses it',b:'DHET approves the content for trade test use',c:'It is referenced or incorporated into the EIR or applicable regulations',d:'A majority of provinces adopt it',ans:'C',ref:'eBook 00 Seg 4 — South African Regulatory Framework'},
+    {q:'Which government department administers the Electrical Installation Regulations under the OHS Act?',a:'Department of Trade, Industry and Competition (DTIC)',b:'Department of Energy (DoE)',c:'Department of Public Works (DPW)',d:'Department of Employment and Labour (DoEL)',ans:'D',ref:'eBook 00 Seg 5 — DoEL & ECSA Registration'},
+    // === DoEL & ECSA Registration ===
+    {q:'DoEL stands for:',a:'Director of Electrical Licensing',b:'Department of Employment and Labour',c:'Division of Electrical Legislation',d:'Department of Electrical Labelling',ans:'B',ref:'eBook 00 Seg 5 — DoEL & ECSA Registration'},
+    {q:'ECSA stands for:',a:'Electrical Contractors Safety Association',b:'Electrical Compliance Standards Authority',c:'Engineering Council of South Africa',d:'Electrical Contractors South Africa',ans:'C',ref:'eBook 00 Seg 5 — DoEL & ECSA Registration'},
+    {q:'Under EIR Regulation 6, which categories of registered person are entitled to issue a Certificate of Compliance (CoC)?',a:'SPT trainee only',b:'IE and MIE',c:'Any ECSA member',d:'Qualified apprentice under supervision',ans:'B',ref:'eBook 00 Seg 5 — DoEL & ECSA Registration'},
+    {q:'An Installation Electrician (IE) obtains registration under:',a:'ECSA Act 114 of 2000',b:'SANS 10142-1 Section 3',c:'EIR Regulation 6 administered by DoEL',d:'OHS Act Section 8',ans:'C',ref:'eBook 00 Seg 5 — DoEL & ECSA Registration'},
+    {q:'A Certificate of Compliance (CoC) for an electrical installation must be issued:',a:'Annually after a periodic inspection',b:'Before electrical supply is connected or given to a new or altered installation',c:'Only after an ECSA engineer inspects the work',d:'At the contractor\'s discretion',ans:'B',ref:'eBook 00 Seg 5 — DoEL & ECSA Registration'},
+    {q:'ECA(SA) in the South African electrical industry stands for:',a:'Engineering Compliance Authority (South Africa)',b:'Electrical Certification Agency of South Africa',c:'Engineering Council Alliance South Africa',d:'Electrical Contractors Association South Africa',ans:'D',ref:'eBook 00 Seg 3 — Definitions & Abbreviations'},
+    // === DHET Exam Structure ===
+    {q:'What is the DHET Programme code for the Installation Electrician / Master Installation Electrician trade test?',a:'51108848',b:'51107777',c:'51009090',d:'51208800',ans:'A',ref:'eBook 00 Seg 2 & 6 — DHET Programme & Exam Structure'},
+    {q:'Paper 1 of the DHET IE exam carries which trade test code?',a:'T890',b:'T180',c:'T880',d:'T280',ans:'C',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'Paper 2 of the DHET IE exam carries which trade test code?',a:'T880',b:'T890',c:'T290',d:'T190',ans:'B',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'How many questions does each DHET IE exam paper (P1 and P2) contain?',a:'5',b:'8',c:'12',d:'10',ans:'D',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'Each question in Paper 1 and Paper 2 of the DHET IE exam is worth:',a:'10 marks',b:'20 marks',c:'50 marks',d:'40 marks',ans:'D',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'Paper 1 (T880) of the DHET IE exam primarily tests knowledge of:',a:'SANS 10142-1 Installation Rules, related standards and legislation',b:'Calculations, cable sizing and verification testing',c:'OHS management systems only',d:'ECSA registration requirements',ans:'A',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'The old trade test code for Paper 1 found on question papers before 2024 is:',a:'T080',b:'T180',c:'T380',d:'T200',ans:'B',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    // === SANS 10142-1 Navigation ===
+    {q:'SANS 10142-1 Edition 3.3 is best described as:',a:'A completely new edition replacing Edition 3.0',b:'The third publication of SANS 10142-1 ever issued',c:'Amendment 3 of Edition 3 of SANS 10142-1',d:'A draft standard pending adoption',ans:'C',ref:'eBook 00 Seg 2 — Scope & Normative References'},
+    {q:'Which Section of SANS 10142-1 covers Scope and Application?',a:'Section 1',b:'Section 2',c:'Section 3',d:'Section 4',ans:'A',ref:'eBook 00 Seg 6 — SANS 10142-1 Navigation'},
+    {q:'Which Section of SANS 10142-1 contains Definitions?',a:'Section 1',b:'Section 2',c:'Section 3',d:'Section 4',ans:'C',ref:'eBook 00 Seg 6 — SANS 10142-1 Navigation'},
+    {q:'A "dated" normative reference in SANS 10142-1 means:',a:'The reference is optional and informative only',b:'Only the specific edition cited applies — later amendments to that edition do not automatically apply',c:'Any current edition of that standard may be used',d:'The reference document has an expiry date',ans:'B',ref:'eBook 00 Seg 2 — Scope & Normative References'},
+    // === Definitions & Abbreviations ===
+    {q:'"Registered person" in the context of the EIR refers to:',a:'Any electrician who is a member of ECA(SA)',b:'A DHET-certified electrical artisan',c:'Someone with an ECSA Pr.Eng qualification',d:'A person registered with DoEL under EIR Regulation 6 to perform electrical installation work',ans:'D',ref:'eBook 00 Seg 3 — Definitions & Abbreviations'},
+    {q:'DHET stands for:',a:'Department of Higher Education and Training',b:'Department of Human Engineering and Technology',c:'Director of Higher Electrical Training',d:'Division of Health, Engineering and Technology',ans:'A',ref:'eBook 00 Seg 3 — Definitions & Abbreviations'},
+    {q:'SANS in the context of electrical standards stands for:',a:'South African National Specification',b:'Safety Assurance for National Systems',c:'South African National Standard',d:'Standards Authority for National Systems',ans:'C',ref:'eBook 00 Seg 3 — Definitions & Abbreviations'}
+  ]
+}];
+
 function _getSessionData(paper,idx){
+  if(paper==='eb00') return LMS_DATA_EB00[idx];
   if(paper==='p1') return LMS_DATA.p1[idx];
   if(paper==='p2') return LMS_DATA.p2[idx];
   if(paper==='eir1') return LMS_DATA2.eir1[idx];
@@ -4196,6 +4247,10 @@ function lmsFinish(){
   var ts=_lmsTimerSec, tm=Math.floor(ts/60), tss=ts%60;
   document.getElementById('sc-time').textContent=(tm?tm+'m ':'')+tss+'s';
 
+  // Hide certificate block by default
+  var certBlock=document.getElementById('sc-cert-block');
+  if(certBlock) certBlock.hidden=true;
+
   if(passed){
     document.getElementById('sc-msg').textContent='✓ Passed!';
     document.getElementById('sc-sub').textContent='Well done. You scored '+pct+'% — above the '+PASS_PCT+'% pass mark. This session is marked complete.';
@@ -4204,6 +4259,19 @@ function lmsFinish(){
     if(nextBtn){
       var allSessions=_getSessionCount(_lmsPaper);
       if(_lmsSess+1<allSessions){nextBtn.hidden=false;}else{nextBtn.hidden=true;}
+    }
+    // Level 1 Checkpoint — show certificate + Level 2 CTA
+    if(_lmsPaper==='eb00' && _lmsSess===0){
+      if(certBlock){
+        var studentName=(_lmsProgress&&_lmsProgress.displayName)?_lmsProgress.displayName:(_lmsUser||'');
+        var today=new Date();
+        var dateStr=today.toLocaleDateString('en-ZA',{day:'2-digit',month:'long',year:'numeric'});
+        document.getElementById('sc-cert-name').textContent=studentName;
+        document.getElementById('sc-cert-date').textContent='Date passed: '+dateStr;
+        certBlock.hidden=false;
+        // Mark Level 1 Checkpoint passed in localStorage
+        try{localStorage.setItem('lms4_'+(_lmsUser||'')+'_eb00_quiz_passed','1');}catch(e){}
+      }
     }
   } else {
     document.getElementById('sc-msg').textContent='Not yet — keep going';
@@ -4217,7 +4285,13 @@ function lmsFinish(){
   lmsShowView('lms-score');
 }
 
+function lmsGoLevel2(){
+  lmsSetLevel(2);
+  lmsShowDash();
+}
+
 function _getSessionCount(paper){
+  if(paper==='eb00') return LMS_DATA_EB00.length;
   if(paper==='p1') return LMS_DATA.p1.length;
   if(paper==='p2') return LMS_DATA.p2.length;
   if(paper==='eir1') return LMS_DATA2.eir1.length;
