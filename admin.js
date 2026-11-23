@@ -122,12 +122,13 @@ function rttIsDuplicateActive(email, phone, scope){
 }
 
 function rttValidateKey(key){
-  /* Returns true if key matches RTT format AND is found in localStorage */
+  /* Returns true if key matches RTT-{I1}{I2}-{P}{YY}-{IR|EC} format (13 chars) AND is found in localStorage */
   if(!key||key.length!==13) return false;
-  if(!/^RTT-[A-Z\-]{2}-[A-Z2-9]{3}-(IR|EC)$/.test(key)) return false;
-  // Also accept legacy RIBA- / Tseke- keys for backwards compat
-  var stored=localStorage.getItem(IR_KEY_NS+key)||localStorage.getItem(ECSA_KEY_NS+key)
-             ||localStorage.getItem(ADM_NS+'k_'+key);
+  // New format: RTT-{2 chars}-{digit}{2 digits}-(IR|EC)
+  if(!/^RTT-[A-Z\-]{2}-\d{3}-(IR|EC)$/i.test(key.toUpperCase())) return false;
+  var ku=key.toUpperCase();
+  var stored=localStorage.getItem(IR_KEY_NS+ku)||localStorage.getItem(ECSA_KEY_NS+ku)
+             ||localStorage.getItem(ADM_NS+'k_'+ku);
   return !!stored;
 }
 

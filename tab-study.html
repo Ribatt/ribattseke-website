@@ -1703,27 +1703,20 @@
           <p class="lms-score-msg" id="sc-msg"></p>
           <p class="lms-score-sub" id="sc-sub"></p>
 
-          <!-- Level 1 Certificate (shown only when eb00 quiz is passed) -->
+          <!-- Level Certificate (shown when a level quiz is passed) -->
           <div id="sc-cert-block" hidden style="border:2px solid var(--amb);border-radius:12px;padding:20px 18px;margin:14px 0 10px;background:linear-gradient(135deg,rgba(30,133,64,.07),rgba(30,133,64,.02));text-align:center;">
             <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--amb);margin-bottom:4px;">Statement of Attainment</div>
-            <div style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:3px;">LMS Level 1 Orientation Mastery</div>
+            <div data-cert-title style="font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:3px;">LMS Level 1 Orientation Mastery</div>
             <div style="font-size:10px;color:var(--fg3);margin-bottom:12px;line-height:1.5;">Independent Study Credential &nbsp;·&nbsp; Not a statutory DHET, ECSA, DoEL or QCTO certificate</div>
             <div style="font-size:11.5px;color:var(--fg2);margin-bottom:4px;">Awarded to</div>
             <div id="sc-cert-name" style="font-size:17px;font-weight:800;color:var(--amb);margin-bottom:4px;"></div>
             <div id="sc-cert-date" style="font-size:11px;color:var(--fg3);margin-bottom:14px;"></div>
             <div style="text-align:left;font-size:11.5px;color:var(--fg2);line-height:1.75;margin-bottom:14px;">
-              This statement confirms the learner has met the pass standard on the Level 1 Orientation Quiz and can demonstrate knowledge of:
-              <ul style="margin:7px 0 0 16px;padding:0;list-style:disc;">
-                <li>South African legal hierarchy and how the OHS Act, EIR and SANS 10142-1 interrelate</li>
-                <li>DoEL registration categories — IE, MIE and their scope under EIR Regulation 6</li>
-                <li>Certificate of Compliance (CoC) liability and issuance obligations</li>
-                <li>ECSA's role and the distinction between DoEL and ECSA registration</li>
-                <li>DHET Programme 51108848 examination structure — Paper 1 (T880) and Paper 2 (T890)</li>
-                <li>SANS 10142-1 edition numbering, section layout and normative reference types</li>
-              </ul>
+              This statement confirms the learner has met the pass standard and can demonstrate knowledge of:
+              <ul data-cert-topics style="margin:7px 0 0 16px;padding:0;list-style:disc;"></ul>
             </div>
-            <div style="font-size:10px;color:var(--fg3);margin-bottom:16px;font-style:italic;">ribattseke.co.za · IR Companion · eBook 00 · Internal LMS Credential</div>
-            <button onclick="lmsGoLevel2()" style="background:var(--amb);color:#fff;border:none;padding:12px 28px;border-radius:9px;font-size:13.5px;font-weight:800;cursor:pointer;width:100%;max-width:280px;">→ Proceed to Level 2</button>
+            <div style="font-size:10px;color:var(--fg3);margin-bottom:16px;font-style:italic;">ribattseke.co.za · IR Companion · Internal LMS Credential</div>
+            <button data-cert-next onclick="lmsGoLevel2()" style="background:var(--amb);color:#fff;border:none;padding:12px 28px;border-radius:9px;font-size:13.5px;font-weight:800;cursor:pointer;width:100%;max-width:280px;">→ Proceed to Level 2</button>
           </div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
@@ -2543,18 +2536,35 @@ var LEGACY_IR_KEYS=[
 var IR_KEY_NS='biz_ir_issued_';    // biz_ir_issued_Tseke-0724748888-20261125
 var ECSA_KEY_NS='biz_ecsa_issued_'; // biz_ecsa_issued_Tseke-0724748888-20261125
 
-function lmsCheckKey(key){
+function lmsCheckKey(key, phoneForVerify){
   if(!key) return null;
   var k=key.trim();
   var ku=k.toUpperCase();
-  // ── New format: Tseke-{10-digit phone}-{8-digit date} ──
+
+  // ── RTT 13-char format: RTT-{I1}{I2}-{P}{YY}-{IR|EC} ──
+  // e.g. RTT-KM-726-IR (K=first name, M=surname, 7=last phone digit, 26=2026)
+  var rttMatch=ku.match(/^RTT-([A-Z\-]{2})-(\d)(\d{2})-(IR|EC)$/);
+  if(rttMatch){
+    var sfx=rttMatch[4]; // 'IR' or 'EC'
+    var pDigit=rttMatch[2]; // last digit of phone embedded in key
+    // Anti-sharing: if caller supplies phone, verify last digit matches
+    if(phoneForVerify){
+      var digits=(phoneForVerify+'').replace(/\D/g,'');
+      var lastDigit=digits.charAt(digits.length-1);
+      if(lastDigit && lastDigit!==pDigit){
+        return 'phone_mismatch'; // signal to caller — do NOT grant access
+      }
+    }
+    return sfx==='EC'?'ecsa':'ir';
+  }
+
+  // ── Legacy Tseke- format: Tseke-{10-digit phone}-{8-digit date} ──
   if(/^Tseke-\d{10}-\d{8}$/i.test(k)){
     try{ if(localStorage.getItem(IR_KEY_NS+k)) return 'ir'; }catch(e){}
     try{ if(localStorage.getItem(ECSA_KEY_NS+k)) return 'ecsa'; }catch(e){}
-    // Valid format — student devices don't carry admin-issued records.
-    // Accept the key as IR Companion access (the primary tier).
     return 'ir';
   }
+
   // ── Legacy keys — all migrate to IR Companion ──
   if(LEGACY_IR_KEYS.indexOf(ku)!==-1) return 'ir';
   return null;
@@ -3143,7 +3153,11 @@ function lmsSubmitKey(){
   if(!phone.match(/^0[6-9]\d{8}$/)){err.textContent='Enter a valid SA cell number (e.g. 0824567890).';return;}
   if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){err.textContent='Please enter a valid email address for account recovery.';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
-  var tier=lmsCheckKey(key);
+  var tier=lmsCheckKey(key, phone);
+  if(tier==='phone_mismatch'){
+    err.textContent='This key was issued for a different number. Enter the number Tseke registered for you.';
+    return;
+  }
   if(!tier){
     err.textContent='Access key not recognised. Check your key and try again.';
     return;
@@ -3172,7 +3186,11 @@ function lmsActivateKey(){
   err.textContent='';
   if(!phone){err.textContent='Please enter your cell number.';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
-  var tier=lmsCheckKey(key);
+  var tier=lmsCheckKey(key, phone);
+  if(tier==='phone_mismatch'){
+    err.textContent='This key was issued for a different number. Use the number you gave Tseke when you registered.';
+    return;
+  }
   if(!tier){err.textContent='Key not recognised. Check the key Tseke sent you.';return;}
   _lmsPhone=phone; _lmsEmail=email;
   _lmsProgress.tier=tier;
@@ -4280,18 +4298,85 @@ function lmsFinish(){
       var allSessions=_getSessionCount(_lmsPaper);
       if(_lmsSess+1<allSessions){nextBtn.hidden=false;}else{nextBtn.hidden=true;}
     }
-    // Level 1 Checkpoint — show certificate + Level 2 CTA
+    // Certificate checkpoints — one per level
+    var certCfg=null;
     if(_lmsPaper==='eb00' && _lmsSess===0){
-      if(certBlock){
-        var studentName=(_lmsProgress&&_lmsProgress.displayName)?_lmsProgress.displayName:(_lmsUser||'');
-        var today=new Date();
-        var dateStr=today.toLocaleDateString('en-ZA',{day:'2-digit',month:'long',year:'numeric'});
-        document.getElementById('sc-cert-name').textContent=studentName;
-        document.getElementById('sc-cert-date').textContent='Date passed: '+dateStr;
-        certBlock.hidden=false;
-        // Mark Level 1 Checkpoint passed in localStorage
-        try{localStorage.setItem('lms4_'+(_lmsUser||'')+'_eb00_quiz_passed','1');}catch(e){}
+      certCfg={
+        label:'Level 1 — Orientation Mastery',
+        nextBtn:'→ Proceed to Level 2',
+        nextFn:'lmsGoLevel2()',
+        storageKey:'eb00_quiz_passed',
+        topics:[
+          'South African legal hierarchy: OHS Act → EIR → SANS 10142-1',
+          'DoEL registration categories — IE and MIE under EIR Regulation 6',
+          'Certificate of Compliance (CoC) liability and issuance obligations',
+          'ECSA\'s role and distinction from DoEL registration',
+          'DHET Programme 51108848 — Paper 1 (T880) and Paper 2 (T890) structure',
+          'SANS 10142-1 edition numbering, section layout and normative references'
+        ]
+      };
+    } else if(_lmsPaper==='p1'){
+      var p1done=true;
+      var p1count=LMS_DATA.p1.length;
+      for(var pi=0;pi<p1count;pi++){var sr='s'+pi;if(!(_lmsProgress.p1[sr]&&_lmsProgress.p1[sr].passed)){p1done=false;break;}}
+      if(p1done){
+        certCfg={
+          label:'Level 3 — Paper 1 Standards Mastery',
+          nextBtn:'→ Proceed to Level 4',
+          nextFn:'lmsSetLevel(4);lmsShowDash();',
+          storageKey:'p1_all_passed',
+          topics:[
+            'OHS Act 85/1993 — duties, liability, inspector powers, offences',
+            'EIR 1992 — registration categories, CoC obligations, accredited person duties',
+            'EMR 2011 — electrical machinery duties, earthing, isolation, competent person requirements',
+            'Construction Regulations 2014 — electrical work in construction environments',
+            'SANS 10142-1 Sections 1–5 and 7 — scope, definitions, compliance, fundamentals, special locations',
+            'SANS 10198-1/2 — cable selection and handling principles',
+            'SANS 10292, SANS 10313, SANS 1507-1 — earthing, lightning protection, cable standards'
+          ]
+        };
       }
+    } else if(_lmsPaper==='p2'){
+      var p2done=true;
+      var p2count=LMS_DATA.p2.length;
+      for(var pi2=0;pi2<p2count;pi2++){var sr2='s'+pi2;if(!(_lmsProgress.p2[sr2]&&_lmsProgress.p2[sr2].passed)){p2done=false;break;}}
+      if(p2done){
+        certCfg={
+          label:'Level 4 — Paper 2 Standards Mastery',
+          nextBtn:'→ View Mock Exam Predictor',
+          nextFn:'lmsSetLevel(4);lmsShowDash();',
+          storageKey:'p2_all_passed',
+          topics:[
+            'SANS 10142-1 Section 6 — wiring systems, cable selection, installation methods, protection',
+            'SANS 10142-1 Section 8 — verification, testing, certification and test report requirements',
+            'SANS 10142-1 Annexes B, C, E, K, L, N, O — load calculation and verification annexures',
+            'SANS 1973-3 — LV switchgear and controlgear assembly safety requirements',
+            'Volt drop, cable sizing and derating calculations with SANS clause references',
+            'Earth loop impedance, PSCC and RCD testing calculations'
+          ]
+        };
+      }
+    }
+    if(certCfg && certBlock){
+      var studentName=(_lmsProgress&&_lmsProgress.displayName)?_lmsProgress.displayName:(_lmsUser||'');
+      var today=new Date();
+      var dateStr=today.toLocaleDateString('en-ZA',{day:'2-digit',month:'long',year:'numeric'});
+      document.getElementById('sc-cert-name').textContent=studentName;
+      document.getElementById('sc-cert-date').textContent='Date awarded: '+dateStr;
+      var certTitle=certBlock.querySelector('[data-cert-title]');
+      if(certTitle) certTitle.textContent='LMS '+certCfg.label;
+      var certTopics=certBlock.querySelector('[data-cert-topics]');
+      if(certTopics){
+        certTopics.innerHTML='';
+        certCfg.topics.forEach(function(t){var li=document.createElement('li');li.textContent=t;certTopics.appendChild(li);});
+      }
+      var certNextBtn=certBlock.querySelector('[data-cert-next]');
+      if(certNextBtn){
+        certNextBtn.textContent=certCfg.nextBtn;
+        certNextBtn.setAttribute('onclick',certCfg.nextFn);
+      }
+      certBlock.hidden=false;
+      try{localStorage.setItem('lms4_'+(_lmsUser||'')+'_'+certCfg.storageKey,'1');}catch(e){}
     }
   } else {
     document.getElementById('sc-msg').textContent='Not yet — keep going';
