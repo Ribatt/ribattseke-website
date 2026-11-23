@@ -914,6 +914,36 @@
             _load();setTimeout(_render,0);
           })();
           </script>
+
+          <!-- ── CORE PDF REFERENCE BLOCK (read-only) ── -->
+          <div id="eb00-pdf-block" style="border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:14px;background:var(--bg-alt);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="6" fill="#e53935"/><path d="M6 4h8l4 4v12H6V4z" fill="rgba(255,255,255,.18)"/><path d="M14 4v4h4" stroke="#fff" stroke-width="1.5" fill="none"/><path d="M6 4v16h12V8l-4-4H6z" stroke="rgba(255,255,255,.8)" stroke-width="1.2" fill="none"/><text x="12" y="16" text-anchor="middle" font-size="5" font-weight="800" fill="#fff" font-family="sans-serif">PDF</text></svg>
+              <div>
+                <div style="font-size:12.5px;font-weight:800;color:var(--fg);">eBook 00 — Core Reference PDF</div>
+                <div style="font-size:10.5px;color:var(--fg3);">Read-only · Level 1 Orientation &amp; Regulatory Framework</div>
+              </div>
+            </div>
+            <p style="font-size:11.5px;color:var(--fg2);line-height:1.6;margin:0 0 10px;">The core PDF is your point of reference. <strong>Read it first, then work through the study tab above.</strong> Use the PDF to look up clauses, tables and diagrams as you study each segment.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button onclick="(function(){var el=document.getElementById('eb00-welcome-banner');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:0,behavior:'smooth'});})()" style="display:inline-flex;align-items:center;gap:6px;background:var(--amb);color:#fff;border:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zm-1 9H8v-2h4v2zm4 4H8v-2h8v2z"/></svg>
+                Open eBook Reader ↑
+              </button>
+              <span style="font-size:10.5px;color:var(--fg3);align-self:center;font-style:italic;">Also available as a printed companion — see pricing above</span>
+            </div>
+          </div>
+
+          <!-- ── LEVEL 1 CERTIFICATE BLOCK (shown after quiz pass) ── -->
+          <div id="eb00-cert-block" style="display:none;border:2px solid var(--amb);border-radius:14px;padding:18px 16px 14px;margin-top:14px;background:linear-gradient(135deg,rgba(30,133,64,.08),rgba(30,133,64,.02));text-align:center;">
+            <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amb);margin-bottom:4px;">Level 1 Complete</div>
+            <div style="font-size:22px;margin:4px 0;">🏆</div>
+            <div style="font-size:14px;font-weight:800;color:var(--fg);margin-bottom:4px;">Orientation Mastery Achieved</div>
+            <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have passed the Level 1 quiz and unlocked Level 2 — Electrical Fundamentals.</div>
+            <div style="font-size:10.5px;color:var(--fg2);margin-bottom:12px;line-height:1.6;">Your Statement of Attainment is available in the quiz results screen. <strong>Level 2 is now unlocked</strong> — tap it in the sidebar to continue your learning journey.</div>
+            <button onclick="lmsSetLevel(2)" style="background:var(--amb);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">→ Go to Level 2</button>
+          </div>
+
         </div>
 
         <!-- ══ LEVEL 2 — ELECTRICAL FUNDAMENTALS ══ -->
@@ -3475,6 +3505,14 @@ function lmsSetLevel(n){
   }
   _lmsCurrentLevel = n;
   try{ localStorage.setItem('lms4_level', n); }catch(e){}
+  // Show/hide Level 1 cert block based on quiz pass state
+  try{
+    var eb00CertBlock=document.getElementById('eb00-cert-block');
+    if(eb00CertBlock && _lmsUser){
+      var eb00PassKey='lms4_'+_lmsUser.toLowerCase()+'_eb00_quiz_passed';
+      eb00CertBlock.style.display=localStorage.getItem(eb00PassKey)?'block':'none';
+    }
+  }catch(e){}
   var panels = {1:'lms-level1-panel',2:'lms-level2-panel',3:'lms-level3-panel',4:'lms-level4-panel',5:'lms-level5-panel'};
   for(var k in panels){
     var el = document.getElementById(panels[k]);
