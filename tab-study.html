@@ -467,6 +467,9 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
             eBook 2 — Level 2 — Electrical Fundamentals
           </button>
+          <div id="lvl2-gate-msg" style="display:none;font-size:11.5px;color:#c0392b;padding:6px 12px;background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.25);border-radius:7px;margin-top:-4px;text-align:center;">
+            Complete the Level 1 quiz first to unlock Level 2.
+          </div>
           <button class="lms-lvl-btn" id="lvl-btn-3" onclick="lmsSetLevel(3)"
             style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#c0392b;color:#fff;border:1.5px solid #a93226;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
@@ -966,7 +969,7 @@
             </div>
             <div style="padding:13px 16px;background:var(--bg);">
               <p style="font-size:12.5px;color:var(--fg2);margin:0 0 10px;line-height:1.6;">20 randomised questions covering Ohm's law, power factor, load calculations (Annex D), voltage drop, fault loop impedance, and earthing. Pass mark: 14/20 (70%). Complete all 8 reading segments to unlock.</p>
-              <button onclick="lmsStartQuiz2 &amp;&amp; lmsStartQuiz2()" style="display:inline-flex;align-items:center;gap:7px;background:#2a5ba8;color:#fff;border:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">Start Quiz →</button>
+              <button onclick="lmsStartQuiz('eb01',0)" style="display:inline-flex;align-items:center;gap:7px;background:#2a5ba8;color:#fff;border:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">Start Quiz →</button>
             </div>
             <!-- Lock overlay -->
             <div id="eb01-quiz-lock" style="position:absolute;inset:0;background:rgba(var(--bg-rgb,255,255,255),.92);backdrop-filter:blur(3px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-radius:12px;">
@@ -3456,6 +3459,20 @@ function lmsToggleBlock(id){
 /* ── Level navigation ──────────────────────────────────────────── */
 var _lmsCurrentLevel = 1;
 function lmsSetLevel(n){
+  // Gate Level 2+ behind Level 1 quiz pass
+  if(n>=2 && _lmsUser){
+    try{
+      var l1key='lms4_'+(_lmsUser||'').toLowerCase()+'_eb00_quiz_passed';
+      var l1passed=!!localStorage.getItem(l1key);
+      var gateMsg=document.getElementById('lvl2-gate-msg');
+      if(!l1passed){
+        if(gateMsg) gateMsg.style.display='block';
+        setTimeout(function(){if(gateMsg)gateMsg.style.display='none';},3500);
+        return; // Block access
+      }
+      if(gateMsg) gateMsg.style.display='none';
+    }catch(e){}
+  }
   _lmsCurrentLevel = n;
   try{ localStorage.setItem('lms4_level', n); }catch(e){}
   var panels = {1:'lms-level1-panel',2:'lms-level2-panel',3:'lms-level3-panel',4:'lms-level4-panel',5:'lms-level5-panel'};
