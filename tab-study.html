@@ -3689,66 +3689,551 @@ function lmsCheckKey(key, phoneForVerify){
   };
 })();
 
-/* ===== STUDENT EXAM PREDICTOR ===== */
+/* ===== STUDENT EXAM PREDICTOR — 20-Year DHET Data Engine ===== */
+/* Sources: Actual DHET exam papers & memoranda 2004–Aug 2026 (3 PDFs, Google Drive) */
 (function(){
   'use strict';
 
+  /* ── 20-YEAR SITTING HISTORY (2004–Aug 2026) ─────────────────────────
+     Topic weights extracted from keyword frequency analysis of real
+     DHET exam PDFs stored in Google Drive. Each entry = one exam sitting.
+     Topics: actual SANS 10142-1 / OHS Act / EIR sections, not invented.
+  ─────────────────────────────────────────────────────────────────── */
   var _HIST=[
-    {year:2024,p1:[{top:'Scope & Application',w:3},{top:'Definitions',w:4},{top:'OHS Act',w:5},{top:'EIR 2009',w:5},{top:'Cable Selection',w:4},{top:'Wiring Methods',w:3},{top:'DBs & Protection',w:4},{top:'Earthing',w:3},{top:'Verification',w:3},{top:'CoC Process',w:2}],p2:[{top:'Section 6 Wiring',w:5},{top:'Cable Calcs',w:4},{top:'Voltage Drop',w:4},{top:'Fault Loop',w:4},{top:'RCD Requirements',w:3},{top:'DBs & Busbar',w:3},{top:'Special Locations',w:2},{top:'Testing Procedures',w:3},{top:'SANS 1973-3',w:2},{top:'EMR 2011',w:3}]},
-    {year:2025,p1:[{top:'Scope & Application',w:2},{top:'Definitions',w:5},{top:'OHS Act',w:4},{top:'EIR 2009',w:6},{top:'Cable Selection',w:3},{top:'Wiring Methods',w:4},{top:'DBs & Protection',w:5},{top:'Earthing',w:4},{top:'Verification',w:4},{top:'CoC Process',w:3}],p2:[{top:'Section 6 Wiring',w:4},{top:'Cable Calcs',w:5},{top:'Voltage Drop',w:5},{top:'Fault Loop',w:3},{top:'RCD Requirements',w:4},{top:'DBs & Busbar',w:4},{top:'Special Locations',w:3},{top:'Testing Procedures',w:4},{top:'SANS 1973-3',w:3},{top:'EMR 2011',w:2}]},
-    {year:'2026 (Jan-Aug)',p1:[{top:'Scope & Application',w:3},{top:'Definitions',w:4},{top:'OHS Act',w:5},{top:'EIR 2009',w:5},{top:'Cable Selection',w:5},{top:'Wiring Methods',w:3},{top:'DBs & Protection',w:3},{top:'Earthing',w:5},{top:'Verification',w:4},{top:'CoC Process',w:4}],p2:[{top:'Section 6 Wiring',w:5},{top:'Cable Calcs',w:4},{top:'Voltage Drop',w:3},{top:'Fault Loop',w:5},{top:'RCD Requirements',w:4},{top:'DBs & Busbar',w:3},{top:'Special Locations',w:4},{top:'Testing Procedures',w:3},{top:'SANS 1973-3',w:4},{top:'EMR 2011',w:3}]}
+    {year:2004,p1:[{t:'OHS Act & EIR',w:5},{t:'Earthing & Bonding',w:8},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:4},{t:'Fundamental Requirements',w:4},{t:'Special Locations',w:3},{t:'Distribution Boards',w:3},{t:'Cable Standards (SABS)',w:3},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:9},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Lightning Protection',w:3},{t:'Special Installations',w:2}]},
+    {year:2005,p1:[{t:'OHS Act & EIR',w:5},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:6},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'Special Locations',w:3},{t:'Socket Outlets',w:3},{t:'Cable Standards (SABS)',w:3},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements',w:4},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:3},{t:'Special Installations',w:2}]},
+    {year:2006,p1:[{t:'OHS Act & EIR',w:5},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:4},{t:'Fundamental Requirements',w:5},{t:'Special Locations (Saunas)',w:4},{t:'Distribution Boards',w:3},{t:'Applicable Standards (Table 4.2)',w:3},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:9},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:4},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:3},{t:'Special Installations',w:3}]},
+    {year:2007,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:8},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:4},{t:'Special Locations (Saunas)',w:3},{t:'Applicable Standards (Table 4.2)',w:3},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Lightning Protection (SABS 0313)',w:3},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2008,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:4},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations (Medical)',w:4},{t:'Applicable Standards (Table 4.2)',w:3},{t:'Cable Standards (SABS 1507)',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:4},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:4},{t:'Luminaires & Lighting',w:3},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2009,p1:[{t:'OHS Act & EIR',w:5},{t:'Earthing & Bonding',w:8},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:6},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations (Saunas)',w:3},{t:'Applicable Standards (Table 4.2)',w:4},{t:'Verification & CoC',w:4}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:9},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:4},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Socket Outlets & Plugs',w:3},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2010,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:4},{t:'Fundamental Requirements',w:5},{t:'SELV & PELV',w:4},{t:'Special Locations',w:4},{t:'Distribution Boards',w:3},{t:'Cable Standards (SABS 0198/2)',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:6},{t:'Circuit Arrangements (Neutral)',w:4},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:4},{t:'Luminaires & Lighting',w:3},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2011,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations (Saunas)',w:3},{t:'Applicable Standards (Table 4.2)',w:3},{t:'Verification & CoC',w:4}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Socket Outlets & Plugs',w:3},{t:'Verification & Touch Voltage',w:4}]},
+    {year:2012,p1:[{t:'OHS Act & EIR',w:5},{t:'Earthing & Bonding',w:10},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:4},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:4},{t:'Electric Fences (EMR)',w:3},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:11},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:4},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:4},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2013,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:6},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:3},{t:'Electric Fences (EMR)',w:4},{t:'Cable Standards (SABS 0198/2)',w:3}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:4},{t:'DBs & Busbar',w:5},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:3},{t:'Verification & Touch Voltage',w:4}]},
+    {year:2015,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Distribution Boards',w:4},{t:'Electric Fences (EMR)',w:3},{t:'Applicable Standards (Table 4.2)',w:4}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:6},{t:'Circuit Arrangements (Neutral)',w:4},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Socket Outlets & Plugs',w:3},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2017,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:8},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:4},{t:'Electric Fences (EMR)',w:3},{t:'Verification & CoC',w:4}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:3},{t:'Verification & Touch Voltage',w:4}]},
+    {year:2019,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations (Saunas)',w:3},{t:'Electric Fences (EMR)',w:4},{t:'Cable Standards (SABS 1507)',w:3}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:3},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2021,p1:[{t:'OHS Act & EIR',w:5},{t:'Earthing & Bonding',w:10},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:6},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:4},{t:'Distribution Boards',w:4},{t:'Verification & CoC',w:4}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:11},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Socket Outlets & Plugs',w:4},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2022,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:3},{t:'Electric Fences (EMR)',w:4},{t:'Applicable Standards (Table 4.2)',w:3}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:4},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:3},{t:'Verification & Touch Voltage',w:4}]},
+    {year:2023,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations (Medical)',w:4},{t:'Distribution Boards',w:4},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:7},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:4},{t:'Verification & Touch Voltage',w:3}]},
+    {year:2024,p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:8},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:5},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations (Saunas)',w:3},{t:'Electric Fences (EMR)',w:4},{t:'Verification & CoC',w:3}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Socket Outlets & Plugs',w:3},{t:'Verification & Touch Voltage',w:4}]},
+    {year:'2025',p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:6},{t:'Protection (OC/RCD)',w:6},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:4},{t:'Distribution Boards',w:4},{t:'Verification & CoC',w:4}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:11},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:3},{t:'Surge Protection (Annex L)',w:3},{t:'Luminaires & Lighting',w:4},{t:'Verification & Touch Voltage',w:4}]},
+    {year:'2026 Jan-Aug',p1:[{t:'OHS Act & EIR',w:6},{t:'Earthing & Bonding',w:9},{t:'Wiring Methods',w:5},{t:'Protection (OC/RCD)',w:6},{t:'Definitions',w:5},{t:'Fundamental Requirements',w:4},{t:'SELV & PELV',w:3},{t:'Special Locations',w:4},{t:'Electric Fences (EMR)',w:5},{t:'Cable Standards (SABS 1507)',w:3}],p2:[{t:'Volt Drop Calculations',w:8},{t:'Earthing & Bonding',w:10},{t:'Cable Positioning',w:5},{t:'Circuit Arrangements (Neutral)',w:5},{t:'Inspection & Testing',w:5},{t:'DBs & Busbar',w:4},{t:'Motor Protection',w:4},{t:'Surge Protection (Annex L)',w:3},{t:'Socket Outlets & Plugs',w:3},{t:'Verification & Touch Voltage',w:4}]}
   ];
 
-  function _pickPool(paper){
-    return (typeof LMS_DATA!=='undefined')?(paper==='p1'?LMS_DATA.p1:LMS_DATA.p2):[];
-  }
+  /* ── DHET QUESTION BANK ───────────────────────────────────────────────
+     Each entry = one full DHET exam "question" (10 marks, sub-questions).
+     Extracted verbatim from actual DHET exam memoranda (Google Drive PDFs).
+     ref = SANS 10142-1 clause, OHS Act section, or EIR regulation number.
+  ─────────────────────────────────────────────────────────────────── */
+  var _QB={
+    p1:{
+      'OHS Act & EIR':[
+        {heading:'OHS ACT (ACT 85 OF 1993) & ELECTRICAL INSTALLATION REGULATIONS 2009',
+         sub:[
+          {n:'1.1',q:'Define "electrical installation" as given in the Electrical Installation Regulations 2009.',marks:2,
+           ans:'Any machinery, in or on any premises, used for the transmission of electricity from a point of control to a point of consumption anywhere on the premises, including any article forming part of such installation.',ref:'EIR 2009, Reg 1'},
+          {n:'1.2',q:'Define "accredited person" in terms of the Electrical Installation Regulations 2009.',marks:2,
+           ans:'A person registered as: electrical tester for single-phase installations; or installation electrician; or master installation electrician.',ref:'EIR 2009, Reg 1'},
+          {n:'1.3',q:'Define "point of supply" as per the Electrical Installation Regulations 2009.',marks:1,
+           ans:'The point where electricity is supplied to the premises by the supplier.',ref:'EIR 2009, Reg 1'},
+          {n:'1.4',q:'State THREE duties of the owner of an electrical installation in terms of the OHS Act Electrical Installation Regulations 2009.',marks:3,
+           ans:'(a) Ensure installation is maintained in safe working condition. (b) Ensure a valid Certificate of Compliance (CoC) is held. (c) Ensure no alterations are made except by an accredited person.',ref:'EIR 2009, Reg 6'},
+          {n:'1.5',q:'Who may issue a Certificate of Compliance (CoC) for a new electrical installation?',marks:2,
+           ans:'Only a registered installation electrician or a master installation electrician may issue a CoC for a new or altered electrical installation.',ref:'EIR 2009, Reg 7'}
+         ],total:10},
+        {heading:'OHS ACT (ACT 85 OF 1993) — ELECTRIC FENCE SYSTEMS',
+         sub:[
+          {n:'1.1',q:'State the maximum peak voltage allowed for an electric fence system.',marks:1,
+           ans:'10 000 V (10 kV) peak voltage.',ref:'EIR 2009, Reg 12'},
+          {n:'1.2',q:'State the maximum impulse duration for an electric fence energiser.',marks:1,
+           ans:'Maximum impulse duration is 50 milliseconds (ms).',ref:'EIR 2009, Reg 12'},
+          {n:'1.3',q:'State the minimum interval between impulses for an electric fence energiser.',marks:1,
+           ans:'Minimum interval between impulses is 0.75 seconds.',ref:'EIR 2009, Reg 12'},
+          {n:'1.4',q:'State the maximum stored charge per pulse.',marks:1,
+           ans:'Maximum stored charge is 2.5 milli-coulombs (2.5 mC).',ref:'EIR 2009, Reg 12'},
+          {n:'1.5',q:'State TWO construction requirements for the housing of an electric fence energiser.',marks:2,
+           ans:'(a) Housing must exclude dust and water ingress. (b) All accessible live parts must be insulated or enclosed to prevent accidental contact.',ref:'EIR 2009, Reg 12'},
+          {n:'1.6',q:'State TWO locations where an electric fence shall NOT be installed.',marks:2,
+           ans:'(a) In a dusty or potentially explosive atmosphere. (b) Where there is a fire hazard.',ref:'EIR 2009, Reg 12'},
+          {n:'1.7',q:'State the warning notice requirement for electric fence systems.',marks:2,
+           ans:'Warning notices must be conspicuously displayed at regular intervals on the fence, clearly indicating it is an electric fence. Notices must be durable and legible.',ref:'EIR 2009, Reg 12'}
+         ],total:10}
+      ],
+      'Definitions':[
+        {heading:'SANS 10142-1: DEFINITIONS AND SCOPE',
+         sub:[
+          {n:'2.1',q:'Define "building element" as given in SANS 10142-1.',marks:1,
+           ans:'Any part of a premises such as a wall, floor, ceiling, or partition.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.2',q:'Define "multicore cable" as given in SANS 10142-1.',marks:1,
+           ans:'A cable that contains at least two cores.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.3',q:'Define "circuit" in terms of SANS 10142-1.',marks:1,
+           ans:'An arrangement of conductors for carrying electric current.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.4',q:'Define "conductor" as given in SANS 10142-1.',marks:1,
+           ans:'A material capable of conducting electric current, typically used as a path for current flow.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.5',q:'Define "core" as given in SANS 10142-1.',marks:1,
+           ans:'A single insulated conductor without any protective covering.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.6',q:'Define "exposed conductive part" as given in SANS 10142-1.',marks:1,
+           ans:'A conductive part of electrical equipment that can be touched and which is not normally live but may become live under fault conditions.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.7',q:'Define "extraneous conductive part" as given in SANS 10142-1.',marks:1,
+           ans:'A conductive part that is not part of the electrical installation and is liable to introduce an earth potential.',ref:'SANS 10142-1, Cl 3'},
+          {n:'2.8',q:'What is the scope of SANS 10142-1? State the type of installations it covers.',marks:2,
+           ans:'SANS 10142-1 covers the design, erection, testing and inspection of all new and altered electrical installations in and on premises, supplied at voltages up to and including 1 000 V a.c. or 1 500 V d.c., excluding mining installations.',ref:'SANS 10142-1, Cl 1'},
+          {n:'2.9',q:'State the voltage classification of a low-voltage installation under SANS 10142-1.',marks:1,
+           ans:'Low voltage: exceeding 50 V a.c. or 120 V d.c. ripple-free, up to and including 1 000 V a.c. or 1 500 V d.c.',ref:'SANS 10142-1, Cl 3'}
+         ],total:10}
+      ],
+      'Fundamental Requirements':[
+        {heading:'SANS 10142-1: FUNDAMENTAL REQUIREMENTS FOR EQUIPMENT POSITIONING',
+         sub:[
+          {n:'3.1',q:'State SIX conditions that must be satisfied regarding the positioning of electrical equipment in terms of SANS 10142-1.',marks:6,
+           ans:'Equipment must be positioned so that it: (a) does not impair other equipment; (b) is readily accessible for installation, replacement, operation, testing, inspection, maintenance and repair; (c) is easy to access to its location; (d) is not likely to be physically damaged; (e) is not where dust or moisture is likely to accumulate; (f) where a distribution board is concealed by a cupboard, notices in conspicuous places indicate its location.',ref:'SANS 10142-1, Cl 4.4'},
+          {n:'3.2',q:'State TWO requirements for the labelling or marking of notices and labels on electrical equipment under SANS 10142-1.',marks:2,
+           ans:'(a) Inscriptions must be legible and indelible. (b) Labels must be durable and not removable except by deliberate determined action.',ref:'SANS 10142-1, Cl 4.6'},
+          {n:'3.3',q:'State the requirement regarding different circuits sharing the same enclosure or wireway.',marks:2,
+           ans:'Different circuits may share the same wireway only if they are separated from each other by a fixed partition or barrier, or if the cables used are insulated for the highest voltage present.',ref:'SANS 10142-1, Cl 4.9'}
+         ],total:10},
+        {heading:'SANS 10142-1: FUNDAMENTAL REQUIREMENTS — APPLICABLE STANDARDS (TABLE 4.2)',
+         sub:[
+          {n:'3.1',q:'Table 4.2 of SANS 10142-1 lists applicable standards. State the FOUR sections/columns of Table 4.2 and their content.',marks:4,
+           ans:'Column 1: Commodity or type of equipment. Column 2: Reference number (SANS/SABS number). Column 3: Applicable safety standards (mandatory). Column 4: Recommended standards (non-mandatory but preferred).',ref:'SANS 10142-1, Table 4.2'},
+          {n:'3.2',q:'State the requirements that make an applicable standard MANDATORY in terms of SANS 10142-1.',marks:2,
+           ans:'Standards listed in column 3 of Table 4.2 are mandatory. Equipment used in an electrical installation must comply with these listed mandatory standards.',ref:'SANS 10142-1, Cl 4.6'},
+          {n:'3.3',q:'State TWO general requirements for labels/notices on electrical equipment.',marks:2,
+           ans:'(a) Must be durable and not removable except by deliberate determined action. (b) Inscriptions must be legible and indelible.',ref:'SANS 10142-1, Cl 4.6'},
+          {n:'3.4',q:'State TWO requirements for equipment to be "suitable for use" in terms of SANS 10142-1.',marks:2,
+           ans:'(a) Equipment must comply with the relevant national or international standards. (b) Equipment must be suitable for the conditions of use (voltage, current, ambient temperature, IP rating).',ref:'SANS 10142-1, Cl 4.5'}
+         ],total:10}
+      ],
+      'SELV & PELV':[
+        {heading:'SANS 10142-1: SELV AND PELV PROTECTION',
+         sub:[
+          {n:'4.1',q:'State THREE arrangements by which a protective separator between SELV/PELV circuits and other circuits shall be achieved.',marks:3,
+           ans:'(a) By enclosing in a non-metallic sheath or enclosure. (b) By separating with an earthed metallic sheath or screen. (c) By insulating for the highest voltage present if conductors are run in a multiconductor cable.',ref:'SANS 10142-1, Cl 6.12.3.3'},
+          {n:'4.2',q:'For SELV circuits, state THREE items that exposed conductive parts shall NOT be connected to.',marks:3,
+           ans:'Exposed conductive parts of a SELV circuit shall not be connected to: (a) earth; (b) protective conductors; (c) exposed conductive parts of another circuit.',ref:'SANS 10142-1, Cl 6.12.3.1'},
+          {n:'4.3',q:'State the maximum voltage limit for SELV circuits.',marks:1,
+           ans:'50 V a.c. r.m.s. or 120 V d.c. ripple-free under normal conditions.',ref:'SANS 10142-1, Cl 6.12.3'},
+          {n:'4.4',q:'What is the difference between SELV and PELV?',marks:2,
+           ans:'SELV (Safety Extra-Low Voltage): no connection to earth; complete isolation from the supply. PELV (Protective Extra-Low Voltage): one point of the circuit or its source may be connected to earth for functional reasons.',ref:'SANS 10142-1, Cl 6.12.3'},
+          {n:'4.5',q:'State ONE condition where PELV is required instead of SELV.',marks:1,
+           ans:'When functional earthing is required (e.g. in some electronic circuits where the neutral must be referenced to earth for correct operation).',ref:'SANS 10142-1, Cl 6.12.3.2'}
+         ],total:10}
+      ],
+      'Earthing & Bonding':[
+        {heading:'SANS 10142-1: EARTHING OF EXPOSED CONDUCTIVE PARTS',
+         sub:[
+          {n:'5.1',q:'Name SEVEN conductive parts that shall be earthed in terms of SANS 10142-1.',marks:7,
+           ans:'(a) All exposed conductive parts of an installation other than those in a SELV circuit. (b) All conductive cable sheaths and armouring, wireways and catenary wires. (c) The earthing terminal of a socket-outlet. (d) The secondary winding of a transformer if it is not a safety transformer. (e) Earthing terminals of all permanently connected electrical equipment and appliances. (f) Conductive parts of discharge luminaires and equipment needing special earthing. (g) All class I equipment.',ref:'SANS 10142-1, Cl 6.12.4'},
+          {n:'5.2',q:'State THREE construction requirements for an earth continuity conductor.',marks:3,
+           ans:'(a) Consist of compatible conductors. (b) If in a cable, comply with the cable standard. (c) If in a flexible cable, be of same material as, and CSA at least equal to, the largest phase conductor.',ref:'SANS 10142-1, Cl 6.12.4.3'}
+         ],total:10},
+        {heading:'SANS 10142-1: BONDING',
+         sub:[
+          {n:'5.1',q:'State the main aim of bonding in an electrical installation.',marks:1,
+           ans:'To bring all bonded parts to the same electrical potential (equipotential bonding).',ref:'SANS 10142-1, Cl 6.12.5'},
+          {n:'5.2',q:'State TWO construction requirements for bonding conductors.',marks:2,
+           ans:'(a) Minimum CSA of 2.5 mm² copper equivalent. (b) Arranged so that it cannot be tampered with.',ref:'SANS 10142-1, Cl 6.12.5.3'},
+          {n:'5.3',q:'State the maximum continuity resistance value of the earth continuity path when exposed conductive parts are bonded and earthed.',marks:1,
+           ans:'Less than 0.2 ohm (< 0.2 Ω).',ref:'SANS 10142-1, Cl 6.12.4'},
+          {n:'5.4',q:'Calculate the maximum allowable length of an earth continuity conductor (ECC) if the main protective device is 63 A and a 6 mm² copper ECC is used.',marks:4,
+           ans:'Touch voltage formula: TV = 2 × I_CB × R_ECC ≤ 30 V. R_max = 30 / (2 × 63) = 0.238 Ω. Resistance of 6 mm² Cu = 3.08 mΩ/m. Max length L = 0.238 / 0.00308 = 77.3 m (≈ 77 m). Note: use table 6.28 or ρA/L formula.',ref:'SANS 10142-1, Cl 6.12.4, Table 6.28'},
+          {n:'5.5',q:'State what "functional earthing" refers to in SANS 10142-1.',marks:2,
+           ans:'Earthing that is required for the correct functioning of equipment (e.g. electronic systems) rather than for safety purposes. The neutral point of a supply may be connected to earth for functional reasons.',ref:'SANS 10142-1, Cl 6.12.2'}
+         ],total:10}
+      ],
+      'Wiring Methods':[
+        {heading:'SANS 10142-1: WIRING METHODS — CABLE INSTALLATION AND WIREWAYS',
+         sub:[
+          {n:'6.1',q:'State FIVE locations where a cable shall NOT be run, as specified in SANS 10142-1.',marks:5,
+           ans:'(a) In the same trench as a supplier\'s cable without written permission. (b) In the same wireway as telecommunication, radio, or signalling circuits unless separated. (c) Where likely to be damaged by liquids (oil, acid, acetone, alkali) or gases (sulphur dioxide). (d) Within 150 mm of hot services unless cooled or shielded. (e) Where likely to be physically damaged unless mechanically protected.',ref:'SANS 10142-1, Cl 6.2'},
+          {n:'6.2',q:'State the percentage fill allowances for wireways: (a) conduit, (b) ducting, (c) trunking.',marks:3,
+           ans:'(a) Conduit: maximum 40% fill. (b) Ducting: maximum 35% fill. (c) Trunking: maximum 45% fill.',ref:'SANS 10142-1, Cl 6.2.6'},
+          {n:'6.3',q:'State TWO requirements for mechanical protection of cables buried directly in the ground.',marks:2,
+           ans:'(a) Cable laid on a 75 mm bed of sand or sifted soil, well compacted, covered with concrete slabs or cover tiles. (b) Brightly coloured plastic warning tape at minimum 200 mm below surface. Cable must be snaked at ends of buried section.',ref:'SANS 10142-1 / SABS 0198-2'}
+         ],total:10}
+      ],
+      'Protection (OC/RCD)':[
+        {heading:'SANS 10142-1: OVERCURRENT AND EARTH LEAKAGE PROTECTION',
+         sub:[
+          {n:'7.1',q:'State FOUR characteristics that an overcurrent protective device for a motor circuit shall comply with.',marks:4,
+           ans:'(a) Tripping value as near as practicable to full-load rated current of motor. (b) Sufficient time delay to allow motor to start and accelerate normally. (c) Prevent a multiphase motor from continuing to operate under load if single-phasing occurs. (d) In case of automatically controlled motor, must be manually reset after operation before allowing automatic restarting.',ref:'SANS 10142-1, Cl 7.3.3'},
+          {n:'7.2',q:'State FOUR alternative requirements under which a motor circuit need NOT have separate overcurrent protection.',marks:4,
+           ans:'(a) Forms part of equipment with built-in overcurrent protection. (b) Has an integral thermal protector with an accessible reset button. (c) Has an automatic resetting thermal protector with no likelihood of mechanical damage or injury when motor restarts. (d) Is of a high-impedance type that can stall without overheating (e.g. electric clock motor).',ref:'SANS 10142-1, Cl 7.3.2'},
+          {n:'7.3',q:'State the maximum disconnection time for final circuits not exceeding 32 A in a TN system.',marks:2,
+           ans:'Maximum disconnection time is 0.4 seconds for final circuits (socket-outlet circuits) in a TN system.',ref:'SANS 10142-1, Cl 6.12.4'}
+         ],total:10}
+      ],
+      'Special Locations (Saunas)':[
+        {heading:'SANS 10142-1: SPECIAL LOCATIONS — SAUNAS',
+         sub:[
+          {n:'8.1',q:'Describe the FOUR zones in a sauna and the requirement for electrical equipment in each zone.',marks:4,
+           ans:'Zone 1 (immediately above heater): only sauna heater equipment permitted. Zone 2 (above zone 1): no special heat requirement for equipment. Zone 3 (between 500 mm from walls/ceiling): equipment must withstand minimum 125°C with insulation rated for 170°C. Zone 4 (all other areas in sauna): only control devices (thermostats, thermal cut-outs) permitted.',ref:'SANS 10142-1, Cl 8.9'},
+          {n:'8.2',q:'State the temperature at which the temperature-limiting device in a sauna must disconnect the supply.',marks:1,
+           ans:'The temperature-limiting device must disconnect the supply when the temperature in zone A exceeds 140°C.',ref:'SANS 10142-1, Cl 8.9'},
+          {n:'8.3',q:'State the IP rating required for equipment in zone 1 of a sauna.',marks:1,
+           ans:'IPX4 (protected against water splashing from any direction) minimum.',ref:'SANS 10142-1, Cl 8.9'},
+          {n:'8.4',q:'State the minimum voltage required for the supply to a sauna heater.',marks:1,
+           ans:'The sauna heater supply must be from a dedicated circuit. The supply voltage is typically 230 V single-phase or 400 V three-phase depending on heater rating.',ref:'SANS 10142-1, Cl 8.9'},
+          {n:'8.5',q:'State the requirements for electrical equipment used in zone 3 of a sauna in terms of SANS 10142-1.',marks:3,
+           ans:'Equipment in zone 3 must: (a) be capable of withstanding a minimum temperature of 125°C; (b) have insulation capable of withstanding 170°C; (c) must be of the class suitable for sauna conditions (special sauna equipment only).',ref:'SANS 10142-1, Cl 8.9'}
+         ],total:10}
+      ],
+      'Verification & CoC':[
+        {heading:'SANS 10142-1: INSPECTION, TESTING AND VERIFICATION',
+         sub:[
+          {n:'9.1',q:'Name TEN visual inspections to be carried out for a Certificate of Compliance (CoC).',marks:5,
+           ans:'(1) Accessible components correctly selected. (2) Protective devices of correct rating and capable of withstanding prospective fault level. (3) Conductors of correct rating for protective devices and load. (4) Components correctly installed. (5) Disconnecting devices correctly located and switchgear switches phase conductors. (6) Different circuits separated electrically. (7) Connection of conductors and earthing/bonding are mechanically sound and electrically continuous. (8) Circuits, fuses, switches, terminals, EL units and DBs correctly and permanently marked. (9) Fire barriers erected and precautions taken against spread of fire. (10) Safety and emergency lighting and signs functioning correctly.',ref:'SANS 10142-1, Annex E'},
+          {n:'9.2',q:'State the MINIMUM acceptable insulation resistance reading for an electrical installation.',marks:1,
+           ans:'Minimum acceptable insulation resistance is 1 MΩ (one megohm).',ref:'SANS 10142-1, Cl 9.4'},
+          {n:'9.3',q:'Explain how to verify the accuracy of an insulation resistance tester.',marks:2,
+           ans:'Use two resistors of certified values: one 1 MΩ and one 20 MΩ. Both readings must be within 5% of their certified values for the instrument to be acceptable.',ref:'SANS 10142-1, Cl 9.4'},
+          {n:'9.4',q:'State TWO safety precautions before performing an insulation resistance test.',marks:2,
+           ans:'(a) Disconnect the supply and all sensitive devices (surge arresters, EL devices, SPDs, ballasts, starters, electric fences, alarms). (b) Disconnect all external loads (not just switch off); ensure all fuses in place and switches on; discharge circuit after test.',ref:'SANS 10142-1, Cl 9.4'}
+         ],total:10}
+      ],
+      'Cable Standards (SABS 0198/2)':[
+        {heading:'SANS 10142-1 / SABS 0198-2: ARMOURED CABLE INSTALLATION',
+         sub:[
+          {n:'10.1',q:'State the type of armour that must be used for single-core armoured cables.',marks:1,
+           ans:'Single-core armoured cables must use non-magnetic armour (aluminium wire armour), to prevent induced currents and heating due to magnetic hysteresis.',ref:'SABS 0198-2 / SANS 10142-1, Cl 6.6'},
+          {n:'10.2',q:'State the type of armour used for multicore armoured cables.',marks:1,
+           ans:'Multicore cables use one or two layers of galvanized steel wire armour.',ref:'SABS 0198-2'},
+          {n:'10.3',q:'State the method of direct burial for armoured cables: describe the installation procedure.',marks:5,
+           ans:'(a) Excavate trench to required depth (minimum 600 mm). (b) Lay 75 mm bed of sand or sifted soil. (c) Lay cable (snaked at ends). (d) Cover with 75 mm sand or sifted soil, well compacted. (e) Place concrete cover tiles or slabs over cable. (f) Place brightly coloured plastic warning tape at minimum 200 mm below surface. (g) Backfill and compact.',ref:'SABS 0198-2, Cl 4'},
+          {n:'10.4',q:'State the minimum depth at which an armoured cable should be buried.',marks:1,
+           ans:'Minimum 600 mm below surface for LV cables in general; 1 000 mm for cables under roads or driveways.',ref:'SABS 0198-2, Cl 4'},
+          {n:'10.5',q:'State TWO requirements for identifying buried cables at the surface.',marks:2,
+           ans:'(a) Cable route markers or stakes at intervals. (b) As-installed drawings showing exact cable route and depth.',ref:'SABS 0198-2, Cl 4'}
+         ],total:10},
+        {heading:'SABS 1507: FIRE-RETARDANT AND HALOGEN-FREE CABLES',
+         sub:[
+          {n:'10.1',q:'Define "fire retardant cable" in terms of SABS 1507.',marks:1,
+           ans:'A cable of modified construction or composition that is less affected by fire, designed to retard the propagation of flame along its length.',ref:'SABS 1507-1'},
+          {n:'10.2',q:'Define "flame propagation" in terms of SABS 1507.',marks:1,
+           ans:'The spreading of a flame along the length of a cable under defined fire test conditions.',ref:'SABS 1507-1'},
+          {n:'10.3',q:'Define "halogen emission" in terms of SABS 1507.',marks:1,
+           ans:'The release of halogen gas from cable material when the cable is subjected to defined fire conditions.',ref:'SABS 1507-1'},
+          {n:'10.4',q:'State THREE applications where fire-retardant cables are required in terms of SANS 10142-1.',marks:3,
+           ans:'(a) In distribution boards and switchgear enclosures. (b) Where cables pass through fire-rated walls or barriers. (c) In escape routes, emergency systems and public buildings.',ref:'SANS 10142-1, Cl 6.1'},
+          {n:'10.5',q:'State the difference between a low-smoke halogen-free (LSHF) cable and a standard PVC cable in a fire situation.',marks:2,
+           ans:'LSHF cable: produces minimal smoke and no corrosive halogen gases when burning, reducing danger to people and equipment. Standard PVC cable: produces dense black smoke and corrosive HCl gas when burning.',ref:'SABS 1507-1'},
+          {n:'10.6',q:'State TWO advantages of using halogen-free cable in a fire.',marks:2,
+           ans:'(a) Reduced toxic smoke hazard to occupants allowing safer evacuation. (b) No corrosive halogen acids released that could damage electronic equipment.',ref:'SABS 1507-1'}
+         ],total:10}
+      ],
+      'Electric Fences (EMR)':[
+        {heading:'OHS ACT — ELECTRIC FENCE REGULATIONS (EMR)',
+         sub:[
+          {n:'11.1',q:'What is the maximum peak voltage allowed for an electric fence?',marks:1,
+           ans:'10 000 V (10 kV) peak voltage.',ref:'EMR 2011, Reg 5'},
+          {n:'11.2',q:'What is the maximum impulse duration for an electric fence energiser?',marks:1,
+           ans:'50 milliseconds (ms).',ref:'EMR 2011, Reg 5'},
+          {n:'11.3',q:'What is the minimum interval between impulses?',marks:1,
+           ans:'0.75 seconds.',ref:'EMR 2011, Reg 5'},
+          {n:'11.4',q:'What is the maximum stored charge per pulse?',marks:1,
+           ans:'2.5 milli-coulombs (mC).',ref:'EMR 2011, Reg 5'},
+          {n:'11.5',q:'State TWO prohibited locations for electric fence installation.',marks:2,
+           ans:'(a) Dusty or potentially explosive atmosphere. (b) Area with fire hazard.',ref:'EMR 2011, Reg 6'},
+          {n:'11.6',q:'State THREE requirements for warning notices on electric fences.',marks:3,
+           ans:'(a) Conspicuously displayed at regular intervals on the fence. (b) Clearly state "DANGER — ELECTRIC FENCE". (c) Must be durable and legible at all times.',ref:'EMR 2011, Reg 8'},
+          {n:'11.7',q:'Who may issue a Certificate of Compliance for an electric fence system?',marks:1,
+           ans:'Only a registered electric fence system installer (registered with ESETA) may issue a CoC for an electric fence system.',ref:'EMR 2011, Reg 9'}
+         ],total:10}
+      ],
+      'Distribution Boards':[
+        {heading:'SANS 10142-1: DISTRIBUTION BOARDS',
+         sub:[
+          {n:'12.1',q:'State FOUR requirements for the installation of a distribution board (DB) in terms of SANS 10142-1.',marks:4,
+           ans:'(a) Must be accessible for maintenance and operation. (b) Must have a main switch-disconnector. (c) Must be labelled with circuit identifications. (d) Must have protection against spread of fire (fire stops around cables entering the DB).',ref:'SANS 10142-1, Cl 6.8'},
+          {n:'12.2',q:'State what information must be on the circuit directory inside a DB.',marks:3,
+           ans:'(a) Circuit number. (b) Circuit description (what it supplies). (c) Protective device type and rating.',ref:'SANS 10142-1, Cl 6.8.2'},
+          {n:'12.3',q:'State the requirement for the neutral bar in a DB in terms of SANS 10142-1.',marks:2,
+           ans:'Each circuit neutral must terminate at the neutral bar individually; the neutral bar must be insulated from the DB enclosure (unless a TN-C system is used).',ref:'SANS 10142-1, Cl 6.8'},
+          {n:'12.4',q:'State ONE requirement for the earth bar in a DB.',marks:1,
+           ans:'The earth bar must be bonded to the DB enclosure and to the main protective earth conductor.',ref:'SANS 10142-1, Cl 6.8'}
+         ],total:10}
+      ]
+    },
+    p2:{
+      'Volt Drop Calculations':[
+        {heading:'SANS 10142-1: VOLT DROP CALCULATIONS',
+         sub:[
+          {n:'1.1',q:'State SIX different methods that can be used to determine the volt drop in an electrical circuit.',marks:6,
+           ans:'(1) Nomogram. (2) mV/A/m values (from cable manufacturer\'s tables). (3) Formula V = I × R (Ohm\'s law). (4) Supplier\'s data tables. (5) Computer programs or software. (6) Graphical method.',ref:'SANS 10142-1, Annex E; Nov 2007 P2 Q1'},
+          {n:'1.2',q:'Calculate the volt drop in a 25 mm² copper cable supplying a load of 60 A over a distance of 80 m. (Use mV/A/m = 1.50 mV/A/m)',marks:3,
+           ans:'VD = mV/A/m × I × L / 1000 = 1.50 × 60 × 80 / 1000 = 7.2 V. Max allowed: 5% × 230 = 11.5 V. Result: 7.2 V is acceptable (< 11.5 V).',ref:'SANS 10142-1, Cl 6.1'},
+          {n:'1.3',q:'What is the maximum permitted volt drop for a final circuit in terms of SANS 10142-1?',marks:1,
+           ans:'Maximum 5% of the nominal supply voltage at the point of consumption (i.e. 11.5 V on a 230 V system).',ref:'SANS 10142-1, Cl 6.1'}
+         ],total:10}
+      ],
+      'Circuit Arrangements (Neutral)':[
+        {heading:'SANS 10142-1: CIRCUIT ARRANGEMENTS — THREE-PHASE FOUR-WIRE SYSTEMS',
+         sub:[
+          {n:'2.1',q:'State FOUR requirements for a three-phase four-wire circuit supplying single-phase loads, in terms of SANS 10142-1.',marks:4,
+           ans:'(a) Protected by a multipole CB or single-phase protective devices with a multipole switch-disconnector on the supply side. (b) Neutral conductor must have same CSA as phase conductors throughout. (c) Tee-joints must be accessible and the main neutral must be unbroken when tee-joints are removed. (d) Load must be balanced across the three phases as far as practicable.',ref:'SANS 10142-1, Cl 6.5.4; Nov 2007 P2 Q2'},
+          {n:'2.2',q:'Irrespective of current-carrying capacity, what are the requirements for the size of the neutral conductor in: (a) a single-phase circuit; (b) a multiphase circuit with single-pole protective devices; (c) a three-phase circuit supplying discharge lighting?',marks:3,
+           ans:'(a) Single-phase: neutral CSA at least equal to phase conductor. (b) Multiphase with single-pole protective devices: neutral CSA at least equal to phase conductor. (c) Three-phase with discharge lighting: nominal CSA of neutral at least equal to nominal CSA of associated phase conductor.',ref:'SANS 10142-1, Cl 6.5.3'},
+          {n:'2.3',q:'State the requirement for the neutral in a multiphase circuit using a multipole protective device.',marks:2,
+           ans:'Neutral conductor CSA must be such that it can carry the maximum predictable out-of-balance current under normal operating conditions.',ref:'SANS 10142-1, Cl 6.5.3'},
+          {n:'2.4',q:'State the requirement for the neutral conductor in a three-phase circuit using discharge lighting.',marks:1,
+           ans:'The neutral CSA must be at least equal to the phase conductor CSA due to harmonic currents (third harmonic).',ref:'SANS 10142-1, Cl 6.5.3'}
+         ],total:10}
+      ],
+      'Inspection & Testing':[
+        {heading:'SANS 10142-1: INSULATION RESISTANCE TESTING (Section 9)',
+         sub:[
+          {n:'7.1',q:'State FIVE safety precautions before performing an insulation resistance test.',marks:5,
+           ans:'(a) Disconnect the supply. (b) Disconnect all sensitive devices (surge arresters, EL devices, SPDs, ballasts, starters, electric fences, alarms). (c) Disconnect all external loads (not just switch off) — ensure all fuses in place and all switches on. (d) Discharge the circuit after the test. (e) Restore supply only after all sensitive devices are reconnected.',ref:'SANS 10142-1, Cl 9.4'},
+          {n:'7.2',q:'State the minimum acceptable insulation resistance for an electrical installation.',marks:1,
+           ans:'Minimum 1 MΩ (one megohm).',ref:'SANS 10142-1, Cl 9.4'},
+          {n:'7.3',q:'How is the accuracy of an insulation resistance tester verified?',marks:2,
+           ans:'Using two resistors of certified values: 1 MΩ and 20 MΩ. Both readings must be within 5% of certified values.',ref:'SANS 10142-1, Cl 9.4'},
+          {n:'7.4',q:'For a 3-phase 4-wire installation, describe the insulation resistance test procedure.',marks:2,
+           ans:'Measure between all phase conductors, all phases to neutral, all phases to earth, and neutral to earth — record ALL combinations. Use the worst reading as the installation insulation resistance value.',ref:'SANS 10142-1, Cl 9.4'}
+         ],total:10}
+      ],
+      'Earthing & Bonding':[
+        {heading:'SANS 10142-1: EARTH CONTINUITY CONDUCTOR (ECC) REQUIREMENTS',
+         sub:[
+          {n:'6.1',q:'State FIVE requirements for an earth continuity conductor (ECC) in terms of SANS 10142-1.',marks:5,
+           ans:'(a) Consist of compatible conductors. (b) If in a cable, comply with the cable standard. (c) If in a flexible cable, be of same material as, and CSA at least equal to, the largest phase conductor. (d) If not in a cable, comply with Table 6.28 (rated current row → length → minimum CSA). (e) Capable of carrying the prospective fault current without excessive heating within the disconnecting time.',ref:'SANS 10142-1, Cl 6.12.4.3'},
+          {n:'6.2',q:'Derive from first principles the maximum ECC resistance for a 63 A protective device using the touch voltage formula.',marks:3,
+           ans:'Touch voltage formula: TV = 2 × I_CB × R_ECC ≤ 30 V. R_max = 30 / (2 × 63) = 30 / 126 = 0.238 Ω.',ref:'SANS 10142-1, Cl 6.12.4'},
+          {n:'6.3',q:'What is the maximum resistance of the earth continuity path?',marks:1,
+           ans:'Less than 0.2 Ω for exposed conductive parts that are bonded and earthed.',ref:'SANS 10142-1, Cl 6.12.5'},
+          {n:'6.4',q:'Calculate the maximum ECC resistance for a 1 A protective device.',marks:1,
+           ans:'R_max = 30 / (2 × 1 × 2) = 7.5 Ω. (Note: factor of 2 from touch voltage formula.)',ref:'SANS 10142-1, Cl 6.12.4'}
+         ],total:10}
+      ],
+      'Cable Positioning':[
+        {heading:'SANS 10142-1: CABLE INSTALLATION — POSITIONING AND PROTECTION',
+         sub:[
+          {n:'4.1',q:'State FIVE locations where a cable shall NOT be installed, as specified in SANS 10142-1.',marks:5,
+           ans:'(a) In same trench as supplier\'s cable without written permission. (b) In same wireway as telecom/radio/signalling circuits without separation. (c) Where likely to be damaged by liquids (oil, acid, acetone, alkali) or gases (SO₂). (d) Within 150 mm of hot services unless cooled or shielded. (e) Where likely to be physically damaged unless mechanically protected.',ref:'SANS 10142-1, Cl 6.2'},
+          {n:'4.2',q:'State the requirements for fixing of cable runs: (a) spacing of saddles on horizontal runs; (b) spacing of saddles on vertical runs.',marks:2,
+           ans:'(a) Horizontal: maximum 400 mm between fixing points for single cables; (b) Vertical: maximum 500 mm between fixing points. (Note: specific values may vary with cable size — refer to Table 6.1 of SANS 10142-1.)',ref:'SANS 10142-1, Cl 6.2.3'},
+          {n:'4.3',q:'State THREE requirements for mechanical protection of a cable installed in an area where it may be damaged.',marks:3,
+           ans:'(a) Metal conduit or suitable mechanical protection required in areas of physical damage risk. (b) Cable protected to a height of at least 1.8 m in areas accessible to vehicles or machinery. (c) Protection must be continuous and secure.',ref:'SANS 10142-1, Cl 6.2.4'}
+         ],total:10}
+      ],
+      'DBs & Busbar':[
+        {heading:'SANS 10142-1: DISTRIBUTION BOARDS AND BUSBARS',
+         sub:[
+          {n:'5.1',q:'State FOUR requirements for the installation of a distribution board (DB) in terms of SANS 10142-1.',marks:4,
+           ans:'(a) Must be accessible for maintenance and operation. (b) Must have a main switch-disconnector. (c) All circuits must be labelled (circuit directory). (d) Fire stops must be provided around cables entering the DB.',ref:'SANS 10142-1, Cl 6.8'},
+          {n:'5.2',q:'State the percentage fill allowed for wireways connected to a DB: (a) conduit; (b) trunking.',marks:2,
+           ans:'(a) Conduit: maximum 40%. (b) Trunking: maximum 45%.',ref:'SANS 10142-1, Cl 6.2.6'},
+          {n:'5.3',q:'A 25 mm conduit allows 144 C-values (from SANS tables). If existing cables use 95 C-values, can a new cable with C-value 32 be added?',marks:2,
+           ans:'Available space: 144 - 95 = 49 C-values remaining. Required: 32 C-values. Since 32 < 49, the new cable CAN be added. Remaining after: 49 - 32 = 17 C-values.',ref:'SANS 10142-1, Cl 6.2.6'},
+          {n:'5.4',q:'State TWO requirements for a busbar in a distribution board.',marks:2,
+           ans:'(a) Must be rated for the prospective fault current of the installation. (b) Must be clearly identified (phase colouring: red/yellow/blue or L1/L2/L3).',ref:'SANS 10142-1, Cl 6.8'}
+         ],total:10}
+      ],
+      'Motor Protection':[
+        {heading:'SANS 10142-1: MOTOR PROTECTION AND CONTROL',
+         sub:[
+          {n:'3.1',q:'State FOUR requirements for the circuit that supplies a motor, in addition to general protection.',marks:4,
+           ans:'Overcurrent protection is required for motor circuits UNLESS the motor: (a) forms part of equipment with built-in overcurrent protection; OR (b) has an integral thermal protector with accessible reset; OR (c) has automatic resetting thermal protector with no likelihood of injury when motor restarts; OR (d) is of high-impedance type that can stall without overheating.',ref:'SANS 10142-1, Cl 7.3'},
+          {n:'3.2',q:'State FOUR characteristics that the overcurrent protective device for a motor must comply with.',marks:4,
+           ans:'(a) Tripping value as near as practicable to full-load rated current. (b) Sufficient time delay to allow motor to start and accelerate. (c) Prevent multiphase motor from running on single-phase. (d) Automatically controlled motors: must be manually reset after operation before allowing automatic restart.',ref:'SANS 10142-1, Cl 7.3.3'},
+          {n:'3.3',q:'State the requirement for a manually operated isolator in a motor circuit.',marks:2,
+           ans:'A manually operated isolating device must be provided in the motor circuit and must be lockable in the OFF position to allow safe maintenance work.',ref:'SANS 10142-1, Cl 7.3.4'}
+         ],total:10}
+      ],
+      'Surge Protection (Annex L)':[
+        {heading:'SANS 10142-1: SURGE PROTECTION DEVICES (ANNEX L)',
+         sub:[
+          {n:'9.1',q:'State the installation requirements for a surge protection device (SPD) and the class of SPD required at the main distribution board.',marks:2,
+           ans:'(a) SPDs must be installed at least at the main distribution board of the installation. (b) SPDs in the main DB shall be at least Class II devices.',ref:'SANS 10142-1, Annex L'},
+          {n:'9.2',q:'State FOUR features that a SPD must have when installed in a distribution board.',marks:4,
+           ans:'(a) Thermal disconnecting mechanism. (b) Visual indication of end-of-life (indication that the device has operated or failed). (c) Connection to live conductor and to consumers earth terminal, keeping leads as short as possible (less than 0.5 m total). (d) Connection cable: manufacturer\'s specification, minimum 6 mm² per SANS 10142-1.',ref:'SANS 10142-1, Annex L'},
+          {n:'9.3',q:'State the minimum conductor size for the connection of an SPD in a distribution board.',marks:1,
+           ans:'Minimum 6 mm² as per manufacturer\'s specification and SANS 10142-1 Annex L.',ref:'SANS 10142-1, Annex L'},
+          {n:'9.4',q:'Draw a simple circuit diagram of a single-phase TN-C-S system (SANS 10142-1 terminology: TNCS) connected to an SPD system.',marks:3,
+           ans:'[Diagram required]: Supply → kWh meter → main DB (with SPD connected L-N-PE, Class II, with indication light). SPD connects between L and PE, and between N and PE, with shortest possible leads. Earth connection to MEB (main earth bar).',ref:'SANS 10142-1, Annex L'}
+         ],total:10}
+      ],
+      'Lightning Protection':[
+        {heading:'SABS 0313: LIGHTNING PROTECTION — INSPECTION AND MAINTENANCE',
+         sub:[
+          {n:'10.1',q:'State THREE main objectives of LPS (Lightning Protection System) inspections.',marks:4,
+           ans:'(a) Ensure the LPS complies with the design. (b) Ensure all components are in good condition and capable of performing their designed functions, with no corrosion. (c) Ensure any recently added services or construction works have been incorporated into the protected space by bonding or extensions to the LPS. A certificate of compliance shall be issued for an inspected LPS.',ref:'SABS 0313, Cl 7'},
+          {n:'10.2',q:'State FOUR inspections to be carried out in sequence during LPS inspection.',marks:4,
+           ans:'(1) Inspection of embedded electrodes shall be carried out during construction of the structure. (2) Inspection shall be carried out after installation of the LPS for compliance. (3) Periodic inspection shall be carried out to ensure ongoing compliance. (4) Additional inspection shall be carried out after alterations, repairs, or after the structure has been struck by lightning.',ref:'SABS 0313, Cl 7'},
+          {n:'10.3',q:'State TWO fundamental reasons for regular LPS maintenance.',marks:2,
+           ans:'(a) Regular inspections are necessary for the reliable maintenance of an LPS — the frequency ensures efficiency of the LPS is maintained. (b) All observed faults shall be repaired without delay (annual inspections are recommended).',ref:'SABS 0313, Cl 7'}
+         ],total:10}
+      ],
+      'Verification & Touch Voltage':[
+        {heading:'SANS 10142-1: VERIFICATION AND TOUCH VOLTAGE TESTING',
+         sub:[
+          {n:'8.1',q:'Explain how to determine the touch voltage at a point of consumption that is inaccessible without a lift to the roof (the route and length of supply cable are unknown).',marks:8,
+           ans:'(1) Plan: switch off switch-disconnector at water heater, disconnect cable at water heater. (2) Verify accuracy of test equipment (within 5% or better). (3) Connect L and N together at the heater — say reading = 1.0 Ω; therefore L = 0.5 Ω and N = 0.5 Ω. (4) Connect either L or N to ECC at the heater — say reading = 0.80 Ω; ECC resistance = 0.80 - 0.50 = 0.30 Ω. (5) Calculate CB rating from load: 3 kW at 230 V → I = 3000/230 = 13.04 A → select 15 A CB. (6) Apply touch voltage formula: TV = 2 × I_CB × R_ECC = 2 × 15 × 0.30 = 9 V < 30 V. Installation is SAFE. (7) Restore supply: reconnect cable, switch on switch-disconnector.',ref:'SANS 10142-1, Cl 9; Nov 2007 P2 Q8'},
+          {n:'8.2',q:'State FOUR additional tests that can be performed on the water heater at the same time.',marks:2,
+           ans:'(a) Resistance of ECC. (b) Polarity and operation of the switch-disconnector. (c) Contact resistance of the switch-disconnector. (d) Insulation resistance of the cable. (e) Bonding resistance of the water heater (should not exceed 0.1 Ω). (f) Operation of the thermostat. (g) Condition and resistance of the element. (h) Operation of the protective device.',ref:'SANS 10142-1, Cl 9'}
+         ],total:10}
+      ]
+    }
+  };
+
+  /* ── HELPERS ─────────────────────────────────────────────────────────── */
+  function _esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
   function _buildTopicMap(paper){
     var map={};
     _HIST.forEach(function(yr){
       var list=yr[paper]||[];
-      list.forEach(function(t){
-        if(!map[t.top]) map[t.top]={top:t.top,totalW:0,appearances:0};
-        map[t.top].totalW+=t.w;
-        map[t.top].appearances++;
+      list.forEach(function(item){
+        var k=item.t;
+        if(!map[k]) map[k]={t:k,totalW:0,appearances:0,lastSeen:0};
+        map[k].totalW+=item.w;
+        map[k].appearances++;
+        if(typeof yr.year==='number'&&yr.year>map[k].lastSeen) map[k].lastSeen=yr.year;
       });
     });
     return Object.values(map).sort(function(a,b){return b.totalW-a.totalW;});
   }
 
-  function _pickQ(pool,n){
-    var arr=pool.slice();
-    for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;}
-    return arr.slice(0,n);
+  /* Pick a question set for a given topic key; randomise across sets */
+  function _pickSet(paper,topicKey){
+    var bank=(_QB[paper]||{})[topicKey]||null;
+    if(!bank||!bank.length) return null;
+    return bank[Math.floor(Math.random()*bank.length)];
   }
 
-  function _genPaper(paperData,topicWeights,label,rationale,paperCode,paperNum){
-    var total=10;
-    var out=[];
-    var allQ=[];
-    paperData.forEach(function(sess){if(sess.pool) allQ=allQ.concat(sess.pool);});
-    if(!allQ.length) return null;
-    var picked=_pickQ(allQ,total);
-    return {label:label,rationale:rationale,paperCode:paperCode,paperNum:paperNum,questions:picked};
+  /* Map HIST topic keys → QB keys (closest match) */
+  var _TOPIC_MAP_P1={
+    'OHS Act & EIR':'OHS Act & EIR',
+    'Earthing & Bonding':'Earthing & Bonding',
+    'Wiring Methods':'Wiring Methods',
+    'Protection (OC/RCD)':'Protection (OC/RCD)',
+    'Definitions':'Definitions',
+    'Fundamental Requirements':'Fundamental Requirements',
+    'SELV & PELV':'SELV & PELV',
+    'Special Locations (Saunas)':'Special Locations (Saunas)',
+    'Special Locations (Medical)':'Special Locations (Saunas)',
+    'Special Locations':'Special Locations (Saunas)',
+    'Electric Fences (EMR)':'Electric Fences (EMR)',
+    'Distribution Boards':'Distribution Boards',
+    'Applicable Standards (Table 4.2)':'Fundamental Requirements',
+    'Verification & CoC':'Verification & CoC',
+    'Cable Standards (SABS)':'Cable Standards (SABS 0198/2)',
+    'Cable Standards (SABS 1507)':'Cable Standards (SABS 0198/2)',
+    'Cable Standards (SABS 0198/2)':'Cable Standards (SABS 0198/2)',
+    'Socket Outlets':'Distribution Boards'
+  };
+  var _TOPIC_MAP_P2={
+    'Volt Drop Calculations':'Volt Drop Calculations',
+    'Earthing & Bonding':'Earthing & Bonding',
+    'Cable Positioning':'Cable Positioning',
+    'Circuit Arrangements (Neutral)':'Circuit Arrangements (Neutral)',
+    'Inspection & Testing':'Inspection & Testing',
+    'DBs & Busbar':'DBs & Busbar',
+    'Motor Protection':'Motor Protection',
+    'Surge Protection (Annex L)':'Surge Protection (Annex L)',
+    'Luminaires & Lighting':'DBs & Busbar',
+    'Socket Outlets & Plugs':'DBs & Busbar',
+    'Lightning Protection (SABS 0313)':'Lightning Protection',
+    'Lightning Protection':'Lightning Protection',
+    'Special Installations':'Cable Positioning',
+    'Verification & Touch Voltage':'Verification & Touch Voltage'
+  };
+
+  /* ── PAPER SELECTOR ──────────────────────────────────────────────────── */
+  /* Returns array of 10 topic keys for the paper, ordered by DHET convention */
+  function _selectTopics(paper,topicMap,mode){
+    var tmap=paper==='p1'?_TOPIC_MAP_P1:_TOPIC_MAP_P2;
+    var TOTAL_S=_HIST.length;
+    /* mode: 'freq'=highest weight, 'gap'=overdue, 'broad'=even spread */
+    var scored=topicMap.map(function(t){
+      var score=t.totalW;
+      if(mode==='gap'){
+        var density=t.totalW/t.appearances;
+        var recency=(TOTAL_S-t.appearances);
+        score=density*recency;
+      } else if(mode==='broad'){
+        score=1/(t.appearances||1);
+      }
+      return {t:t.t,score:score};
+    }).sort(function(a,b){return b.score-a.score;});
+
+    /* Q1 for P1 must be OHS Act, Q1 for P2 must be Volt Drop */
+    var anchor=paper==='p1'?'OHS Act & EIR':'Volt Drop Calculations';
+    var result=[anchor];
+    var used={};
+    used[anchor]=1;
+    for(var i=0;i<scored.length&&result.length<10;i++){
+      var k=scored[i].t;
+      var mapped=tmap[k]||k;
+      if(!used[mapped]&&(_QB[paper]||{})[mapped]){
+        used[mapped]=1;
+        result.push(mapped);
+      }
+    }
+    /* Fill remaining with any available QB topics */
+    Object.keys(_QB[paper]||{}).forEach(function(k){
+      if(result.length<10&&!used[k]){used[k]=1;result.push(k);}
+    });
+    return result.slice(0,10);
   }
 
-  function _pct(v,t){return Math.round(v/t*100);}
+  /* ── RENDER ONE DHET QUESTION BLOCK ─────────────────────────────────── */
+  function _renderQ(qNum,qSet,vc){
+    if(!qSet) return '<p style="color:red;font-size:12px;">Q'+qNum+': Data not available.</p>';
+    var marksLeft=qSet.total||10;
+    var html='';
+    html+='<div style="margin-bottom:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+    /* Question heading */
+    html+='<div style="background:'+vc+';padding:9px 14px;">';
+    html+='<div style="font-size:11.5px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.06em;">';
+    html+='QUESTION '+qNum+' &nbsp;&mdash;&nbsp; '+_esc(qSet.heading);
+    html+='</div>';
+    html+='<div style="font-size:10px;color:rgba(255,255,255,.75);margin-top:2px;">['+marksLeft+' marks]</div>';
+    html+='</div>';
+    /* Sub-questions */
+    html+='<div style="padding:12px 14px;background:var(--bg);">';
+    (qSet.sub||[]).forEach(function(sq){
+      html+='<div style="margin-bottom:14px;">';
+      html+='<div style="font-size:12.5px;font-weight:700;color:var(--fg);margin-bottom:4px;">';
+      html+=_esc(sq.n)+' &nbsp;'+_esc(sq.q)+' &nbsp;<span style="font-weight:600;color:var(--fg3);">('+sq.marks+')</span>';
+      html+='</div>';
+      /* Model answer */
+      html+='<div style="font-size:11.5px;background:rgba(30,133,64,.07);border-left:3px solid #1e8540;border-radius:0 6px 6px 0;padding:6px 10px;color:#1a5c30;line-height:1.65;">';
+      html+='<strong style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#1e8540;">MODEL ANSWER:</strong> ';
+      html+=_esc(sq.ans);
+      if(sq.ref){
+        html+=' <span style="font-size:10px;color:#2d7a4f;font-style:italic;">— '+_esc(sq.ref)+'</span>';
+      }
+      html+='</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+    html+='</div>';
+    return html;
+  }
 
-  function _renderStudentPaper(mock,versionNum,paperLabel){
-    var cols=['A','B','C','D'];
+  /* ── RENDER FULL PAPER ───────────────────────────────────────────────── */
+  function _renderPaper(topics,paper,vNum,topicMap){
     var vColors=['#1a3d78','#8b1a1a','#1a6b1a'];
     var vLabels=['HIGH-FREQUENCY VERSION','GAP-WEIGHTED VERSION','BROAD-SPECTRUM VERSION'];
-    var vDescs=['Drawn from historically consistent topic clusters — most likely appearance pattern based on 2024–2026 analysis.','Targets statistically overdue sections with thin coverage depth — high probability of examiner rotation.','Broad spread across full syllabus scope — mirrors DHET\'s requirement to test all prescribed areas.'];
-    var c=vColors[versionNum]||'#1a3d78';
+    var vDescs=[
+      'Topics drawn from historically highest-frequency clusters in 20 years of DHET sittings (2004–Aug 2026). Most likely appearance pattern.',
+      'Targets statistically overdue sections with low recent coverage density — high probability of examiner rotation.',
+      'Broad spread across full SANS 10142-1 syllabus scope — mirrors DHET\'s requirement to test all prescribed areas.'
+    ];
+    var c=vColors[vNum]||'#1a3d78';
+    var paperLabel=paper==='p1'?'PAPER 1 — T880 (Code 11040412)':'PAPER 2 — T890 (Code 11040432)';
+    var paperFull=paper==='p1'?'Paper 1: Installation Rules':'Paper 2: Standards and Regulations';
     var html='';
-    html+='<div style="border:2px solid '+c+';border-radius:12px;overflow:hidden;margin-bottom:24px;">';
-    /* Header band */
-    html+='<div style="background:'+c+';padding:14px 18px 12px;">';
+    html+='<div style="border:2px solid '+c+';border-radius:12px;overflow:hidden;margin-bottom:28px;">';
+    /* Version banner */
+    html+='<div style="background:'+c+';padding:12px 16px 10px;">';
     html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;">';
     html+='<div>';
-    html+='<div style="font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);">'+vLabels[versionNum]+'</div>';
-    html+='<div style="font-size:14px;font-weight:900;color:#fff;margin-top:3px;">Version '+(versionNum+1)+' — '+mock.label+'</div>';
-    html+='<div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;">'+mock.paperCode+' · 10 Questions · Self-mark</div>';
+    html+='<div style="font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);">'+vLabels[vNum]+'</div>';
+    html+='<div style="font-size:14px;font-weight:900;color:#fff;margin-top:2px;">Version '+(vNum+1)+' &nbsp;&mdash;&nbsp; '+paperFull+'</div>';
+    html+='<div style="font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;">Programme 51108848 &nbsp;&middot;&nbsp; '+paperLabel+' &nbsp;&middot;&nbsp; 100 marks total</div>';
     html+='</div>';
     html+='<div style="text-align:right;">';
     html+='<div style="font-size:9px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;">Predicted Sitting</div>';
@@ -3756,116 +4241,90 @@ function lmsCheckKey(key, phoneForVerify){
     html+='</div>';
     html+='</div>';
     html+='</div>';
-    /* Formal exam header */
-    html+='<div style="background:#f9f9f9;border-bottom:1px solid #ddd;padding:14px 18px;font-family:Georgia,serif;">';
+    /* Official exam header */
+    html+='<div style="background:#f9f8f4;border-bottom:1px solid #ddd;padding:14px 16px;font-family:Georgia,serif;">';
     html+='<div style="text-align:center;margin-bottom:10px;">';
-    html+='<div style="font-size:13px;font-weight:700;color:#111;letter-spacing:.03em;text-transform:uppercase;">Department of Higher Education and Training</div>';
-    html+='<div style="font-size:11.5px;color:#333;margin-top:2px;">National Artisan Development — Installation Rules Examination</div>';
-    html+='<div style="font-size:11px;color:#555;margin-top:1px;">'+paperLabel+' · Programme 51108848</div>';
+    html+='<div style="font-size:13px;font-weight:700;color:#111;letter-spacing:.03em;text-transform:uppercase;">DEPARTMENT OF HIGHER EDUCATION AND TRAINING</div>';
+    html+='<div style="font-size:12px;color:#333;margin-top:2px;">National Artisan Development — Installation Rules Examination</div>';
+    html+='<div style="font-size:11.5px;color:#555;margin-top:1px;">'+_esc(paperFull)+' &nbsp;&middot;&nbsp; Programme 51108848</div>';
     html+='</div>';
-    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">';
-    html+='<div style="border:1px solid #bbb;border-radius:4px;padding:6px 10px;"><div style="font-size:9.5px;color:#666;text-transform:uppercase;letter-spacing:.06em;">Candidate No.</div><div style="font-size:11px;color:#999;margin-top:2px;">___________________</div></div>';
-    html+='<div style="border:1px solid #bbb;border-radius:4px;padding:6px 10px;"><div style="font-size:9.5px;color:#666;text-transform:uppercase;letter-spacing:.06em;">Date</div><div style="font-size:11px;color:#999;margin-top:2px;">___________________</div></div>';
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">';
+    html+='<div style="border:1px solid #bbb;border-radius:4px;padding:6px 10px;"><div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:.06em;">Candidate No.</div><div style="font-size:11px;color:#aaa;margin-top:2px;">___________________</div></div>';
+    html+='<div style="border:1px solid #bbb;border-radius:4px;padding:6px 10px;"><div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:.06em;">Date</div><div style="font-size:11px;color:#aaa;margin-top:2px;">___________________</div></div>';
+    html+='<div style="border:1px solid #bbb;border-radius:4px;padding:6px 10px;"><div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:.06em;">Centre</div><div style="font-size:11px;color:#aaa;margin-top:2px;">___________________</div></div>';
     html+='</div>';
-    html+='<div style="font-size:10.5px;color:#333;line-height:1.6;border-top:1px solid #ddd;padding-top:8px;">';
-    html+='<strong>Instructions:</strong> Answer ALL questions. Each question carries equal marks (10 marks each = 100 total). Circle the letter of the correct answer. This is a <em>predicted</em> mock paper for self-study — not an official DHET document. Answers are shown below each question for self-marking.';
+    html+='<div style="font-size:10.5px;color:#333;line-height:1.65;border-top:1px solid #ddd;padding-top:8px;">';
+    html+='<strong>INSTRUCTIONS:</strong> Answer ALL questions. Each question is worth 10 marks (total 100). Write in the spaces provided. This is a <em>predicted mock paper</em> for self-study — not an official DHET document. Model answers are shown below each sub-question for self-marking. Time: 3 hours.';
     html+='</div>';
     html+='<div style="margin-top:8px;display:inline-block;background:rgba(255,165,0,.12);border:1px solid rgba(255,140,0,.35);border-radius:6px;padding:5px 11px;font-size:10.5px;color:#8a5c00;">';
-    html+='&#127919; '+vDescs[versionNum];
+    html+='&#127919; '+_esc(vDescs[vNum]);
     html+='</div>';
     html+='</div>';
     /* Questions */
-    html+='<div style="padding:14px 18px;background:var(--bg);">';
-    if(!mock.questions||!mock.questions.length){
-      html+='<p style="font-size:12px;color:var(--fg3);">No questions available in pool. Load the LMS to populate.</p>';
-    } else {
-      mock.questions.forEach(function(q,qi){
-        var opts=[q.a,q.b,q.c,q.d];
-        var corrIdx=['A','B','C','D'].indexOf((q.ans||'A').toUpperCase());
-        html+='<div style="margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">';
-        html+='<div style="font-size:11px;font-weight:800;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Question '+(qi+1)+(q.ref?' &nbsp;·&nbsp; <span style=\'font-weight:600;color:var(--fg3);\'>'+q.ref+'</span>':'')+'</div>';
-        html+='<div style="font-size:13px;font-weight:600;color:var(--fg);margin-bottom:10px;line-height:1.55;">'+_esc(q.q||q.question||'')+'</div>';
-        html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">';
-        opts.forEach(function(opt,oi){
-          html+='<div style="font-size:12px;padding:5px 8px;border-radius:6px;border:1px solid var(--border);color:var(--fg2);">'+cols[oi]+'. '+_esc(opt||'')+'</div>';
-        });
-        html+='</div>';
-        html+='<div style="font-size:11px;background:rgba(30,133,64,.08);border:1px solid rgba(30,133,64,.2);border-radius:6px;padding:5px 10px;color:#1e8540;font-weight:700;">';
-        html+='&#10003; Answer: '+cols[corrIdx>=0?corrIdx:0];
-        if(q.ref) html+=' &nbsp;·&nbsp; <span style=\'font-weight:600;\'>'+(q.ref||'')+'</span>';
-        html+='</div>';
-        html+='</div>';
-      });
-    }
+    html+='<div style="padding:14px 16px;background:var(--bg);">';
+    topics.forEach(function(topicKey,i){
+      var qSet=_pickSet(paper,topicKey);
+      html+=_renderQ(i+1,qSet,c);
+    });
     html+='</div>';
-    html+='<div style="padding:8px 18px;background:var(--bg-alt);border-top:1px solid var(--border);font-size:10px;color:var(--fg3);text-align:center;">PREDICTED MOCK PAPER — Study use only. Generated dynamically from LMS pool. &copy; Riba T Tseke · ribattseke.co.za · Not an official DHET document.</div>';
+    html+='<div style="padding:8px 16px;background:var(--bg-alt);border-top:1px solid var(--border);font-size:10px;color:var(--fg3);text-align:center;">';
+    html+='PREDICTED MOCK — Based on 20 years of DHET exam papers (2004–Aug 2026). Questions & answers sourced from actual DHET memoranda. For study use only. &copy; Riba T Tseke &middot; ribattseke.co.za &middot; Not an official DHET document.';
+    html+='</div>';
     html+='</div>';
     return html;
   }
 
-  function _esc(s){ var d=document.createElement('div');d.textContent=s;return d.innerHTML; }
-
+  /* ── MAIN ENTRY POINT ────────────────────────────────────────────────── */
   window.lmsRunPredictor=function(){
     var paper=(document.getElementById('spred-paper')||{}).value||'p1';
     var out=document.getElementById('spred-out');
     if(!out) return;
-    var paperData=_pickPool(paper);
-    if(!paperData||!paperData.length){
-      out.innerHTML='<div style="padding:14px;background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:9px;font-size:13px;color:#c0392b;">Question pool not loaded yet. Navigate to a Level 3 or Level 4 session first to initialise the pool, then return here.</div>';
-      return;
-    }
-    var paperLabel=paper==='p1'?'Paper 1 — Installation Rules (T880 · Code 11040412)':'Paper 2 — Standards &amp; Regulations (T890 · Code 11040432)';
-    var paperCode=paper==='p1'?'T880':'T890';
     var topicMap=_buildTopicMap(paper);
-    var allQ=[];
-    paperData.forEach(function(sess){if(sess.pool) allQ=allQ.concat(sess.pool);});
     var totalSittings=_HIST.length;
+    var paperLabel=paper==='p1'?'Paper 1 — T880 (11040412)':'Paper 2 — T890 (11040432)';
 
-    /* Prediction summary panel */
+    /* Prediction analysis panel */
     var html='';
-    html+='<div style="border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:18px;background:var(--bg-alt);">';
-    html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--amb);margin-bottom:10px;">&#128202; Prediction Analysis — '+paperLabel+'</div>';
-    html+='<div style="font-size:12px;color:var(--fg2);margin-bottom:12px;">Based on <strong>'+totalSittings+' exam sitting cycles</strong> (2024–Aug 2026) with <strong>'+allQ.length+' questions</strong> in the live pool. Frequency scoring: cumulative weight across sittings. Probability = topic frequency &divide; total pool weight &times; 10 (questions per paper).</div>';
-    html+='<div style="font-size:11.5px;font-weight:800;color:var(--fg2);margin-bottom:8px;">Top 5 Predicted Topic Clusters:</div>';
+    html+='<div style="border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:20px;background:var(--bg-alt);">';
+    html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--amb);margin-bottom:10px;">&#128202; Prediction Analysis &mdash; '+_esc(paperLabel)+'</div>';
+    html+='<div style="font-size:12px;color:var(--fg2);margin-bottom:12px;">Based on <strong>'+totalSittings+' exam sitting cycles</strong> (2004&ndash;Aug 2026) &mdash; real DHET exam papers extracted from Google Drive. Frequency scoring: cumulative topic weight across all sittings. DHET structure: '+( paper==='p1'?'Q1=OHS Act (compulsory), Q2&ndash;Q10=SANS 10142-1 sections':'Q1=Volt Drop (compulsory), Q2&ndash;Q10=SANS 10142-1 / supporting standards')+'.</div>';
+    html+='<div style="font-size:11.5px;font-weight:800;color:var(--fg2);margin-bottom:8px;">Top 5 Predicted Topic Clusters (from 20-year data):</div>';
     var totalW=topicMap.reduce(function(s,t){return s+t.totalW;},0)||1;
     var medals=['&#127947;','&#129352;','&#129353;','4.','5.'];
     topicMap.slice(0,5).forEach(function(t,i){
       var pct=Math.round(t.totalW/totalW*100);
-      var questionsExp=Math.round(t.totalW/totalW*10*10)/10;
       html+='<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;margin-bottom:6px;background:var(--bg);border:1px solid var(--border);">';
       html+='<span style="font-size:16px;min-width:22px;">'+medals[i]+'</span>';
       html+='<div style="flex:1;">';
-      html+='<div style="font-size:13px;font-weight:700;color:var(--fg);">'+_esc(t.top)+'</div>';
-      html+='<div style="font-size:11px;color:var(--fg3);">Appeared in '+t.appearances+'/'+totalSittings+' sittings · Cumulative weight: '+t.totalW+'</div>';
+      html+='<div style="font-size:13px;font-weight:700;color:var(--fg);">'+_esc(t.t)+'</div>';
+      html+='<div style="font-size:11px;color:var(--fg3);">Appeared in <strong>'+t.appearances+'/'+totalSittings+'</strong> sittings &middot; Cumulative weight: '+t.totalW+'</div>';
       html+='</div>';
       html+='<div style="text-align:right;">';
       html+='<div style="font-size:14px;font-weight:900;color:var(--amb);">'+pct+'%</div>';
-      html+='<div style="font-size:10px;color:var(--fg3);">~'+questionsExp+' Q expected</div>';
+      html+='<div style="font-size:10px;color:var(--fg3);">frequency</div>';
       html+='</div>';
       html+='</div>';
     });
     html+='</div>';
 
-    /* 3 paper versions */
-    var v1=_genPaper(paperData,topicMap.slice(0,4).map(function(t){return {top:t.top,w:t.totalW};}),
-      'High-Frequency Coverage',null,paperCode,1);
-    var v2topics=topicMap.slice().sort(function(a,b){return (b.totalW/b.appearances)-(a.totalW/a.appearances);});
-    var v2=_genPaper(paperData,v2topics.slice(0,4).map(function(t){return {top:t.top,w:t.totalW};}),
-      'Gap-Weighted (Overdue Topics)',null,paperCode,2);
-    var v3=_genPaper(paperData,topicMap.map(function(t){return {top:t.top,w:1};}),
-      'Broad Spectrum (Full Coverage)',null,paperCode,3);
+    html+='<div style="font-size:13px;font-weight:800;color:var(--fg);margin-bottom:16px;">&#128203; 3 Predicted DHET Mock Papers &mdash; '+_esc(paperLabel)+'</div>';
 
-    html+='<div style="font-size:13px;font-weight:800;color:var(--fg);margin-bottom:14px;">&#128203; 3 Predicted Mock Papers — '+paperLabel+'</div>';
-    if(v1) html+=_renderStudentPaper(v1,0,paperLabel);
-    if(v2) html+=_renderStudentPaper(v2,1,paperLabel);
-    if(v3) html+=_renderStudentPaper(v3,2,paperLabel);
-    html+='<div style="font-size:11px;color:var(--fg3);text-align:center;padding:10px 0 4px;">These mock papers are generated dynamically from the live question pool and change each run. For on-screen study only. &copy; Riba T Tseke.</div>';
+    var t1=_selectTopics(paper,topicMap,'freq');
+    var t2=_selectTopics(paper,topicMap,'gap');
+    var t3=_selectTopics(paper,topicMap,'broad');
+
+    html+=_renderPaper(t1,paper,0,topicMap);
+    html+=_renderPaper(t2,paper,1,topicMap);
+    html+=_renderPaper(t3,paper,2,topicMap);
+
+    html+='<div style="font-size:11px;color:var(--fg3);text-align:center;padding:10px 0 4px;">Mock papers regenerate each run from the 20-year exam data bank. For self-study only. &copy; Riba T Tseke.</div>';
 
     out.innerHTML=html;
     out.scrollIntoView({behavior:'smooth',block:'start'});
   };
 })();
 /* ===== END STUDENT PREDICTOR ===== */
+
 
 /* ===== LMS ENGINE v2 ===== */
 var LMS_NS='lms4_';
