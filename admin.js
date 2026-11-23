@@ -606,6 +606,86 @@ function lmsFirebaseLogActivity(username, phone, paper, sessIdx, score, passed){
 
 
 /* =====================================================
+   LMS CROSS-DEVICE SYNC — Firebase Firestore
+   Document path: lms_progress/{email_sanitized}
+   Fields mirror lms4_{email}_{key} localStorage keys
+   ===================================================== */
+
+/* Sanitize email for use as Firestore document ID */
+function _fbEmailKey(email){ return (email||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_'); }
+
+/* Keys we sync (without lms4_{email}_ prefix) */
+var _SYNC_KEYS = [
+  'eb00_done','eb00_quiz_passed',
+  'eb01_done','eb01_quiz_passed',
+  'level'
+];
+
+/* Push local progress to Firestore */
+function lmsSync_push(email){
+  if(!email) return;
+  _loadFirebase(function(){
+    if(!_lmsFbDb) return;
+    try{
+      var em = email.toLowerCase();
+      var docId = _fbEmailKey(em);
+      var data = { email: em, updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+      _SYNC_KEYS.forEach(function(k){
+        var raw = localStorage.getItem('lms4_'+em+'_'+k);
+        if(raw !== null){ try{ data[k] = JSON.parse(raw); }catch(e){ data[k] = raw; } }
+      });
+      _lmsFbDb.collection('lms_progress').doc(docId).set(data,{merge:true});
+    }catch(e){}
+  });
+}
+
+/* Pull Firestore progress into localStorage (Firestore wins for quiz_passed; max wins for done arrays) */
+function lmsSync_pull(email, cb){
+  if(!email){ if(cb) cb(); return; }
+  _loadFirebase(function(){
+    if(!_lmsFbDb){ if(cb) cb(); return; }
+    try{
+      var em = email.toLowerCase();
+      var docId = _fbEmailKey(em);
+      _lmsFbDb.collection('lms_progress').doc(docId).get().then(function(doc){
+        if(!doc.exists){ if(cb) cb(); return; }
+        var d = doc.data();
+        _SYNC_KEYS.forEach(function(k){
+          if(d[k] === undefined) return;
+          var localKey = 'lms4_'+em+'_'+k;
+          var remoteVal = d[k];
+          if(k.endsWith('_done')){
+            // Merge: local union remote (keep all completed segments)
+            var local = [];
+            try{ local = JSON.parse(localStorage.getItem(localKey)||'[]'); }catch(e){}
+            var remote = Array.isArray(remoteVal) ? remoteVal : [];
+            var merged = local.slice();
+            remote.forEach(function(v){ if(merged.indexOf(v)<0) merged.push(v); });
+            localStorage.setItem(localKey, JSON.stringify(merged));
+          } else if(k.endsWith('_quiz_passed')){
+            // Firestore wins if passed=true (can't un-pass)
+            var remotePassed = typeof remoteVal === 'object' ? remoteVal && remoteVal.passed : !!remoteVal;
+            if(remotePassed){
+              var existing = null;
+              try{ existing = JSON.parse(localStorage.getItem(localKey)); }catch(e){}
+              if(!existing || !existing.passed){
+                localStorage.setItem(localKey, JSON.stringify(typeof remoteVal==='object'?remoteVal:{passed:true,date:new Date().toISOString(),syncedFromCloud:true}));
+              }
+            }
+          } else {
+            // level: take max
+            var localLevel = parseInt(localStorage.getItem(localKey)||'0',10)||0;
+            var remoteLevel = parseInt(remoteVal,10)||0;
+            if(remoteLevel > localLevel) localStorage.setItem(localKey, String(remoteLevel));
+          }
+        });
+        if(cb) cb();
+      }).catch(function(){ if(cb) cb(); });
+    }catch(e){ if(cb) cb(); }
+  });
+}
+
+/* =====================================================
    RIBA T TSEKE COMPANY HUB — Phase 1: Clients, Quotes, LOI, Invoices
    All data in localStorage under biz_ namespace
    ===================================================== */

@@ -893,6 +893,7 @@
 
             window.eb00Mark=function(id){
               if(_done.indexOf(id)===-1){_done.push(id);_save();}
+              if(typeof lmsSync_push==='function'&&typeof _lmsUser!=='undefined'&&_lmsUser) lmsSync_push(_lmsUser);
               var next=id<8?id+1:null;
               if(next&&_done.indexOf(next)===-1){_active=next;}
               else{_active=null;}
@@ -1129,6 +1130,7 @@
               if(next)_active=next.id;
               try{localStorage.setItem(NS+'active',_active||'');}catch(e){}
               _save();
+              if(typeof lmsSync_push==='function'&&typeof _lmsUser!=='undefined'&&_lmsUser) lmsSync_push(_lmsUser);
               _renderWelcome();
               _renderProgress();
               _renderList();
@@ -3082,14 +3084,16 @@ function labAdminUnlock(email){
   /* Sets all 8 segments as done so progress = 100% → quiz unlocks */
   var key='lms4_'+email+'_eb00_done';
   try{localStorage.setItem(key,JSON.stringify([1,2,3,4,5,6,7,8]));}catch(e){alert('localStorage write failed: '+e.message);return;}
-  alert('Level 1 segments marked complete for '+email+'. Quiz is now unlocked on this device.');
+  if(typeof lmsSync_push==='function') lmsSync_push(email);
+  alert('Level 1 segments marked complete for '+email+'. Quiz is now unlocked — syncing to cloud so the student sees it on all devices.');
   labInspect();
 }
 function labAdminPassLevel1(email){
   var key='lms4_'+email+'_eb00_quiz_passed';
   var ts=new Date().toISOString();
   try{localStorage.setItem(key,JSON.stringify({passed:true,date:ts,adminOverride:true}));}catch(e){alert('localStorage write failed: '+e.message);return;}
-  alert('Level 1 quiz marked as PASSED for '+email+' (admin override). Certificate and Level 2 access are now unlocked on this device.');
+  if(typeof lmsSync_push==='function') lmsSync_push(email);
+  alert('Level 1 quiz marked as PASSED for '+email+' (admin override). Certificate and Level 2 access are now unlocked — syncing to cloud so the student sees it on all devices.');
   labInspect();
 }
 function labClearStudent(email){
@@ -3177,7 +3181,12 @@ function lmsSignin(){
         if(actEl&&_lmsPhone) actEl.value=_lmsPhone;
         lmsShowView('lms-activate');
       } else {
-        lmsShowDash();
+        // Pull cloud progress then show dash (sync on login)
+        if(typeof lmsSync_pull==='function'){
+          lmsSync_pull(u, function(){ lmsShowDash(); });
+        } else {
+          lmsShowDash();
+        }
       }
     } else if(_lmsUserExists(u)||_lmsUserExists(uRaw)){
       if(err)err.textContent='Wrong PIN. Try again or use Forgot PIN to reset.';
@@ -4844,6 +4853,7 @@ function lmsFinish(){
       }
       certBlock.style.display='block';
       try{localStorage.setItem('lms4_'+(_lmsUser||'')+'_'+certCfg.storageKey,'1');}catch(e){}
+      if(typeof lmsSync_push==='function'&&_lmsUser) lmsSync_push(_lmsUser);
     }
   } else {
     document.getElementById('sc-msg').textContent='Not yet — keep going';
