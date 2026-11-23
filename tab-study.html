@@ -926,9 +926,9 @@
             </div>
             <p style="font-size:11.5px;color:var(--fg2);line-height:1.6;margin:0 0 10px;">The core PDF is your point of reference. <strong>Read it first, then work through the study tab above.</strong> Use the PDF to look up clauses, tables and diagrams as you study each segment.</p>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button onclick="(function(){var el=document.getElementById('eb00-welcome-banner');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:0,behavior:'smooth'});})()" style="display:inline-flex;align-items:center;gap:6px;background:var(--amb);color:#fff;border:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">
+              <button onclick="window.open('https://drive.google.com/file/d/10j1G3KFRWLjrU5RKwyW0h-oIo2hf929g/view','_blank')" style="display:inline-flex;align-items:center;gap:6px;background:var(--amb);color:#fff;border:none;padding:9px 15px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zm-1 9H8v-2h4v2zm4 4H8v-2h8v2z"/></svg>
-                Open eBook Reader ↑
+                Open PDF on Google Drive →
               </button>
               <span style="font-size:10.5px;color:var(--fg3);align-self:center;font-style:italic;">Also available as a printed companion — see pricing above</span>
             </div>
@@ -4579,8 +4579,47 @@ var LMS_DATA_EB00=[{
   ]
 }];
 
+var LMS_DATA_EB01=[{
+  title:'Level 2 — Electrical Fundamentals',
+  pool:[
+    // === Electrical Units & Supply Parameters ===
+    {q:'What is the standard phase-to-neutral supply voltage in South Africa per SANS 10142-1?',a:'220 V',b:'230 V',c:'240 V',d:'250 V',ans:'B',ref:'eBook 01 Seg 1 — Electrical Units, Symbols & COC Test Parameters'},
+    {q:'What is the standard phase-to-phase (line) voltage in a South African three-phase supply?',a:'380 V',b:'415 V',c:'400 V',d:'440 V',ans:'C',ref:'eBook 01 Seg 1 — Electrical Units, Symbols & COC Test Parameters'},
+    {q:'Which compliance test verifies that live conductors are not connected to earth or to each other?',a:'Continuity test',b:'Polarity test',c:'Insulation resistance (IR) test',d:'Loop impedance (Zs) test',ans:'C',ref:'eBook 01 Seg 1 — Electrical Units, Symbols & COC Test Parameters'},
+    {q:'What minimum insulation resistance value is typically required between live conductors and earth for a low-voltage installation under SANS 10142-1?',a:'0.1 MΩ',b:'0.5 MΩ',c:'1 MΩ',d:'10 MΩ',ans:'C',ref:'eBook 01 Seg 1 — Electrical Units, Symbols & COC Test Parameters'},
+    // === Ohm\'s Law & Circuit Laws ===
+    {q:'Using Ohm\'s law, if a circuit has a resistance of 20 Ω and a voltage of 230 V, what is the current?',a:'4 600 A',b:'11.5 A',c:'0.087 A',d:'250 A',ans:'B',ref:'eBook 01 Seg 2 — Ohm\'s Law, Resistance & Circuit Laws'},
+    {q:'Three resistors of 10 Ω, 20 Ω and 30 Ω are connected in SERIES. What is the total resistance?',a:'5.45 Ω',b:'60 Ω',c:'30 Ω',d:'Cannot be determined',ans:'B',ref:'eBook 01 Seg 2 — Ohm\'s Law, Resistance & Circuit Laws'},
+    {q:'Kirchhoff\'s Voltage Law states that the sum of all voltages around any closed loop in a circuit is:',a:'Equal to the supply voltage',b:'Maximum at the load',c:'Zero',d:'Equal to the total current',ans:'C',ref:'eBook 01 Seg 2 — Ohm\'s Law, Resistance & Circuit Laws'},
+    // === Power in AC Circuits ===
+    {q:'Which formula correctly expresses the relationship between apparent power (kVA), active power (kW) and power factor (pf)?',a:'kW = kVA ÷ pf',b:'kVA = kW × pf',c:'kW = kVA × pf',d:'pf = kW + kVA',ans:'C',ref:'eBook 01 Seg 3 — Power in AC Circuits'},
+    {q:'A purely resistive load (e.g. electric heater) has a power factor of:',a:'0',b:'0.5 lagging',c:'1',d:'0.8 leading',ans:'C',ref:'eBook 01 Seg 3 — Power in AC Circuits'},
+    {q:'What type of power does NOT perform useful work but is needed to maintain magnetic fields in inductive loads?',a:'Active power (kW)',b:'Reactive power (kVAR)',c:'Apparent power (kVA)',d:'Real power (W)',ans:'B',ref:'eBook 01 Seg 3 — Power in AC Circuits'},
+    {q:'Total harmonic distortion (THD) in a supply is primarily caused by:',a:'Long cable runs',b:'High ambient temperature',c:'Non-linear loads such as VSD drives, computers and LED drivers',d:'Undersized earthing conductors',ans:'C',ref:'eBook 01 Seg 3 — Power in AC Circuits'},
+    // === Load Assessment ===
+    {q:'What is the purpose of Annex C diversity factors in SANS 10142-1?',a:'To increase the calculated load to ensure cables are oversized',b:'To reduce the total estimated load to account for the statistical probability that not all loads operate simultaneously at full demand',c:'To determine the fault current for circuit breaker selection',d:'To calculate the voltage drop across a distribution board',ans:'B',ref:'eBook 01 Seg 4 — Load Assessment Principles — Annex C Diversity'},
+    {q:'"Connected load" is best defined as:',a:'The maximum demand recorded by the utility meter',b:'The load after applying diversity factors',c:'The sum of the rated wattages of all equipment that could be connected to the circuit',d:'Only the loads that are switched on at any given time',ans:'C',ref:'eBook 01 Seg 4 — Load Assessment Principles — Annex C Diversity'},
+    {q:'A motor\'s starting current is typically how many times its full-load running current?',a:'Equal — there is no difference',b:'1.5 to 2 times',c:'5 to 8 times',d:'10 to 15 times',ans:'C',ref:'eBook 01 Seg 4 — Load Assessment Principles — Annex C Diversity'},
+    // === Cable Selection ===
+    {q:'What property of a cable determines how much current it can safely carry continuously?',a:'Conductor cross-sectional area and installation method (current-carrying capacity, Iz)',b:'Cable length only',c:'Insulation colour only',d:'Number of cores',ans:'A',ref:'eBook 01 Seg 5 — Cable Selection & Current-Carrying Capacity'},
+    {q:'What is a cable derating factor used for?',a:'To increase the cable size beyond the SANS table value',b:'To reduce the rated current-carrying capacity of a cable installed in conditions worse than the reference conditions (e.g. grouped cables, high ambient temperature)',c:'To calculate voltage drop',d:'To select the correct circuit breaker rating',ans:'B',ref:'eBook 01 Seg 5 — Cable Selection & Current-Carrying Capacity'},
+    {q:'The Circuit Protective Conductor (CPC) in a cable is used to:',a:'Carry the neutral return current',b:'Provide a low-impedance earth fault path so protection devices can operate quickly',c:'Screen the cable from electromagnetic interference',d:'Increase the current-carrying capacity',ans:'B',ref:'eBook 01 Seg 5 — Cable Selection & Current-Carrying Capacity'},
+    // === Voltage Drop ===
+    {q:'SANS 10142-1 Section 5.2.2 limits the maximum permissible voltage drop in a final sub-circuit to:',a:'3% of the declared supply voltage',b:'10% of the declared supply voltage',c:'5% of the declared supply voltage',d:'2% of the declared supply voltage',ans:'C',ref:'eBook 01 Seg 6 — Voltage Drop — SANS 10142-1 Section 5.2.2'},
+    {q:'In the mV/A/m voltage drop method, what does the "mV/A/m" value represent?',a:'The voltage drop per ampere per metre of cable at the reference temperature, taken from SANS cable tables',b:'The minimum conductor size in mm²',c:'The maximum supply impedance',d:'The power loss per metre of cable',ans:'A',ref:'eBook 01 Seg 6 — Voltage Drop — SANS 10142-1 Section 5.2.2'},
+    {q:'Which of the following will INCREASE voltage drop in a cable run?',a:'Shorter cable length',b:'Larger conductor cross-sectional area',c:'Higher load current',d:'Lower supply frequency',ans:'C',ref:'eBook 01 Seg 6 — Voltage Drop — SANS 10142-1 Section 5.2.2'},
+    // === Fault Currents ===
+    {q:'PSCC stands for:',a:'Protective Short-Circuit Current',b:'Prospective Short-Circuit Current',c:'Phase-to-Shield Continuity Check',d:'Phase Sequence Continuity Check',ans:'B',ref:'eBook 01 Seg 7 — Fault Currents — Impedances & kA'},
+    {q:'The earth fault loop impedance formula Zs = Ze + (R1 + R2) uses which values?',a:'Zs = supply impedance; Ze = external loop impedance; R1+R2 = resistances of phase and CPC conductors',b:'Zs = short-circuit current; Ze = earth electrode; R1+R2 = resistance of live conductors',c:'Zs = rated impedance; Ze = zero sequence; R1+R2 = relay settings',d:'Zs = zero impedance; Ze = earthing impedance; R1+R2 = neutral resistance',ans:'A',ref:'eBook 01 Seg 7 — Fault Currents — Impedances & kA'},
+    // === Compliance Testing & COC ===
+    {q:'Which compliance test confirms that the protective earth conductor is electrically continuous from the socket-outlet or accessory back to the main earth point?',a:'Insulation resistance (IR) test',b:'Polarity test',c:'Continuity test',d:'Loop impedance (Zs) test',ans:'C',ref:'eBook 01 Seg 8 — Site Fundamentals — Compliance Testing & COC'},
+    {q:'Under the Electrical Installation Regulations (EIR), a Certificate of Compliance (COC) for a new electrical installation must be issued:',a:'Within 30 days of completing the work',b:'Only after the local municipality inspects and approves the installation',c:'Before electrical supply is connected or given to the installation',d:'At the discretion of the installing contractor',ans:'C',ref:'eBook 01 Seg 8 — Site Fundamentals — Compliance Testing & COC'}
+  ]
+}];
+
 function _getSessionData(paper,idx){
   if(paper==='eb00') return LMS_DATA_EB00[idx];
+  if(paper==='eb01') return LMS_DATA_EB01[idx];
   if(paper==='p1') return LMS_DATA.p1[idx];
   if(paper==='p2') return LMS_DATA.p2[idx];
   if(paper==='eir1') return LMS_DATA2.eir1[idx];
@@ -4619,8 +4658,9 @@ function lmsStartQuizTrack(paper,sessIdx,trackNum,topicNum){
   lmsStartQuiz(paper,sessIdx);
 }
 function lmsStartQuiz(paper,sessIdx){
+  if(!_lmsProgress) return;
   var sess=_getSessionData(paper,sessIdx);
-  if(!sess) return;
+  if(!sess){ alert('Quiz data not available yet. Please try again or contact support.'); return; }
   var sid='s'+sessIdx;
   if(!_lmsProgress[paper]) _lmsProgress[paper]={};
   if(!_lmsProgress[paper][sid]) _lmsProgress[paper][sid]={attempts:0,passed:false,score:0,failCount:0};
@@ -4874,6 +4914,7 @@ function lmsGoLevel2(){
 
 function _getSessionCount(paper){
   if(paper==='eb00') return LMS_DATA_EB00.length;
+  if(paper==='eb01') return LMS_DATA_EB01.length;
   if(paper==='p1') return LMS_DATA.p1.length;
   if(paper==='p2') return LMS_DATA.p2.length;
   if(paper==='eir1') return LMS_DATA2.eir1.length;
