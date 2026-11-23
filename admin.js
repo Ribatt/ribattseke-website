@@ -284,8 +284,15 @@ function lmsOpenAdmin(){
       else if(hid==='hub-jobs'&&typeof jobRender==='function')jobRender();
       else if(hid==='hub-coc'&&typeof cocRender==='function')cocRender();
       else if(hid==='hub-clients'&&typeof clRender==='function')clRender();
+      else if(hid==='hub-grp'&&typeof grpKeyRender==='function')grpKeyRender();
+      else if(hid==='hub-ppapers'&&typeof ppRender==='function')ppRender();
     }
   }, 80);
+  /* Always render group keys + past papers panels when admin opens */
+  setTimeout(function(){
+    if(typeof grpKeyRender==='function') grpKeyRender();
+    if(typeof ppRender==='function') ppRender();
+  }, 300);
 
   // Collect issued keys from localStorage (new Tseke- format)
   var el=function(id){return document.getElementById(id);};
@@ -520,6 +527,161 @@ function admDoSendEmail(safeId, email, username){
   var subj='Your '+companionLabel+' LMS Access Key';
   var body='Hi '+username+',\n\nYour '+companionLabel+' LMS access key is:\n\n'+key+'\n\nSteps to activate:\n1. Go to ribattseke.co.za\n2. Click the Study tab\n3. Sign in with your username and PIN\n4. Enter the key above when prompted\n\nFor support contact Tseke: 072 474 8888 or ribattseke@gmail.com\n\nRegards,\nRiba T Tseke';
   window.location.href='mailto:'+email+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+}
+
+/* ===== GROUP KEY ADMIN ===== */
+var GRP_KEY_NS='biz_grp_issued_';
+
+function grpKeyRender(){
+  var el=document.getElementById('adm-grp-panel');
+  if(!el) return;
+  if(!_lmsFbDb){
+    el.innerHTML='<p style="font-size:12px;color:var(--fg3);">Firebase not ready — open the Study tab first, then return here.</p>';
+    return;
+  }
+  el.innerHTML='<p style="font-size:11px;color:var(--fg3);">Loading group keys…</p>';
+  _lmsFbDb.collection('group_keys').get().then(function(snap){
+    if(snap.empty){
+      el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:6px 0;">No group keys created yet.</p>';
+      return;
+    }
+    var rows=[];
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var k=doc.id;
+      var active=d.active===true;
+      var label=d.label?(' <span style="color:var(--fg3);font-size:11px;">'+esc(d.label)+'</span>'):'';
+      rows.push('<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">'
+        +'<strong style="font-family:monospace;font-size:12px;">'+esc(k)+'</strong>'+label
+        +'<span style="margin-left:auto;font-size:11px;padding:2px 7px;border-radius:10px;'+(active?'background:#1E854022;color:#1a7a40;border:1px solid #1E854044;':'background:#ff000011;color:#cc0000;border:1px solid #ff000033;')+';">'+(active?'Active':'Revoked')+'</span>'
+        +'<button onclick="grpKeyToggle(\''+k+'\','+(!active)+')" style="font-size:11px;padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:var(--bg-alt);color:var(--fg2);cursor:pointer;">'+(active?'Revoke':'Re-activate')+'</button>'
+        +'<button onclick="grpKeyCopy(\''+k+'\')" style="font-size:11px;padding:3px 9px;border-radius:6px;border:1px solid var(--amb);background:#1E854011;color:var(--amb);cursor:pointer;">Copy</button>'
+        +'</div>');
+    });
+    el.innerHTML=rows.join('');
+  }).catch(function(err){
+    el.innerHTML='<p style="font-size:12px;color:#e55;">Error: '+esc(err.message)+'</p>';
+  });
+}
+
+function grpKeyCreate(){
+  var codeEl=document.getElementById('adm-grp-code');
+  var labelEl=document.getElementById('adm-grp-label');
+  var errEl=document.getElementById('adm-grp-err');
+  if(!codeEl) return;
+  var code=(codeEl.value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!code||code.length<4||code.length>12){
+    if(errEl) errEl.textContent='Code must be 4–12 alphanumeric characters.';
+    return;
+  }
+  var fullKey='GRP-'+code;
+  var label=(labelEl&&labelEl.value)?labelEl.value.trim():'';
+  if(!_lmsFbDb){
+    if(errEl) errEl.textContent='Firebase not ready — open the Study tab first.';
+    return;
+  }
+  if(errEl) errEl.textContent='';
+  var data={active:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(label) data.label=label;
+  _lmsFbDb.collection('group_keys').doc(fullKey).set(data).then(function(){
+    codeEl.value='';
+    if(labelEl) labelEl.value='';
+    try{ localStorage.setItem(GRP_KEY_NS+fullKey,JSON.stringify({label:label,createdAt:Date.now()})); }catch(e){}
+    grpKeyRender();
+  }).catch(function(err){
+    if(errEl) errEl.textContent='Failed: '+err.message;
+  });
+}
+
+function grpKeyToggle(key,newActive){
+  if(!_lmsFbDb) return;
+  _lmsFbDb.collection('group_keys').doc(key).update({active:newActive}).then(function(){
+    grpKeyRender();
+  }).catch(function(err){ alert('Toggle failed: '+err.message); });
+}
+
+function grpKeyCopy(key){
+  var txt=key;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){
+      var el=document.getElementById('adm-grp-panel');
+      if(el){
+        var tip=document.createElement('span');
+        tip.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:7px 16px;border-radius:8px;font-size:12px;z-index:9999;';
+        tip.textContent='Copied: '+txt;
+        document.body.appendChild(tip);
+        setTimeout(function(){ tip.remove(); },1800);
+      }
+    }).catch(function(){});
+  }
+}
+
+/* ===== PAST PAPERS ADMIN ===== */
+function ppRender(){
+  var el=document.getElementById('adm-pp-list');
+  if(!el) return;
+  if(!_lmsFbDb){
+    el.innerHTML='<p style="font-size:12px;color:var(--fg3);">Firebase not ready — open the Study tab first.</p>';
+    return;
+  }
+  el.innerHTML='<p style="font-size:11px;color:var(--fg3);">Loading…</p>';
+  _lmsFbDb.collection('past_papers').orderBy('year','desc').orderBy('monthNum','desc').get().then(function(snap){
+    if(snap.empty){
+      el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:6px 0;">No past papers added yet.</p>';
+      return;
+    }
+    var rows=[];
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var pid=doc.id;
+      var pLabel=d.paper==='p2'?'P2 T890':'P1 T880';
+      rows.push('<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">'
+        +'<span style="font-size:11px;padding:2px 6px;border-radius:6px;background:'+(d.paper==='p2'?'#8b451322':'#2a5ba822')+';color:'+(d.paper==='p2'?'#8b4513':'#2a5ba8')+';font-weight:700;">'+pLabel+'</span>'
+        +'<strong style="font-size:12px;">'+esc(d.title||((d.month||'')+' '+d.year))+'</strong>'
+        +'<span style="font-size:11px;color:var(--fg3);">'+esc(d.year)+' · '+esc(d.month||'')+'</span>'
+        +'<span style="margin-left:auto;"></span>'
+        +'<a href="'+esc(d.url)+'" target="_blank" rel="noopener" style="font-size:11px;color:var(--amb);">View</a>'
+        +'<button onclick="ppDel(\''+pid+'\')" style="font-size:11px;padding:2px 8px;border-radius:6px;border:1px solid #e5555533;background:#e555550d;color:#e55;cursor:pointer;">Delete</button>'
+        +'</div>');
+    });
+    el.innerHTML=rows.join('');
+  }).catch(function(err){
+    el.innerHTML='<p style="font-size:12px;color:#e55;">Error: '+esc(err.message)+'</p>';
+  });
+}
+
+function ppAdd(){
+  var paper=(document.getElementById('adm-pp-paper')||{}).value||'p1';
+  var year=parseInt((document.getElementById('adm-pp-year')||{}).value||'0',10);
+  var month=(document.getElementById('adm-pp-month')||{}).value||'';
+  var monthNum=parseInt((document.getElementById('adm-pp-monthnum')||{}).value||'0',10)||0;
+  var title=(document.getElementById('adm-pp-title')||{}).value||'';
+  var url=((document.getElementById('adm-pp-url')||{}).value||'').trim();
+  var desc=(document.getElementById('adm-pp-desc')||{}).value||'';
+  var errEl=document.getElementById('adm-pp-err');
+  if(!url){ if(errEl) errEl.textContent='URL is required.'; return; }
+  if(!year||year<2000||year>2100){ if(errEl) errEl.textContent='Enter a valid year (e.g. 2023).'; return; }
+  if(!_lmsFbDb){ if(errEl) errEl.textContent='Firebase not ready.'; return; }
+  if(errEl) errEl.textContent='';
+  var data={paper:paper,year:year,month:month,monthNum:monthNum,url:url};
+  if(title) data.title=title;
+  if(desc) data.desc=desc;
+  _lmsFbDb.collection('past_papers').add(data).then(function(){
+    ['adm-pp-title','adm-pp-url','adm-pp-desc'].forEach(function(id){
+      var el=document.getElementById(id); if(el) el.value='';
+    });
+    ppRender();
+  }).catch(function(err){
+    if(errEl) errEl.textContent='Failed: '+err.message;
+  });
+}
+
+function ppDel(id){
+  if(!_lmsFbDb) return;
+  if(!confirm('Delete this past paper entry? This cannot be undone.')) return;
+  _lmsFbDb.collection('past_papers').doc(id).delete().then(function(){
+    ppRender();
+  }).catch(function(err){ alert('Delete failed: '+err.message); });
 }
 
 /* ===== FIREBASE INTEGRATION (lazy-loaded on Study tab) ===== */
@@ -794,6 +956,8 @@ function hubShow(id,btn){
   if(id==='hub-loi') loiRender();
   if(id==='hub-agr') agrRender();
   if(id==='hub-invoices') invRender();
+  if(id==='hub-grp'&&typeof grpKeyRender==='function') grpKeyRender();
+  if(id==='hub-ppapers'&&typeof ppRender==='function') ppRender();
 }
 
 /* ===========================================

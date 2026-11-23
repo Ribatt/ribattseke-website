@@ -1277,6 +1277,17 @@
               <button onclick="lmsSetLevel(4)" style="background:#c0392b;color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#8594; Go to Level 4</button>
             </div>
           </div>
+          <!-- ── LEVEL 3 PAST PAPERS ── -->
+          <div style="margin-top:16px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;">
+            <div onclick="(function(hdr){var b=hdr.nextElementSibling;b.hidden=!b.hidden;hdr.querySelector('.pp-arr').textContent=b.hidden?'&#9654;':'&#9660;';if(!b.hidden&&!b.dataset.loaded){b.dataset.loaded='1';lmsPastPapers_render('lms-pp-l3');}})(this)" style="padding:11px 16px;background:var(--bg-alt);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
+              <span style="font-size:12.5px;font-weight:700;color:var(--fg);">&#128218; Past Exam Papers Repository</span>
+              <span class="pp-arr" style="font-size:11px;color:var(--fg3);">&#9654;</span>
+            </div>
+            <div hidden style="padding:12px 14px;background:var(--bg);">
+              <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">All past DHET exam papers (T880 &amp; T890) — read only. Tap a paper to view or download.</p>
+              <div id="lms-pp-l3"></div>
+            </div>
+          </div>
         </div>
 
         <!-- ══ eBook 4 — LEVEL 4 — EARTHING, BONDING & SPECIAL INSTALLATIONS ══ -->
@@ -1335,6 +1346,17 @@
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
               <button onclick="lmsCertView('eb03')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127891; View Certificate</button>
               <button onclick="lmsSetLevel(5)" style="background:#e67e22;color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#8594; Go to Level 5</button>
+            </div>
+          </div>
+          <!-- ── LEVEL 4 PAST PAPERS ── -->
+          <div style="margin-top:16px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;">
+            <div onclick="(function(hdr){var b=hdr.nextElementSibling;b.hidden=!b.hidden;hdr.querySelector('.pp-arr').textContent=b.hidden?'&#9654;':'&#9660;';if(!b.hidden&&!b.dataset.loaded){b.dataset.loaded='1';lmsPastPapers_render('lms-pp-l4');}})(this)" style="padding:11px 16px;background:var(--bg-alt);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
+              <span style="font-size:12.5px;font-weight:700;color:var(--fg);">&#128218; Past Exam Papers Repository</span>
+              <span class="pp-arr" style="font-size:11px;color:var(--fg3);">&#9654;</span>
+            </div>
+            <div hidden style="padding:12px 14px;background:var(--bg);">
+              <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">All past DHET exam papers (T880 &amp; T890) — read only. Tap a paper to view or download.</p>
+              <div id="lms-pp-l4"></div>
             </div>
           </div>
         </div>
@@ -1419,6 +1441,17 @@
             <div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">You have completed all five levels of the Riba T Tseke Installation Rules Study Programme. You are now fully prepared to sit the DHET Trade Test (51108848).</div>
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
               <button onclick="lmsCertView('eb04')" style="background:linear-gradient(135deg,#b8860b,#d4a017);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;">&#127942; View Completion Certificate</button>
+            </div>
+          </div>
+          <!-- ── LEVEL 5 PAST PAPERS ── -->
+          <div style="margin-top:16px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;">
+            <div onclick="(function(hdr){var b=hdr.nextElementSibling;b.hidden=!b.hidden;hdr.querySelector('.pp-arr').textContent=b.hidden?'&#9654;':'&#9660;';if(!b.hidden&&!b.dataset.loaded){b.dataset.loaded='1';lmsPastPapers_render('lms-pp-l5');}})(this)" style="padding:11px 16px;background:var(--bg-alt);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
+              <span style="font-size:12.5px;font-weight:700;color:var(--fg);">&#128218; Past Exam Papers Repository</span>
+              <span class="pp-arr" style="font-size:11px;color:var(--fg3);">&#9654;</span>
+            </div>
+            <div hidden style="padding:12px 14px;background:var(--bg);">
+              <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">All past DHET exam papers (T880 &amp; T890) — read only. Tap a paper to view or download.</p>
+              <div id="lms-pp-l5"></div>
             </div>
           </div>
         </div>
@@ -1750,6 +1783,68 @@
               <button class="lms-btn" style="font-size:13px;" onclick="admIssueKey()">&#9889; Generate RTT Key</button>
             </div>
             <div id="adm-new-key-out" style="margin-top:10px;font-size:13px;"></div>
+          </div>
+
+          <!-- ── Group Key — Cohort Access ── -->
+          <div class="admin-tier-block" style="border-top:2px solid #2a7a4a;padding-top:16px;margin-top:8px;" id="adm-grp-block">
+            <div class="admin-tier-title" style="color:#2a7a4a;">&#128273; Group Key &mdash; Teaching Cohort</div>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">A single <strong>GRP-{code}</strong> key shared with the whole cohort. Grants full IR + ECSA access. Deactivate when the cohort period ends — existing students keep their access, only new activations are blocked.</p>
+            <div id="adm-grp-panel" style="margin-bottom:10px;"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
+              <div>
+                <label style="font-size:11px;font-weight:700;display:block;margin-bottom:3px;">Code (4-12 chars) *</label>
+                <input id="adm-grp-code" type="text" placeholder="e.g. NOV2611" class="biz-input" style="font-size:13px;width:130px;text-transform:uppercase;" maxlength="12">
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:700;display:block;margin-bottom:3px;">Label (optional)</label>
+                <input id="adm-grp-label" type="text" placeholder="e.g. Nov 2026 IR cohort" class="biz-input" style="font-size:13px;width:180px;">
+              </div>
+              <button class="lms-btn" style="font-size:12px;padding:8px 14px;" onclick="grpKeyCreate()">&#10133; Create Key</button>
+            </div>
+            <div id="adm-grp-out" style="margin-top:8px;font-size:13px;"></div>
+          </div>
+
+          <!-- ── Past Papers Admin ── -->
+          <div class="admin-tier-block" style="border-top:2px solid var(--amb);padding-top:16px;margin-top:8px;">
+            <div class="admin-tier-title">&#128218; Past Exam Papers</div>
+            <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">Add past DHET papers (T880 / T890) so students can view them under each level. Provide a direct PDF URL (Firebase Storage, Google Drive share link, etc.).</p>
+            <div id="adm-pp-list" style="margin-bottom:12px;"></div>
+            <div style="display:grid;gap:8px;max-width:460px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div>
+                  <label style="font-size:11px;font-weight:700;display:block;margin-bottom:3px;">Paper *</label>
+                  <select id="adm-pp-paper" class="biz-input" style="font-size:13px;">
+                    <option value="p1">P1 &mdash; T880 (Installation Rules)</option>
+                    <option value="p2">P2 &mdash; T890 (Advanced)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11px;font-weight:700;display:block;margin-bottom:3px;">Year *</label>
+                  <input id="adm-pp-year" type="number" value="2024" min="2015" max="2030" class="biz-input" style="font-size:13px;">
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div>
+                  <label style="font-size:11px;font-weight:700;display:block;margin-bottom:3px;">Month *</label>
+                  <select id="adm-pp-month" class="biz-input" style="font-size:13px;">
+                    <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+                    <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+                    <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+                    <option value="10">October</option><option value="11" selected>November</option><option value="12">December</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:11px;font-weight:700;display:block;margin-bottom:3px;">Title (optional)</label>
+                  <input id="adm-pp-title" type="text" placeholder="e.g. T880 Nov 2024" class="biz-input" style="font-size:13px;">
+                </div>
+              </div>
+              <label style="font-size:11px;font-weight:700;">PDF URL (direct link) *</label>
+              <input id="adm-pp-url" type="url" placeholder="https://..." class="biz-input" style="font-size:13px;">
+              <label style="font-size:11px;font-weight:700;">Description (optional)</label>
+              <input id="adm-pp-desc" type="text" placeholder="e.g. Includes memo. Covers sections 1-7." class="biz-input" style="font-size:13px;">
+              <button class="lms-btn" style="font-size:13px;" onclick="ppAdd()">&#128229; Add Paper</button>
+            </div>
+            <div id="adm-pp-out" style="margin-top:8px;font-size:13px;"></div>
           </div>
 
           <!-- Legacy key pool section -->
@@ -3449,9 +3544,28 @@ function lmsCheckKey(key, phoneForVerify){
     return 'ir';
   }
 
+  // ── Group key: GRP-{code} — no phone binding, Firestore-revocable ──
+  if(/^GRP-[A-Z0-9]{4,12}$/i.test(ku)) return 'grp';
+
   // ── Legacy keys — all migrate to IR Companion ──
   if(LEGACY_IR_KEYS.indexOf(ku)!==-1) return 'ir';
   return null;
+}
+
+/* Check Firestore whether a group key is still active.
+   cb(true) = proceed, cb(false) = revoked/not found.
+   Fails open on network error so offline students are not blocked. */
+function _lmsCheckGrpActive(key, cb){
+  var ku=(key||'').toUpperCase();
+  function _doCheck(db){
+    db.collection('group_keys').doc(ku).get()
+      .then(function(doc){
+        if(!doc.exists){ cb(false); return; }
+        cb(doc.data().active===true);
+      }).catch(function(){ cb(true); }); // fail open — network error
+  }
+  if(typeof _lmsFbDb!=='undefined' && _lmsFbDb){ _doCheck(_lmsFbDb); }
+  else { cb(true); } // fail open — Firebase not ready yet
 }
 
 
@@ -5434,17 +5548,45 @@ function lmsSubmitKey(){
   var email=(document.getElementById('lms-access-email').value||'').trim().toLowerCase();
   var err=document.getElementById('lms-access-err');
   err.textContent='';
-  if(!phone){err.textContent='Please enter the last 4 digits of your cell number.';return;}
-  if(!phone.match(/^\d{4}$/)){err.textContent='Enter exactly 4 digits (the last 4 of your cell number, e.g. 3277).';return;}
+  // Group keys have no phone binding — skip phone format validation for them
+  var _isGrp=/^GRP-[A-Z0-9]{4,12}$/i.test(key);
+  if(!_isGrp){
+    if(!phone){err.textContent='Please enter the last 4 digits of your cell number.';return;}
+    if(!phone.match(/^\d{4}$/)){err.textContent='Enter exactly 4 digits (the last 4 of your cell number, e.g. 3277).';return;}
+  }
   if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){err.textContent='Please enter a valid email address for account recovery.';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
-  var tier=lmsCheckKey(key, phone);
+  var tier=lmsCheckKey(key, _isGrp?null:phone);
   if(tier==='phone_mismatch'){
     err.textContent='These digits do not match the key Tseke issued. Enter the last 4 digits of the number you gave Tseke.';
     return;
   }
   if(!tier){
     err.textContent='Access key not recognised. Check your key and try again.';
+    return;
+  }
+  if(tier==='grp'){
+    err.textContent='Verifying group key…';
+    var _pendU=_lmsPendingU, _pendK=_lmsPendingK;
+    _lmsCheckGrpActive(key, function(active){
+      if(!active){
+        err.textContent='This group key has been deactivated by the instructor. Please contact Tseke for an individual key.';
+        return;
+      }
+      err.textContent='';
+      _lmsUser=_pendU; _lmsKey=_pendK;
+      _lmsPhone=phone; _lmsEmail=email;
+      _lmsProgress={tier:'both',p1:{},p2:{},eir1:{},eir2:{},s101981:{},s10292:{},s10313:{},activatedAt:Date.now()};
+      _lmsStore();
+      lmsFirebaseRegister(_pendU, phone, email, 'both', key);
+      var wm=document.getElementById('lms-welcome-msg');
+      var wu=document.getElementById('lms-welcome-u');
+      var wp=document.getElementById('lms-welcome-p');
+      if(wm) wm.textContent='Your Learning Companion is ready, '+_pendU+'. Your account is active.';
+      if(wu) wu.textContent=_pendU;
+      if(wp) wp.textContent=_pendK;
+      lmsShowView('lms-welcome');
+    });
     return;
   }
   _lmsUser=_lmsPendingU; _lmsKey=_lmsPendingK;
@@ -5469,14 +5611,38 @@ function lmsActivateKey(){
   var key=(document.getElementById('lms-act-key').value||'').trim(); // preserve case for Tseke- keys
   var err=document.getElementById('lms-act-err');
   err.textContent='';
-  if(!phone||!phone.match(/^\d{4}$/)){err.textContent='Enter the last 4 digits of your cell number (e.g. 3277).';return;}
+  var _isGrp=/^GRP-[A-Z0-9]{4,12}$/i.test(key);
+  if(!_isGrp&&(!phone||!phone.match(/^\d{4}$/))){err.textContent='Enter the last 4 digits of your cell number (e.g. 3277).';return;}
   if(!key){err.textContent='Please enter your access key.';return;}
-  var tier=lmsCheckKey(key, phone);
+  var tier=lmsCheckKey(key, _isGrp?null:phone);
   if(tier==='phone_mismatch'){
     err.textContent='These digits do not match the key Tseke issued. Enter the last 4 digits of the number you gave Tseke.';
     return;
   }
   if(!tier){err.textContent='Key not recognised. Check the key Tseke sent you.';return;}
+  if(tier==='grp'){
+    err.textContent='Verifying group key…';
+    _lmsCheckGrpActive(key, function(active){
+      if(!active){
+        err.textContent='This group key has been deactivated by the instructor. Please contact Tseke for an individual key.';
+        return;
+      }
+      err.textContent='';
+      _lmsPhone=phone; _lmsEmail=email;
+      _lmsProgress.tier='both';
+      _lmsProgress.activatedAt=Date.now();
+      _lmsStore();
+      lmsFirebaseRegister(_lmsUser, phone, email, 'both', key);
+      var wm=document.getElementById('lms-welcome-msg');
+      var wu=document.getElementById('lms-welcome-u');
+      var wp=document.getElementById('lms-welcome-p');
+      if(wm) wm.textContent='Access activated! Your Learning Companion is ready, '+_lmsUser+'.';
+      if(wu) wu.textContent=_lmsUser;
+      if(wp) wp.textContent=_lmsKey;
+      lmsShowView('lms-welcome');
+    });
+    return;
+  }
   _lmsPhone=phone; _lmsEmail=email;
   _lmsProgress.tier=tier;
   _lmsProgress.activatedAt=Date.now();
@@ -5505,6 +5671,7 @@ function lmsSigninByKey(){
     if(err)err.textContent='Key not recognised. Check the key Tseke sent you.';
     return;
   }
+  if(tier==='grp') tier='both'; // group keys grant full access
   var u=key.toLowerCase();
   var existing=_lmsLoad(u,'0');
   if(existing){
@@ -6105,7 +6272,6 @@ var LMS_TRACKS=[
     syllabusScope:'Annexe A of SANS 10142-1: Earthing system selection (TN, TT, IT), protective earth conductors, equipotential bonding, electrode types and installation, earth resistance testing.',
     bundles:['Paper 1 Complete 20-eBook Bundle'],
     appearances:[],
-    placeholder:true,
     topics:[]
   },
   {
@@ -6118,7 +6284,6 @@ var LMS_TRACKS=[
     syllabusScope:'Annexe B of SANS 10142-1: Selection of wiring systems, conduit types, trunking, cable tray, cable clips and supports, minimum installation distances, penetrations.',
     bundles:['Paper 1 Complete 20-eBook Bundle'],
     appearances:[],
-    placeholder:true,
     topics:[]
   },
   {
@@ -6131,7 +6296,6 @@ var LMS_TRACKS=[
     syllabusScope:'SANS 10198-1: General principles for cable installation. SANS 10198-2: Construction and characteristics of power cables rated up to and including 33 kV — conductor types, insulation, sheathing, armouring.',
     bundles:['Paper 1 Complete 20-eBook Bundle'],
     appearances:[],
-    placeholder:true,
     topics:[]
   },
   {
@@ -6144,7 +6308,6 @@ var LMS_TRACKS=[
     syllabusScope:'SANS 10292: Earthing of LV distribution systems — TN-S, TN-C-S, TT and IT systems; installation of earthing conductors; earth electrode resistance; RCD coordination; protective multiple earthing (PME).',
     bundles:['Paper 1 Complete 20-eBook Bundle'],
     appearances:[],
-    placeholder:true,
     topics:[]
   },
   {
@@ -6157,7 +6320,6 @@ var LMS_TRACKS=[
     syllabusScope:'Updated every trimester. Uses Formula B (P(H) = 1 − e^(−λH)) across all 19 tracks to rank topics by repeat probability, generating a prioritised mock exam for the upcoming trimester sitting. Includes worked answers and marker guidelines.',
     bundles:['Paper 1 Complete 20-eBook Bundle','Trimester Forecast Pack'],
     appearances:[],
-    placeholder:true,
     topics:[]
   }
 ];
@@ -6556,6 +6718,65 @@ var _d3s10313=[
   {title:'Air Termination, Down Conductors & Earth Termination',pool:LMS_DATA3.s10313b},
   {title:'Bonding, SPDs, Internal LPS & Maintenance',pool:LMS_DATA3.s10313c}
 ];
+/* ── Past Papers Repository ─────────────────────────────────── */
+/* lmsPastPapers_render(containerId) — loads papers from Firestore
+   into the given container. Called lazily when the user opens the
+   collapsible past-papers block in Levels 3-5.
+   Firestore collection: past_papers
+   Fields: { paper:'p1'|'p2', year:2024, monthNum:11,
+             month:'November', title:'...', url:'...', desc:'...' } */
+function lmsPastPapers_render(cId){
+  var el=document.getElementById(cId);
+  if(!el) return;
+  var db=(typeof _lmsFbDb!=='undefined'&&_lmsFbDb)?_lmsFbDb:null;
+  if(!db){
+    el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:8px 0;margin:0;">Past papers unavailable — no connection. Try again later.</p>';
+    return;
+  }
+  el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:8px 0;margin:0;">Loading past papers…</p>';
+  db.collection('past_papers').orderBy('year','desc').orderBy('monthNum','desc').get()
+    .then(function(snap){
+      if(snap.empty){
+        el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:8px 0;margin:0;">No past papers have been added yet. Check back after your next session.</p>';
+        return;
+      }
+      var p1=[], p2=[];
+      snap.forEach(function(d){ var v=d.data(); v._id=d.id; if(v.paper==='p2') p2.push(v); else p1.push(v); });
+      var html='';
+      if(p1.length){
+        html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#2a5ba8;margin:12px 0 6px 0;">Paper 1 &mdash; T880 (Installation Rules)</div>';
+        html+=_ppGroup(p1);
+      }
+      if(p2.length){
+        html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#8b4513;margin:12px 0 6px 0;">Paper 2 &mdash; T890 (Advanced)</div>';
+        html+=_ppGroup(p2);
+      }
+      el.innerHTML=html;
+    }).catch(function(){
+      el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:8px 0;margin:0;">Could not load papers. Please check your connection and try again.</p>';
+    });
+}
+function _ppGroup(arr){
+  var byYear={};
+  arr.forEach(function(d){ var y=d.year||'Unknown'; if(!byYear[y]) byYear[y]=[]; byYear[y].push(d); });
+  var html='';
+  Object.keys(byYear).sort(function(a,b){return b-a;}).forEach(function(yr){
+    html+='<div style="font-size:11.5px;font-weight:700;color:var(--fg2);margin:8px 0 4px 0;">'+yr+'</div>';
+    byYear[yr].sort(function(a,b){return (b.monthNum||0)-(a.monthNum||0);}).forEach(function(d){
+      var lbl=d.title||(d.month||'')+' '+yr;
+      html+='<a href="'+d.url+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:8px 11px;background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;margin-bottom:5px;text-decoration:none;">'
+        +'<span style="font-size:18px;line-height:1;">&#128196;</span>'
+        +'<div style="flex:1;min-width:0;">'
+        +'<div style="font-size:12.5px;font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+lbl+'</div>'
+        +(d.desc?'<div style="font-size:11px;color:var(--fg3);">'+d.desc+'</div>':'')
+        +'</div>'
+        +'<span style="font-size:11.5px;font-weight:700;color:var(--amb);white-space:nowrap;">View &#8599;</span>'
+        +'</a>';
+    });
+  });
+  return html;
+}
+
 /* ── Level 1 Orientation Quiz data ───────────────────────────── */
 var LMS_DATA_EB00=[{
   title:'Level 1 Orientation — Regulatory Framework, Registration & Exam',
