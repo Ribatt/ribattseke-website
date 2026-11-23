@@ -3044,6 +3044,108 @@ function lmsCheckKey(key, phoneForVerify){
 }
 
 
+/* ===== LEARNER SYNC — Firebase (available to all signed-in learners) ===== */
+/* Mirror of admin.js sync functions — no dependency on admin.js being loaded   */
+(function(){
+  var _fbDb=null, _fbReady=false, _fbBusy=false, _fbQ=[];
+  var _FB_CFG={
+    apiKey:'AIzaSyA2dqoAc6ugjVazW4YIAqxDUsqHeUcCAo0',
+    authDomain:'fir-config-552cc.firebaseapp.com',
+    projectId:'fir-config-552cc',
+    storageBucket:'fir-config-552cc.firebasestorage.app',
+    messagingSenderId:'656750326751',
+    appId:'1:656750326751:web:588eeb8c380a64361aca6a'
+  };
+  var _SKEYS=['eb00_done','eb00_quiz_passed','eb01_done','eb01_quiz_passed',
+              'eb02_done','eb02_quiz_passed','eb03_done','eb03_quiz_passed',
+              'eb04_done','eb04_quiz_passed','p1_all_passed','p2_all_passed','level'];
+
+  function _loadFb(cb){
+    if(_fbReady){if(cb)cb();return;}
+    if(cb)_fbQ.push(cb);
+    if(_fbBusy)return;
+    _fbBusy=true;
+    function _init(){
+      try{
+        if(typeof firebase==='undefined'){_fbBusy=false;return;}
+        if(!firebase.apps.length) firebase.initializeApp(_FB_CFG);
+        _fbDb=firebase.firestore();
+        _fbReady=true;_fbBusy=false;
+        _fbQ.forEach(function(f){try{f();}catch(e){}});_fbQ=[];
+      }catch(e){_fbBusy=false;}
+    }
+    var s1=document.createElement('script');
+    s1.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
+    s1.onload=function(){
+      var s2=document.createElement('script');
+      s2.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js';
+      s2.onload=_init;
+      s2.onerror=function(){_fbBusy=false;};
+      document.head.appendChild(s2);
+    };
+    s1.onerror=function(){_fbBusy=false;};
+    document.head.appendChild(s1);
+  }
+  function _docId(em){return (em||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_');}
+
+  /* Exposed: push local progress to Firestore */
+  window.lmsSync_push=function(email){
+    if(!email)return;
+    /* skip if admin.js already defined a richer version */
+    _loadFb(function(){
+      if(!_fbDb)return;
+      try{
+        var em=email.toLowerCase();
+        var data={email:em,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+        _SKEYS.forEach(function(k){
+          var raw=localStorage.getItem('lms4_'+em+'_'+k);
+          if(raw!==null){try{data[k]=JSON.parse(raw);}catch(e){data[k]=raw;}}
+        });
+        _fbDb.collection('lms_progress').doc(_docId(em)).set(data,{merge:true});
+      }catch(e){}
+    });
+  };
+
+  /* Exposed: pull Firestore → localStorage then run callback */
+  window.lmsSync_pull=function(email,cb){
+    if(!email){if(cb)cb();return;}
+    _loadFb(function(){
+      if(!_fbDb){if(cb)cb();return;}
+      try{
+        var em=email.toLowerCase();
+        _fbDb.collection('lms_progress').doc(_docId(em)).get().then(function(doc){
+          if(!doc.exists){if(cb)cb();return;}
+          var d=doc.data();
+          _SKEYS.forEach(function(k){
+            if(d[k]===undefined)return;
+            var lk='lms4_'+em+'_'+k;
+            if(k.endsWith('_done')){
+              var loc=[];try{loc=JSON.parse(localStorage.getItem(lk)||'[]');}catch(e){}
+              var rem=Array.isArray(d[k])?d[k]:[];
+              var mrg=loc.slice();
+              rem.forEach(function(v){if(mrg.indexOf(v)<0)mrg.push(v);});
+              try{localStorage.setItem(lk,JSON.stringify(mrg));}catch(e){}
+            } else if(k.endsWith('_quiz_passed')||k.endsWith('_passed')){
+              var rp=typeof d[k]==='object'?d[k]&&d[k].passed:!!d[k];
+              if(rp){
+                var ex=null;try{ex=JSON.parse(localStorage.getItem(lk));}catch(e){}
+                if(!ex||!ex.passed){
+                  try{localStorage.setItem(lk,JSON.stringify(typeof d[k]==='object'?d[k]:{passed:true,date:new Date().toISOString(),syncedFromCloud:true}));}catch(e){}
+                }
+              }
+            } else {
+              var ll=parseInt(localStorage.getItem(lk)||'0',10)||0;
+              var rl=parseInt(d[k],10)||0;
+              if(rl>ll)try{localStorage.setItem(lk,String(rl));}catch(e){}
+            }
+          });
+          if(cb)cb();
+        }).catch(function(){if(cb)cb();});
+      }catch(e){if(cb)cb();}
+    });
+  };
+})();
+
 /* ===== LMS ENGINE v2 ===== */
 var LMS_NS='lms4_';
 var QUIZ_Q=20;
@@ -3659,6 +3761,8 @@ function lmsShowView(id){
 
 function _lmsStore(){
   try{localStorage.setItem(LMS_NS+_lmsUser+'_'+_lmsKey,JSON.stringify(_lmsProgress));}catch(e){}
+  /* sync cert/level keys to cloud on every save so other devices pick it up */
+  if(_lmsUser&&typeof lmsSync_push==='function') lmsSync_push(_lmsUser);
 }
 function _lmsLoad(u,k){
   try{var s=localStorage.getItem(LMS_NS+u+'_'+k);return s?JSON.parse(s):null;}catch(e){return null;}
@@ -5142,6 +5246,13 @@ function _buildTrackDash(prog){
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ── LMS_DATA3 stub — Level 3 track question pools (to be populated per track eBook) ── */
+var LMS_DATA3={
+  s101981:[],s101982:[],s101983:[],
+  s10292a:[],s10292b:[],s10292c:[],
+  s10313a:[],s10313b:[],s10313c:[]
+};
 
 var _d3s101981=[
   {title:'Cable Selection — Scope, Types & Insulation',pool:LMS_DATA3.s101981},
