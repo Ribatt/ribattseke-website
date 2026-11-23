@@ -799,6 +799,13 @@
               if(hint)hint.textContent=pct>=100?'All done! Videos & Quiz unlocked below ↓':(pct>0?'Continue with Segment '+(_done.length+1)+' →':'Start with Segment 1 →');
               if(vlp)vlp.textContent=pct+'% done';
               if(qlp)qlp.textContent=pct+'% done';
+              // Hide lock overlays when all segments done
+              if(pct>=100){
+                var vl=document.getElementById('eb00-video-lock');
+                var ql=document.getElementById('eb00-quiz-lock');
+                if(vl)vl.hidden=true;
+                if(ql)ql.hidden=true;
+              }
             }
 
             var SEG_CONTENT={
