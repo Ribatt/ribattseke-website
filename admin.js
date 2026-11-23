@@ -5074,6 +5074,7 @@ function hubRenderers(){
       else if(id==='hub-expiry')expiryRender();
       else if(id==='hub-financials')finRender();
       else if(id==='hub-qbank'){ if(typeof qbankInit==='function')qbankInit(); }
+      else if(id==='hub-predictor'){ /* predRun() is triggered by button */ }
       else if(id==='hub-attempts'){ if(typeof attemptsInit==='function')attemptsInit(); }
     },50);
   };
@@ -6585,3 +6586,361 @@ function finRender(){
   window.attemptsInit=function(){ var e=(_g('atm-email')||{}).value; if(e) atmLoad(); };
 })();
 /* ===== END ATTEMPT HISTORY ===== */
+
+/* ===== ATTEMPT HISTORY — Admin viewer ===== */
+(function(){
+  var SUBJECT_MAP={
+    eb00:'Level 1 · Orientation',eb01:'Level 2 · Fundamentals',
+    eb02:'Level 3 · eBook 02',eb03:'Level 4 · eBook 03',eb04:'Level 5 · eBook 04',
+    p1:'Paper 1',p2:'Paper 2',eir1:'EIR 1',eir2:'EIR 2 (Const.)',
+    s101981:'SANS 10198',s10292:'SANS 10292',s10313:'SANS 10313'
+  };
+
+  function _docId(em){ return (em||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_'); }
+  function _g(id){ return document.getElementById(id); }
+
+  function _render(arr, paper){
+    var out=_g('atm-out'), sumEl=_g('atm-summary'), listEl=_g('atm-list');
+    if(!listEl) return;
+    var filtered=paper?arr.filter(function(a){return a.paper===paper;}):arr;
+    if(!filtered.length){ listEl.innerHTML='<p style="font-size:12px;color:var(--fg3);">No attempts found for this filter.</p>'; return; }
+
+    /* Summary stats */
+    var passes=filtered.filter(function(a){return a.passed;}).length;
+    var best=filtered.reduce(function(mx,a){return a.score>mx?a.score:mx;},0);
+    var avg=Math.round(filtered.reduce(function(s,a){return s+a.score;},0)/filtered.length);
+    if(sumEl){
+      sumEl.innerHTML='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;">'+
+        ['<b>'+filtered.length+'</b> attempt(s)',
+         '<b>'+passes+'</b> passed ('+Math.round(passes/filtered.length*100)+'%)',
+         'Best <b>'+best+'%</b>','Avg <b>'+avg+'%</b>']
+        .map(function(s){return '<span style="font-size:12px;padding:5px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--border);">'+s+'</span>';})
+        .join('')+'</div>';
+    }
+
+    /* Group by paper then session */
+    var grouped={};
+    filtered.forEach(function(a){
+      var pk=a.paper||'?'; var sk=a.sess!==undefined?String(a.sess):'?';
+      if(!grouped[pk]) grouped[pk]={};
+      if(!grouped[pk][sk]) grouped[pk][sk]=[];
+      grouped[pk][sk].push(a);
+    });
+
+    var html='';
+    Object.keys(grouped).sort().forEach(function(pk){
+      html+='<div style="margin-bottom:14px;">';
+      html+='<div style="font-size:12.5px;font-weight:800;color:var(--amb);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:4px;">'+(SUBJECT_MAP[pk]||pk)+'</div>';
+      var sessions=grouped[pk];
+      Object.keys(sessions).sort(function(a,b){return Number(a)-Number(b);}).forEach(function(sk){
+        var sarr=sessions[sk];
+        var sp=sarr.filter(function(a){return a.passed;}).length;
+        html+='<div style="margin-bottom:8px;">';
+        if(sk!=='?') html+='<div style="font-size:11px;font-weight:700;color:var(--fg2);margin-bottom:4px;">Session '+(Number(sk)+1)+' &nbsp;·&nbsp; '+sarr.length+' attempt(s), '+sp+' pass'+(sp!==1?'es':'')+'</div>';
+        sarr.forEach(function(a){
+          var d=new Date(a.ts);
+          var dateStr=d.toLocaleDateString('en-ZA',{day:'2-digit',month:'short',year:'numeric'});
+          var timeStr=d.toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'});
+          var col=a.passed?'#27ae60':'#e74c3c';
+          html+='<div style="display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:7px;margin-bottom:3px;background:var(--surface);border:1px solid var(--border);flex-wrap:wrap;">'+
+            '<span style="font-size:10px;font-weight:800;color:#fff;background:'+col+';padding:1px 7px;border-radius:10px;">'+(a.passed?'PASS':'FAIL')+'</span>'+
+            '<span style="font-size:12px;font-weight:700;">'+a.score+'%</span>'+
+            '<span style="font-size:11px;color:var(--fg3);">'+a.correct+'/'+a.total+' correct</span>'+
+            (a.timeSec?'<span style="font-size:10.5px;color:var(--fg3);">'+Math.floor(a.timeSec/60)+'m '+(a.timeSec%60)+'s</span>':'')+
+            '<span style="font-size:10.5px;color:var(--fg3);margin-left:auto;">'+dateStr+' '+timeStr+'</span>'+
+          '</div>';
+        });
+        html+='</div>';
+      });
+      html+='</div>';
+    });
+    listEl.innerHTML=html;
+  }
+
+  window.atmLoad=function(){
+    var email=((_g('atm-email')||{}).value||'').trim().toLowerCase();
+    var paper=((_g('atm-paper')||{}).value||'');
+    var out=_g('atm-out');
+    if(!email){ if(out) out.textContent='Please enter a learner email.'; return; }
+    var key='lms4_'+email+'_attempts';
+    var arr=[];
+    try{ arr=JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){}
+    if(out) out.textContent=arr.length?'Loaded '+arr.length+' attempt(s) from this device.':'No local attempts found for '+email+'. Try "Load from Cloud".';
+    _render(arr, paper);
+  };
+
+  window.atmLoadFirestore=function(){
+    var email=((_g('atm-email')||{}).value||'').trim().toLowerCase();
+    var paper=((_g('atm-paper')||{}).value||'');
+    var out=_g('atm-out');
+    if(!email){ if(out) out.textContent='Please enter a learner email.'; return; }
+    if(out) out.textContent='Loading from cloud...';
+    _qbGetDb(function(db){
+      db.collection('lms_attempts').doc(_docId(email)).get()
+        .then(function(doc){
+          if(!doc.exists){ if(out) out.textContent='No cloud attempts found for '+email; _render([],paper); return; }
+          var d=doc.data();
+          var arr=Array.isArray(d.attempts)?d.attempts:[];
+          /* Also merge with local */
+          var localKey='lms4_'+email+'_attempts';
+          var local=[];
+          try{local=JSON.parse(localStorage.getItem(localKey)||'[]');}catch(e){}
+          var seen={};
+          var merged=arr.slice();
+          arr.forEach(function(a){seen[(a.ts||'')+'|'+(a.paper||'')+'|'+(a.sess||'')]=true;});
+          local.forEach(function(a){
+            var k=(a.ts||'')+'|'+(a.paper||'')+'|'+(a.sess||'');
+            if(!seen[k]){merged.push(a);seen[k]=true;}
+          });
+          merged.sort(function(a,b){return (b.ts||'')>(a.ts||'')?1:-1;});
+          if(out) out.textContent='Loaded '+merged.length+' attempt(s) (cloud + local merged) for '+email;
+          _render(merged, paper);
+        })
+        .catch(function(err){ if(out) out.textContent='Cloud error: '+err.message; });
+    });
+  };
+
+  /* Wire into hubShow */
+  var _atmOrig=window.hubShow;
+  if(typeof _atmOrig==='function'){
+    var _atmWrapped=window.hubShow;
+    window.hubShow=function(id,btn){
+      _atmWrapped(id,btn);
+      if(id==='hub-attempts'){ /* nothing on open — wait for explicit load */ }
+    };
+  }
+})();
+/* ===== END ATTEMPT HISTORY ===== */
+
+/* ===== EXAM PREDICTOR ENGINE ===== */
+(function(){
+
+  /* Section-level metadata for P1 and P2 — maps session index to canonical topic */
+  var P1_META=[
+    {idx:0,topic:'Scope & Application',sansRef:'Section 1',weight:1},
+    {idx:1,topic:'Definitions & Symbols',sansRef:'Section 2',weight:2},
+    {idx:2,topic:'General Requirements',sansRef:'Section 3',weight:3},
+    {idx:3,topic:'Protection Against Electric Shock',sansRef:'Section 4',weight:3},
+    {idx:4,topic:'Protection Against Thermal Effects',sansRef:'Section 4',weight:2},
+    {idx:5,topic:'Overcurrent Protection',sansRef:'Section 5 / 7.3',weight:3},
+    {idx:6,topic:'Isolation, Switching & Control',sansRef:'Section 5 / 7.4',weight:2},
+    {idx:7,topic:'Earthing & Bonding',sansRef:'Section 6',weight:3},
+    {idx:8,topic:'Wiring Systems & Cable Selection',sansRef:'Section 7',weight:3},
+    {idx:9,topic:'Special Locations & Installations',sansRef:'Section 7 / Annex',weight:2},
+    {idx:10,topic:'DB, Busbar & Switchgear',sansRef:'Section 7.5',weight:2},
+    {idx:11,topic:'Socket Outlets & Current-Using Equipment',sansRef:'Section 7.6',weight:2},
+    {idx:12,topic:'Luminaires & Lighting',sansRef:'Section 7.7',weight:1},
+    {idx:13,topic:'Three-Phase & Motors',sansRef:'Section 7',weight:2},
+    {idx:14,topic:'Emergency & Safety Systems',sansRef:'Section 7.8',weight:1}
+  ];
+  var P2_META=[
+    {idx:0,topic:'EIR — Registration & Responsibilities',sansRef:'EIR Reg 1–8',weight:3},
+    {idx:1,topic:'EIR — CoC Requirements & Retention',sansRef:'EIR Reg 9–12',weight:3},
+    {idx:2,topic:'OHS Act — General Duties',sansRef:'OHS Act Sections',weight:2},
+    {idx:3,topic:'Construction Regulations',sansRef:'CR 2014',weight:2},
+    {idx:4,topic:'SANS 10142-1 Testing — Continuity & IR',sansRef:'Cl. 8',weight:3},
+    {idx:5,topic:'SANS 10142-1 Testing — Loop Impedance & RCD',sansRef:'Cl. 8',weight:3},
+    {idx:6,topic:'CoC — Issue, Validity & Defects',sansRef:'EIR / SANS 10142-1 Annex H',weight:3},
+    {idx:7,topic:'EMR — Machinery Regulations',sansRef:'EMR',weight:2},
+    {idx:8,topic:'SANS 10142-1 — DBs & Protection Devices',sansRef:'Cl. 7.5',weight:2},
+    {idx:9,topic:'Earthing — Earth Electrodes & MET',sansRef:'Cl. 6',weight:2}
+  ];
+
+  /* Frequency analysis: count how many questions each topic has in the pool */
+  function _analyse(paperData, meta){
+    var topics=[];
+    (meta||[]).forEach(function(m){
+      var sess=paperData[m.idx];
+      var poolSize=sess&&sess.pool?sess.pool.length:0;
+      /* Recency weighting: topics with fewer pool entries appear less often in past papers
+         → higher frequency = well-tested → predict those AND gaps */
+      var freqScore=poolSize * m.weight;
+      /* Gap score: topics with small pools may be under-represented → likely to appear */
+      var gapScore=poolSize>0?(30/poolSize):10;
+      topics.push({
+        idx:m.idx,
+        topic:m.topic,
+        sansRef:m.sansRef,
+        poolSize:poolSize,
+        baseWeight:m.weight,
+        freqScore:freqScore,
+        gapScore:gapScore,
+        combined:freqScore*0.5+gapScore*0.5*m.weight
+      });
+    });
+    topics.sort(function(a,b){return b.combined-a.combined;});
+    return topics;
+  }
+
+  /* Pick N questions from a session pool without repetition */
+  function _pick(pool, n){
+    var arr=pool.slice();
+    for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}
+    return arr.slice(0,Math.min(n,arr.length));
+  }
+
+  /* Generate one 10-question mock paper weighted by topicWeights array {idx, questions} */
+  function _genMock(paperData, topicWeights, label, rationale){
+    var questions=[];
+    var total=10;
+    /* Distribute questions according to weights */
+    var alloc=[];
+    var wSum=topicWeights.reduce(function(s,t){return s+(t.w||1);},0);
+    var remaining=total;
+    topicWeights.forEach(function(t,i){
+      var n=i===topicWeights.length-1?remaining:Math.round(t.w/wSum*total);
+      n=Math.max(1,Math.min(n,remaining));
+      alloc.push({idx:t.idx,n:n});
+      remaining-=n;
+    });
+    alloc.forEach(function(a){
+      var sess=paperData[a.idx];
+      if(!sess||!sess.pool||!sess.pool.length) return;
+      var picked=_pick(sess.pool,a.n);
+      picked.forEach(function(q){questions.push({q:q,topic:sess.title||('Session '+(a.idx+1))});});
+    });
+    /* Shuffle final order */
+    for(var i=questions.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=questions[i];questions[i]=questions[j];questions[j]=t;}
+    return {label:label,rationale:rationale,questions:questions.slice(0,10)};
+  }
+
+  /* Render a mock paper as styled HTML (non-downloadable, text-select allowed) */
+  function _renderMock(mock, paperCode, versionNum){
+    var col=['#2a5ba8','#c0392b','#27ae60'][versionNum]||'#2a5ba8';
+    var html='<div style="border:2px solid '+col+';border-radius:12px;overflow:hidden;margin-bottom:18px;">';
+    html+='<div style="background:'+col+';color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;">';
+    html+='<span style="font-size:18px;">&#127919;</span>';
+    html+='<div><div style="font-size:13px;font-weight:800;">Version '+(versionNum+1)+' — '+mock.label+'</div>'+
+      '<div style="font-size:11px;opacity:.85;">'+paperCode.toUpperCase()+' Mock Examination &nbsp;·&nbsp; 10 Questions &nbsp;·&nbsp; 20 minutes</div></div>';
+    html+='</div>';
+
+    /* Rationale */
+    html+='<div style="background:var(--bg-alt);border-bottom:1px solid var(--border);padding:10px 16px;">';
+    html+='<div style="font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:'+col+';margin-bottom:3px;">Why this version?</div>';
+    html+='<div style="font-size:12px;color:var(--fg2);">'+mock.rationale+'</div></div>';
+
+    /* Questions */
+    html+='<div style="padding:14px 16px;">';
+    mock.questions.forEach(function(item,qi){
+      var q=item.q;
+      var opts=['a','b','c','d'];
+      html+='<div style="margin-bottom:14px;">';
+      html+='<div style="font-size:12.5px;font-weight:700;color:var(--fg);margin-bottom:6px;">'+
+        '<span style="font-size:11px;font-weight:800;color:'+col+';margin-right:6px;">'+(qi+1)+'.</span>'+
+        q.q+'</div>';
+      /* Topic label */
+      html+='<div style="font-size:10px;color:var(--fg3);margin-bottom:5px;font-style:italic;">'+item.topic+'</div>';
+      opts.forEach(function(k){
+        if(!q[k])return;
+        var isAns=(q.ans||'').toLowerCase()===k;
+        html+='<div style="display:flex;align-items:flex-start;gap:6px;padding:5px 8px;border-radius:6px;margin-bottom:3px;'+
+          (isAns?'background:rgba(39,174,96,.12);border:1px solid #27ae60;':'background:var(--surface);border:1px solid var(--border);"')+'">';
+        html+='<span style="font-size:11px;font-weight:800;min-width:16px;color:'+(isAns?'#27ae60':'var(--fg3)')+'">'+(k.toUpperCase())+'.</span>';
+        html+='<span style="font-size:12px;color:var(--fg);">'+q[k]+(isAns?' <span style="font-size:10px;font-weight:800;color:#27ae60;">[ANSWER]</span>':'')+'</span>';
+        html+='</div>';
+      });
+      if(q.ref){
+        html+='<div style="font-size:10.5px;color:var(--fg3);margin-top:4px;font-style:italic;">Ref: '+q.ref+'</div>';
+      }
+      html+='</div>';
+    });
+    html+='</div></div>';
+    return html;
+  }
+
+  /* TOP PREDICTIONS renderer */
+  function _renderPredictions(topics, label){
+    var top3=topics.slice(0,3);
+    var html='<div style="margin-bottom:14px;">';
+    html+='<div style="font-size:12px;font-weight:800;color:var(--fg2);margin-bottom:8px;">&#127919; Top 3 Predicted Topic Clusters — '+label+'</div>';
+    var medals=['&#129351;','&#129352;','&#129353;'];
+    top3.forEach(function(t,i){
+      var score=Math.min(99,Math.round(t.combined*2.5+55));
+      html+='<div style="border:1.5px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:7px;background:var(--surface);">';
+      html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">';
+      html+=medals[i]+' <strong style="font-size:13px;">'+t.topic+'</strong>';
+      html+='<span style="margin-left:auto;font-size:11px;font-weight:800;background:var(--amb);color:#fff;padding:2px 10px;border-radius:12px;">'+score+'% likely</span>';
+      html+='</div>';
+      html+='<div style="font-size:11.5px;color:var(--fg2);margin-bottom:4px;">SANS Ref: '+t.sansRef+'</div>';
+      html+='<div style="font-size:11.5px;color:var(--fg3);">';
+      if(i===0) html+='Highest combined frequency + coverage gap score. This topic appears heavily in historical pools and has a large SANS section — examiners consistently return here.';
+      if(i===1) html+='Second-ranked cluster. Pool depth indicates it has been examined before but gaps remain — expect a question from an angle not recently covered.';
+      if(i===2) html+='Third-ranked. Lower pool count signals a coverage gap; with '+t.poolSize+' past-paper questions on record this section is statistically overdue.';
+      html+='</div></div>';
+    });
+    html+='</div>';
+    return html;
+  }
+
+  window.predRun=function(){
+    var paper=(document.getElementById('pred-paper')||{}).value||'p1';
+    var status=document.getElementById('pred-status');
+    var out=document.getElementById('pred-out');
+    if(!out)return;
+    if(status)status.textContent='Analysing...';
+
+    var paperData=(paper==='p1')?(typeof LMS_DATA!=='undefined'?LMS_DATA.p1:[]):
+                                  (typeof LMS_DATA!=='undefined'?LMS_DATA.p2:[]);
+    if(!paperData||!paperData.length){
+      out.innerHTML='<p style="font-size:12px;color:var(--fg3);">Question pool not loaded. Try refreshing the page.</p>';
+      if(status)status.textContent=''; return;
+    }
+    var meta=paper==='p1'?P1_META:P2_META;
+    /* Trim meta to actual pool length */
+    var activeMeta=meta.filter(function(m){return m.idx<paperData.length;});
+    var topics=_analyse(paperData, activeMeta);
+
+    /* 3 versions with different weighting strategies */
+    var top=topics.slice(0,6);
+    var bot=topics.slice(topics.length-4);
+
+    /* Version 1: Highest-frequency topics (top scorers) */
+    var v1weights=top.slice(0,4).map(function(t){return {idx:t.idx,w:t.combined};});
+    var v1=_genMock(paperData,v1weights,
+      'High-Frequency Coverage',
+      'Built from the 4 highest-scoring topic clusters by combined frequency + gap analysis. These are the most historically consistent topics in '+paper.toUpperCase()+' exam papers. Examiners reliably draw from these areas every sitting.');
+
+    /* Version 2: Gap-weighted (under-tested topics are overdue) */
+    var v2topics=topics.slice().sort(function(a,b){return b.gapScore-a.gapScore;});
+    var v2weights=v2topics.slice(0,4).map(function(t){return {idx:t.idx,w:t.gapScore};});
+    var v2=_genMock(paperData,v2weights,
+      'Gap-Weighted (Overdue Topics)',
+      'Targets topics with the largest coverage gaps — areas where pool depth is thin relative to their SANS section size. These topics are statistically "overdue" and examiners often rotate back to test depth that has not recently appeared.');
+
+    /* Version 3: Broad spread (balanced) */
+    var v3weights=[];
+    var step=Math.floor(paperData.length/5)||1;
+    for(var i=0;i<paperData.length&&v3weights.length<5;i+=step){
+      v3weights.push({idx:i,w:1});
+    }
+    var v3=_genMock(paperData,v3weights,
+      'Broad Spectrum (Full Coverage)',
+      'Spreads questions evenly across the full paper spread. DHET examiners are required to cover the full scope of the standard; no sitting is entirely predictable. Use this version to test breadth and avoid tunnel-visioning on only the high-frequency clusters.');
+
+    /* Render */
+    var label=paper==='p1'?'Paper 1 (Installation Rules)':'Paper 2 (Standards & Regs)';
+    var html='<div style="margin-bottom:20px;">';
+    html+='<div style="background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px;">';
+    html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);margin-bottom:6px;">Analysis Summary — '+label+'</div>';
+    html+='<div style="font-size:12px;color:var(--fg2);">Analysed <strong>'+paperData.length+' sessions</strong> with <strong>'+
+      paperData.reduce(function(s,s2){return s+(s2.pool?s2.pool.length:0);},0)+' questions</strong> in the pool. ';
+    html+='Frequency score = pool depth × section weight. Gap score = inverse of pool density. ';
+    html+='Combined = 50% frequency + 50% gap × weight. 3 mock papers generated below — answers shown in green for self-marking. <strong>Not downloadable.</strong></div>';
+    html+='</div>';
+    html+=_renderPredictions(topics,label);
+    html+='<div style="font-size:12.5px;font-weight:800;color:var(--fg2);margin:14px 0 10px;border-top:1px solid var(--border);padding-top:12px;">&#128203; 3 Mock Exam Papers — '+label+'</div>';
+    html+='<div style="user-select:text;">';
+    html+=_renderMock(v1,paper,0);
+    html+=_renderMock(v2,paper,1);
+    html+=_renderMock(v3,paper,2);
+    html+='</div>';
+    /* Prevent right-click save and ctrl+p */
+    html+='<div style="font-size:10.5px;color:var(--fg3);text-align:center;padding:8px;border-top:1px solid var(--border);margin-top:6px;">These mock papers are for on-screen study only. Generated dynamically — results vary each run. &copy; Riba T Tseke.</div>';
+    html+='</div>';
+
+    out.innerHTML=html;
+    if(status)status.textContent='Done — '+paperData.reduce(function(s,s2){return s+(s2.pool?s2.pool.length:0);},0)+' questions analysed';
+  };
+
+})();
+/* ===== END EXAM PREDICTOR ===== */

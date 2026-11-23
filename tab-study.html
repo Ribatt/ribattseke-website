@@ -1556,6 +1556,7 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">&#127941; CPD &amp; Memberships</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-qbank',this);qbankInit()">&#128218; Question Bank</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-attempts',this)">&#128202; Attempt History</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-predictor',this)">&#127919; Exam Predictor</button>
           <!-- DESIGN & IT -->
           <span class="hub-nav-grp">&#128296; DESIGN &amp; IT</span>
           <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
@@ -2395,6 +2396,29 @@
         </div>
         <!-- END ATTEMPT HISTORY -->
 
+        <!-- ===== HUB: EXAM PREDICTOR ===== -->
+        <div id="hub-predictor" class="hub-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span style="font-size:22px;">&#127919;</span>
+            <div>
+              <h3 style="font-size:15px;font-weight:800;margin:0;">Exam Predictor — Paper 1 &amp; Paper 2</h3>
+              <p style="font-size:11.5px;color:var(--fg3);margin:0;">Frequency analysis of all historical question pools. Predicts the 3 most likely topic clusters for the next DHET sitting, with justification. Generates 3 weighted mock papers per exam.</p>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px;align-items:center;">
+            <select id="pred-paper" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+              <option value="p1">Paper 1 (Installation Rules)</option>
+              <option value="p2">Paper 2 (Standards &amp; Regs)</option>
+            </select>
+            <button class="lms-btn" style="font-size:12px;padding:9px 20px;background:var(--amb);" onclick="predRun()">&#127919; Run Prediction</button>
+            <span id="pred-status" style="font-size:12px;color:var(--fg3);"></span>
+          </div>
+
+          <div id="pred-out"></div>
+        </div>
+        <!-- END EXAM PREDICTOR -->
+
       <!-- PRINT AREA (hidden, shown on print only) -->
       <div id="biz-print-area"></div>
 
@@ -2465,8 +2489,15 @@
 
           <!-- Attempt History for this paper/session -->
           <div id="sc-attempt-history" style="margin:14px 0 10px;text-align:left;">
-            <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);margin-bottom:7px;">Your Attempt History</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);flex:1;">This Session — Attempt History</div>
+              <button onclick="lmsToggleFullHistory(this)" style="font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--fg2);cursor:pointer;">All History</button>
+            </div>
             <div id="sc-attempt-list" style="font-size:12px;"></div>
+            <div id="sc-full-history" style="display:none;margin-top:12px;">
+              <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--fg3);margin-bottom:7px;border-top:1px solid var(--border);padding-top:10px;">All Attempts — All Papers</div>
+              <div id="sc-full-history-list" style="font-size:12px;max-height:320px;overflow-y:auto;"></div>
+            </div>
           </div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
@@ -3508,6 +3539,55 @@ function lmsCheckKey(key, phoneForVerify){
       }catch(e){if(cb)cb();}
     });
   };
+
+  /* Pull attempt history from Firestore and merge with localStorage */
+  window.lmsSync_pullAttempts=function(email,cb){
+    if(!email){if(cb)cb();return;}
+    _loadFb(function(){
+      if(!_fbDb){if(cb)cb();return;}
+      try{
+        var em=email.toLowerCase();
+        var localKey='lms4_'+em+'_attempts';
+        _fbDb.collection('lms_attempts').doc(_docId(em)).get().then(function(doc){
+          if(!doc.exists){if(cb)cb();return;}
+          var d=doc.data();
+          var remArr=Array.isArray(d.attempts)?d.attempts:[];
+          if(!remArr.length){if(cb)cb();return;}
+          var localArr=[];
+          try{localArr=JSON.parse(localStorage.getItem(localKey)||'[]');}catch(e){}
+          /* Merge: deduplicate by ts+paper+sess, remote fills gaps */
+          var seen={};
+          localArr.forEach(function(a){ if(a.ts)seen[a.ts+'|'+a.paper+'|'+a.sess]=true; });
+          var added=0;
+          remArr.forEach(function(a){
+            var key=(a.ts||'')+'|'+(a.paper||'')+'|'+(a.sess||'');
+            if(!seen[key]){localArr.push(a);seen[key]=true;added++;}
+          });
+          if(added){
+            localArr.sort(function(a,b){return (b.ts||'')>(a.ts||'')?1:-1;});
+            if(localArr.length>500)localArr=localArr.slice(0,500);
+            try{localStorage.setItem(localKey,JSON.stringify(localArr));}catch(e){}
+          }
+          if(cb)cb();
+        }).catch(function(){if(cb)cb();});
+      }catch(e){if(cb)cb();}
+    });
+  };
+
+  /* Push attempts batch to Firestore (called after each quiz finish) */
+  window.lmsSync_pushAttempt=function(email,rec){
+    if(!email||!rec)return;
+    _loadFb(function(){
+      if(!_fbDb)return;
+      try{
+        var em=email.toLowerCase();
+        _fbDb.collection('lms_attempts').doc(_docId(em)).set(
+          {email:em,attempts:firebase.firestore.FieldValue.arrayUnion(rec),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},
+          {merge:true}
+        );
+      }catch(e){}
+    });
+  };
 })();
 
 /* ===== LMS ENGINE v2 ===== */
@@ -4176,9 +4256,12 @@ function lmsSignin(){
         if(actEl&&_lmsPhone) actEl.value=_lmsPhone;
         lmsShowView('lms-activate');
       } else {
-        // Pull cloud progress then show dash (sync on login)
+        // Pull cloud progress + attempt history then show dash
         if(typeof lmsSync_pull==='function'){
-          lmsSync_pull(u, function(){ lmsShowDash(); });
+          lmsSync_pull(u, function(){
+            if(typeof lmsSync_pullAttempts==='function') lmsSync_pullAttempts(u, function(){ lmsShowDash(); });
+            else lmsShowDash();
+          });
         } else {
           lmsShowDash();
         }
@@ -6180,19 +6263,8 @@ function lmsFinish(){
     arr.unshift(rec);
     if(arr.length>200) arr=arr.slice(0,200);
     try{ localStorage.setItem(attemptKey,JSON.stringify(arr)); }catch(e){}
-    /* Sync to Firestore (admin.js must be loaded) */
-    if(typeof _loadFirebase==='function' && typeof _fbEmailKey==='function'){
-      _loadFirebase(function(){
-        var db=(typeof _lmsFbDb!=='undefined')?_lmsFbDb:null;
-        if(!db) return;
-        try{
-          db.collection('lms_attempts').doc(_fbEmailKey(_lmsUser)).set(
-            { email:_lmsUser.toLowerCase(), attempts:firebase.firestore.FieldValue.arrayUnion(rec) },
-            {merge:true}
-          );
-        }catch(e){}
-      });
-    }
+    /* Sync to Firestore via learner sync (no dependency on admin.js) */
+    if(typeof lmsSync_pushAttempt==='function') lmsSync_pushAttempt(_lmsUser, rec);
     /* Render attempt history */
     _lmsRenderAttemptHistory(_lmsUser, _lmsPaper, _lmsSess);
   })();
@@ -6229,6 +6301,63 @@ function _lmsRenderAttemptHistory(email, paper, sess){
   var totalAtt=filtered.length;
   var totalPass=filtered.filter(function(a){return a.passed;}).length;
   el.innerHTML='<div style="font-size:11px;color:var(--fg3);margin-bottom:6px;">'+totalAtt+' attempt'+(totalAtt!==1?'s':'')+' on this session &nbsp;·&nbsp; '+totalPass+' passed</div>'+rows.join('');
+}
+
+function lmsToggleFullHistory(btn){
+  var pane=document.getElementById('sc-full-history');
+  if(!pane)return;
+  var open=pane.style.display!=='none';
+  pane.style.display=open?'none':'block';
+  btn.textContent=open?'All History':'Hide History';
+  if(!open) _lmsRenderFullHistory(_lmsUser);
+}
+
+function _lmsRenderFullHistory(email){
+  var el=document.getElementById('sc-full-history-list');
+  if(!el)return;
+  if(!email){el.innerHTML='<em style="color:var(--fg3);">Log in to see your full history.</em>';return;}
+  var attemptKey='lms4_'+email.toLowerCase()+'_attempts';
+  var arr=[];
+  try{arr=JSON.parse(localStorage.getItem(attemptKey)||'[]');}catch(e){}
+  if(!arr.length){el.innerHTML='<em style="color:var(--fg3);">No attempts on record yet.</em>';return;}
+  var subjectMap={eb00:'Orientation',eb01:'Fundamentals',eb02:'Level 3',eb03:'Level 4',eb04:'Level 5',
+    p1:'Paper 1',p2:'Paper 2',eir1:'EIR 1',eir2:'EIR 2',
+    s101981:'SANS 10198',s10292:'SANS 10292',s10313:'SANS 10313'};
+  /* Group by paper */
+  var grouped={};
+  arr.forEach(function(a){
+    var key=(a.paper||'?');
+    if(!grouped[key])grouped[key]=[];
+    grouped[key].push(a);
+  });
+  var html='<div style="font-size:11px;color:var(--fg3);margin-bottom:8px;font-style:italic;">'+arr.length+' total attempt(s) across '+Object.keys(grouped).length+' paper(s)</div>';
+  Object.keys(grouped).sort().forEach(function(paper){
+    var group=grouped[paper];
+    var passes=group.filter(function(a){return a.passed;}).length;
+    var best=group.reduce(function(mx,a){return a.score>mx?a.score:mx;},0);
+    html+='<div style="margin-bottom:10px;">';
+    html+='<div style="font-size:11.5px;font-weight:800;color:var(--fg2);margin-bottom:4px;">'+
+      (subjectMap[paper]||paper)+
+      ' <span style="font-weight:400;color:var(--fg3);">('+group.length+' attempt'+(group.length!==1?'s':'')+' &middot; '+passes+' pass'+(passes!==1?'es':'')+' &middot; best '+best+'%)</span></div>';
+    group.slice(0,15).forEach(function(a){
+      var d=new Date(a.ts);
+      var dateStr=d.toLocaleDateString('en-ZA',{day:'2-digit',month:'short',year:'numeric'});
+      var timeStr=d.toLocaleTimeString('en-ZA',{hour:'2-digit',minute:'2-digit'});
+      var col=a.passed?'#27ae60':'#e74c3c';
+      var badge=a.passed?'PASS':'FAIL';
+      var sessLabel=a.sess!==undefined?(' S'+(Number(a.sess)+1)):'';
+      html+='<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);">'+
+        '<span style="font-size:10px;font-weight:800;color:#fff;background:'+col+';padding:1px 7px;border-radius:10px;">'+badge+'</span>'+
+        '<span style="font-size:12px;font-weight:700;color:var(--fg);">'+a.score+'%</span>'+
+        '<span style="font-size:11px;color:var(--fg3);">'+a.correct+'/'+a.total+sessLabel+'</span>'+
+        (a.timeSec?'<span style="font-size:10.5px;color:var(--fg3);">'+Math.floor((a.timeSec||0)/60)+'m '+((a.timeSec||0)%60)+'s</span>':'')+
+        '<span style="font-size:10.5px;color:var(--fg3);margin-left:auto;">'+dateStr+' '+timeStr+'</span>'+
+      '</div>';
+    });
+    if(group.length>15)html+='<div style="font-size:10.5px;color:var(--fg3);padding:3px 8px;">... and '+(group.length-15)+' more</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
 }
 
 function lmsGoLevel2(){
