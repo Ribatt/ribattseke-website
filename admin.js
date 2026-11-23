@@ -6062,3 +6062,195 @@ function finRender(){
   el.innerHTML=html;
 }
 /* ===== END FINANCIALS ===== */
+
+/* ===== QUESTION BANK — Admin CRUD via Firestore ===== */
+(function(){
+  /* Firestore collection: question_bank/{paper}/questions/{id}
+     Each doc: { q, opts:[a,b,c,d], ans:0-3, seg, paper, createdAt } */
+
+  var _qbDb=null, _qbLoading=false;
+
+  function _qbEsc(s){ var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+  function _qbToast(msg,err){
+    var el=document.getElementById('qbank-toast');
+    if(!el) return;
+    el.textContent=msg;
+    el.style.background=err?'#c0392b':'#1e8540';
+    el.style.display='block';
+    setTimeout(function(){ el.style.display='none'; }, 3500);
+  }
+
+  function _qbGetDb(cb){
+    if(_qbDb){ cb(_qbDb); return; }
+    if(typeof _loadFirebase==='function'){
+      _loadFirebase(function(){
+        try{
+          if(!firebase.apps||!firebase.apps.length){
+            firebase.initializeApp({
+              apiKey:'AIzaSyA2dqoAc6ugjVazW4YIAqxDUsqHeUcCAo0',
+              authDomain:'fir-config-552cc.firebaseapp.com',
+              projectId:'fir-config-552cc',
+              storageBucket:'fir-config-552cc.firebasestorage.app',
+              messagingSenderId:'656750326751',
+              appId:'1:656750326751:web:588eeb8c380a64361aca6a'
+            });
+          }
+        } catch(e){}
+        _qbDb=firebase.firestore();
+        cb(_qbDb);
+      });
+    } else {
+      _qbToast('Firebase not available',true);
+    }
+  }
+
+  window.qbankInit=function(){
+    /* Sync the paper selector with whatever paper-sel shows */
+    var sel=document.getElementById('qbank-paper-sel');
+    var fSel=document.getElementById('qbank-f-paper');
+    if(sel&&fSel) fSel.value=sel.value;
+  };
+
+  window.qbankLoad=function(){
+    var paper=(document.getElementById('qbank-paper-sel')||{}).value||'eb00';
+    var list=document.getElementById('qbank-list');
+    var cnt=document.getElementById('qbank-count');
+    if(list) list.innerHTML='<p style="font-size:12px;color:var(--fg3);">Loading…</p>';
+    _qbGetDb(function(db){
+      db.collection('question_bank').doc(paper).collection('questions')
+        .orderBy('createdAt','asc')
+        .get()
+        .then(function(snap){
+          var docs=[]; snap.forEach(function(d){ docs.push({id:d.id,data:d.data()}); });
+          if(cnt) cnt.textContent='('+docs.length+' question'+(docs.length===1?'':'s')+')';
+          if(!docs.length){
+            list.innerHTML='<p style="font-size:12px;color:var(--fg3);margin-top:12px;">No questions saved for this paper yet. Use "+ Add Question" to add the first one.</p>';
+            return;
+          }
+          var html='';
+          docs.forEach(function(item,idx){
+            var d=item.data;
+            var opts=d.opts||[];
+            var ansLabels=['A','B','C','D'];
+            html+='<div id="qbank-item-'+_qbEsc(item.id)+'" style="border:1.5px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;">';
+            html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">';
+            html+='<div style="flex:1;">';
+            html+='<div style="font-size:11px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Q'+(idx+1)+(d.seg?' &middot; <span style=\'color:var(--amb);\'>'+_qbEsc(d.seg)+'</span>':'')+'</div>';
+            html+='<div style="font-size:13.5px;font-weight:600;color:var(--fg);margin-bottom:8px;">'+_qbEsc(d.q||'')+'</div>';
+            html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;">';
+            opts.forEach(function(opt,i){
+              var correct=(i===(d.ans||0));
+              html+='<div style="font-size:12.5px;padding:3px 0;'+(correct?'color:#1e8540;font-weight:700;':'color:var(--fg3);')+'">'
+                +'<strong>'+ansLabels[i]+'.</strong> '+_qbEsc(opt)+(correct?' ✓':'')+'</div>';
+            });
+            html+='</div>';
+            html+='</div>';
+            html+='<div style="display:flex;flex-direction:column;gap:6px;min-width:60px;">';
+            html+='<button class="lms-btn" style="font-size:11px;padding:5px 10px;background:#2a5ba8;" onclick="qbankEdit(\''+_qbEsc(item.id)+'\',\''+_qbEsc(paper)+'\')">&#9998; Edit</button>';
+            html+='<button class="lms-btn" style="font-size:11px;padding:5px 10px;background:#c0392b;" onclick="qbankDelete(\''+_qbEsc(item.id)+'\',\''+_qbEsc(paper)+'\')">&#128465;</button>';
+            html+='</div>';
+            html+='</div>';
+            html+='</div>';
+          });
+          list.innerHTML=html;
+        })
+        .catch(function(err){ list.innerHTML='<p style="color:#c0392b;font-size:12px;">Error: '+_qbEsc(err.message)+'</p>'; });
+    });
+  };
+
+  window.qbankShowAdd=function(){
+    var wrap=document.getElementById('qbank-form-wrap');
+    var title=document.getElementById('qbank-form-title');
+    var editId=document.getElementById('qbank-edit-id');
+    if(wrap){ wrap.style.display='block'; }
+    if(title) title.textContent='+ Add New Question';
+    if(editId) editId.value='';
+    /* Sync paper from browser select */
+    var selPaper=(document.getElementById('qbank-paper-sel')||{}).value||'eb00';
+    var fPaper=document.getElementById('qbank-f-paper');
+    if(fPaper) fPaper.value=selPaper;
+    ['qbank-f-q','qbank-f-a','qbank-f-b','qbank-f-c','qbank-f-d','qbank-f-seg'].forEach(function(id){
+      var el=document.getElementById(id); if(el) el.value='';
+    });
+    var ans=document.getElementById('qbank-f-ans'); if(ans) ans.value='0';
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  window.qbankEdit=function(docId,paper){
+    _qbGetDb(function(db){
+      db.collection('question_bank').doc(paper).collection('questions').doc(docId).get()
+        .then(function(snap){
+          if(!snap.exists){ _qbToast('Question not found',true); return; }
+          var d=snap.data();
+          var wrap=document.getElementById('qbank-form-wrap');
+          var title=document.getElementById('qbank-form-title');
+          if(wrap) wrap.style.display='block';
+          if(title) title.textContent='✎ Edit Question';
+          var editId=document.getElementById('qbank-edit-id');
+          if(editId) editId.value=docId;
+          var fPaper=document.getElementById('qbank-f-paper');
+          if(fPaper) fPaper.value=paper;
+          var fQ=document.getElementById('qbank-f-q'); if(fQ) fQ.value=d.q||'';
+          var opts=d.opts||['','','',''];
+          ['a','b','c','d'].forEach(function(ltr,i){
+            var el=document.getElementById('qbank-f-'+ltr); if(el) el.value=opts[i]||'';
+          });
+          var fAns=document.getElementById('qbank-f-ans'); if(fAns) fAns.value=String(d.ans||0);
+          var fSeg=document.getElementById('qbank-f-seg'); if(fSeg) fSeg.value=d.seg||'';
+          wrap.scrollIntoView({behavior:'smooth',block:'start'});
+        })
+        .catch(function(err){ _qbToast('Load error: '+err.message,true); });
+    });
+  };
+
+  window.qbankSave=function(){
+    var editId=(document.getElementById('qbank-edit-id')||{}).value||'';
+    var paper=(document.getElementById('qbank-f-paper')||{}).value||'eb00';
+    var q=((document.getElementById('qbank-f-q')||{}).value||'').trim();
+    var a=((document.getElementById('qbank-f-a')||{}).value||'').trim();
+    var b=((document.getElementById('qbank-f-b')||{}).value||'').trim();
+    var c=((document.getElementById('qbank-f-c')||{}).value||'').trim();
+    var d=((document.getElementById('qbank-f-d')||{}).value||'').trim();
+    var ans=parseInt((document.getElementById('qbank-f-ans')||{}).value||'0',10);
+    var seg=((document.getElementById('qbank-f-seg')||{}).value||'').trim();
+    if(!q||!a||!b||!c||!d){ _qbToast('Please fill in question text and all four options',true); return; }
+    var payload={ q:q, opts:[a,b,c,d], ans:ans, seg:seg, paper:paper, updatedAt:new Date().toISOString() };
+    _qbGetDb(function(db){
+      var col=db.collection('question_bank').doc(paper).collection('questions');
+      var prom;
+      if(editId){
+        prom=col.doc(editId).update(payload);
+      } else {
+        payload.createdAt=new Date().toISOString();
+        prom=col.add(payload);
+      }
+      prom.then(function(){
+        _qbToast(editId?'Question updated!':'Question saved!');
+        qbankCancelEdit();
+        /* sync paper-sel to match */
+        var sel=document.getElementById('qbank-paper-sel');
+        if(sel) sel.value=paper;
+        qbankLoad();
+      }).catch(function(err){ _qbToast('Save error: '+err.message,true); });
+    });
+  };
+
+  window.qbankDelete=function(docId,paper){
+    if(!confirm('Delete this question? This cannot be undone.')) return;
+    _qbGetDb(function(db){
+      db.collection('question_bank').doc(paper).collection('questions').doc(docId).delete()
+        .then(function(){ _qbToast('Question deleted.'); qbankLoad(); })
+        .catch(function(err){ _qbToast('Delete error: '+err.message,true); });
+    });
+  };
+
+  window.qbankCancelEdit=function(){
+    var wrap=document.getElementById('qbank-form-wrap');
+    if(wrap) wrap.style.display='none';
+    var editId=document.getElementById('qbank-edit-id');
+    if(editId) editId.value='';
+  };
+
+})();
+/* ===== END QUESTION BANK ===== */

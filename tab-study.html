@@ -1540,6 +1540,7 @@
           <button class="hub-nav-btn" onclick="hubShow('hub-tickets',this)">&#127903; Support Tickets</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-testlab',this)">&#128300; Student Lab</button>
           <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
+          <button class="hub-nav-btn" onclick="hubShow('hub-qbank',this);qbankInit()">&#128218; Question Bank</button>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -2123,6 +2124,110 @@
           </div>
         </div>
         <!-- END IT DEV HUB -->
+
+        <!-- ===== HUB: QUESTION BANK ===== -->
+        <div id="hub-qbank" class="hub-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span style="font-size:22px;">&#128218;</span>
+            <div>
+              <h3 style="font-size:15px;font-weight:800;margin:0;">LMS Question Bank</h3>
+              <p style="font-size:11.5px;color:var(--fg3);margin:0;">View, add, edit and delete quiz questions per paper. Stored in Firestore — changes go live immediately.</p>
+            </div>
+          </div>
+          <div id="qbank-toast" style="display:none;padding:9px 14px;border-radius:8px;font-size:12.5px;font-weight:600;margin:12px 0;background:#1e8540;color:#fff;"></div>
+
+          <!-- Filter bar -->
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-top:16px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--amb);margin-bottom:12px;">&#128269; Browse Questions</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <select id="qbank-paper-sel" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);min-width:160px;">
+                <option value="eb00">eBook 00 — Orientation</option>
+                <option value="eb01">eBook 01 — Fundamentals</option>
+                <option value="eb02">eBook 02 — Advanced</option>
+                <option value="eb03">eBook 03 — Paper 1 Standards</option>
+                <option value="eb04">eBook 04 — Paper 2 Standards</option>
+                <option value="p1">Paper 1 — DHET Exam</option>
+                <option value="p2">Paper 2 — DHET Exam</option>
+                <option value="eir1">EIR Track 1</option>
+                <option value="eir2">EIR Track 2</option>
+                <option value="ohs1">OHS Track</option>
+                <option value="emr1">EMR Track</option>
+              </select>
+              <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:var(--amb);" onclick="qbankLoad()">&#128229; Load Questions</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:#2a5ba8;" onclick="qbankShowAdd()">&#43; Add Question</button>
+              <span id="qbank-count" style="font-size:12px;color:var(--fg3);margin-left:4px;"></span>
+            </div>
+          </div>
+
+          <!-- Add / Edit form (hidden by default) -->
+          <div id="qbank-form-wrap" style="display:none;border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--amb);margin-bottom:12px;" id="qbank-form-title">&#43; Add New Question</div>
+            <input type="hidden" id="qbank-edit-id">
+            <div style="display:grid;gap:10px;">
+              <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Paper / Pool</label>
+                <select id="qbank-f-paper" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+                  <option value="eb00">eBook 00 — Orientation</option>
+                  <option value="eb01">eBook 01 — Fundamentals</option>
+                  <option value="eb02">eBook 02 — Advanced</option>
+                  <option value="eb03">eBook 03 — Paper 1 Standards</option>
+                  <option value="eb04">eBook 04 — Paper 2 Standards</option>
+                  <option value="p1">Paper 1 — DHET Exam</option>
+                  <option value="p2">Paper 2 — DHET Exam</option>
+                  <option value="eir1">EIR Track 1</option>
+                  <option value="eir2">EIR Track 2</option>
+                  <option value="ohs1">OHS Track</option>
+                  <option value="emr1">EMR Track</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Question Text</label>
+                <textarea id="qbank-f-q" rows="3" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;resize:vertical;" placeholder="Enter the full question text..."></textarea>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Option A</label>
+                  <input id="qbank-f-a" type="text" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;" placeholder="Option A">
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Option B</label>
+                  <input id="qbank-f-b" type="text" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;" placeholder="Option B">
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Option C</label>
+                  <input id="qbank-f-c" type="text" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;" placeholder="Option C">
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Option D</label>
+                  <input id="qbank-f-d" type="text" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;" placeholder="Option D">
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Correct Answer</label>
+                  <select id="qbank-f-ans" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);">
+                    <option value="0">A</option>
+                    <option value="1">B</option>
+                    <option value="2">C</option>
+                    <option value="3">D</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Segment / Ref (optional)</label>
+                  <input id="qbank-f-seg" type="text" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--fg);box-sizing:border-box;" placeholder="e.g. seg3, page 12">
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+              <button class="lms-btn" style="font-size:12px;padding:8px 20px;background:#1e8540;" onclick="qbankSave()">&#10003; Save Question</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:#555;" onclick="qbankCancelEdit()">Cancel</button>
+            </div>
+          </div>
+
+          <!-- Questions list -->
+          <div id="qbank-list" style="margin-top:14px;"></div>
+        </div>
+        <!-- END QUESTION BANK -->
 
       <!-- PRINT AREA (hidden, shown on print only) -->
       <div id="biz-print-area"></div>
@@ -3043,6 +3148,87 @@ function lmsCheckKey(key, phoneForVerify){
   return null;
 }
 
+
+/* ===== QUESTION BANK PULL — merge Firestore questions into local pools ===== */
+/* Called by _lmsLaunchQuizNow before building the quiz pool so live bank       */
+/* questions supplement (or replace) the hardcoded arrays.                      */
+(function(){
+  var _qpDb=null;
+  var _QB_CFG={
+    apiKey:'AIzaSyA2dqoAc6ugjVazW4YIAqxDUsqHeUcCAo0',
+    authDomain:'fir-config-552cc.firebaseapp.com',
+    projectId:'fir-config-552cc',
+    storageBucket:'fir-config-552cc.firebasestorage.app',
+    messagingSenderId:'656750326751',
+    appId:'1:656750326751:web:588eeb8c380a64361aca6a'
+  };
+
+  function _loadSdk(cb){
+    if(typeof firebase!=='undefined'&&firebase.firestore){ cb(); return; }
+    var s1=document.createElement('script');
+    s1.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js';
+    s1.onload=function(){
+      var s2=document.createElement('script');
+      s2.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js';
+      s2.onload=cb;
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  }
+
+  function _getDb(cb){
+    if(_qpDb){ cb(_qpDb); return; }
+    _loadSdk(function(){
+      try{
+        if(!firebase.apps||!firebase.apps.length) firebase.initializeApp(_QB_CFG);
+      } catch(e){}
+      _qpDb=firebase.firestore();
+      cb(_qpDb);
+    });
+  }
+
+  /* Converts a Firestore question_bank doc to the LMS pool item format:
+     { q, opts:[a,b,c,d], ans } → { question, options, answer } */
+  function _fbDocToPool(d){
+    return { question: d.q||'', options: d.opts||[], answer: typeof d.ans==='number'?d.ans:0 };
+  }
+
+  /* Merge Firestore questions for `paper` into the given local pool array.
+     Returns merged array: Firestore questions first, then any hardcoded ones
+     not already covered (deduped by question text). */
+  function _merge(fsItems, local){
+    var fsTexts={};
+    var out=[];
+    fsItems.forEach(function(item){ fsTexts[item.question]=true; out.push(item); });
+    (local||[]).forEach(function(item){
+      if(!fsTexts[item.question]) out.push(item);
+    });
+    return out;
+  }
+
+  /* window.lmsQbank_pull(paper, localPool, cb)
+     cb(mergedPool) — always calls back, falls back to localPool on any error */
+  window.lmsQbank_pull=function(paper, localPool, cb){
+    try{
+      _getDb(function(db){
+        db.collection('question_bank').doc(paper).collection('questions')
+          .orderBy('createdAt','asc')
+          .get()
+          .then(function(snap){
+            var fsItems=[];
+            snap.forEach(function(d){ fsItems.push(_fbDocToPool(d.data())); });
+            if(fsItems.length>0){
+              cb(_merge(fsItems, localPool));
+            } else {
+              cb(localPool);
+            }
+          })
+          .catch(function(){ cb(localPool); });
+      });
+    } catch(e){ cb(localPool||[]); }
+  };
+})();
+/* ===== END QUESTION BANK PULL ===== */
 
 /* ===== LEARNER SYNC — Firebase (available to all signed-in learners) ===== */
 /* Mirror of admin.js sync functions — no dependency on admin.js being loaded   */
@@ -5533,7 +5719,22 @@ function _lmsLaunchQuizNow(paper,sessIdx){
     var sess=_getSessionData(paper,sessIdx);
     if(!sess){_lmsToast('Quiz data missing — contact support.','err');return;}
     _lmsPaper=paper; _lmsSess=sessIdx;
-    var pool=sess.pool.slice();
+    /* Pull live Firestore questions then continue with merged pool */
+    var localPool=(sess.pool||[]).slice();
+    if(typeof lmsQbank_pull==='function'){
+      lmsQbank_pull(paper,localPool,function(mergedPool){
+        _lmsLaunchWithPool(paper,sessIdx,sess,mergedPool);
+      });
+    } else {
+      _lmsLaunchWithPool(paper,sessIdx,sess,localPool);
+    }
+  }catch(err){
+    _lmsToast('Quiz error: '+(err&&err.message?err.message:String(err)),'err');
+    console.error('_lmsLaunchQuizNow error',err);
+  }
+}
+function _lmsLaunchWithPool(paper,sessIdx,sess,pool){
+  try{
     for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
     _lmsPool=pool.slice(0,Math.min(QUIZ_Q,pool.length));
     if(!_lmsPool||!_lmsPool.length){_lmsToast('Quiz pool empty — no questions found. Please contact support.','err');return;}
