@@ -1,6 +1,6 @@
 <p class="sec-label">Study &amp; Development</p>
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
-    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">The Learning Companion gives you guided study for the DHET 51108848 IE exam across two companions: the <strong style="color:var(--fg);">IR Companion</strong> (Installation Rules, Paper 1 and Paper 2) and the <strong style="color:var(--fg);">ECA(SA) Companion</strong> (contractor registration guidance). To access the student portal, sign in with your email and password below. If you are new, create a free account first. No login is needed to watch YouTube session recordings.</p>
+    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">The Learning Companion gives you guided study for the DHET 51108848 IE exam across two companions: the <strong style="color:var(--fg);">Installation Rules Companion</strong> (Paper 1 and Paper 2) and the <strong style="color:var(--fg);">ECSA Companion</strong> (professional registration guidance). To access the student portal, sign in with your email and password below. If you are new, create a free account first. No login is needed to watch YouTube session recordings.</p>
 
     <div class="lms-wrap">
 
@@ -101,10 +101,10 @@
           <label class="lms-label" style="margin-top:10px;">Learning track / companion</label>
           <div style="display:flex;gap:12px;margin-top:4px;margin-bottom:2px;">
             <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
-              <input type="radio" name="lms-su-track" value="ir" checked style="accent-color:var(--amb);">IR Companion <span style="font-size:11px;color:var(--fg3);">(Installation Rules)</span>
+              <input type="radio" name="lms-su-track" value="ir" checked style="accent-color:var(--amb);">Installation Rules Companion <span style="font-size:11px;color:var(--fg3);">(Paper 1 &amp; 2)</span>
             </label>
             <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
-              <input type="radio" name="lms-su-track" value="ecsa" style="accent-color:var(--amb);">ECA(SA) Companion <span style="font-size:11px;color:var(--fg3);">(Contractor Registration)</span>
+              <input type="radio" name="lms-su-track" value="ecsa" style="accent-color:var(--amb);">ECSA Companion <span style="font-size:11px;color:var(--fg3);">(Professional Registration)</span>
             </label>
           </div>
 
@@ -283,7 +283,7 @@
             <p style="font-size:12.5px;color:var(--fg2);line-height:1.6;margin-bottom:8px;">Session recordings are <strong>free on YouTube</strong>. These companions add quizzes, study notes and worked examples on the platform. Tseke will WhatsApp your personal key once confirmed.</p>
             <div class="lms-tier-box" style="margin-bottom:12px;cursor:pointer;" onclick="lmsRegularTier('full')">
               <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span class="tier-tag paid">IR Companion</span>
+                <span class="tier-tag paid">Installation Rules Companion</span>
                 <span style="font-weight:700;font-size:17px;color:var(--amb);">R1&thinsp;000</span>
               </div>
               <h4 style="margin:8px 0 4px;">Installation Rules — full study pack</h4>
@@ -394,7 +394,7 @@
 
           <!-- Tier 2: R1000 IR Companion -->
           <div class="lms-tier-box">
-            <span class="tier-tag paid">IR Companion · R1,000</span>
+            <span class="tier-tag paid">Installation Rules Companion · R1,000</span>
             <h4 style="margin:8px 0 4px;">Full study pack — <span style="color:#b68900;">R1&#8201;000</span></h4>
             <p style="margin:0 0 6px;">Everything you need to pass the IE exam, once-off payment for lifetime access.</p>
             <ul style="font-size:12.5px;color:var(--fg2);margin:6px 0 0;padding-left:18px;line-height:1.7;">
@@ -1810,7 +1810,7 @@
           </div>
           <!-- IR Companion issued keys -->
           <div class="admin-tier-block">
-            <div class="admin-tier-title" style="color:var(--amb);">IR Companion Keys — Issued</div>
+            <div class="admin-tier-title" style="color:var(--amb);">Installation Rules Companion Keys — Issued</div>
             <div id="adm-ir-list"></div>
           </div>
           <!-- ECSA Companion issued keys -->
@@ -1842,8 +1842,8 @@
               <input id="adm-new-key-email" type="email" class="biz-input" placeholder="e.g. student@gmail.com" style="font-size:13px;">
               <label style="font-size:12px;font-weight:600;">Key type</label>
               <select id="adm-new-key-tier" class="biz-input" style="font-size:13px;">
-                <option value="ir">IR Companion (Installation Rules) — RTT-{I1}{I2}-{P}{YY}-IR</option>
-                <option value="ecsa">ECSA Companion (Pr. Technician) — RTT-{I1}{I2}-{P}{YY}-EC</option>
+                <option value="ir">Installation Rules Companion — RTT-{I1}{I2}-{P}{YY}-IR</option>
+                <option value="ecsa">ECSA Companion (Professional Registration) — RTT-{I1}{I2}-{P}{YY}-EC</option>
                 <option value="both">Both Companions (IR + ECSA) — two keys</option>
               </select>
               <button class="lms-btn" style="font-size:13px;" onclick="admIssueKey()">&#9889; Generate RTT Key</button>
@@ -2110,7 +2110,7 @@
           <!-- TER Ledger -->
           <div id="ecsa-pane-ter">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-              <div style="font-size:12px;font-weight:700;color:var(--fg2);">ECASA Pr Techni Eng — Technical Experience Record (TER)</div>
+              <div style="font-size:12px;font-weight:700;color:var(--fg2);">ECSA Professional Registration — Technical Experience Record (TER)</div>
               <button class="biz-btn biz-btn-primary" onclick="ecsaAddTer()" style="font-size:12px;">+ Add TER Entry</button>
             </div>
             <div id="ecsa-ter-list" style="display:flex;flex-direction:column;gap:10px;"></div>
@@ -2718,7 +2718,7 @@
             </div>
             <div style="font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amb);margin-bottom:3px;">Statement of Attainment</div>
             <div data-cert-title style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:3px;">LMS Level 1 Orientation Mastery</div>
-            <div style="font-size:10px;color:var(--fg3);margin-bottom:12px;line-height:1.5;">IR Companion Study Platform &nbsp;·&nbsp; Not a statutory DHET, ECSA, DoEL or QCTO certificate</div>
+            <div style="font-size:10px;color:var(--fg3);margin-bottom:12px;line-height:1.5;">Installation Rules Companion Study Platform &nbsp;·&nbsp; Not a statutory DHET, ECSA, DoEL or QCTO certificate</div>
             <div style="font-size:11px;color:var(--fg2);margin-bottom:4px;">Awarded to</div>
             <div id="sc-cert-name" style="font-size:18px;font-weight:800;color:var(--amb);margin-bottom:3px;"></div>
             <div id="sc-cert-date" style="font-size:11px;color:var(--fg3);margin-bottom:14px;"></div>
@@ -2727,7 +2727,7 @@
               <ul data-cert-topics style="margin:7px 0 0 16px;padding:0;list-style:disc;"></ul>
             </div>
             <div style="border-top:1px solid var(--border);padding-top:10px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
-              <div style="font-size:9.5px;color:var(--fg3);font-style:italic;">ribattseke.co.za · IR Companion LMS</div>
+              <div style="font-size:9.5px;color:var(--fg3);font-style:italic;">ribattseke.co.za · Installation Rules Companion LMS</div>
             </div>
             <button data-cert-next onclick="lmsGoLevel2()" style="background:var(--amb);color:#fff;border:none;padding:12px 28px;border-radius:9px;font-size:13.5px;font-weight:800;cursor:pointer;width:100%;max-width:280px;">→ Proceed to Level 2</button>
           </div>
@@ -3935,11 +3935,13 @@ function _lmsCheckGrpActive(key, cb){
         _fbQ.forEach(function(f){try{f();}catch(e){}});_fbQ=[];
       }catch(e){_fbBusy=false;}
     }
+    /* Only load Firebase SDK if not already present (prevents double-load warning) */
+    if(typeof firebase!=='undefined'&&firebase.apps!==undefined){_init();return;}
     var s1=document.createElement('script');
-    s1.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
+    s1.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js';
     s1.onload=function(){
       var s2=document.createElement('script');
-      s2.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js';
+      s2.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js';
       s2.onload=_init;
       s2.onerror=function(){_fbBusy=false;};
       document.head.appendChild(s2);
@@ -4779,9 +4781,9 @@ function lmsSetCompanion(type){
         // User has ECSA key, trying to access IR content
         tc.innerHTML = '<div style="padding:28px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);max-width:420px;margin:0 auto;">'
           +'<div style="font-size:36px;text-align:center;margin-bottom:12px;">&#9889;</div>'
-          +'<strong style="font-size:15px;color:var(--fg2);display:block;text-align:center;margin-bottom:12px;">IR Companion</strong>'
+          +'<strong style="font-size:15px;color:var(--fg2);display:block;text-align:center;margin-bottom:12px;">Installation Rules Companion</strong>'
           +'<p style="font-size:13px;color:var(--fg3);line-height:1.6;margin-bottom:12px;">'
-          +'The IR Companion prepares you for the <strong style="color:var(--fg2);">SANS 10142-1 Installation Rules</strong> exam — '
+          +'The Installation Rules Companion prepares you for the <strong style="color:var(--fg2);">SANS 10142-1 Installation Rules</strong> exam — '
           +'covering all tracks across Papers 1 &amp; 2 with video learning and practice quizzes.</p>'
           +'<div style="text-align:center;">'
           +'<a href="https://wa.me/27724748888?text=I+want+to+add+IR+Companion+access" target="_blank" '
@@ -6370,7 +6372,7 @@ function lmsShowDash(){
   var _dn=document.getElementById('lms-dash-name');
   if(_dn) _dn.textContent='Welcome, '+((_lmsProgress&&_lmsProgress.name)||_lmsUser);
   var tier=(_lmsProgress||{}).tier||'';
-  var tierLabels={ir:'IR Companion',ecsa:'ECSA Companion'};
+  var tierLabels={ir:'Installation Rules Companion',ecsa:'ECSA Companion'};
   var tierEl=document.getElementById('lms-tier-badge');
   if(tierEl){
     tierEl.textContent=tierLabels[tier]||tier;
