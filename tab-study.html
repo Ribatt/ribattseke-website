@@ -4816,6 +4816,12 @@ function lmsSetCompanion(type){
 
 /* ---- Admin hub tab switcher stub ----
    admin.js overrides this once loaded; this ensures buttons work immediately */
+window.hubAccToggle=function(id){
+  var acc=document.getElementById(id);
+  if(!acc)return;
+  acc.classList.toggle('hub-acc-open');
+};
+
 if(typeof hubShow==='undefined'){
   window.hubShow=function(id,btn){
     document.querySelectorAll('.hub-section').forEach(function(s){s.style.display='none';s.classList.remove('active');});
