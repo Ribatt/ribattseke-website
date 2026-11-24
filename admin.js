@@ -776,12 +776,19 @@ function lmsFirebaseLogActivity(username, phone, paper, sessIdx, score, passed){
 /* Sanitize email for use as Firestore document ID */
 function _fbEmailKey(email){ return (email||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_'); }
 
-/* Keys we sync (without lms4_{email}_ prefix) */
+/* Keys we sync (without lms4_{email}_ prefix).
+   '0' = main progress blob (all track quiz data).
+   All keys must match what _lmsStore writes in tab-study.html. */
 var _SYNC_KEYS = [
+  '0',
   'eb00_done','eb00_quiz_passed',
   'eb01_done','eb01_quiz_passed',
+  'p1_all_passed','p2_all_passed',
   'level'
 ];
+
+/* Paper namespaces inside the main blob — used for deep merge on pull */
+var _SYNC_PAPERS = ['p1','p2','eir1','eir2','s101981','s10292','s10313','s19733'];
 
 /* Push local progress to Firestore */
 function lmsSync_push(email){
@@ -801,7 +808,8 @@ function lmsSync_push(email){
   });
 }
 
-/* Pull Firestore progress into localStorage (Firestore wins for quiz_passed; max wins for done arrays) */
+/* Pull Firestore progress into localStorage (cloud wins for passed; union for done arrays;
+   deep merge for main blob '0'; max for numeric level) */
 function lmsSync_pull(email, cb){
   if(!email){ if(cb) cb(); return; }
   _loadFirebase(function(){
@@ -816,29 +824,62 @@ function lmsSync_pull(email, cb){
           if(d[k] === undefined) return;
           var localKey = 'lms4_'+em+'_'+k;
           var remoteVal = d[k];
-          if(k.endsWith('_done')){
-            // Merge: local union remote (keep all completed segments)
+          if(k === '0'){
+            /* Main progress blob — deep merge at paper/session level */
+            var localBlob = null;
+            try{ localBlob = JSON.parse(localStorage.getItem(localKey)); }catch(e){}
+            var remBlob = null;
+            try{ remBlob = (typeof remoteVal==='object') ? remoteVal : JSON.parse(remoteVal); }catch(e){}
+            if(!remBlob){ /* nothing remote — keep local */ }
+            else if(!localBlob){
+              try{ localStorage.setItem(localKey, JSON.stringify(remBlob)); }catch(e){}
+            } else {
+              /* For each paper namespace, keep sessions that passed on either side;
+                 keep best score where neither has passed yet */
+              _SYNC_PAPERS.forEach(function(pap){
+                if(!remBlob[pap]) return;
+                if(!localBlob[pap]) localBlob[pap] = {};
+                Object.keys(remBlob[pap]).forEach(function(sid){
+                  var rem = remBlob[pap][sid];
+                  var loc = localBlob[pap][sid];
+                  if(!loc){ localBlob[pap][sid] = rem; }
+                  else if(rem && rem.passed && !loc.passed){ localBlob[pap][sid] = rem; }
+                  else if(rem && rem.score && loc.score && rem.score > loc.score){
+                    localBlob[pap][sid] = Object.assign({},loc,{score:rem.score,attempts:Math.max(loc.attempts||0,rem.attempts||0)});
+                  }
+                });
+              });
+              if(!localBlob.name && remBlob.name) localBlob.name = remBlob.name;
+              if(!localBlob.tier && remBlob.tier) localBlob.tier = remBlob.tier;
+              try{ localStorage.setItem(localKey, JSON.stringify(localBlob)); }catch(e){}
+              /* Also write to PIN-keyed slot if the user is signed in with a PIN */
+              if(typeof _lmsKey!=='undefined' && _lmsKey && _lmsKey!=='0'){
+                try{ localStorage.setItem('lms4_'+em+'_'+_lmsKey, JSON.stringify(localBlob)); }catch(e){}
+              }
+            }
+          } else if(k.endsWith('_done')){
+            /* Union merge — keep all completed segments */
             var local = [];
             try{ local = JSON.parse(localStorage.getItem(localKey)||'[]'); }catch(e){}
             var remote = Array.isArray(remoteVal) ? remoteVal : [];
             var merged = local.slice();
             remote.forEach(function(v){ if(merged.indexOf(v)<0) merged.push(v); });
-            localStorage.setItem(localKey, JSON.stringify(merged));
-          } else if(k.endsWith('_quiz_passed')){
-            // Firestore wins if passed=true (can't un-pass)
-            var remotePassed = typeof remoteVal === 'object' ? remoteVal && remoteVal.passed : !!remoteVal;
+            try{ localStorage.setItem(localKey, JSON.stringify(merged)); }catch(e){}
+          } else if(k.endsWith('_passed')){
+            /* Cloud wins if passed=true (can't un-pass) */
+            var remotePassed = typeof remoteVal==='object' ? remoteVal && remoteVal.passed : !!remoteVal;
             if(remotePassed){
               var existing = null;
               try{ existing = JSON.parse(localStorage.getItem(localKey)); }catch(e){}
               if(!existing || !existing.passed){
-                localStorage.setItem(localKey, JSON.stringify(typeof remoteVal==='object'?remoteVal:{passed:true,date:new Date().toISOString(),syncedFromCloud:true}));
+                try{ localStorage.setItem(localKey, JSON.stringify(typeof remoteVal==='object'?remoteVal:{passed:true,date:new Date().toISOString(),syncedFromCloud:true})); }catch(e){}
               }
             }
           } else {
-            // level: take max
+            /* Numeric keys (level) — take max */
             var localLevel = parseInt(localStorage.getItem(localKey)||'0',10)||0;
             var remoteLevel = parseInt(remoteVal,10)||0;
-            if(remoteLevel > localLevel) localStorage.setItem(localKey, String(remoteLevel));
+            if(remoteLevel > localLevel) try{ localStorage.setItem(localKey, String(remoteLevel)); }catch(e){}
           }
         });
         if(cb) cb();

@@ -3756,7 +3756,7 @@ function _lmsCheckGrpActive(key, cb){
                 try{localStorage.setItem(lk,JSON.stringify(remBlob));}catch(e){}
               } else {
                 /* Merge: for each paper, keep all sessions that passed on either side */
-                var _PAPERS=['p1','p2','eir1','eir2','s101981','s10292','s10313'];
+                var _PAPERS=['p1','p2','eir1','eir2','s101981','s10292','s10313','s19733'];
                 _PAPERS.forEach(function(pap){
                   if(!remBlob[pap])return;
                   if(!localBlob[pap])localBlob[pap]={};
@@ -5101,7 +5101,12 @@ function lmsShowView(id){
 
 function _lmsStore(){
   try{localStorage.setItem(LMS_NS+_lmsUser+'_'+_lmsKey,JSON.stringify(_lmsProgress));}catch(e){}
-  /* sync cert/level keys to cloud on every save so other devices pick it up */
+  /* Mirror to standard '0' key so cloud sync always finds the main blob,
+     even when the user logged in with a PIN (key !== '0') */
+  if(_lmsKey&&_lmsKey!=='0'){
+    try{localStorage.setItem(LMS_NS+_lmsUser+'_0',JSON.stringify(_lmsProgress));}catch(e){}
+  }
+  /* sync to cloud on every save so other devices pick it up */
   if(_lmsUser&&typeof lmsSync_push==='function') lmsSync_push(_lmsUser);
 }
 function _lmsLoad(u,k){
