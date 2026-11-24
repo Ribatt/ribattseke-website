@@ -625,15 +625,21 @@ function ppRender(){
     return;
   }
   el.innerHTML='<p style="font-size:11px;color:var(--fg3);">Loading…</p>';
-  _lmsFbDb.collection('past_papers').orderBy('year','desc').orderBy('monthNum','desc').get().then(function(snap){
+  _lmsFbDb.collection('past_papers').get().then(function(snap){
     if(snap.empty){
       el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:6px 0;">No past papers added yet.</p>';
       return;
     }
+    var allDocs=[];
+    snap.forEach(function(doc){ allDocs.push({id:doc.id,data:doc.data()}); });
+    allDocs.sort(function(a,b){
+      var yr=(b.data.year||0)-(a.data.year||0);
+      if(yr!==0) return yr;
+      return (b.data.monthNum||0)-(a.data.monthNum||0);
+    });
     var rows=[];
-    snap.forEach(function(doc){
-      var d=doc.data();
-      var pid=doc.id;
+    allDocs.forEach(function(item){
+      var doc=item; var d=item.data; var pid=item.id;
       var pLabel=d.paper==='p2'?'P2 T890':'P1 T880';
       rows.push('<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">'
         +'<span style="font-size:11px;padding:2px 6px;border-radius:6px;background:'+(d.paper==='p2'?'#8b451322':'#2a5ba822')+';color:'+(d.paper==='p2'?'#8b4513':'#2a5ba8')+';font-weight:700;">'+pLabel+'</span>'
@@ -653,8 +659,9 @@ function ppRender(){
 function ppAdd(){
   var paper=(document.getElementById('adm-pp-paper')||{}).value||'p1';
   var year=parseInt((document.getElementById('adm-pp-year')||{}).value||'0',10);
-  var month=(document.getElementById('adm-pp-month')||{}).value||'';
-  var monthNum=parseInt((document.getElementById('adm-pp-monthnum')||{}).value||'0',10)||0;
+  var monthNum=parseInt((document.getElementById('adm-pp-month')||{}).value||'0',10)||0;
+  var _monthNames=['','January','February','March','April','May','June','July','August','September','October','November','December'];
+  var month=_monthNames[monthNum]||'';
   var title=(document.getElementById('adm-pp-title')||{}).value||'';
   var url=((document.getElementById('adm-pp-url')||{}).value||'').trim();
   var desc=(document.getElementById('adm-pp-desc')||{}).value||'';
