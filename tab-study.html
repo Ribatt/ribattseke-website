@@ -8,11 +8,11 @@
       <div id="lms-login" class="lms-view active">
         <div class="lms-card">
           <h3 style="text-align:center;margin-bottom:16px;">Learning Companion</h3>
-          <label class="lms-label">Email</label>
-          <input class="lms-input" id="lms-login-email" type="email" placeholder="your@email.com" autocomplete="email" autocapitalize="none">
-          <label class="lms-label" style="margin-top:10px;">Password</label>
+          <label class="lms-label">Email or Username</label>
+          <input class="lms-input" id="lms-login-email" type="text" placeholder="your@email.com or username" autocomplete="username" autocapitalize="none">
+          <label class="lms-label" style="margin-top:10px;">PIN <span style="font-size:11px;color:var(--fg3);font-weight:normal;">(numeric — the PIN you chose at sign-up)</span></label>
           <div style="position:relative;">
-            <input class="lms-input" id="lms-login-pw" type="password" placeholder="Your password" autocomplete="current-password" style="padding-right:42px;">
+            <input class="lms-input" id="lms-login-pw" type="password" placeholder="Your numeric PIN" autocomplete="current-password" inputmode="numeric" style="padding-right:42px;">
             <button type="button" onclick="(function(btn){var i=document.getElementById('lms-login-pw');i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
           <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--fg2);margin:10px 0 12px;cursor:pointer;">
@@ -20,11 +20,14 @@
             Remember me
           </label>
           <div class="lms-err" id="lms-login-main-err"></div>
-          <button type="button" class="lms-btn" onclick="lmsDoEmailLogin()">Login</button>
+          <button type="button" class="lms-btn" onclick="lmsDoEmailLogin()">Sign In</button>
           <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:1px solid var(--border);"></span><span style="font-size:11px;color:var(--fg3);white-space:nowrap;">new here?</span><span style="flex:1;border-top:1px solid var(--border);"></span></div>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-signup')">Create account</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')" style="margin-top:4px;font-size:11px;color:var(--fg3);">Sign in with username &amp; PIN instead</button>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')" style="margin-top:4px;font-size:11px;color:var(--fg3);">Forgot PIN / sign in with Access Key</button>
+          <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;text-align:center;">
+            <button type="button" onclick="lmsShowAdminGate()" style="background:none;border:none;font-size:11.5px;color:var(--fg3);cursor:pointer;padding:4px 8px;border-radius:6px;">&#128274; Business Hub</button>
+          </div>
         </div>
       </div>
 
@@ -6002,17 +6005,17 @@ function lmsExecuteReset(u,p,err){
 function lmsDoEmailLogin(){
   var errEl=document.getElementById('lms-login-main-err');
   if(errEl) errEl.textContent='';
-  var email=(document.getElementById('lms-login-email')||{}).value||'';
+  var input=(document.getElementById('lms-login-email')||{}).value||'';
   var pw=(document.getElementById('lms-login-pw')||{}).value||'';
-  email=email.trim().toLowerCase();
+  input=input.trim().toLowerCase();
   pw=pw.trim();
-  if(!email){if(errEl)errEl.textContent='Please enter your email.';return;}
-  if(!pw){if(errEl)errEl.textContent='Please enter your password.';return;}
+  if(!input){if(errEl)errEl.textContent='Please enter your email or username.';return;}
+  if(!pw){if(errEl)errEl.textContent='Please enter your PIN.';return;}
   /* Save credentials if remember me is checked */
   try{
     var remCb=document.getElementById('lms-login-remember');
     if(remCb&&remCb.checked){
-      localStorage.setItem('lms4__saved_email',email);
+      localStorage.setItem('lms4__saved_email',input);
       localStorage.setItem('lms4__saved_pw',pw);
       localStorage.setItem('lms4__remember_email','1');
     } else {
@@ -6020,11 +6023,31 @@ function lmsDoEmailLogin(){
       localStorage.removeItem('lms4__saved_pw');
     }
   }catch(e){}
-  /* Try as email login — use existing lmsSignin path by populating the legacy fields */
+  /* Try direct match first (input IS the username) */
   var uEl=document.getElementById('lms-u');
   var pEl=document.getElementById('lms-p');
-  if(uEl) uEl.value=email;
+  if(uEl) uEl.value=input;
   if(pEl) pEl.value=pw;
+  /* If input looks like an email, also scan records for a stored email match */
+  if(input.indexOf('@')>=0){
+    try{
+      var prefix=LMS_NS;
+      for(var i=0;i<localStorage.length;i++){
+        var k=localStorage.key(i);
+        if(!k||!k.startsWith(prefix)) continue;
+        var stripped=k.slice(prefix.length);
+        if(stripped.indexOf('_')<0) continue;
+        var rec=null;
+        try{rec=JSON.parse(localStorage.getItem(k));}catch(e2){continue;}
+        if(rec&&rec.email&&rec.email.toLowerCase()===input){
+          var lastUs=stripped.lastIndexOf('_');
+          var uname=stripped.slice(0,lastUs);
+          var pin=stripped.slice(lastUs+1);
+          if(pin===pw){if(uEl)uEl.value=uname;if(pEl)pEl.value=pw;break;}
+        }
+      }
+    }catch(e){}
+  }
   lmsSignin();
 }
 
