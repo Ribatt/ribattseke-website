@@ -665,7 +665,7 @@ function ppAdd(){
   var title=(document.getElementById('adm-pp-title')||{}).value||'';
   var url=((document.getElementById('adm-pp-url')||{}).value||'').trim();
   var desc=(document.getElementById('adm-pp-desc')||{}).value||'';
-  var errEl=document.getElementById('adm-pp-err');
+  var errEl=document.getElementById('adm-pp-out');
   if(!url){ if(errEl) errEl.textContent='URL is required.'; return; }
   if(!year||year<2000||year>2100){ if(errEl) errEl.textContent='Enter a valid year (e.g. 2023).'; return; }
   if(!_lmsFbDb){ if(errEl) errEl.textContent='Firebase not ready.'; return; }
