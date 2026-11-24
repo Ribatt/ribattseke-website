@@ -176,6 +176,10 @@
             <input class="lms-input" id="lms-adm-p" type="password" placeholder="Your PIN" autocomplete="current-password" style="padding-right:42px;">
             <button type="button" onclick="(function(){var i=document.getElementById('lms-adm-p');i.type=i.type==='password'?'text':'password';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+            <input type="checkbox" id="lms-adm-remember" style="width:16px;height:16px;cursor:pointer;accent-color:#1a3c5e;">
+            <label for="lms-adm-remember" style="font-size:12.5px;color:var(--fg2);cursor:pointer;user-select:none;">Remember me on this device</label>
+          </div>
           <div class="lms-err" id="lms-adm-err"></div>
           <button class="lms-btn" onclick="lmsAdminSignin()" style="background:linear-gradient(135deg,#1a3c5e,#0d6b3e);">Enter Business Hub</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-login')" style="margin-top:6px;">← Back</button>
@@ -5482,7 +5486,7 @@ function lmsShowAdminGate(){
   var btnOwner=document.createElement('button');
   btnOwner.style.cssText='display:block;width:100%;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,#1a3c5e,#0d6b3e);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;';
   btnOwner.textContent='🔐 Owner Login';
-  btnOwner.onclick=function(){bg.remove();lmsShowView('lms-admin-login');setTimeout(function(){var el=document.getElementById('lms-adm-u');if(el)el.focus();},150);};
+  btnOwner.onclick=function(){bg.remove();lmsShowView('lms-admin-login');setTimeout(function(){lmsAdminLoginPrefill();if(!localStorage.getItem('biz_adm_remember')){var el=document.getElementById('lms-adm-u');if(el)el.focus();}},150);};
   var btnCancel=document.createElement('button');
   btnCancel.style.cssText='background:none;border:none;color:var(--fg3,#aaa);font-size:12px;cursor:pointer;padding:4px;';
   btnCancel.textContent='Cancel';
@@ -5508,6 +5512,12 @@ function lmsAdminSignin(){
   var _ADM_PIN=btoa('20171125');
   if(_ADM_EMAILS.indexOf(u)<0){err.textContent='This email does not have admin access.';return;}
   if(btoa(p)!==_ADM_PIN){err.textContent='Incorrect admin PIN. Try again.';return;}
+  /* Handle Remember Me */
+  var rem=document.getElementById('lms-adm-remember');
+  try{
+    if(rem&&rem.checked){localStorage.setItem('biz_adm_remember',u);}
+    else{localStorage.removeItem('biz_adm_remember');}
+  }catch(e){}
   document.getElementById('lms-adm-u').value='';
   document.getElementById('lms-adm-p').value='';
   lmsShowView('lms-admin');
@@ -5517,6 +5527,20 @@ function lmsAdminSignin(){
     if(typeof lmsOpenAdmin==='function'){lmsOpenAdmin();return;}
     if(_n++<120) setTimeout(_populate,500);
   })();
+}
+/* Pre-fill remembered admin email when the admin-login view opens */
+function lmsAdminLoginPrefill(){
+  try{
+    var saved=localStorage.getItem('biz_adm_remember');
+    if(saved){
+      var el=document.getElementById('lms-adm-u');
+      var rem=document.getElementById('lms-adm-remember');
+      if(el){el.value=saved;}
+      if(rem){rem.checked=true;}
+      /* Focus PIN field so they can just type the PIN */
+      setTimeout(function(){var pin=document.getElementById('lms-adm-p');if(pin)pin.focus();},100);
+    }
+  }catch(e){}
 }
 
 var _lmsPendingIsAtvet=false;
@@ -6305,7 +6329,18 @@ function _lmsShowMistakeReview(){
         /* Reload progress from localStorage after pull */
         try{
           var fresh=JSON.parse(localStorage.getItem('lms4_'+_lmsUser+'_'+_lmsKey)||'null');
-          if(fresh){_lmsProgress=fresh;}
+          if(fresh){
+            _lmsProgress=fresh;
+            /* Re-render the active view so progress bars / badges reflect pulled data */
+            var activeView=document.querySelector('.lms-view.active');
+            var vid=activeView?activeView.id:'';
+            if(vid==='lms-dash'&&typeof lmsShowDash==='function'){lmsShowDash();}
+            else if(vid==='lms-level1'&&typeof lmsRenderLevel1==='function'){lmsRenderLevel1();}
+            else if(vid==='lms-level2'&&typeof lmsRenderLevel2==='function'){lmsRenderLevel2();}
+            else if(vid==='lms-level3'&&typeof lmsRenderLevel3==='function'){lmsRenderLevel3();}
+            else if(vid==='lms-level4'&&typeof lmsRenderLevel4==='function'){lmsRenderLevel4();}
+            else if(vid==='lms-level5'&&typeof lmsRenderLevel5==='function'){lmsRenderLevel5();}
+          }
         }catch(e){}
       });
     }
@@ -7452,7 +7487,6 @@ function _buildP2TrackDash(){
       };
       modsEl.appendChild(ppLink2);
     });
-  });
 }
 
 /* ── LMS_DATA3 stub — Level 3 track question pools (to be populated per track eBook) ── */
