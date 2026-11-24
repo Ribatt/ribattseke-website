@@ -2376,13 +2376,19 @@
                 <option value="p1">Paper 1 — DHET Exam</option>
                 <option value="p2">Paper 2 — DHET Exam</option>
                 <option value="eir1">EIR Track 1</option>
-                <option value="eir2">EIR Track 2</option>
+                <option value="eir2">EIR Track 2 (Construction)</option>
                 <option value="ohs1">OHS Track</option>
                 <option value="emr1">EMR Track</option>
+                <option value="s101981">SANS 10198-1 — Cable Selection</option>
+                <option value="s10292">SANS 10292 — Earthing</option>
+                <option value="s10313">SANS 10313 — Lightning Protection</option>
+                <option value="s19733">SANS 1973-3 — LV Switchgear</option>
               </select>
               <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:var(--amb);" onclick="qbankLoad()">&#128229; Load Questions</button>
               <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:#2a5ba8;" onclick="qbankShowAdd()">&#43; Add Question</button>
+              <button class="lms-btn" style="font-size:12px;padding:8px 16px;background:#7b4ea6;" onclick="qbankSeedAll()" title="Push all hardcoded quiz questions to Firestore (skips papers that already have questions)">&#9729; Seed All to Firestore</button>
               <span id="qbank-count" style="font-size:12px;color:var(--fg3);margin-left:4px;"></span>
+              <div id="qbank-seed-log" style="display:none;width:100%;margin-top:10px;padding:10px 14px;background:var(--bg-alt);border:1.5px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--fg2);line-height:1.8;white-space:pre-wrap;font-family:monospace;max-height:200px;overflow-y:auto;"></div>
             </div>
           </div>
 
@@ -2402,9 +2408,13 @@
                   <option value="p1">Paper 1 — DHET Exam</option>
                   <option value="p2">Paper 2 — DHET Exam</option>
                   <option value="eir1">EIR Track 1</option>
-                  <option value="eir2">EIR Track 2</option>
+                  <option value="eir2">EIR Track 2 (Construction)</option>
                   <option value="ohs1">OHS Track</option>
                   <option value="emr1">EMR Track</option>
+                  <option value="s101981">SANS 10198-1 — Cable Selection</option>
+                  <option value="s10292">SANS 10292 — Earthing</option>
+                  <option value="s10313">SANS 10313 — Lightning Protection</option>
+                  <option value="s19733">SANS 1973-3 — LV Switchgear</option>
                 </select>
               </div>
               <div>
@@ -3655,6 +3665,179 @@ function _lmsCheckGrpActive(key, cb){
   };
 })();
 /* ===== END QUESTION BANK PULL ===== */
+
+/* ===== ADMIN: SEED ALL HARDCODED QUIZ POOLS TO FIRESTORE ===== */
+/* Admin-only. Collects all hardcoded question pools by paper key,          */
+/* checks Firestore for existing questions, and writes only to empty papers. */
+(function(){
+  var _seedDb=null;
+  var _SEED_CFG={
+    apiKey:'AIzaSyA2dqoAc6ugjVazW4YIAqxDUsqHeUcCAo0',
+    authDomain:'fir-config-552cc.firebaseapp.com',
+    projectId:'fir-config-552cc',
+    storageBucket:'fir-config-552cc.firebasestorage.app',
+    messagingSenderId:'656750326751',
+    appId:'1:656750326751:web:588eeb8c380a64361aca6a'
+  };
+
+  function _seedGetDb(cb){
+    if(_seedDb){cb(_seedDb);return;}
+    if(typeof firebase!=='undefined'&&firebase.firestore){
+      try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(_SEED_CFG);}catch(e){}
+      _seedDb=firebase.firestore();cb(_seedDb);return;
+    }
+    var s1=document.createElement('script');
+    s1.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js';
+    s1.onload=function(){
+      var s2=document.createElement('script');
+      s2.src='https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js';
+      s2.onload=function(){
+        try{if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(_SEED_CFG);}catch(e){}
+        _seedDb=firebase.firestore();cb(_seedDb);
+      };
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  }
+
+  /* Flatten all session pools for a given paper data array */
+  function _flattenPool(dataArr){
+    var seen={};var out=[];
+    (dataArr||[]).forEach(function(sess){
+      (sess.pool||[]).forEach(function(q){
+        var key=(q.q||'').trim();
+        if(key&&!seen[key]){seen[key]=true;out.push(q);}
+      });
+    });
+    return out;
+  }
+
+  /* Convert hardcoded {q,a,b,c,d,ans:'A'-'D',ref} to Firestore format */
+  function _toFsDoc(q,paper,ts){
+    var ansMap={A:0,B:1,C:2,D:3,a:0,b:1,c:2,d:3};
+    return {
+      q:q.q||'',
+      opts:[q.a||'',q.b||'',q.c||'',q.d||''],
+      ans:typeof ansMap[q.ans]!=='undefined'?ansMap[q.ans]:0,
+      seg:q.ref||'',
+      paper:paper,
+      createdAt:ts,
+      updatedAt:ts
+    };
+  }
+
+  /* Write questions to Firestore in batches of 400 */
+  function _batchWrite(db,paper,questions,onProgress,onDone){
+    var BATCH_SIZE=400;
+    var total=questions.length;
+    var written=0;
+    var ts=firebase.firestore.FieldValue.serverTimestamp();
+
+    function writeChunk(idx){
+      if(idx>=total){onDone(null,written);return;}
+      var batch=db.batch();
+      var chunk=questions.slice(idx,idx+BATCH_SIZE);
+      chunk.forEach(function(q){
+        var ref=db.collection('question_bank').doc(paper).collection('questions').doc();
+        batch.set(ref,_toFsDoc(q,paper,ts));
+      });
+      batch.commit().then(function(){
+        written+=chunk.length;
+        onProgress(paper,'wrote '+written+'/'+total+'...');
+        writeChunk(idx+BATCH_SIZE);
+      }).catch(function(err){onDone(err,written);});
+    }
+    writeChunk(0);
+  }
+
+  window.qbankSeedAll=function(){
+    var log=document.getElementById('qbank-seed-log');
+    if(!log) return;
+    log.style.display='block';
+    log.textContent='⏳ Preparing pools...\n';
+
+    /* Build the master list: { paper, pool[] } */
+    var papers=[];
+    function tryAdd(key,dataArr){
+      var pool=_flattenPool(dataArr);
+      if(pool.length) papers.push({key:key,pool:pool});
+    }
+    try{
+      if(typeof LMS_DATA_EB00!=='undefined') tryAdd('eb00',LMS_DATA_EB00);
+      if(typeof LMS_DATA_EB01!=='undefined') tryAdd('eb01',LMS_DATA_EB01);
+      if(typeof LMS_DATA_EB02!=='undefined') tryAdd('eb02',LMS_DATA_EB02);
+      if(typeof LMS_DATA_EB03!=='undefined') tryAdd('eb03',LMS_DATA_EB03);
+      if(typeof LMS_DATA_EB04!=='undefined') tryAdd('eb04',LMS_DATA_EB04);
+      if(typeof LMS_DATA!=='undefined'){
+        if(LMS_DATA.p1&&LMS_DATA.p1.length) tryAdd('p1',LMS_DATA.p1);
+        if(LMS_DATA.p2&&LMS_DATA.p2.length) tryAdd('p2',LMS_DATA.p2);
+      }
+      if(typeof LMS_DATA2!=='undefined'){
+        if(LMS_DATA2.ohs1&&LMS_DATA2.ohs1.length) tryAdd('ohs1',LMS_DATA2.ohs1);
+        if(LMS_DATA2.eir1&&LMS_DATA2.eir1.length) tryAdd('eir1',LMS_DATA2.eir1);
+        if(LMS_DATA2.eir2&&LMS_DATA2.eir2.length) tryAdd('eir2',LMS_DATA2.eir2);
+        if(LMS_DATA2.emr1&&LMS_DATA2.emr1.length) tryAdd('emr1',LMS_DATA2.emr1);
+      }
+      if(typeof _d3s101981!=='undefined') tryAdd('s101981',_d3s101981);
+      if(typeof _d3s10292!=='undefined')  tryAdd('s10292',_d3s10292);
+      if(typeof _d3s10313!=='undefined')  tryAdd('s10313',_d3s10313);
+      if(typeof _d3s19733!=='undefined')  tryAdd('s19733',_d3s19733);
+    }catch(e){log.textContent+='❌ Error building pools: '+e.message+'\n';return;}
+
+    var summary=papers.map(function(p){return p.key+'('+p.pool.length+'q)';}).join(', ');
+    log.textContent+='📚 Pools found: '+summary+'\n';
+    log.textContent+='🔍 Checking Firestore for existing questions (skips non-empty papers)...\n';
+
+    _seedGetDb(function(db){
+      var idx=0;
+      var seeded=[];var skipped=[];var failed=[];
+
+      function processNext(){
+        if(idx>=papers.length){
+          var msg='\n✅ Done!\n';
+          if(seeded.length) msg+='Seeded: '+seeded.join(', ')+'\n';
+          if(skipped.length) msg+='Skipped (already has questions): '+skipped.join(', ')+'\n';
+          if(failed.length) msg+='Failed: '+failed.join(', ')+'\n';
+          msg+='\nRefresh the Question Bank browser to see the questions.';
+          log.textContent+=msg;
+          return;
+        }
+        var p=papers[idx]; idx++;
+        db.collection('question_bank').doc(p.key).collection('questions')
+          .limit(1).get()
+          .then(function(snap){
+            if(!snap.empty){
+              log.textContent+='⏭ '+p.key+': already has questions — skipped\n';
+              skipped.push(p.key+'('+p.pool.length+'q)');
+              processNext();
+            } else {
+              log.textContent+='📤 '+p.key+': writing '+p.pool.length+' questions...\n';
+              _batchWrite(db,p.key,p.pool,
+                function(paper,msg){log.textContent+='   '+paper+': '+msg+'\n';},
+                function(err,cnt){
+                  if(err){
+                    log.textContent+='❌ '+p.key+': failed after '+cnt+' — '+err.message+'\n';
+                    failed.push(p.key);
+                  } else {
+                    log.textContent+='✓ '+p.key+': seeded '+cnt+' questions\n';
+                    seeded.push(p.key+'('+cnt+'q)');
+                  }
+                  processNext();
+                }
+              );
+            }
+          })
+          .catch(function(err){
+            log.textContent+='❌ '+p.key+': Firestore check failed — '+err.message+'\n';
+            failed.push(p.key);
+            processNext();
+          });
+      }
+      processNext();
+    });
+  };
+})();
+/* ===== END ADMIN SEED ===== */
 
 /* ===== LEARNER SYNC — Firebase (available to all signed-in learners) ===== */
 /* Mirror of admin.js sync functions — no dependency on admin.js being loaded   */
@@ -5789,7 +5972,7 @@ function lmsCertView(paper){
     +'<div style="background:linear-gradient(135deg,#b8860b,#d4a017);padding:24px;text-align:center;">'
     +'<div style="font-size:36px;margin-bottom:4px;">&#127891;</div>'
     +'<div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:4px;">Certificate of Completion</div>'
-    +'<div style="font-size:18px;font-weight:700;color:#fff;">Riba T Tseke Electrical Training</div>'
+    +'<div style="font-size:18px;font-weight:700;color:#fff;">ribattseke.co.za</div>'
     +'</div>'
     +'<div style="padding:28px;text-align:center;">'
     +'<p style="font-size:12px;color:#888;margin:0 0 8px;">This certifies that</p>'
@@ -5798,7 +5981,7 @@ function lmsCertView(paper){
     +'<div style="font-size:15px;font-weight:600;color:#333;margin-bottom:14px;">'+title+'</div>'
     +(dateStr?'<p style="font-size:12px;color:#aaa;margin:0 0 20px;">Completed: '+dateStr+'</p>':'')
     +'<div style="border-top:1.5px solid #eee;padding-top:16px;">'
-    +'<p style="font-size:11px;color:#bbb;margin:0 0 16px;">This certificate is issued by Riba T Tseke Electrical Training. Contact ribattseke@gmail.com for verification.</p>'
+    +'<p style="font-size:11px;color:#bbb;margin:0 0 16px;">This certificate is issued by ribattseke.co.za. Contact ribattseke@gmail.com for verification.</p>'
     +'<button onclick="this.closest(\'div[style]\').parentElement.remove()" style="padding:10px 28px;border:1.5px solid #ddd;border-radius:9px;background:transparent;color:#333;font-size:13px;font-weight:600;cursor:pointer;">Close</button>'
     +'</div>'
     +'</div>'
