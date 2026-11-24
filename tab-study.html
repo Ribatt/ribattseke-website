@@ -7026,6 +7026,7 @@ function _buildTrackDash(prog){
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 /* ── _buildP2TrackDash — renders only P2 tracks (exam_paper:'P2') into Level 4 panel ── */
+/* Uses identical CSS class structure as _buildTrackDash() for visual consistency */
 function _buildP2TrackDash(){
   var container=document.getElementById('lms-p2-tracks-container');
   if(!container) return;
@@ -7036,13 +7037,6 @@ function _buildP2TrackDash(){
     container.innerHTML='<p style="font-size:13px;color:var(--fg3);padding:12px 0;">No Paper 2 tracks found.</p>';
     return;
   }
-  // Section header
-  var hdr=document.createElement('div');
-  hdr.style.cssText='margin:0 0 10px;padding:7px 14px;border-radius:8px;background:#2563a818;border-left:3px solid #2563a8;display:flex;align-items:center;gap:8px;';
-  hdr.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="#2563a8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>'
-    +'<span style="font-size:12px;font-weight:700;color:#2563a8;">Paper 2 — IR Companion (T890)</span>'
-    +'<span style="font-size:11px;color:var(--fg3);margin-left:auto;">'+p2Tracks.length+' tracks</span>';
-  container.appendChild(hdr);
 
   p2Tracks.forEach(function(track,vi){
     var n=track.topics?track.topics.length:0;
@@ -7067,64 +7061,130 @@ function _buildP2TrackDash(){
     if(track.placeholder) blk.style.opacity='0.6';
     blk.id=blkId;
 
-    var hdrBar=document.createElement('div');
-    hdrBar.className='lms-subj-hdr';
-    hdrBar.style.cssText='display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;border-left:4px solid '+color+';';
-    hdrBar.onclick=(function(id,mid){
-      return function(){
-        var b=document.getElementById(id);
-        if(!b) return;
-        b.classList.toggle('collapsed');
-        var m=document.getElementById(mid);
-        if(m) m.style.display=b.classList.contains('collapsed')?'none':'block';
-      };
-    })(blkId,modsId);
+    var trackBadge='<span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+color+'22;color:'+color+';border:1px solid '+color+'55;margin-right:8px;">Track '+(vi+1)+'</span>';
+    var slotTag=track.slot?'<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:var(--surface2);color:var(--fg3);border:1px solid var(--border);margin-left:4px;">'+track.slot+'</span>':'';
+    var comingSoon=track.placeholder?'<span style="margin-left:8px;font-size:9px;padding:1px 6px;border-radius:8px;background:#ff990022;color:#cc7700;border:1px solid #ff990044;">coming soon</span>':'';
+    var ebkBtn=track.ebookTitle?'<button onclick="event.stopPropagation();lmsOpenEbook('+track.num+');" style="margin-left:auto;padding:3px 9px;border-radius:7px;border:1px solid var(--amb);background:#1E854011;color:var(--amb);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">📖 eBook</button>':'';
 
-    var statusDot='<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'+(pct>=100?'#27ae60':pct>0?color:'var(--border)')+';flex-shrink:0;"></span>';
-    hdrBar.innerHTML=statusDot
-      +'<div style="flex:1;min-width:0;">'
-        +'<div style="font-size:13px;font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Track '+track.num+' &mdash; '+esc(track.label)+'</div>'
-        +'<div style="display:flex;align-items:center;gap:7px;margin-top:4px;">'
-          +'<div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div id="'+barId+'" style="height:100%;background:'+color+';border-radius:3px;width:'+pct+'%;transition:width .4s;"></div></div>'
-          +'<span id="'+txtId+'" style="font-size:11px;color:var(--fg3);white-space:nowrap;">'+passed+'/'+n+' passed</span>'
-        +'</div>'
+    blk.innerHTML='<div class="lms-subject-hdr" onclick="lmsToggleBlock(\''+blkId+'\')">'
+      +'<div class="lms-subject-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="'+color+'">'+(track.icon||'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>')+'</svg></div>'
+      +'<div class="lms-subject-meta">'
+        +'<div class="lms-subject-title">'+trackBadge+esc(track.label)+slotTag+comingSoon+'</div>'
+        +'<div class="lms-subject-prog-row"><div class="lms-subject-mini-bar"><div class="lms-subject-mini-fill" id="'+barId+'" style="width:'+pct+'%;background:'+color+';"></div></div><span class="lms-subject-prog-txt" id="'+txtId+'">'+(track.placeholder?'—':passed+'/'+n)+'</span></div>'
       +'</div>'
-      +'<span style="font-size:12px;color:var(--fg3);">'+(isFirst?'&#9660;':'&#9654;')+'</span>';
-    blk.appendChild(hdrBar);
+      +ebkBtn
+      +'<span class="lms-subject-chevron">▾</span>'
+      +'</div>'
+      +'<div class="lms-subject-body"><div class="lms-modules" id="'+modsId+'"></div></div>';
 
-    var modsEl=document.createElement('div');
-    modsEl.id=modsId;
-    modsEl.style.cssText='padding:0 14px 14px;'+(isFirst?'display:block;':'display:none;');
-    blk.appendChild(modsEl);
     container.appendChild(blk);
+
+    var modsEl=blk.querySelector('#'+modsId);
 
     if(track.placeholder){
       var ph=document.createElement('div');
       ph.style.cssText='padding:16px 18px;color:var(--fg3);font-size:13px;font-style:italic;';
-      ph.textContent='Quiz questions for this track are being developed. Check back soon.';
+      ph.textContent='Quiz questions for this track are being developed. Check back soon — Tseke is seeding this content.';
       modsEl.appendChild(ph);
       return;
     }
 
     if(!track.topics||!track.topics.length) return;
+
+    /* ── KNOWLEDGE BASE SECTION ── */
+    if(track.syllabusScope || (track.appearances && track.appearances.length)){
+      var kbWrap=document.createElement('div');
+      kbWrap.style.cssText='margin:0 0 4px;border:1.5px solid '+color+'33;border-radius:10px;overflow:hidden;';
+
+      var kbHdrId='lms-kb-hdr-p2-t'+track.num;
+      var kbBodyId='lms-kb-body-p2-t'+track.num;
+      var kbHdr=document.createElement('div');
+      kbHdr.id=kbHdrId;
+      kbHdr.style.cssText='display:flex;align-items:center;gap:8px;padding:9px 14px;background:'+color+'12;cursor:pointer;user-select:none;';
+      kbHdr.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="'+color+'"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>'
+        +'<span style="font-size:11.5px;font-weight:700;color:'+color+';letter-spacing:.03em;">Knowledge Base</span>'
+        +'<span style="font-size:10px;color:var(--fg3);margin-left:4px;">— syllabus scope &amp; past paper analysis</span>'
+        +'<span id="'+kbHdrId+'-chv" style="margin-left:auto;font-size:12px;color:var(--fg3);">▾</span>';
+      kbHdr.onclick=(function(bid,hid){
+        return function(){
+          var b=document.getElementById(bid);
+          var chv=document.getElementById(hid+'-chv');
+          if(!b) return;
+          var open=b.style.display!=='none';
+          b.style.display=open?'none':'block';
+          if(chv) chv.textContent=open?'▸':'▾';
+        };
+      })(kbBodyId,kbHdrId);
+      kbWrap.appendChild(kbHdr);
+
+      var kbBody=document.createElement('div');
+      kbBody.id=kbBodyId;
+      kbBody.style.cssText='padding:12px 14px;background:var(--bg);display:block;';
+
+      if(track.syllabusScope){
+        var scopeDiv=document.createElement('div');
+        scopeDiv.style.cssText='margin-bottom:10px;padding:10px 12px;background:'+color+'09;border-left:3px solid '+color+'66;border-radius:0 7px 7px 0;';
+        scopeDiv.innerHTML='<div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:'+color+';margin-bottom:5px;">Syllabus Scope</div>'
+          +'<div style="font-size:12.5px;color:var(--fg);line-height:1.6;">'+esc(track.syllabusScope)+'</div>';
+        kbBody.appendChild(scopeDiv);
+      }
+
+      if(track.appearances && track.appearances.length){
+        var apHdr=document.createElement('div');
+        apHdr.style.cssText='font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--fg2);margin-bottom:7px;';
+        apHdr.textContent='Past Paper Appearances';
+        kbBody.appendChild(apHdr);
+
+        track.appearances.forEach(function(ap){
+          var apCard=document.createElement('div');
+          apCard.style.cssText='margin-bottom:8px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-alt);';
+          var monthStr=ap.month?ap.month+' ':'';
+          var sittingLabel=monthStr+ap.year+(ap.qNum?' · Q'+ap.qNum:'');
+          apCard.innerHTML='<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">'
+            +'<span style="font-size:10px;padding:1px 7px;border-radius:12px;background:'+color+'22;color:'+color+';font-weight:700;border:1px solid '+color+'44;">'+esc(sittingLabel)+'</span>'
+            +(ap.ieee?'<span style="font-size:10px;color:var(--fg3);font-style:italic;">'+esc(ap.ieee)+'</span>':'')
+            +'</div>'
+            +(ap.questionPreview?'<div style="font-size:12px;font-weight:600;color:var(--fg);margin-bottom:4px;">Q: '+esc(ap.questionPreview)+'</div>':'')
+            +(ap.memoPreview?'<div style="font-size:11.5px;color:var(--fg2);line-height:1.55;border-top:1px solid var(--border);padding-top:4px;margin-top:4px;"><span style="font-weight:700;color:var(--amb);">Memo: </span>'+esc(ap.memoPreview)+'</div>':'');
+          kbBody.appendChild(apCard);
+        });
+      }
+
+      kbWrap.appendChild(kbBody);
+      modsEl.appendChild(kbWrap);
+    }
+
+    /* ── QUIZ TOPICS SECTION HEADER ── */
+    var qzHdr=document.createElement('div');
+    qzHdr.style.cssText='margin:6px 0 2px;padding:7px 12px;border-radius:7px;background:var(--bg-alt);border:1px solid var(--border);display:flex;align-items:center;gap:6px;';
+    qzHdr.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="var(--fg3)"><path d="M11.07 12.85c.77-1.39 2.25-2.21 3.11-3.44.91-1.29.4-3.7-2.18-3.7-1.69 0-2.52 1.28-2.87 2.34L7.1 7.05C7.83 4.99 9.76 3 12.34 3c2.17 0 3.76.95 4.54 2.26.69 1.14.95 3.26-.62 5.05-.9 1.05-2.25 1.66-2.87 2.78-.23.4-.33.87-.33 1.4V15h-2v-.95c-.01-.79.19-1.5.01-2.2zM12 18.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/></svg>'
+      +'<span style="font-size:10.5px;font-weight:700;color:var(--fg2);">Quiz Topics</span>'
+      +'<span style="font-size:10px;color:var(--fg3);margin-left:2px;">— tap a topic to begin</span>';
+    modsEl.appendChild(qzHdr);
+
+    /* ── TOPIC ROWS ── */
     track.topics.forEach(function(t,ti){
-      var tprog=(prog[t.paper]||{})['s'+t.idx]||{};
-      var passed_t=tprog.passed||false;
-      var score_t=tprog.score||0;
+      var p=prog[t.paper]||{};
+      var sid='s'+t.idx;
+      var rec=p[sid]||{};
+      var sess=_getSessionData(t.paper,t.idx);
+      var title=sess?sess.title:'Topic '+(ti+1);
+      var badge,badgeClass;
+      if(rec.passed){badge='Passed · '+rec.score+'%';badgeClass='pass';}
+      else if(rec.attempts){badge='Attempts: '+rec.attempts;badgeClass='fail';}
+      else{badge='Not started';badgeClass='new';}
+      var ytHtml=t.yt?'<a class="lms-yt-link" href="'+t.yt+'" target="_blank" rel="noopener" onclick="event.stopPropagation();"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>Watch lesson</a>':'';
+      var rl=_rlScore(t.paper,t.idx);
+      var rlHtml=rl>=65?'<span style="margin-left:6px;font-size:11px;padding:1px 5px;border-radius:10px;background:#ff5a0022;color:#ff7a00;border:1px solid #ff7a0044;" title="Likely to appear in next exam sitting ('+rl+'%)">🔥 '+rl+'%</span>':'';
       var row=document.createElement('div');
-      row.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);';
-      var statusIcon=passed_t
-        ?'<span style="color:#27ae60;font-size:16px;flex-shrink:0;">&#10003;</span>'
-        :'<span style="color:var(--border);font-size:16px;flex-shrink:0;">&#9711;</span>';
-      row.innerHTML=statusIcon
-        +'<div style="flex:1;min-width:0;">'
-          +'<div style="font-size:12.5px;font-weight:600;color:var(--fg);">'+esc(t.label||('Topic '+(ti+1)))+'</div>'
-          +(passed_t?'<div style="font-size:11px;color:#27ae60;">Passed &mdash; '+score_t+'%</div>':'')
+      row.className='lms-mod-row'+(rec.passed?' done':'');
+      row.innerHTML='<div>'
+        +'<div class="lms-mod-title" style="color:'+color+';">Track '+track.num+' · Topic '+(ti+1)+rlHtml+'</div>'
+        +'<div class="lms-mod-sub">'+esc(title)+'</div>'
+        +ytHtml
         +'</div>'
-        +'<button style="flex-shrink:0;padding:7px 13px;background:'+color+';color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">'
-          +(passed_t?'&#8635; Retry':'&#9654; Start')
-        +'</button>';
-      row.querySelector('button').onclick=(function(pp,si,tn,tnum){
+        +'<span class="lms-mod-badge '+badgeClass+'">'+badge+'</span>';
+      row.onclick=(function(pp,si,tn,tnum){
         return function(){lmsStartQuizTrack(pp,si,tn,tnum);};
       })(t.paper,t.idx,track.num,ti+1);
       modsEl.appendChild(row);
@@ -7459,6 +7519,7 @@ function _lmsUpdateTimer(){
 var _lmsQuizTrackLabel=null;
 function lmsStartQuizTrack(paper,sessIdx,trackNum,topicNum){
   _lmsQuizTrackLabel='Track '+trackNum+' · Topic '+topicNum;
+  window.scrollTo({top:0,behavior:'smooth'});
   lmsStartQuiz(paper,sessIdx);
 }
 function _lmsToast(msg,type){
