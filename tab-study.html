@@ -6057,20 +6057,20 @@ function lmsShowDash(){
    placeholder:true  → quiz data being developed; block renders as "coming soon".
    exam_paper:'P1'|'P2' → groups tracks under their paper header in the dashboard. */
 var LMS_TRACKS=[
-  /* ══════════════ PAPER 1 — T880 ══════════════ */
+  /* ══════════════ PAPER 1 — T880 (Level 3) ══════════════ */
   {
     num:1, exam_paper:'P1',
-    label:'OHS Act 85/1993 — Core Provisions (Sections 1, 8, 9, 10, 22)',
-    abbr:'OHS Act',slot:'P1 · Q1 slot',
+    label:'Occupational Health and Safety Act 85 of 1993',
+    abbr:'OHS Act 85/1993',slot:'P1 · Q1',
     color:'#8b1a1a',
     icon:'<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>',
-    ebookTitle:'eBook 01: OHS Act 85 of 1993 — Scope, Definitions & User/Lessor Duties',
-    syllabusScope:'OHS Act 85/1993: Sections 1 (definitions), 8 (general duties of employers), 9 (duty to inform), 10 (health and safety representatives), 22 (penalties). Covers user and lessor of electrical machinery duties per Electrical Installation Regulations.',
-    bundles:['Paper 1 Complete 20-eBook Bundle','OHS & Regulations Starter Pack'],
+    ebookTitle:'eBook 01: Occupational Health and Safety Act 85 of 1993',
+    syllabusScope:'OHS Act 85 of 1993: Sections 1 (definitions), 7-10 (general duties of employers, employees and others), 13-17 (health and safety representatives and committees), 21-23 (incident reporting, inquiries), 25 (general prohibitions), 36-40 (regulations, offences and penalties), 43-44 (commencement).',
+    bundles:['Paper 1 Complete Bundle'],
     appearances:[
-      {year:2019,month:'Nov',qNum:1,ieee:'DHET, "Installation Rules (First Paper — 11040412)," Question 1: Occupational Health and Safety Act 85 of 1993, Nov. 2019.',questionPreview:'State FOUR duties of a user of electrical machinery as defined in the OHS Act 85 of 1993.',memoPreview:'User must keep machinery in a safe condition; ensure operators are trained; report incidents; maintain safety records (reg. 9 & 10).'},
-      {year:2022,month:'Nov',qNum:1,ieee:'DHET, "Installation Rules (First Paper — T880)," Question 1: OHS Act Sections, Nov. 2022.',questionPreview:'Explain the duties of an employer regarding health and safety representatives in terms of the OHS Act.',memoPreview:'S10: Employer must designate HSRs for every 50 employees; allow time off for inspections; consider recommendations made.'},
-      {year:2025,month:'Aug',qNum:1,ieee:'DHET, "Installation Rules (First Paper — T880)," Question 1: OHS Act, Aug. 2025.',questionPreview:'Describe the general duties of an employer to employees as per Section 8 of the OHS Act 85 of 1993.',memoPreview:'Provide safe plant, safe systems of work, safe handling/storage, training, supervision and adequate facilities (s8(1)(a)–(e)).'}
+      {year:2019,month:'Nov',qNum:1,ieee:'DHET, "Installation Rules (First Paper — 11040412)," Q1: OHS Act, Nov. 2019.',questionPreview:'State FOUR duties of a user of electrical machinery as defined in the OHS Act 85 of 1993.',memoPreview:'User must keep machinery in a safe condition; ensure operators are trained; report incidents; maintain safety records (reg. 9 & 10).'},
+      {year:2022,month:'Nov',qNum:1,ieee:'DHET, "Installation Rules (First Paper — T880)," Q1: OHS Act, Nov. 2022.',questionPreview:'Explain the duties of an employer regarding health and safety representatives in terms of the OHS Act.',memoPreview:'S10: Employer must designate HSRs for every 50 employees; allow time off for inspections; consider recommendations made.'},
+      {year:2025,month:'Aug',qNum:1,ieee:'DHET, "Installation Rules (First Paper — T880)," Q1: OHS Act, Aug. 2025.',questionPreview:'Describe the general duties of an employer to employees as per Section 8 of the OHS Act 85 of 1993.',memoPreview:'Provide safe plant, safe systems of work, safe handling/storage, training, supervision and adequate facilities (s8(1)(a)-(e)).'}
     ],
     topics:[
       {paper:'ohs1',idx:0,yt:null},
@@ -6082,12 +6082,14 @@ var LMS_TRACKS=[
   },
   {
     num:2, exam_paper:'P1',
-    label:'OHS Act — Electrical Installation Regulations 1992',
-    abbr:'EIR 1992',slot:'P1 · Q2 slot',
+    label:'Electrical Installation Regulations, 2009',
+    abbr:'EIR 2009',slot:'P1 · Q2',
     color:'#c97b2a',
     icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>',
-    ebookTitle:'eBook 02: OHS Act — Electrical Installation Regulations (EIR) 1992',
-    syllabusScope:'Electrical Installation Regulations 1992 (GNR 1593): Regulation 1 (definitions), Regulation 2 (design and installation obligations), Regulation 3 (testing and inspection), Regulation 4 (Certificate of Compliance), Regulation 6 (periodic inspection), Regulation 9 (penalties). Duty of user and lessor. When a CoC is required.',
+    ebookTitle:'eBook 02: Electrical Installation Regulations, 2009',
+    syllabusScope:'Electrical Installation Regulations, 2009 (promulgated under the OHS Act): Regulations 1-16 — definitions, scope, registration categories (SPT, IE, MIE), design and installation obligations, Certificate of Compliance (CoC) requirements, Approved Inspection Authority (AIA), dangerous installations, offences and penalties.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'eir1',idx:0,yt:null},
       {paper:'eir1',idx:1,yt:null},
@@ -6102,12 +6104,14 @@ var LMS_TRACKS=[
   },
   {
     num:3, exam_paper:'P1',
-    label:'OHS Act — Electrical Machinery Regulations (Regs 1, 3, 5, 6, 11)',
-    abbr:'EMR',slot:'P1 · Q3 slot',
+    label:'Electrical Machinery Regulations, 2011',
+    abbr:'EMR 2011',slot:'P1 · Q3',
     color:'#9b4a2a',
     icon:'<path d="M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2zm-4 6H7V7h10v10z"/>',
-    ebookTitle:'eBook 03: OHS Act — Electrical Machinery Regulations (EMR) 1988',
-    syllabusScope:'Electrical Machinery Regulations 1988 (GNR 1593 — EMR): Regulation 1 (definitions: electrical machinery, operator, user), Regulation 3 (construction & maintenance of electrical machinery), Regulation 5 (earthing), Regulation 6 (guarding), Regulation 11 (control gear). Duty of the user and operator.',
+    ebookTitle:'eBook 03: Electrical Machinery Regulations, 2011',
+    syllabusScope:'Electrical Machinery Regulations, 2011 (promulgated under the OHS Act): Regulations 1-13 — definitions (electrical machinery, operator, user), general duties, construction and maintenance of electrical machinery, earthing (Regs 2-5), isolation, control gear (Regs 6-8), inspection, low-voltage machinery, offences and penalties.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'emr1',idx:0,yt:null},
       {paper:'emr1',idx:1,yt:null},
@@ -6117,34 +6121,51 @@ var LMS_TRACKS=[
     ]
   },
   {
-    num:4, exam_paper:'P2',
-    label:'SANS 10142-1 — Installation Rules: Second Paper (P2)',
-    abbr:'P2 / Inst.Rules',slot:'P2 exam paper',
-    color:'#a05c1e',
-    icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>',
-    ebookTitle:'eBook P2-01: SANS 10142-1 — Full Installation Rules (T890 Paper 2 Overview)',
-    syllabusScope:'SANS 10142-1 comprehensive: Section 3 (definitions), Section 4 (compliance requirements), Section 5 (fundamental requirements for safety), Section 6 (wiring systems, cable selection, overcurrent protection, earthing, bonding, distribution boards, special circuits), Section 7 (special locations). T890 paper focuses on calculation, design and verification competency.',
-    topics:[
-      {paper:'eir2',idx:0,yt:null},
-      {paper:'eir2',idx:1,yt:null},
-      {paper:'eir2',idx:2,yt:null},
-      {paper:'eir2',idx:3,yt:null},
-      {paper:'eir2',idx:4,yt:null},
-      {paper:'eir2',idx:5,yt:null},
-      {paper:'eir2',idx:6,yt:null},
-      {paper:'eir2',idx:7,yt:null},
-      {paper:'eir2',idx:8,yt:null},
-      {paper:'eir2',idx:9,yt:null}
-    ]
+    num:4, exam_paper:'P1',
+    label:'Construction Regulations, 2014',
+    abbr:'Construction Regs 2014',slot:'P1 · Q4',
+    color:'#7a4a1a',
+    icon:'<path d="M13.5 8H12V3L4.5 11H9v5l7.5-8H13.5V8z"/>',
+    ebookTitle:'eBook 04: Construction Regulations, 2014',
+    syllabusScope:'Construction Regulations, 2014 (promulgated under the OHS Act): Regulations 1, 2, 5, 6, 8, 9, 23-24, 27-29 — definitions, general duties of clients and contractors, risk assessment, supervision of construction work, electrical installations on construction sites, trenching and excavations, offences and penalties.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
+    topics:[]
   },
   {
     num:5, exam_paper:'P1',
-    label:'SANS 10142-1 — Section 3: Definitions',
-    abbr:'SANS 10142-1 §3',slot:'P1 · Q5 slot',
+    label:'SANS 10142-1 Section 1 — Scope',
+    abbr:'SANS 10142-1 §1',slot:'P1 · §1',
     color:'#2a7a4b',
     icon:'<path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>',
-    ebookTitle:'eBook 05: SANS 10142-1 Section 3 — Key Definitions',
-    syllabusScope:'SANS 10142-1 Section 3: Critical definitions — electrical installation, point of supply, main earth terminal, final sub-circuit, distribution board, nominal voltage, earth fault, earth leakage, exposed metalwork, touch voltage, inspection authority. These definitions underpin every other section of the standard.',
+    ebookTitle:'eBook 05: SANS 10142-1 Section 1 — Scope',
+    syllabusScope:'SANS 10142-1 Section 1: Scope and application of the standard — which installations are covered, which are excluded (external lightning protection), and the relationship between SANS 10142-1 and the Electrical Installation Regulations. Clause 1.3 exclusion and the SANS 10313 referral.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:6, exam_paper:'P1',
+    label:'SANS 10142-1 Section 2 — Normative References',
+    abbr:'SANS 10142-1 §2',slot:'P1 · §2',
+    color:'#2a7a4b',
+    icon:'<path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>',
+    ebookTitle:'eBook 06: SANS 10142-1 Section 2 — Normative References',
+    syllabusScope:'SANS 10142-1 Section 2: Normative references — the standards called up by SANS 10142-1 and thereby incorporated into the legal requirement chain. Distinction between dated and undated references. Key called-up standards: SANS 1507-1, SANS 10292, SANS 10313, SANS 10198-1 and -2, SANS 1973-3.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:7, exam_paper:'P1',
+    label:'SANS 10142-1 Section 3 — Definitions',
+    abbr:'SANS 10142-1 §3',slot:'P1 · §3',
+    color:'#2a7a4b',
+    icon:'<path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>',
+    ebookTitle:'eBook 07: SANS 10142-1 Section 3 — Definitions',
+    syllabusScope:'SANS 10142-1 Section 3: Critical definitions — electrical installation, point of supply, main earth terminal, final sub-circuit, distribution board, nominal voltage, earth fault, earth leakage, exposed metalwork, touch voltage, inspection authority, registered person.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'p1',idx:0,yt:null},
       {paper:'p1',idx:1,yt:'https://www.youtube.com/watch?v=t8QlzrQa3CM'},
@@ -6152,27 +6173,44 @@ var LMS_TRACKS=[
     ]
   },
   {
-    num:6, exam_paper:'P1',
-    label:'SANS 10142-1 — Sections 4 & 5: Compliance & Fundamental Requirements',
-    abbr:'SANS 10142-1 §4/5',slot:'P1 · Q6 slot',
+    num:8, exam_paper:'P1',
+    label:'SANS 10142-1 Section 4 — Compliance',
+    abbr:'SANS 10142-1 §4',slot:'P1 · §4',
     color:'#2a7a4b',
-    icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
-    ebookTitle:'eBook 06: SANS 10142-1 Sections 4 & 5 — Compliance Obligations & Safety Fundamentals',
-    syllabusScope:'SANS 10142-1 Section 4: When an electrical installation must comply with the standard. Section 5: Fundamental safety requirements — protection against electric shock (direct and indirect contact), thermal effects, overcurrent, undervoltage, electromagnetic interference, isolation and switching. Responsibilities of the person responsible for the installation.',
+    icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
+    ebookTitle:'eBook 08: SANS 10142-1 Section 4 — Compliance',
+    syllabusScope:'SANS 10142-1 Section 4: When an electrical installation must comply with the standard — new installations, alterations, additions, and change of use. The responsibilities of the person responsible for the installation and the obligations that trigger a Certificate of Compliance.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
-      {paper:'p1',idx:3,yt:'https://www.youtube.com/watch?v=7ITaozNXWWo'},
+      {paper:'p1',idx:3,yt:'https://www.youtube.com/watch?v=7ITaozNXWWo'}
+    ]
+  },
+  {
+    num:9, exam_paper:'P1',
+    label:'SANS 10142-1 Section 5 — Fundamental Requirements',
+    abbr:'SANS 10142-1 §5',slot:'P1 · §5',
+    color:'#1e6b3c',
+    icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
+    ebookTitle:'eBook 09: SANS 10142-1 Section 5 — Fundamental Requirements',
+    syllabusScope:'SANS 10142-1 Section 5: Fundamental requirements for safety — protection against electric shock (direct and indirect contact), thermal effects, overcurrent, undervoltage, electromagnetic interference, isolation and switching. Section 5.2.2 voltage drop limit (5%). Responsibilities of the person responsible for the installation.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
+    topics:[
       {paper:'p1',idx:4,yt:'https://www.youtube.com/watch?v=n-I1vlX1Xig'},
       {paper:'p1',idx:5,yt:null}
     ]
   },
   {
-    num:7, exam_paper:'P1',
-    label:'SANS 10142-1 — Section 7: Special Installations & Locations',
-    abbr:'SANS 10142-1 §7',slot:'P1 · Q7 slot',
+    num:10, exam_paper:'P1',
+    label:'SANS 10142-1 Section 7 — Special Installations or Locations',
+    abbr:'SANS 10142-1 §7',slot:'P1 · §7',
     color:'#1e6b3c',
     icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
-    ebookTitle:'eBook 07: SANS 10142-1 Section 7 — Special Installations & Locations',
-    syllabusScope:'SANS 10142-1 Section 7: Special wiring requirements for — bathrooms and shower rooms (IP zones 0/1/2/3), swimming pools and fountains, agricultural installations, construction sites, caravan parks, mobile and transportable units, medical locations, floor heating, and photovoltaic systems.',
+    ebookTitle:'eBook 10: SANS 10142-1 Section 7 — Special Installations or Locations',
+    syllabusScope:'SANS 10142-1 Section 7: Special wiring requirements for — bathrooms and shower rooms (IP protection zones 0, 1, 2, 3), swimming pools and fountains, agricultural installations, construction sites, caravan parks, mobile and transportable units, medical locations, floor heating, and photovoltaic (PV) generating plant (Annex S).',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'p1',idx:6,yt:null},
       {paper:'p1',idx:7,yt:'https://www.youtube.com/watch?v=Ueb9yupmRQk'},
@@ -6181,25 +6219,41 @@ var LMS_TRACKS=[
     ]
   },
   {
-    num:8, exam_paper:'P1',
-    label:'SANS 10142-1 — Annexures: Load Estimation, Conduit Sizing & Supply Systems',
-    abbr:'SANS 10142-1 Annex',slot:'P1 · Q8 slot',
+    num:11, exam_paper:'P1',
+    label:'SANS 10142-1 Annexes D, F, G, J, M, P, Q and S',
+    abbr:'SANS 10142-1 Annexes (P1)',slot:'P1 · Annexes',
     color:'#1e6b3c',
     icon:'<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/>',
-    ebookTitle:'eBook 08: SANS 10142-1 Annexures — Load Estimation, Conduit Fill & Supply Systems',
-    syllabusScope:'SANS 10142-1 Annexures: Annexure C (load estimation for residential & commercial), Annexure D (conduit fill calculations — maximum cable fill %), supply system characteristics (single-phase, three-phase, neutral conductor requirements), point of supply requirements, metering.',
+    ebookTitle:'eBook 11: SANS 10142-1 Annexes D, F, G, J, M, P, Q and S',
+    syllabusScope:'SANS 10142-1 Annexes examined in Paper 1 (T880): Annex D (conduit fill calculations), Annex F (outdoor earthing requirements), Annex G (prospective short-circuit current tables), Annex J (overcurrent protective device coordination), Annex M (guidance on selection of protective devices), Annex P (notes on wiring systems), Annex Q (testing and inspection records), Annex S (PV generating plant commissioning documentation).',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'p1',idx:10,yt:null}
     ]
   },
   {
-    num:9, exam_paper:'P1',
-    label:'SANS 10198-2 — Power Cable Type Selection & Installation Methods',
-    abbr:'SANS 10198-2',slot:'P1 · Q9 slot',
+    num:12, exam_paper:'P1',
+    label:'SANS 10198-1 — The selection, handling and installation of electric power cables of rating not exceeding 33 kV, Part 1: Definitions and statutory requirements',
+    abbr:'SANS 10198-1',slot:'P1 · SANS 10198-1',
     color:'#6b2fa0',
     icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
-    ebookTitle:'eBook 09: SANS 10198-2 — Power Cable Types, Ratings & Installation',
-    syllabusScope:'SANS 10198-2: Construction of power cables up to 33 kV — conductor types (solid, stranded, compacted), insulation types (XLPE, PVC, EPR), screens, armouring, sheathing. Cable selection criteria: current-carrying capacity, voltage rating, derating factors, installation methods (underground, buried, in conduit, in air, on cable tray).',
+    ebookTitle:'eBook 12: SANS 10198-1 — Power Cables not exceeding 33 kV, Part 1: Definitions and Statutory Requirements',
+    syllabusScope:'SANS 10198-1: Definitions and statutory requirements for the selection, handling and installation of electric power cables rated not exceeding 33 kV — whole part as examined in Paper 1 (T880).',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:13, exam_paper:'P1',
+    label:'SANS 10198-2 — The selection, handling and installation of electric power cables of rating not exceeding 33 kV, Part 2: Selection of cable type',
+    abbr:'SANS 10198-2',slot:'P1 · SANS 10198-2',
+    color:'#6b2fa0',
+    icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
+    ebookTitle:'eBook 13: SANS 10198-2 — Power Cables not exceeding 33 kV, Part 2: Selection of Cable Type',
+    syllabusScope:'SANS 10198-2: Selection of cable type for power cables rated not exceeding 33 kV — conductor types (solid, stranded, compacted), insulation types (XLPE, PVC, EPR), screens, armouring, sheathing. Cable selection criteria: current-carrying capacity, voltage rating, derating factors, installation methods.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'s101981',idx:0,yt:null},
       {paper:'s101981',idx:1,yt:'https://www.youtube.com/playlist?list=PLDtV4uswpcMw'},
@@ -6207,56 +6261,68 @@ var LMS_TRACKS=[
     ]
   },
   {
-    num:10, exam_paper:'P1',
-    label:'SANS 10292 — Earthing of LV Distribution Systems',
-    abbr:'SANS 10292',slot:'P1 · Q10 slot',
+    num:14, exam_paper:'P1',
+    label:'SANS 10292 — Earthing of low-voltage (LV) distribution systems',
+    abbr:'SANS 10292',slot:'P1 · SANS 10292',
     color:'#8a3a1b',
     icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5h2v2h-2zm0-8h2v6h-2z"/>',
-    ebookTitle:'eBook 10: SANS 10292 — Earthing of LV Distribution Systems',
-    syllabusScope:'SANS 10292: Earthing system types (TN-S, TN-C-S/PME, TT, IT), touch voltage limits (50 V ac), earth electrode requirements, earth continuity conductors (ECC) and protective earth (PE) conductors, combined PEN conductor, residual current device (RCD) coordination, earth resistance measurement methods.',
+    ebookTitle:'eBook 14: SANS 10292 — Earthing of LV Distribution Systems',
+    syllabusScope:'SANS 10292 — whole standard: Earthing system types (TN-S, TN-C-S/PME, TT, IT), touch voltage limits, earth electrode requirements, earth continuity conductors, combined PEN conductor, RCD coordination, earth resistance measurement methods.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'s10292',idx:0,yt:null},
       {paper:'s10292',idx:1,yt:null}
     ]
   },
-  /* ══════════════ PAPER 2 — T890 ══════════════ */
   {
-    num:11, exam_paper:'P2',
-    label:'SANS 10142-1 §6.1–6.2 — Cable Selection & Current-Carrying Capacity',
-    abbr:'SANS 10142-1 §6.1/6.2',slot:'P2 · Q1 slot',
+    num:15, exam_paper:'P1',
+    label:'SANS 1507-1 — Electric cables with extruded solid dielectric insulation for fixed installations 300/500 V to 1 900/3 300 V, Part 1: General',
+    abbr:'SANS 1507-1',slot:'P1 · SANS 1507-1',
+    color:'#4a2a7a',
+    icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
+    ebookTitle:'eBook 15: SANS 1507-1 — Low-Voltage Cables: Construction, Ratings and Classification',
+    syllabusScope:'SANS 1507-1 — whole part: Electric cables with extruded solid dielectric insulation for fixed installations rated 300/500 V to 1 900/3 300 V — construction requirements, conductor sizes, insulation materials, sheathing, current ratings, voltage classes and classification as examined in Paper 1 (T880).',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:16, exam_paper:'P1',
+    label:'SANS 10313 — Protection against lightning: Physical damage to structures and life hazard',
+    abbr:'SANS 10313',slot:'P1 · SANS 10313',
+    color:'#8a7a1b',
+    icon:'<path d="M7 2v11h3v9l7-12h-4l4-8z"/>',
+    ebookTitle:'eBook 16: SANS 10313 — Protection Against Lightning',
+    syllabusScope:'SANS 10313 — whole standard (called up by SANS 10142-1 clause 1.3): Risk assessment, lightning protection zones (LPZ), air termination systems, down conductors, earth termination, equipotential bonding, surge protective devices (SPDs), internal lightning protection system (LPS), maintenance and inspection.',
+    bundles:['Paper 1 Complete Bundle'],
+    appearances:[
+      {year:2021,month:'Nov',qNum:9,ieee:'DHET, "Installation Rules (First Paper — T880)," Q9: SANS 10313 Lightning Protection, Nov. 2021.',questionPreview:'List the components of an external lightning protection system per SANS 10313.',memoPreview:'Air termination, down conductors, earth termination system — installed to intercept and safely conduct lightning current to ground.'}
+    ],
+    topics:[
+      {paper:'s10313',idx:0,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
+      {paper:'s10313',idx:1,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
+      {paper:'s10313',idx:2,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'}
+    ]
+  },
+  /* ══════════════ PAPER 2 — T890 (Level 4) ══════════════ */
+  {
+    num:17, exam_paper:'P2',
+    label:'SANS 10142-1 Section 6 — Installation Requirements',
+    abbr:'SANS 10142-1 §6',slot:'P2 · §6',
     color:'#2563a8',
     icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
-    ebookTitle:'eBook P2-02: SANS 10142-1 §6.1–6.2 — Cable Current-Carrying Capacity & Selection',
-    syllabusScope:'SANS 10142-1 Section 6.1–6.2: Cable current-carrying capacity tables (Table 6.1 to 6.6), derating factors for grouping, ambient temperature and thermal insulation, voltage drop limits (maximum 5%), cable sizing calculation procedure, selection based on fault current and protection device characteristics.',
+    ebookTitle:'eBook P2-01: SANS 10142-1 Section 6 — Installation Requirements',
+    syllabusScope:'SANS 10142-1 Section 6 — full section: Wiring systems (conduit, trunking, cable tray, buried cables), cable selection and current-carrying capacity, derating factors, voltage drop, overcurrent protection (fuses, MCBs, MCCBs), distribution board requirements, earthing and bonding, isolation and switching, socket outlets, motor circuits and special circuits.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
     topics:[
       {paper:'p2',idx:0,yt:'https://www.youtube.com/playlist?list=PLalqOmhOcRTs'},
       {paper:'p2',idx:1,yt:'https://www.youtube.com/@tseke-sk-riba'},
-      {paper:'p2',idx:2,yt:null}
-    ]
-  },
-  {
-    num:12, exam_paper:'P2',
-    label:'SANS 10142-1 §6.3–6.6 — Wiring Systems, Distribution Boards & Protection',
-    abbr:'SANS 10142-1 §6.3/6.6',slot:'P2 · Q2 slot',
-    color:'#2563a8',
-    icon:'<path d="M13 2.05V4.07C16.94 4.56 20 7.92 20 12s-3.06 7.44-7 7.93v2.02c4.94-.49 9-4.86 9-9.95s-4.06-9.46-9-9.95zM11 2.05C6.06 2.54 2 6.59 2 12s4.06 9.46 9 9.95V4.07V2.05zM4 12c0-3.87 2.73-7.1 6-7.76v15.52C6.73 19.1 4 15.87 4 12z"/>',
-    ebookTitle:'eBook P2-03: SANS 10142-1 §6.3–6.6 — Wiring Systems, DBs & Overcurrent Protection',
-    syllabusScope:'SANS 10142-1 Section 6.3: Wiring systems (conduit, trunking, cable tray, buried cables). Section 6.4: Distribution board requirements (enclosure, busbar, incoming protection). Section 6.5: Overcurrent protection — fuses (HRC, semi-enclosed), MCBs, MCCBs, tripping characteristics (B, C, D). Section 6.6: Isolation and switching requirements.',
-    topics:[
+      {paper:'p2',idx:2,yt:null},
       {paper:'p2',idx:3,yt:'https://www.youtube.com/watch?v=Vj4LYWVNsEQ'},
       {paper:'p2',idx:4,yt:'https://www.youtube.com/watch?v=zZMpPDlVD2g'},
-      {paper:'p2',idx:5,yt:null}
-    ]
-  },
-  {
-    num:13, exam_paper:'P2',
-    label:'SANS 10142-1 §6.7–6.11 — Earthing, Bonding, Verification & Special Circuits',
-    abbr:'SANS 10142-1 §6.7/6.11',slot:'P2 · Q3 slot',
-    color:'#1b4d8a',
-    icon:'<path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zM3 17h18V5H3v12zm0 2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3z"/>',
-    ebookTitle:'eBook P2-04: SANS 10142-1 §6.7–6.11 — Earthing, Bonding & Verification',
-    syllabusScope:'SANS 10142-1 Section 6.7: Earthing — earth fault loop impedance, earth electrode, sizing of earth continuity conductors. Section 6.8: Supplementary bonding. Section 6.9–6.10: Special circuits (socket outlets, heating, motor circuits). Section 6.11: Verification — mandatory tests (insulation resistance, earth continuity, polarity, earth leakage, operational test) and documentation.',
-    topics:[
+      {paper:'p2',idx:5,yt:null},
       {paper:'p2',idx:6,yt:'https://www.youtube.com/playlist?list=PLSlH6EGj59YI'},
       {paper:'p2',idx:7,yt:'https://www.youtube.com/playlist?list=PLaRfbme-ayTM'},
       {paper:'p2',idx:8,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
@@ -6264,13 +6330,134 @@ var LMS_TRACKS=[
     ]
   },
   {
-    num:14, exam_paper:'P2',
-    label:'SANS 1973-3 — LV Switchgear & Controlgear Assemblies (up to 10 kA)',
-    abbr:'SANS 1973-3',slot:'P2 · Q4 slot',
+    num:18, exam_paper:'P2',
+    label:'SANS 10142-1 Section 8 — Verification and Certification',
+    abbr:'SANS 10142-1 §8',slot:'P2 · §8',
+    color:'#2563a8',
+    icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
+    ebookTitle:'eBook P2-02: SANS 10142-1 Section 8 — Verification and Certification',
+    syllabusScope:'SANS 10142-1 Section 8: Verification and certification of electrical installations — mandatory inspection and testing sequence: continuity of protective conductors, insulation resistance, polarity, earth electrode resistance, earth fault loop impedance, prospective short-circuit current (PSCC), operation of residual current devices (RCDs), operational test. Test documentation and Certificate of Compliance.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:19, exam_paper:'P2',
+    label:'SANS 10142-1 Annex B',
+    abbr:'SANS 10142-1 Annex B',slot:'P2 · Annex B',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-03: SANS 10142-1 Annex B',
+    syllabusScope:'SANS 10142-1 Annex B — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3 for the full normative content of this annex.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:20, exam_paper:'P2',
+    label:'SANS 10142-1 Annex C',
+    abbr:'SANS 10142-1 Annex C',slot:'P2 · Annex C',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-04: SANS 10142-1 Annex C',
+    syllabusScope:'SANS 10142-1 Annex C — Diversity factors and load estimation for residential and commercial installations, as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:21, exam_paper:'P2',
+    label:'SANS 10142-1 Annex E',
+    abbr:'SANS 10142-1 Annex E',slot:'P2 · Annex E',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-05: SANS 10142-1 Annex E',
+    syllabusScope:'SANS 10142-1 Annex E — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3 for the full normative content of this annex.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:22, exam_paper:'P2',
+    label:'SANS 10142-1 Annex G',
+    abbr:'SANS 10142-1 Annex G',slot:'P2 · Annex G',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-06: SANS 10142-1 Annex G',
+    syllabusScope:'SANS 10142-1 Annex G — prospective short-circuit current (PSCC) tables — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:23, exam_paper:'P2',
+    label:'SANS 10142-1 Annex K',
+    abbr:'SANS 10142-1 Annex K',slot:'P2 · Annex K',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-07: SANS 10142-1 Annex K',
+    syllabusScope:'SANS 10142-1 Annex K — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3 for the full normative content of this annex.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:24, exam_paper:'P2',
+    label:'SANS 10142-1 Annex L',
+    abbr:'SANS 10142-1 Annex L',slot:'P2 · Annex L',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-08: SANS 10142-1 Annex L',
+    syllabusScope:'SANS 10142-1 Annex L — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3 for the full normative content of this annex.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:25, exam_paper:'P2',
+    label:'SANS 10142-1 Annex N',
+    abbr:'SANS 10142-1 Annex N',slot:'P2 · Annex N',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-09: SANS 10142-1 Annex N',
+    syllabusScope:'SANS 10142-1 Annex N — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3 for the full normative content of this annex.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:26, exam_paper:'P2',
+    label:'SANS 10142-1 Annex O',
+    abbr:'SANS 10142-1 Annex O',slot:'P2 · Annex O',
+    color:'#1b4d8a',
+    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
+    ebookTitle:'eBook P2-10: SANS 10142-1 Annex O',
+    syllabusScope:'SANS 10142-1 Annex O — as examined in Paper 2 (T890). Refer to the current DHET syllabus and SANS 10142-1 Ed. 3.3 for the full normative content of this annex.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:27, exam_paper:'P2',
+    label:'SANS 1507-1 — Electric cables with extruded solid dielectric insulation for fixed installations 300/500 V to 1 900/3 300 V, Part 1: General (cable data used in calculations)',
+    abbr:'SANS 1507-1 (calculations)',slot:'P2 · SANS 1507-1',
+    color:'#4a2a7a',
+    icon:'<path d="M4 7h16v2H4V7zm0 4h16v2H4v-2zm0 4h10v2H4v-2z"/>',
+    ebookTitle:'eBook P2-11: SANS 1507-1 — Cable Data for Calculations',
+    syllabusScope:'SANS 1507-1 — cable data used in calculations as examined in Paper 2 (T890): conductor resistance, current-carrying capacity, voltage drop (mV/A/m) values and other cable parameters required for volt drop, cable sizing, derating, fault current and earth loop impedance calculations.',
+    bundles:['Paper 2 Complete Bundle'],
+    appearances:[],
+    topics:[]
+  },
+  {
+    num:28, exam_paper:'P2',
+    label:'SANS 1973-3 — Low-voltage switchgear and controlgear assemblies, Part 3: Safety of assemblies with a rated prospective short-circuit current of up to and including 10 kA',
+    abbr:'SANS 1973-3',slot:'P2 · SANS 1973-3',
     color:'#4a2a7a',
     icon:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zm-6-6h-2v2h2v-2zm-4 0H8v2h2v-2zm8 0h-2v2h2v-2z"/>',
-    ebookTitle:'eBook 14: SANS 1973-3 — LV Switchgear & Controlgear Assemblies (up to 10 kA)',
-    syllabusScope:'SANS 1973-3 (aligns with IEC 61439-1 & IEC 61439-2): Classification of assemblies (TTA, PTTA), forms of internal separation (Form 1 through 4b), rated short-circuit withstand (Icw), temperature rise limits, degree of protection (IP ratings), busbar sizing, diversity factor, routine and type tests, verification requirements.',
+    ebookTitle:'eBook P2-12: SANS 1973-3 — LV Switchgear & Controlgear Assemblies (up to 10 kA)',
+    syllabusScope:'SANS 1973-3 (aligns with IEC 61439-1 & IEC 61439-2): Classification of assemblies (TTA, PTTA), forms of internal separation (Form 1 through 4b), rated short-circuit withstand (Icw), temperature rise limits, degree of protection (IP ratings), busbar sizing, diversity factor, routine and type tests, verification requirements. Whole part as examined in Paper 2 (T890).',
+    bundles:['Paper 2 Complete Bundle'],
     appearances:[
       {year:2022,month:'Nov',qNum:4,ieee:'DHET, "Installation Rules (Second Paper — T890)," Q4: LV Switchgear Assemblies, Nov. 2022.',questionPreview:'Describe the difference between a Form 3b and Form 4b internal separation arrangement per SANS 1973-3.',memoPreview:'Form 3b: busbars & terminals separated from functional units; Form 4b additionally has each functional unit terminal compartment fully separated from other units.'},
       {year:2023,month:'Nov',qNum:4,ieee:'DHET, "Installation Rules (Second Paper — T890)," Q4: SANS 1973-3 Ratings, Nov. 2023.',questionPreview:'Define Icw and state the maximum Icw covered by SANS 1973-3.',memoPreview:'Icw = conditional short-circuit current withstand (kA rms for 1 s). SANS 1973-3 covers assemblies up to 10 kA.'}
@@ -6282,84 +6469,30 @@ var LMS_TRACKS=[
     ]
   },
   {
-    num:15, exam_paper:'P2',
-    label:'SANS 10313 — Protection Against Lightning (Extended Study)',
-    abbr:'SANS 10313',slot:'P2 · Extended',
-    color:'#8a7a1b',
-    icon:'<path d="M7 2v11h3v9l7-12h-4l4-8z"/>',
-    ebookTitle:'eBook 15: SANS 10313 — Lightning Protection (LPS Design, SPDs, Bonding)',
-    syllabusScope:'SANS 10313: Risk assessment, lightning protection zones (LPZ), air termination systems, down conductors, earth termination, bonding, surge protective devices (SPDs), internal LPS, maintenance.',
+    num:29, exam_paper:'P2',
+    label:'Calculations — Volt drop, cable sizing and derating',
+    abbr:'Calculations (Volt Drop)',slot:'P2 · Calculations 1',
+    color:'#1a4d6a',
+    icon:'<path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zM3 17h18V5H3v12zm0 2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3z"/>',
+    ebookTitle:'eBook P2-13: Calculations — Volt Drop, Cable Sizing and Derating',
+    syllabusScope:'All calculation formulas examined in Paper 2 (T890) relating to volt drop (both the mV/A/m method and the resistance method), cable sizing (applying current-carrying capacity tables from SANS 1507-1), and derating factors (grouping, ambient temperature, thermal insulation). Worked examples using SANS 10142-1 Section 5.2.2 voltage drop limit.',
     bundles:['Paper 2 Complete Bundle'],
-    appearances:[
-      {year:2021,month:'Nov',qNum:4,ieee:'DHET, "Installation Rules (Second Paper — T890)," Q4: Lightning Protection, Nov. 2021.',questionPreview:'List the components of an external lightning protection system per SANS 10313.',memoPreview:'Air termination, down conductors, earth termination system — installed to intercept and safely conduct lightning current to ground.'}
-    ],
-    topics:[
-      {paper:'s10313',idx:0,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
-      {paper:'s10313',idx:1,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'},
-      {paper:'s10313',idx:2,yt:'https://www.youtube.com/playlist?list=PLYUlEfNYdGWM'}
-    ]
-  },
-  {
-    num:16, exam_paper:'P1',
-    label:'SANS 10142-1 — Annexe A: Earthing & Bonding Requirements',
-    abbr:'Annexe A',slot:'P1 · Annexe slot',
-    color:'#2a7a4b',
-    icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
-    ebookTitle:'eBook 16: SANS 10142-1 Annexe A — Earthing, Bonding & Earthing Electrode Design',
-    syllabusScope:'Annexe A of SANS 10142-1: Earthing system selection (TN, TT, IT), protective earth conductors, equipotential bonding, electrode types and installation, earth resistance testing.',
-    bundles:['Paper 1 Complete 20-eBook Bundle'],
     appearances:[],
     topics:[]
   },
   {
-    num:17, exam_paper:'P1',
-    label:'SANS 10142-1 — Annexe B: Wiring Systems',
-    abbr:'Annexe B',slot:'P1 · Annexe slot',
-    color:'#2a5ba8',
-    icon:'<path d="M22 9V7h-2V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/>',
-    ebookTitle:'eBook 17: SANS 10142-1 Annexe B — Wiring System Selection & Cable Support',
-    syllabusScope:'Annexe B of SANS 10142-1: Selection of wiring systems, conduit types, trunking, cable tray, cable clips and supports, minimum installation distances, penetrations.',
-    bundles:['Paper 1 Complete 20-eBook Bundle'],
-    appearances:[],
-    topics:[]
-  },
-  {
-    num:18, exam_paper:'P1',
-    label:'SANS 10198-1 & -2 — Cable Selection & Power Cables ≤ 33 kV',
-    abbr:'SANS 10198',slot:'P1 · Cable slot',
-    color:'#8b4513',
-    icon:'<path d="M20 5h-9.586L8.707 3.293A1 1 0 0 0 8 3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/>',
-    ebookTitle:'eBook 18: SANS 10198-1 & -2 — Cable Installation & Power Cables up to 33 kV',
-    syllabusScope:'SANS 10198-1: General principles for cable installation. SANS 10198-2: Construction and characteristics of power cables rated up to and including 33 kV — conductor types, insulation, sheathing, armouring.',
-    bundles:['Paper 1 Complete 20-eBook Bundle'],
-    appearances:[],
-    topics:[]
-  },
-  {
-    num:19, exam_paper:'P1',
-    label:'SANS 10292 — Earthing of LV Distribution Systems',
-    abbr:'SANS 10292',slot:'P1 · Earthing slot',
-    color:'#1a5f3a',
-    icon:'<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>',
-    ebookTitle:'eBook 19: SANS 10292 — Earthing of Low-Voltage Distribution Systems',
-    syllabusScope:'SANS 10292: Earthing of LV distribution systems — TN-S, TN-C-S, TT and IT systems; installation of earthing conductors; earth electrode resistance; RCD coordination; protective multiple earthing (PME).',
-    bundles:['Paper 1 Complete 20-eBook Bundle'],
-    appearances:[],
-    topics:[]
-  },
-  {
-    num:20, exam_paper:'P1',
-    label:'Trimester 3-Paper Predictive & Mock Exam eBook (Track 20)',
-    abbr:'Track 20 · Predictive',slot:'P1 · Predictive',
-    color:'#4a1a8b',
-    icon:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
-    ebookTitle:'eBook 20: Trimester 3-Paper Probability Forecast — Predictive Mock Exam',
-    syllabusScope:'Updated every trimester. Uses Formula B (P(H) = 1 − e^(−λH)) across all 19 tracks to rank topics by repeat probability, generating a prioritised mock exam for the upcoming trimester sitting. Includes worked answers and marker guidelines.',
-    bundles:['Paper 1 Complete 20-eBook Bundle','Trimester Forecast Pack'],
+    num:30, exam_paper:'P2',
+    label:'Calculations — Fault current, earth loop impedance and related formulas',
+    abbr:'Calculations (Fault/ELI)',slot:'P2 · Calculations 2',
+    color:'#1a4d6a',
+    icon:'<path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zM3 17h18V5H3v12zm0 2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3z"/>',
+    ebookTitle:'eBook P2-14: Calculations — Fault Current, Earth Loop Impedance and Related Formulas',
+    syllabusScope:'All calculation formulas examined in Paper 2 (T890) relating to fault current (prospective short-circuit current PSCC), earth fault loop impedance (Zs = Ze + R1 + R2), disconnection time verification, and related formulas. Worked examples applying SANS 10142-1 Section 6 requirements.',
+    bundles:['Paper 2 Complete Bundle'],
     appearances:[],
     topics:[]
   }
-];
+]
 
 /* ───────────────────────────────────────────────────────────
    REPEAT-LIKELIHOOD ENGINE
@@ -6810,7 +6943,7 @@ function lmsPastPapers_render(cId){
     return;
   }
   el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:8px 0;margin:0;">Loading past papers…</p>';
-  db.collection('past_papers').orderBy('year','desc').orderBy('monthNum','desc').get()
+  db.collection('past_papers').get()
     .then(function(snap){
       if(snap.empty){
         el.innerHTML='<p style="font-size:12px;color:var(--fg3);padding:8px 0;margin:0;">No past papers have been added yet. Check back after your next session.</p>';
@@ -6875,9 +7008,9 @@ var LMS_DATA_EB00=[{
     {q:'Paper 1 of the DHET IE exam carries which trade test code?',a:'T890',b:'T180',c:'T880',d:'T280',ans:'C',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
     {q:'Paper 2 of the DHET IE exam carries which trade test code?',a:'T880',b:'T890',c:'T290',d:'T190',ans:'B',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
     {q:'How many questions does each DHET IE exam paper (P1 and P2) contain?',a:'5',b:'8',c:'12',d:'10',ans:'D',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
-    {q:'Each question in Paper 1 and Paper 2 of the DHET IE exam is worth:',a:'10 marks',b:'20 marks',c:'50 marks',d:'40 marks',ans:'C',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'What is the minimum number of marks a candidate must achieve to pass each DHET IE exam paper (Paper 1 and Paper 2)?',a:'40 marks',b:'60 marks',c:'50 marks',d:'75 marks',ans:'C',ref:'eBook 00 Seg 7 — DHET Examination Structure'},
     {q:'Paper 1 (T880) of the DHET IE exam primarily tests knowledge of:',a:'SANS 10142-1 Installation Rules, related standards and legislation',b:'Calculations, cable sizing and verification testing',c:'OHS management systems only',d:'ECSA registration requirements',ans:'A',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
-    {q:'The old trade test code for Paper 1 found on question papers before 2024 is:',a:'T080',b:'T180',c:'T380',d:'T200',ans:'B',ref:'eBook 00 Seg 6 — Exam Structure & SANS 10142-1'},
+    {q:'What percentage of the DHET IE examination marks require application-level responses, such as calculations and unfamiliar multi-step scenarios?',a:'20%',b:'30%',c:'40%',d:'50%',ans:'D',ref:'eBook 00 Seg 7 — DHET Examination Structure'},
     // === SANS 10142-1 Navigation ===
     {q:'SANS 10142-1 Edition 3.3 is best described as:',a:'A completely new edition replacing Edition 3.0',b:'The third publication of SANS 10142-1 ever issued',c:'Amendment 3 of Edition 3 of SANS 10142-1',d:'A draft standard pending adoption',ans:'C',ref:'eBook 00 Seg 2 — Scope & Normative References'},
     {q:'Which Section of SANS 10142-1 covers Scope and Application?',a:'Section 1',b:'Section 2',c:'Section 3',d:'Section 4',ans:'A',ref:'eBook 00 Seg 6 — SANS 10142-1 Navigation'},
