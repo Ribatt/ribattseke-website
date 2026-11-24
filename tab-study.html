@@ -104,7 +104,7 @@
               <input type="radio" name="lms-su-track" value="ir" checked style="accent-color:var(--amb);">IR Companion <span style="font-size:11px;color:var(--fg3);">(Installation Rules)</span>
             </label>
             <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
-              <input type="radio" name="lms-su-track" value="ecsa" style="accent-color:var(--amb);">ECSA Companion <span style="font-size:11px;color:var(--fg3);">(Pr. Technician)</span>
+              <input type="radio" name="lms-su-track" value="ecsa" style="accent-color:var(--amb);">ECA(SA) Companion <span style="font-size:11px;color:var(--fg3);">(Contractor Registration)</span>
             </label>
           </div>
 
@@ -7020,6 +7020,7 @@ function lmsOpenEbook(trackNum){
    Build the volume-based dashboard (called from lmsShowDash)
    ─────────────────────────────────────────────────────────── */
 function _buildTrackDash(prog){
+  if(!prog){try{prog=JSON.parse(localStorage.getItem(LMS_NS+(_lmsUser||'').toLowerCase()+'_'+(_lmsKey||''))||'null')||{};}catch(e){prog={};}}
   var totalAll=0,doneAll=0,bestAll=0;
   // Collect totals across all non-placeholder tracks
   LMS_TRACKS.forEach(function(track){
