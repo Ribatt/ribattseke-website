@@ -1,27 +1,30 @@
 <p class="sec-label">Study &amp; Development</p>
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
-    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Two companions in one platform. The <strong style="color:var(--fg2);">IR Companion</strong> prepares you for the SANS 10142-1 Installation Rules exam. The <strong style="color:var(--fg2);">ECSA Companion</strong> guides engineers through Professional Registration. Your key determines which companion(s) you access.</p>
+    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">The Learning Companion gives you guided study for the DHET 51108848 IE exam across two companions: the <strong style="color:var(--fg);">IR Companion</strong> (Installation Rules, Paper 1 and Paper 2) and the <strong style="color:var(--fg);">ECA(SA) Companion</strong> (contractor registration guidance). To access the student portal, sign in with your email and password below. If you are new, create a free account first. No login is needed to watch YouTube session recordings.</p>
 
     <div class="lms-wrap">
 
-      <!-- LOGIN VIEW -->
+      <!-- LOGIN VIEW (direct login form, shown first) -->
       <div id="lms-login" class="lms-view active">
         <div class="lms-card">
-          <h3 style="text-align:center;margin-bottom:4px;">Learning Companion</h3>
-          <p style="text-align:center;margin-bottom:12px;font-size:12.5px;color:var(--fg3);">IR Companion &middot; ECSA Companion &middot; Key-based access</p>
-          <!-- Free tier callout -->
-          <div style="background:rgba(30,133,64,.08);border:1px solid rgba(30,133,64,.25);border-radius:8px;padding:10px 13px;margin-bottom:14px;display:flex;align-items:flex-start;gap:9px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#1e8540" style="flex-shrink:0;margin-top:1px;"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
-            <div>
-              <div style="font-size:11.5px;font-weight:700;color:var(--amb);margin-bottom:2px;">Session recordings are FREE</div>
-              <div style="font-size:11.5px;color:var(--fg2);line-height:1.5;">All class recordings are on YouTube — no account needed. <a href="https://www.youtube.com/@tseke-sk-riba" target="_blank" rel="noopener" style="color:var(--amb);">Watch on YouTube →</a></div>
-            </div>
+          <h3 style="text-align:center;margin-bottom:16px;">Learning Companion</h3>
+          <label class="lms-label">Email</label>
+          <input class="lms-input" id="lms-login-email" type="email" placeholder="your@email.com" autocomplete="email" autocapitalize="none">
+          <label class="lms-label" style="margin-top:10px;">Password</label>
+          <div style="position:relative;">
+            <input class="lms-input" id="lms-login-pw" type="password" placeholder="Your password" autocomplete="current-password" style="padding-right:42px;">
+            <button type="button" onclick="(function(btn){var i=document.getElementById('lms-login-pw');i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--fg3);margin-bottom:10px;text-align:center;">Sign in for quizzes &amp; study notes</div>
-          <button class="lms-btn" onclick="lmsShowView('lms-signup')" style="margin-bottom:8px;">New Student &mdash; Create Account</button>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')">Returning Student &mdash; Sign In</button>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--fg2);margin:10px 0 12px;cursor:pointer;">
+            <input type="checkbox" id="lms-login-remember" style="width:15px;height:15px;cursor:pointer;" onchange="(function(c){try{localStorage.setItem('lms4__remember_email',c.checked?'1':'0');}catch(e){}})(this)">
+            Remember me
+          </label>
+          <div class="lms-err" id="lms-login-main-err"></div>
+          <button type="button" class="lms-btn" onclick="lmsDoEmailLogin()">Login</button>
+          <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:1px solid var(--border);"></span><span style="font-size:11px;color:var(--fg3);white-space:nowrap;">new here?</span><span style="flex:1;border-top:1px solid var(--border);"></span></div>
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-signup')">Create account</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
-
+          <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')" style="margin-top:4px;font-size:11px;color:var(--fg3);">Sign in with username &amp; PIN instead</button>
         </div>
       </div>
 
@@ -5910,10 +5913,50 @@ function lmsExecuteReset(u,p,err){
   lmsShowView('lms-access');
 }
 
+function lmsDoEmailLogin(){
+  var errEl=document.getElementById('lms-login-main-err');
+  if(errEl) errEl.textContent='';
+  var email=(document.getElementById('lms-login-email')||{}).value||'';
+  var pw=(document.getElementById('lms-login-pw')||{}).value||'';
+  email=email.trim().toLowerCase();
+  pw=pw.trim();
+  if(!email){if(errEl)errEl.textContent='Please enter your email.';return;}
+  if(!pw){if(errEl)errEl.textContent='Please enter your password.';return;}
+  /* Save credentials if remember me is checked */
+  try{
+    var remCb=document.getElementById('lms-login-remember');
+    if(remCb&&remCb.checked){
+      localStorage.setItem('lms4__saved_email',email);
+      localStorage.setItem('lms4__saved_pw',pw);
+      localStorage.setItem('lms4__remember_email','1');
+    } else {
+      localStorage.removeItem('lms4__saved_email');
+      localStorage.removeItem('lms4__saved_pw');
+    }
+  }catch(e){}
+  /* Try as email login — use existing lmsSignin path by populating the legacy fields */
+  var uEl=document.getElementById('lms-u');
+  var pEl=document.getElementById('lms-p');
+  if(uEl) uEl.value=email;
+  if(pEl) pEl.value=pw;
+  lmsSignin();
+}
+
 function lmsLogout(){
   _lmsUser=null; _lmsKey=null; _lmsProgress=null;
-  document.getElementById('lms-u').value='';
-  document.getElementById('lms-p').value='';
+  /* Clear all login form fields */
+  var uEl=document.getElementById('lms-u'); if(uEl) uEl.value='';
+  var pEl=document.getElementById('lms-p'); if(pEl) pEl.value='';
+  var eEl=document.getElementById('lms-login-email'); if(eEl) eEl.value='';
+  var pwEl=document.getElementById('lms-login-pw'); if(pwEl) pwEl.value='';
+  /* If not remembering, clear saved creds */
+  try{
+    var rem=localStorage.getItem('lms4__remember_email');
+    if(rem!=='1'){localStorage.removeItem('lms4__saved_email');localStorage.removeItem('lms4__saved_pw');}
+    /* Always require re-login after logout — clear session flag */
+    localStorage.removeItem(LMS_NS+'_session');
+  }catch(e){}
+  window.scrollTo({top:0,behavior:'smooth'});
   lmsShowView('lms-login');
 }
 
