@@ -993,12 +993,27 @@ function val(id){ var el=document.getElementById(id); return el?(el.value||''):'
 function today(){ return new Date().toISOString().split('T')[0]; }
 
 /* ---- Hub nav ---- */
+function hubAccToggle(accId){
+  var acc=document.getElementById(accId);
+  if(!acc) return;
+  acc.classList.toggle('hub-acc-open');
+}
+function hubAccOpenForSection(sectionId){
+  /* Find which accordion contains the button for this section and open it */
+  var btn=document.querySelector('.hub-nav-btn[onclick*="\''+sectionId+'\'"]');
+  if(!btn) return;
+  var body=btn.closest('.hub-acc-body');
+  if(!body) return;
+  var acc=body.closest('.hub-acc');
+  if(acc&&!acc.classList.contains('hub-acc-open')) acc.classList.add('hub-acc-open');
+}
 function hubShow(id,btn){
   document.querySelectorAll('.hub-section').forEach(function(s){ s.classList.remove('active'); s.style.display=''; });
   document.querySelectorAll('.hub-nav-btn').forEach(function(b){ b.classList.remove('active'); });
   var sec=document.getElementById(id);
   if(sec){ sec.classList.add('active'); sec.style.display='block'; }
   if(btn) btn.classList.add('active');
+  hubAccOpenForSection(id);
   if(id==='hub-clients') clRender();
   if(id==='hub-quotes') qtRender();
   if(id==='hub-loi') loiRender();

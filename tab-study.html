@@ -984,6 +984,18 @@
             </div>
           </div>
 
+          <!-- ── LEVEL 1 PAST PAPERS ── -->
+          <div style="margin-top:16px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;">
+            <div onclick="(function(hdr){var b=hdr.nextElementSibling;b.hidden=!b.hidden;hdr.querySelector('.pp-arr').textContent=b.hidden?'&#9654;':'&#9660;';if(!b.hidden&&!b.dataset.loaded){b.dataset.loaded='1';lmsPastPapers_render('lms-pp-l1');}})(this)" style="padding:11px 16px;background:var(--bg-alt);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
+              <span style="font-size:12.5px;font-weight:700;color:var(--fg);">&#128218; Past Exam Papers Repository</span>
+              <span class="pp-arr" style="font-size:11px;color:var(--fg3);">&#9654;</span>
+            </div>
+            <div hidden style="padding:12px 14px;background:var(--bg);">
+              <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">All past DHET exam papers (T880 &amp; T890) — read only. Tap a paper to view or download.</p>
+              <div id="lms-pp-l1"></div>
+            </div>
+          </div>
+
         </div>
 
         <!-- ══ LEVEL 2 — ELECTRICAL FUNDAMENTALS ══ -->
@@ -1232,6 +1244,18 @@
             </div>
           </div>
 
+          <!-- ── LEVEL 2 PAST PAPERS ── -->
+          <div style="margin-top:16px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;">
+            <div onclick="(function(hdr){var b=hdr.nextElementSibling;b.hidden=!b.hidden;hdr.querySelector('.pp-arr').textContent=b.hidden?'&#9654;':'&#9660;';if(!b.hidden&&!b.dataset.loaded){b.dataset.loaded='1';lmsPastPapers_render('lms-pp-l2');}})(this)" style="padding:11px 16px;background:var(--bg-alt);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
+              <span style="font-size:12.5px;font-weight:700;color:var(--fg);">&#128218; Past Exam Papers Repository</span>
+              <span class="pp-arr" style="font-size:11px;color:var(--fg3);">&#9654;</span>
+            </div>
+            <div hidden style="padding:12px 14px;background:var(--bg);">
+              <p style="font-size:12px;color:var(--fg3);margin:0 0 10px;">All past DHET exam papers (T880 &amp; T890) — read only. Tap a paper to view or download.</p>
+              <div id="lms-pp-l2"></div>
+            </div>
+          </div>
+
         </div>
 
         <!-- ══ LEVEL 3 — STANDARDS & TRACKS (original content) ══ -->
@@ -1253,6 +1277,21 @@
 
           <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
           <div id="lms-tracks-container"></div>
+
+          <!-- ── LEVEL 3 PROGRESS SUMMARY ── -->
+          <div id="lms-l3-progress-bar-wrap" style="margin:14px 0 10px;padding:12px 16px;background:linear-gradient(135deg,rgba(192,57,43,.08),rgba(192,57,43,.03));border:1.5px solid rgba(192,57,43,.25);border-radius:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c0392b;">Level 3 Progress — Paper 1 Tracks</span>
+              <span id="lms-l3-pct-label" style="font-size:13px;font-weight:800;color:#c0392b;">0%</span>
+            </div>
+            <div style="background:rgba(192,57,43,.18);border-radius:5px;height:8px;overflow:hidden;margin-bottom:6px;">
+              <div id="lms-l3-bar" style="height:100%;background:#c0392b;border-radius:5px;width:0%;transition:width .5s ease;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(192,57,43,.8);flex-wrap:wrap;gap:3px;">
+              <span id="lms-l3-topics-label">0 of 0 topics passed</span>
+              <span id="lms-l3-tracks-label">0 tracks complete</span>
+            </div>
+          </div>
 
           <!-- ── LEVEL 3 QUIZ CARD ── -->
           <div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:14px;">
@@ -1297,6 +1336,21 @@
         <div id="lms-level4-panel" style="display:none;">
           <!-- P2 track blocks — rendered dynamically by _buildP2TrackDash() -->
           <div id="lms-p2-tracks-container"></div>
+
+          <!-- ── LEVEL 4 PROGRESS SUMMARY ── -->
+          <div id="lms-l4-progress-bar-wrap" style="margin:14px 0 10px;padding:12px 16px;background:linear-gradient(135deg,rgba(230,126,34,.08),rgba(230,126,34,.03));border:1.5px solid rgba(230,126,34,.25);border-radius:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+              <span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#e67e22;">Level 4 Progress — Paper 2 Tracks</span>
+              <span id="lms-l4-pct-label" style="font-size:13px;font-weight:800;color:#e67e22;">0%</span>
+            </div>
+            <div style="background:rgba(230,126,34,.18);border-radius:5px;height:8px;overflow:hidden;margin-bottom:6px;">
+              <div id="lms-l4-bar" style="height:100%;background:#e67e22;border-radius:5px;width:0%;transition:width .5s ease;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(230,126,34,.8);flex-wrap:wrap;gap:3px;">
+              <span id="lms-l4-topics-label">0 of 0 topics passed</span>
+              <span id="lms-l4-tracks-label">0 tracks complete</span>
+            </div>
+          </div>
 
           <!-- Level 4 quiz card -->
           <div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:4px;">
@@ -1519,62 +1573,94 @@
         </div>
 
         <!-- HUB NAV -->
-        <div class="hub-nav">
-          <!-- PIPELINE -->
-          <span class="hub-nav-grp">&#128200; PIPELINE</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-leads',this)">&#128270; Leads</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-clients',this)">&#128101; Clients</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-quotes',this)">&#128196; Quotes</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-loi',this)">&#128203; LOI / NTP</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-agr',this)">&#9997;&#65039; Agreements</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-orders',this)">&#128722; Sales</button>
-          <!-- DELIVERY -->
-          <span class="hub-nav-grp">&#128736;&#65039; DELIVERY</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-jobs',this)">&#128197; Job Cards</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-projects',this)">&#128295; Projects</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-hs',this)">&#9889; H&amp;S</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-tests',this)">&#128202; Test Records</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-coc',this)">&#128196; CoC Register</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-handover',this)">&#128221; Handovers</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-warranty',this)">&#9989; Warranties</button>
-          <!-- FINANCE -->
-          <span class="hub-nav-grp">&#128181; FINANCE</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-invoices',this)">&#128176; Invoices</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-po',this)">&#128230; Purchase Orders</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-pr',this)">&#128232; Purchase Requests</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-rates',this)">&#128204; Rate Card</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-financials',this)">&#128200; Financials</button>
-          <!-- COMPLIANCE & KYC -->
-          <span class="hub-nav-grp">&#9878;&#65039; COMPLIANCE</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-kyc',this)">&#128273; KYC</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">&#128209; Reg &amp; Docs</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-expiry',this)">&#9201; Expiry Alerts</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-certs',this)">&#127891; Certificates</button>
-          <!-- LOGISTICS -->
-          <span class="hub-nav-grp">&#128667; LOGISTICS</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-stock',this)">&#128230; Stock</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-delivery',this)">&#128666; Delivery Notes</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-travel',this)">&#9992;&#65039; Travel &amp; Accom</button>
-          <!-- PEOPLE -->
-          <span class="hub-nav-grp">&#128100; PEOPLE</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-hr',this)">&#128188; HR / Payroll</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-mentor',this)">&#128172; Mentoring</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-tickets',this)">&#127903; Support Tickets</button>
-          <!-- TRAINING & LMS -->
-          <span class="hub-nav-grp">&#127891; TRAINING</span>
-          <button class="hub-nav-btn active" onclick="hubShow('hub-lms',this)">LMS Keys</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-testlab',this)">&#128300; Student Lab</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-poe',this)">&#128218; Portfolio</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-sops',this)">&#128209; SOPs</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">&#127941; CPD &amp; Memberships</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-qbank',this);qbankInit()">&#128218; Question Bank</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-attempts',this)">&#128202; Attempt History</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-predictor',this)">&#127919; Exam Predictor</button>
-          <button class="hub-nav-btn" onclick="hubShow('hub-content',this)">&#128221; Content Editor</button>
+        <div class="hub-nav-v" id="hub-nav-v">
           <!-- DESIGN & IT -->
-          <span class="hub-nav-grp">&#128296; DESIGN &amp; IT</span>
-          <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
+          <div class="hub-acc" id="hnacc-design">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-design')"><span>&#128296; DESIGN &amp; IT</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-ithub',this)">&#128295; IT Dev Hub</button>
+            </div>
+          </div>
+          <!-- COMPLIANCE -->
+          <div class="hub-acc" id="hnacc-compliance">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-compliance')"><span>&#9878;&#65039; COMPLIANCE</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-kyc',this)">&#128273; KYC</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-regdocs',this)">&#128209; Reg &amp; Docs</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-expiry',this)">&#9201; Expiry Alerts</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-certs',this)">&#127891; Certificates</button>
+            </div>
+          </div>
+          <!-- PEOPLE -->
+          <div class="hub-acc" id="hnacc-people">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-people')"><span>&#128100; PEOPLE</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-hr',this)">&#128188; HR / Payroll</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-mentor',this)">&#128172; Mentoring</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-tickets',this)">&#127903; Support Tickets</button>
+            </div>
+          </div>
+          <!-- TRAINING -->
+          <div class="hub-acc hub-acc-open" id="hnacc-training">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-training')"><span>&#127891; TRAINING</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn active" onclick="hubShow('hub-lms',this)">&#128273; LMS Keys</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-testlab',this)">&#128300; Student Lab</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-enquiries',this)">&#128172; Companion Logs</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-poe',this)">&#128218; Portfolio</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-sops',this)">&#128209; SOPs</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-ecsa',this)">&#127941; CPD &amp; Memberships</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-qbank',this);qbankInit()">&#128218; Question Bank</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-attempts',this)">&#128202; Attempt History</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-predictor',this)">&#127919; Exam Predictor</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-content',this)">&#128221; Content Editor</button>
+            </div>
+          </div>
+          <!-- PIPELINE -->
+          <div class="hub-acc" id="hnacc-pipeline">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-pipeline')"><span>&#128200; PIPELINE</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-leads',this)">&#128270; Leads</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-clients',this)">&#128101; Clients</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-quotes',this)">&#128196; Quotes</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-loi',this)">&#128203; LOI / NTP</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-agr',this)">&#9997;&#65039; Agreements</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-orders',this)">&#128722; Sales</button>
+            </div>
+          </div>
+          <!-- FINANCE -->
+          <div class="hub-acc" id="hnacc-finance">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-finance')"><span>&#128181; FINANCE</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-invoices',this)">&#128176; Invoices</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-po',this)">&#128230; Purchase Orders</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-pr',this)">&#128232; Purchase Requests</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-rates',this)">&#128204; Rate Card</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-financials',this)">&#128200; Financials</button>
+            </div>
+          </div>
+          <!-- LOGISTICS -->
+          <div class="hub-acc" id="hnacc-logistics">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-logistics')"><span>&#128667; LOGISTICS</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-stock',this)">&#128230; Stock</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-delivery',this)">&#128666; Delivery Notes</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-travel',this)">&#9992;&#65039; Travel &amp; Accom</button>
+            </div>
+          </div>
+          <!-- DELIVERY -->
+          <div class="hub-acc" id="hnacc-delivery">
+            <button class="hub-acc-hdr" onclick="hubAccToggle('hnacc-delivery')"><span>&#128736;&#65039; DELIVERY</span><span class="hub-acc-arrow">&#9660;</span></button>
+            <div class="hub-acc-body">
+              <button class="hub-nav-btn" onclick="hubShow('hub-jobs',this)">&#128197; Job Cards</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-projects',this)">&#128295; Projects</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-hs',this)">&#9889; H&amp;S</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-tests',this)">&#128202; Test Records</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-coc',this)">&#128196; CoC Register</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-handover',this)">&#128221; Handovers</button>
+              <button class="hub-nav-btn" onclick="hubShow('hub-warranty',this)">&#9989; Warranties</button>
+            </div>
+          </div>
         </div>
 
         <!-- ===== HUB: LMS KEYS ===== -->
@@ -6177,6 +6263,27 @@ function _lmsShowMistakeReview(){
 }
 /* ── end level navigation ──────────────────────────────────────── */
 
+/* Cross-device sync: re-pull from cloud when tab regains visibility */
+(function(){
+  var _syncCooldown=0;
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState!=='visible')return;
+    if(!_lmsUser)return;
+    var now=Date.now();
+    if(now-_syncCooldown<60000)return; /* throttle: max once per minute */
+    _syncCooldown=now;
+    if(typeof lmsSync_pull==='function'){
+      lmsSync_pull(_lmsUser,function(){
+        /* Reload progress from localStorage after pull */
+        try{
+          var fresh=JSON.parse(localStorage.getItem('lms4_'+_lmsUser+'_'+_lmsKey)||'null');
+          if(fresh){_lmsProgress=fresh;}
+        }catch(e){}
+      });
+    }
+  });
+})();
+
 function lmsShowDash(){
   if(!_lmsUser){lmsShowView('lms-login');return;}
   // Apply brand tab colours and active ring on each dash show
@@ -6887,6 +6994,28 @@ function _buildTrackDash(prog){
     'eBook 00: '+eb00Done+'/'+eb00Segs+' segments'+(eb00Done===eb00Segs?' ✓':'')+
     ' · Quiz: '+quizDone+' of '+quizTotal+' topics passed across '+activeTracks+' tracks.';
 
+  // Update Level 3 progress bar
+  var l3Tracks=LMS_TRACKS.filter(function(tr){return tr.exam_paper==='P1'&&!tr.placeholder;});
+  var l3Total=0,l3Done=0,l3TracksDone=0;
+  l3Tracks.forEach(function(track){
+    var tDone=0;
+    track.topics.forEach(function(t){
+      l3Total++;
+      var p=prog[t.paper]||{};
+      if((p['s'+t.idx]||{}).passed){l3Done++;tDone++;}
+    });
+    if(tDone===track.topics.length&&track.topics.length>0) l3TracksDone++;
+  });
+  var l3Pct=l3Total?Math.round((l3Done/l3Total)*100):0;
+  var l3BarEl=document.getElementById('lms-l3-bar');
+  var l3PctEl=document.getElementById('lms-l3-pct-label');
+  var l3TopEl=document.getElementById('lms-l3-topics-label');
+  var l3TrkEl=document.getElementById('lms-l3-tracks-label');
+  if(l3BarEl)l3BarEl.style.width=l3Pct+'%';
+  if(l3PctEl)l3PctEl.textContent=l3Pct+'%';
+  if(l3TopEl)l3TopEl.textContent=l3Done+' of '+l3Total+' topics passed';
+  if(l3TrkEl)l3TrkEl.textContent=l3TracksDone+' of '+l3Tracks.length+' tracks complete';
+
   // Render track blocks into container, grouped by exam paper
   var container=document.getElementById('lms-tracks-container');
   if(!container) return;
@@ -7062,6 +7191,26 @@ function _buildTrackDash(prog){
         })(t.paper,t.idx,track.num,ti+1);
         modsEl.appendChild(row);
       });
+
+      // ── Past Papers link at bottom of each track ──
+      var ppLink=document.createElement('div');
+      ppLink.style.cssText='margin:8px 2px 2px;padding:9px 13px;border-radius:9px;background:var(--bg-alt);border:1px dashed var(--border);display:flex;align-items:center;gap:9px;cursor:pointer;';
+      ppLink.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="var(--fg3)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zm4 15H7v-2h10v2zm0-4H7v-2h10v2zm-3-5V3.5L18.5 9H14z"/></svg>'
+        +'<span style="font-size:12px;font-weight:600;color:var(--fg2);">Past Exam Papers — DHET T880 &amp; T890</span>'
+        +'<span style="margin-left:auto;font-size:11px;color:var(--amb);font-weight:700;">View &#8599;</span>';
+      ppLink.onclick=function(){
+        var ppSection=document.querySelector('#lms-level3-panel [onclick*="lmsPastPapers_render(\'lms-pp-l3\')"]');
+        if(ppSection){
+          var body=ppSection.nextElementSibling;
+          if(body&&body.hidden){
+            body.hidden=false;
+            ppSection.querySelector('.pp-arr').textContent='&#9660;';
+            if(!ppSection.dataset.loaded){ppSection.dataset.loaded='1';lmsPastPapers_render('lms-pp-l3');}
+          }
+          ppSection.scrollIntoView({behavior:'smooth',block:'nearest'});
+        }
+      };
+      modsEl.appendChild(ppLink);
     });
   });
 }
@@ -7080,6 +7229,28 @@ function _buildP2TrackDash(){
     container.innerHTML='<p style="font-size:13px;color:var(--fg3);padding:12px 0;">No Paper 2 tracks found.</p>';
     return;
   }
+
+  // Update Level 4 progress bar
+  var l4Total=0,l4Done=0,l4TracksDone=0;
+  p2Tracks.filter(function(tr){return !tr.placeholder;}).forEach(function(track){
+    var tDone=0;
+    (track.topics||[]).forEach(function(t){
+      l4Total++;
+      var p=prog[t.paper]||{};
+      if((p['s'+t.idx]||{}).passed){l4Done++;tDone++;}
+    });
+    if(tDone===(track.topics||[]).length&&(track.topics||[]).length>0) l4TracksDone++;
+  });
+  var l4Pct=l4Total?Math.round((l4Done/l4Total)*100):0;
+  var l4BarEl=document.getElementById('lms-l4-bar');
+  var l4PctEl=document.getElementById('lms-l4-pct-label');
+  var l4TopEl=document.getElementById('lms-l4-topics-label');
+  var l4TrkEl=document.getElementById('lms-l4-tracks-label');
+  var l4NonPlaceholder=p2Tracks.filter(function(tr){return !tr.placeholder;}).length;
+  if(l4BarEl)l4BarEl.style.width=l4Pct+'%';
+  if(l4PctEl)l4PctEl.textContent=l4Pct+'%';
+  if(l4TopEl)l4TopEl.textContent=l4Done+' of '+l4Total+' topics passed';
+  if(l4TrkEl)l4TrkEl.textContent=l4TracksDone+' of '+l4NonPlaceholder+' tracks complete';
 
   p2Tracks.forEach(function(track,vi){
     var n=track.topics?track.topics.length:0;
@@ -7231,6 +7402,27 @@ function _buildP2TrackDash(){
         return function(){lmsStartQuizTrack(pp,si,tn,tnum);};
       })(t.paper,t.idx,track.num,ti+1);
       modsEl.appendChild(row);
+      });
+
+      // ── Past Papers link at bottom of each P2 track ──
+      var ppLink2=document.createElement('div');
+      ppLink2.style.cssText='margin:8px 2px 2px;padding:9px 13px;border-radius:9px;background:var(--bg-alt);border:1px dashed var(--border);display:flex;align-items:center;gap:9px;cursor:pointer;';
+      ppLink2.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="var(--fg3)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zm4 15H7v-2h10v2zm0-4H7v-2h10v2zm-3-5V3.5L18.5 9H14z"/></svg>'
+        +'<span style="font-size:12px;font-weight:600;color:var(--fg2);">Past Exam Papers — DHET T880 &amp; T890</span>'
+        +'<span style="margin-left:auto;font-size:11px;color:var(--amb);font-weight:700;">View &#8599;</span>';
+      ppLink2.onclick=function(){
+        var ppSection=document.querySelector('#lms-level4-panel [onclick*="lmsPastPapers_render(\'lms-pp-l4\')"]');
+        if(ppSection){
+          var body=ppSection.nextElementSibling;
+          if(body&&body.hidden){
+            body.hidden=false;
+            ppSection.querySelector('.pp-arr').textContent='&#9660;';
+            if(!ppSection.dataset.loaded){ppSection.dataset.loaded='1';lmsPastPapers_render('lms-pp-l4');}
+          }
+          ppSection.scrollIntoView({behavior:'smooth',block:'nearest'});
+        }
+      };
+      modsEl.appendChild(ppLink2);
     });
   });
 }
