@@ -25,9 +25,6 @@
           <button class="lms-btn-sec" onclick="lmsShowView('lms-signup')">Create account</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
           <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')" style="margin-top:4px;font-size:11px;color:var(--fg3);">Forgot PIN / sign in with Access Key</button>
-          <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;text-align:center;">
-            <button type="button" onclick="lmsShowAdminGate()" style="background:none;border:none;font-size:11.5px;color:var(--fg3);cursor:pointer;padding:4px 8px;border-radius:6px;">&#128274; Business Hub</button>
-          </div>
         </div>
       </div>
 
@@ -5450,6 +5447,8 @@ function lmsSignin(){
 
 
 /* ── Business Hub / Admin Gate ── */
+/* Exposed so index.html navOpenAdmin() -> lmsAdminEntry() chain works via logo click */
+window.lmsAdminEntry = function(){ lmsShowAdminGate(); };
 function lmsShowAdminGate(){
   var existing=document.getElementById('lms-admin-gate-bg');
   if(existing){existing.remove();}
