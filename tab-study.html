@@ -6849,9 +6849,10 @@ function _buildTrackDash(prog){
   if(!container) return;
   container.innerHTML='';
 
-  var papers=['P1','P2'];
-  var paperLabels={'P1':'Paper 1 — IR Companion (T880)','P2':'Paper 2 — IR Companion (T890)'};
-  var paperColors={'P1':'#c97b2a','P2':'#2563a8'};
+  // Level 3 shows P1 tracks only; P2 tracks are rendered in Level 4 by _buildP2TrackDash()
+  var papers=['P1'];
+  var paperLabels={'P1':'Paper 1 — IR Companion (T880)'};
+  var paperColors={'P1':'#c97b2a'};
 
   papers.forEach(function(paperKey){
     var paperTracks=LMS_TRACKS.filter(function(tr){return tr.exam_paper===paperKey;});
