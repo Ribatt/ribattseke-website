@@ -5353,6 +5353,10 @@ function lmsShowView(id){
       }
     }catch(e){}
   }
+  // Admin remember-me: pre-fill email+checkbox whenever the admin login view is shown
+  if(id==='lms-admin-login'){
+    setTimeout(function(){lmsAdminLoginPrefill();if(!localStorage.getItem('biz_adm_remember')){var el=document.getElementById('lms-adm-u');if(el)el.focus();}},80);
+  }
 }
 
 
