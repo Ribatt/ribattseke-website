@@ -138,7 +138,7 @@
           <label class="lms-label" style="margin-top:10px;">PIN <span style="font-size:11px;color:var(--muted,#888);font-weight:normal;">(numeric — not your RTT key)</span></label>
           <div style="position:relative;">
             <input class="lms-input" id="lms-p" type="password" placeholder="Numeric PIN you chose at sign-up" autocomplete="current-password" style="padding-right:42px;">
-            <button type="button" onclick="(function(){var i=document.getElementById('lms-p');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
+            <button type="button" onclick="(function(btn){var i=document.getElementById('lms-p');if(!i)return;i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
           <div class="lms-err" id="lms-login-err"></div>
           <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--fg2);margin:8px 0 10px;cursor:pointer;">
@@ -174,7 +174,7 @@
           <label class="lms-label" style="margin-top:10px;">Admin PIN</label>
           <div style="position:relative;">
             <input class="lms-input" id="lms-adm-p" type="password" placeholder="Your PIN" autocomplete="current-password" style="padding-right:42px;">
-            <button type="button" onclick="(function(){var i=document.getElementById('lms-adm-p');i.type=i.type==='password'?'text':'password';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
+            <button type="button" onclick="(function(){var i=document.getElementById('lms-adm-p');if(i)i.type=i.type==='password'?'text':'password';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
           <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
             <input type="checkbox" id="lms-adm-remember" style="width:16px;height:16px;cursor:pointer;accent-color:#1a3c5e;">
@@ -1670,6 +1670,7 @@
         <!-- ===== HUB: LMS KEYS ===== -->
         <!-- Purchase Orders hub section -->
         <div id="hub-po" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Purchase Orders</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Track purchase orders raised with suppliers.</p>
           <div id="hub-po-list" style="font-size:13px;color:var(--fg3);">No purchase orders recorded yet.</div>
@@ -1677,6 +1678,7 @@
         </div>
         <!-- Purchase Requests hub section -->
         <div id="hub-pr" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Purchase Requests</h3>
           <p style="font-size:13px;color:var(--fg3);margin:0 0 12px;">Internal purchase requests pending approval.</p>
           <div id="hub-pr-list" style="font-size:13px;color:var(--fg3);">No purchase requests recorded yet.</div>
@@ -1684,6 +1686,7 @@
         </div>
         <!-- Travel Management hub section -->
         <div id="hub-travel" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#9992;&#65039;</span>
             <div>
@@ -1759,6 +1762,7 @@
         </div>
         <!-- LEADS hub section -->
         <div id="hub-leads" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#128270;</span>
             <div>
@@ -1798,6 +1802,7 @@
 
         <!-- LMS Keys hub section -->
         <div id="hub-lms" class="hub-section active">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="admin-stats">
             <div class="admin-stat" id="adm-pend-stat" style="color:#c05000;"><strong id="adm-pend-ct">0</strong>Pending</div>
             <div class="admin-stat"><strong id="adm-ir-ct">-</strong>IR issued</div>
@@ -1919,6 +1924,7 @@
 
         <!-- ===== HUB: CLIENTS ===== -->
         <div id="hub-clients" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="cl-search" placeholder="Search clients..." oninput="clRender()">
             <button class="biz-btn biz-btn-primary" onclick="clNew()">+ New Client</button>
@@ -1928,6 +1934,7 @@
 
         <!-- ===== HUB: QUOTES ===== -->
         <div id="hub-quotes" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="qt-search" placeholder="Search quotes..." oninput="qtRender()">
             <button class="biz-btn biz-btn-primary" onclick="qtNew()">+ New Quote</button>
@@ -1937,6 +1944,7 @@
 
         <!-- ===== HUB: LOI / NTP ===== -->
         <div id="hub-loi" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="loi-search" placeholder="Search LOIs..." oninput="loiRender()">
             <button class="biz-btn biz-btn-primary" onclick="loiNew()">+ New LOI / NTP</button>
@@ -1946,6 +1954,7 @@
 
         <!-- ===== HUB: AGREEMENTS ===== -->
         <div id="hub-agr" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="agr-search" placeholder="Search agreements..." oninput="agrRender()">
             <button class="biz-btn biz-btn-primary" onclick="agrNew()">+ New Agreement</button>
@@ -1956,6 +1965,7 @@
 
         <!-- ===== HUB: INVOICES ===== -->
         <div id="hub-invoices" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="inv-search" placeholder="Search invoices..." oninput="invRender()">
             <button class="biz-btn biz-btn-primary" onclick="invNew()">+ New Invoice</button>
@@ -1969,6 +1979,7 @@
 
         <!-- ===== PHASE 2: JOB CARDS ===== -->
         <div id="hub-jobs" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="job-search" placeholder="Search job cards..." oninput="jobRender()">
             <button class="biz-btn biz-btn-primary" onclick="jobNew()">+ New Job Card</button>
@@ -1978,6 +1989,7 @@
 
         <!-- ===== PHASE 2: CoC REGISTER ===== -->
         <div id="hub-coc" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="coc-search" placeholder="Search CoC register..." oninput="cocRender()">
             <button class="biz-btn" style="background:#1e3a5f;color:#90cdf4;border:1px solid #2d6a9f;" onclick="cocCheckerOpen(null)">&#x2714; CoC Checker</button>
@@ -1988,6 +2000,7 @@
 
         <!-- ===== PHASE 2: PORTFOLIO OF EVIDENCE ===== -->
         <div id="hub-poe" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="poe-search" placeholder="Search portfolio..." oninput="poeRender()">
             <button class="biz-btn biz-btn-primary" onclick="poeNew()">+ New Inspection Report</button>
@@ -1997,6 +2010,7 @@
 
         <!-- ===== PHASE 3: PROJECTS ===== -->
         <div id="hub-projects" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="proj-search" placeholder="Search projects..." oninput="projRender()">
             <button class="biz-btn biz-btn-primary" onclick="projNew()">+ New Project</button>
@@ -2006,6 +2020,7 @@
 
         <!-- ===== PHASE 4: H&S ===== -->
         <div id="hub-hs" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
             <button class="biz-btn biz-btn-primary" onclick="hsShow('hs-risk')">Risk Assessments</button>
             <button class="biz-btn biz-btn-secondary" onclick="hsShow('hs-ms')">Method Statements</button>
@@ -2032,6 +2047,7 @@
 
         <!-- ===== PHASE 5: TEST RECORDS ===== -->
         <div id="hub-tests" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
             <button class="biz-btn biz-btn-primary" onclick="tstShow('tst-elec')">Electrical Tests</button>
             <button class="biz-btn biz-btn-secondary" onclick="tstShow('tst-pv')">PV String Tests</button>
@@ -2048,6 +2064,7 @@
 
         <!-- ===== HR / PAYROLL ===== -->
         <div id="hub-hr" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
             <button class="biz-btn biz-btn-primary hub-hr-tab" data-target="hr-emp" onclick="hrShow('hr-emp')">Employees</button>
             <button class="biz-btn biz-btn-secondary hub-hr-tab" data-target="hr-pay" onclick="hrShow('hr-pay')">Payslips</button>
@@ -2089,6 +2106,7 @@
 
         <!-- ===== SOPs ===== -->
         <div id="hub-sops" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar">
             <input class="biz-search" id="sop-search" placeholder="Search SOPs..." oninput="sopRender()">
             <button class="biz-btn biz-btn-primary" onclick="sopNew()">+ New SOP</button>
@@ -2099,6 +2117,7 @@
 
         <!-- ===== ECSA CPD ===== -->
         <div id="hub-ecsa" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <!-- ECSA sub-tabs -->
           <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;font-size:12px;">
             <button id="ecsa-sub-ter" onclick="ecsaSubTab('ter')" style="flex:1;padding:8px;border:none;cursor:pointer;font-weight:700;background:var(--amb);color:#fff;">TER Ledger</button>
@@ -2154,6 +2173,7 @@
         </div>
 
         <div id="hub-mentor" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div class="biz-toolbar" style="flex-wrap:wrap;gap:8px;">
             <button class="biz-btn biz-btn-primary" onclick="mentorSendWeeklyQuiz()">📲 Send Weekly Quiz</button>
             <button class="biz-btn biz-btn-secondary" onclick="mentorSendCheckin()">👋 Send Check-in Message</button>
@@ -2172,6 +2192,7 @@
         </div>
 
         <div id="hub-rates" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="margin-bottom:14px;">
             <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:4px;">&#128204; Rate Card</div>
             <div style="font-size:12px;color:var(--fg3);">These rates are used automatically in the ⚡ Quick Add panel when building quotes. All changes save instantly to your device.</div>
@@ -2181,6 +2202,7 @@
 
         <!-- Companion Enquiries hub section -->
         <div id="hub-enquiries" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 4px;">Companion Enquiries</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Questions asked via the Companion chat widget — review and follow up.</p>
           <div id="hub-enq-list" style="font-size:13px;color:var(--fg3);">
@@ -2190,6 +2212,7 @@
 
         <!-- Company Registration hub section -->
         <div id="hub-regdocs" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Company Registration &amp; Compliance</h3>
           <div style="display:grid;gap:10px;">
             <div style="background:var(--bg-alt);border-radius:8px;padding:12px 14px;">
@@ -2219,6 +2242,7 @@
 
         <!-- Stock & Materials hub section -->
         <div id="hub-stock" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Stock &amp; Materials</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track materials on hand, issued to jobs, and to order.</p>
           <div id="hub-stock-list" style="font-size:13px;color:var(--fg3);">No stock items recorded yet.</div>
@@ -2227,6 +2251,7 @@
 
         <!-- Delivery Notes hub section -->
         <div id="hub-delivery" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Delivery Notes</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Record materials delivered to and from site.</p>
           <div id="hub-delivery-list" style="font-size:13px;color:var(--fg3);">No delivery notes recorded yet.</div>
@@ -2235,6 +2260,7 @@
 
         <!-- Site Handovers hub section -->
         <div id="hub-handover" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Site Handovers</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Record final handover sign-offs for completed installations.</p>
           <div id="hub-handover-list" style="font-size:13px;color:var(--fg3);">No handover records yet.</div>
@@ -2243,6 +2269,7 @@
 
         <!-- Warranties hub section -->
         <div id="hub-warranty" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">Warranties &amp; Defects</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 12px;">Track warranty periods and defects liability for completed jobs.</p>
           <div id="hub-warranty-list" style="font-size:13px;color:var(--fg3);">No warranty records yet.</div>
@@ -2250,6 +2277,7 @@
         </div>
 
         <div id="hub-orders" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 12px;">&#128722; Yoco Sales Dashboard</h3>
           <div id="hub-orders-body" style="font-size:13px;color:var(--fg3);">Loading…</div>
         </div>
@@ -2257,6 +2285,7 @@
 
         <!-- KYC & Compliance hub -->
         <div id="hub-kyc" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#128273; KYC &amp; Compliance Vault</h3>
           </div>
@@ -2267,6 +2296,7 @@
 
         <!-- Expiry Alerts hub -->
         <div id="hub-expiry" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#9201; 30-Day Expiry Tracker</h3>
             <button class="biz-btn biz-btn-primary" onclick="expiryAdd()" style="font-size:11.5px;">+ Add Record</button>
@@ -2276,6 +2306,7 @@
 
         <!-- Financials hub -->
         <div id="hub-financials" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#128200; Financials Tracker</h3>
           </div>
@@ -2286,6 +2317,7 @@
 
         <!-- ===== HUB: CERTIFICATES ===== -->
         <div id="hub-certs" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#127891; Certificates Issued</h3>
             <button class="lms-btn" style="font-size:12px;padding:6px 12px;" onclick="certsRefresh()">&#8635; Refresh</button>
@@ -2296,6 +2328,7 @@
 
         <!-- ===== HUB: SUPPORT TICKETS ===== -->
         <div id="hub-tickets" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
             <h3 style="font-size:14px;font-weight:700;margin:0;">&#127903; Support Tickets</h3>
             <button class="lms-btn" style="font-size:12px;padding:6px 14px;background:var(--amb);" onclick="ticketNew()">+ New Ticket</button>
@@ -2319,6 +2352,7 @@
 
         <!-- ===== HUB: STUDENT TEST LAB ===== -->
         <div id="hub-testlab" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <h3 style="font-size:14px;font-weight:700;margin:0 0 6px;">&#128300; Student LMS Test Lab</h3>
           <p style="font-size:12px;color:var(--fg3);margin:0 0 14px;">Enter a student email to inspect their exact LMS state from localStorage. Use this to verify what the system actually shows for them before saying it is working.</p>
           <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
@@ -2330,6 +2364,7 @@
 
         <!-- ===== HUB: IT DEVELOPER HUB ===== -->
         <div id="hub-ithub" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#128295;</span>
             <div>
@@ -2420,6 +2455,7 @@
 
         <!-- ===== HUB: QUESTION BANK ===== -->
         <div id="hub-qbank" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#128218;</span>
             <div>
@@ -2534,6 +2570,7 @@
 
         <!-- ===== HUB: ATTEMPT HISTORY ===== -->
         <div id="hub-attempts" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#128202;</span>
             <div>
@@ -2575,6 +2612,7 @@
 
         <!-- ===== HUB: EXAM PREDICTOR ===== -->
         <div id="hub-predictor" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#127919;</span>
             <div>
@@ -2598,6 +2636,7 @@
 
         <!-- CONTENT EDITOR hub section -->
         <div id="hub-content" class="hub-section">
+        <button class="hub-sec-back" onclick="hubClose()">&#8592; Back to Admin Menu</button>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
             <span style="font-size:22px;">&#128221;</span>
             <div>
@@ -4822,6 +4861,13 @@ function lmsSetCompanion(type){
 
 /* ---- Admin hub tab switcher stub ----
    admin.js overrides this once loaded; this ensures buttons work immediately */
+window.hubClose=function(){
+  document.querySelectorAll('.hub-section').forEach(function(s){s.style.display='none';s.classList.remove('active');});
+  document.querySelectorAll('.hub-nav-btn').forEach(function(b){b.classList.remove('active');});
+  try{localStorage.removeItem('biz_hub_active');}catch(e){}
+  var nav=document.getElementById('hub-nav-v');
+  if(nav)nav.scrollIntoView({behavior:'smooth',block:'start'});
+};
 window.hubAccToggle=function(id){
   var acc=document.getElementById(id);
   if(!acc)return;
@@ -4836,6 +4882,7 @@ if(typeof hubShow==='undefined'){
     if(sec){sec.style.display='block';sec.classList.add('active');}
     if(btn){btn.classList.add('active');}
     try{localStorage.setItem('biz_hub_active',id);}catch(e){}
+    if(sec)setTimeout(function(){sec.scrollIntoView({behavior:'smooth',block:'start'});},80);
     /* Call render functions immediately if admin.js already loaded them */
     setTimeout(function(){
       try{

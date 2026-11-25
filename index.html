@@ -167,6 +167,25 @@
 .hub-acc-body .hub-nav-btn{font-size:11.5px;padding:6px 12px;border-radius:20px;}
 .hub-section{display:none;}
 .hub-section.active{display:block;}
+.hub-sec-back{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--bg-alt);border-radius:9px;border:1px solid var(--border);cursor:pointer;font-size:12px;font-weight:700;color:var(--fg2);letter-spacing:.03em;width:100%;text-align:left;transition:background .15s;}
+.hub-sec-back:hover{background:rgba(var(--amb-rgb,30,133,64),.08);}
+/* Hub accordion group accent colors */
+#hnacc-design .hub-acc-hdr{background:#1a2f4a;color:#7bbfff;border-left:3px solid #3a8ee6;}
+#hnacc-compliance .hub-acc-hdr{background:#2d1f3d;color:#c49bff;border-left:3px solid #9b59d8;}
+#hnacc-people .hub-acc-hdr{background:#1f3028;color:#7dd9a0;border-left:3px solid #2ecc71;}
+#hnacc-training .hub-acc-hdr{background:#2d2200;color:#f5c842;border-left:3px solid #e6a817;}
+#hnacc-pipeline .hub-acc-hdr{background:#2a1a10;color:#f4a261;border-left:3px solid #e07535;}
+#hnacc-finance .hub-acc-hdr{background:#0d2a1a;color:#52d6a0;border-left:3px solid #1db86e;}
+#hnacc-logistics .hub-acc-hdr{background:#1a1a2e;color:#9eacff;border-left:3px solid #5a6fe8;}
+#hnacc-delivery .hub-acc-hdr{background:#2d1010;color:#ff9b9b;border-left:3px solid #e63535;}
+#hnacc-design .hub-acc-hdr:hover{background:#1f3a5a;}
+#hnacc-compliance .hub-acc-hdr:hover{background:#37254a;}
+#hnacc-people .hub-acc-hdr:hover{background:#243a2f;}
+#hnacc-training .hub-acc-hdr:hover{background:#382b00;}
+#hnacc-pipeline .hub-acc-hdr:hover{background:#352012;}
+#hnacc-finance .hub-acc-hdr:hover{background:#103420;}
+#hnacc-logistics .hub-acc-hdr:hover{background:#1f1f38;}
+#hnacc-delivery .hub-acc-hdr:hover{background:#381515;}
 /* ===== BIZ SHARED ===== */
 .biz-toolbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
 .biz-search{flex:1;min-width:140px;padding:8px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg-alt);color:var(--fg);font-size:13px;}
@@ -1536,6 +1555,15 @@ function prepSvcNew(sid,sname){
     if(cNotes)lines.push('  Notes: '+cNotes);
     lines.push('');
     lines.push('Prepared by: Riba T Tseke | ribattseke.co.za');
+  } else if(sid==='delivery'){
+    var dFrom=gv('sf-delivery-from');if(!dFrom){errEl.textContent='Please enter the collection address.';return;}
+    var dTo=gv('sf-delivery-to');if(!dTo){errEl.textContent='Please enter the delivery address.';return;}
+    var dItems=gv('sf-delivery-items');if(!dItems){errEl.textContent='Please describe the items to courier.';return;}
+    lines.push('Collection address: '+dFrom);
+    lines.push('Delivery address: '+dTo);
+    lines.push('Items: '+dItems);
+    var dNotes=gv('sf-delivery-notes');if(dNotes)lines.push('Special instructions: '+dNotes);
+    lines.push('','Note: Photos of items to courier will follow via WhatsApp.');
   } else if(sid==='water'){
     var addr=gv('sf-water-addr');if(!addr){errEl.textContent='Please enter the delivery address.';return;}
     var size=gv('sf-water-size');if(!size){errEl.textContent='Please select a bottle size.';return;}
