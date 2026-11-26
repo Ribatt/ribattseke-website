@@ -1,6 +1,6 @@
 <p class="sec-label">Study &amp; Development</p>
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
-    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">The Learning Companion gives you guided study for the DHET 51108848 IE exam across two companions: the <strong style="color:var(--fg);">Installation Rules Companion</strong> (Paper 1 and Paper 2) and the <strong style="color:var(--fg);">ECSA Companion</strong> (professional registration guidance). To access the student portal, sign in with your email and password below. If you are new, create a free account first. No login is needed to watch YouTube session recordings.</p>
+    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">The Learning Companion gives you guided study for the DHET 51108848 IE exam across two companions: the <strong style="color:var(--fg);">Installation Rules Study Companion</strong> (Paper 1 and Paper 2) and the <strong style="color:var(--fg);">ECSA Companion</strong> (professional registration guidance). To access the student portal, sign in with your email and password below. If you are new, create a free account first. No login is needed to watch YouTube session recordings.</p>
 
     <div class="lms-wrap">
 
@@ -448,62 +448,183 @@
 
       <!-- DASHBOARD VIEW -->
       <div id="lms-dash" class="lms-view">
-        <!-- Companion type toggle -->
-        <div id="lms-companion-toggle" style="display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;font-size:13px;">
-          <button id="lms-tog-ir" onclick="lmsSetCompanion('ir')"
-            style="flex:1;padding:9px 12px;border:none;cursor:pointer;font-weight:600;transition:background .15s;background:var(--amb);color:#fff;">
-            Installation Rules Companion
-          </button>
-          <button id="lms-tog-ecsa" onclick="lmsSetCompanion('ecsa')"
-            style="flex:1;padding:9px 12px;border:none;cursor:pointer;font-weight:400;transition:background .15s;background:var(--bg-alt);color:var(--fg2);">
-            ECSA Companion
-          </button>
-        </div>
-        <div class="lms-dash-hdr">
-          <h3 id="lms-dash-name">Welcome</h3>
-          <p id="lms-dash-sub">Select a session to study.</p>
-        </div>
 
-        <!-- Progress overview -->
-        <div class="lms-overview">
-          <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-done">0</div><div class="lms-stat-lbl">Passed</div></div>
-          <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-total">49</div><div class="lms-stat-lbl">Topics</div></div>
-          <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-pct">0%</div><div class="lms-stat-lbl">Complete</div></div>
-          <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-best">—</div><div class="lms-stat-lbl">Best Score</div></div>
-        </div>
-        <div class="lms-overview-bar"><div class="lms-overview-fill" id="lms-ov-bar" style="width:0%"></div></div>
+        <!-- ══ DASHBOARD HOME ══ -->
+        <div id="lms-dash-home">
 
-        <!-- ══ LEVEL NAVIGATOR ══ -->
-        <div id="lms-level-nav" style="display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;padding-bottom:2px;">
-          <button class="lms-lvl-btn" id="lvl-btn-1" onclick="lmsSetLevel(1)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#1a1a1a;color:#fff;border:1.5px solid #444;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            eBook 1 — Level 1 — Orientation &amp; Regulatory Framework
-          </button>
-          <button class="lms-lvl-btn" id="lvl-btn-2" onclick="lmsSetLevel(2)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#e8e8e8;color:#111;border:1.5px solid #bbb;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
-            eBook 2 — Level 2 — Electrical Fundamentals
-          </button>
-          <div id="lvl2-gate-msg" style="display:none;font-size:11.5px;color:#c0392b;padding:6px 12px;background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.25);border-radius:7px;margin-top:-4px;text-align:center;">
-            Complete the Level 1 quiz first to unlock Level 2.
+          <!-- Companion type toggle -->
+          <div id="lms-companion-toggle" style="display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;font-size:13px;">
+            <button id="lms-tog-ir" onclick="lmsSetCompanion('ir')"
+              style="flex:1;padding:9px 12px;border:none;cursor:pointer;font-weight:600;transition:background .15s;background:var(--amb);color:#fff;">
+              Installation Rules Companion
+            </button>
+            <button id="lms-tog-ecsa" onclick="lmsSetCompanion('ecsa')"
+              style="flex:1;padding:9px 12px;border:none;cursor:pointer;font-weight:400;transition:background .15s;background:var(--bg-alt);color:var(--fg2);">
+              ECSA Companion
+            </button>
           </div>
-          <button class="lms-lvl-btn" id="lvl-btn-3" onclick="lmsSetLevel(3)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#c0392b;color:#fff;border:1.5px solid #a93226;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
-            eBook 3 — Level 3 — P1 Standards &amp; Tracks
+
+          <!-- Welcome banner -->
+          <div style="background:linear-gradient(135deg,#1E8540 0%,#155f2e 100%);border-radius:14px;padding:18px 20px;margin-bottom:14px;color:#fff;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin-bottom:4px;">Installation Rules Study Companion</div>
+            <h3 id="lms-dash-name" style="margin:0 0 2px;font-size:19px;font-weight:800;line-height:1.2;">Welcome back</h3>
+            <p id="lms-dash-sub" style="margin:0;font-size:12px;opacity:.85;">DHET Programme 51108848 &mdash; Installation Electrician</p>
+          </div>
+
+          <!-- Stats row -->
+          <div class="lms-overview" style="margin-bottom:6px;">
+            <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-done">0</div><div class="lms-stat-lbl">Passed</div></div>
+            <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-total">49</div><div class="lms-stat-lbl">Topics</div></div>
+            <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-pct">0%</div><div class="lms-stat-lbl">Complete</div></div>
+            <div class="lms-stat-box"><div class="lms-stat-num" id="lms-ov-best">—</div><div class="lms-stat-lbl">Best Score</div></div>
+          </div>
+          <div class="lms-overview-bar" style="margin-bottom:20px;"><div class="lms-overview-fill" id="lms-ov-bar" style="width:0%"></div></div>
+
+          <!-- My Courses -->
+          <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">My Courses</div>
+          <div id="lms-course-cards" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+
+            <!-- Book 1 -->
+            <div class="lms-course-card" onclick="lmsDashEnterLevel(1)" style="border-left:4px solid #1E8540;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:10px;background:#1E8540;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 1 &mdash; Level 1</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Orientation &amp; Regulatory Framework</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">OHS Act, EIR, DoEL registration, exam structure, SANS navigation</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div id="dash-pct-1" style="font-size:13px;font-weight:800;color:#1E8540;">0%</div>
+                </div>
+              </div>
+              <div style="margin-top:9px;background:rgba(0,0,0,.08);border-radius:4px;height:5px;overflow:hidden;">
+                <div id="dash-bar-1" style="height:100%;background:#1E8540;border-radius:4px;width:0%;transition:width .4s;"></div>
+              </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="lms-course-card" onclick="lmsDashEnterLevel(2)" style="border-left:4px solid #2980b9;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:10px;background:#2980b9;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 2 &mdash; Level 2</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Electrical Fundamentals</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">Ohm's law, cable sizing, voltage drop, fault currents, CoC</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div id="dash-pct-2" style="font-size:13px;font-weight:800;color:#2980b9;">0%</div>
+                </div>
+              </div>
+              <div style="margin-top:9px;background:rgba(0,0,0,.08);border-radius:4px;height:5px;overflow:hidden;">
+                <div id="dash-bar-2" style="height:100%;background:#2980b9;border-radius:4px;width:0%;transition:width .4s;"></div>
+              </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="lms-course-card" onclick="lmsDashEnterLevel(3)" style="border-left:4px solid #c0392b;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:10px;background:#c0392b;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 3 &mdash; Level 3 &mdash; Paper 1 (T880)</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 1 Standards &amp; Tracks</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">16 tracks: OHS, EIR, EMR, Construction Regs, SANS 10142-1 Sections 1&ndash;5 &amp; 7</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div id="dash-pct-3" style="font-size:13px;font-weight:800;color:#c0392b;">0%</div>
+                </div>
+              </div>
+              <div style="margin-top:9px;background:rgba(0,0,0,.08);border-radius:4px;height:5px;overflow:hidden;">
+                <div id="dash-bar-3" style="height:100%;background:#c0392b;border-radius:4px;width:0%;transition:width .4s;"></div>
+              </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="lms-course-card" onclick="lmsDashEnterLevel(4)" style="border-left:4px solid #e67e22;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:10px;background:#e67e22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 4 &mdash; Level 4 &mdash; Paper 2 (T890)</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 2 Standards &amp; Tracks</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">14 tracks: SANS 10142-1 Sections 6 &amp; 8, SANS 1973-3, calculation-heavy</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div id="dash-pct-4" style="font-size:13px;font-weight:800;color:#e67e22;">0%</div>
+                </div>
+              </div>
+              <div style="margin-top:9px;background:rgba(0,0,0,.08);border-radius:4px;height:5px;overflow:hidden;">
+                <div id="dash-bar-4" style="height:100%;background:#e67e22;border-radius:4px;width:0%;transition:width .4s;"></div>
+              </div>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="lms-course-card" onclick="lmsDashEnterLevel(5)" style="border-left:4px solid #27ae60;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:10px;background:#27ae60;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 5 &mdash; Level 5</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Mock Exam &amp; Sitting Predictor</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">Timed mock papers, readiness score, recommended sitting date</div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div style="font-size:13px;font-weight:800;color:#27ae60;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /lms-course-cards -->
+        </div><!-- /lms-dash-home -->
+
+        <!-- ══ COURSE VIEW (shown when a book is opened) ══ -->
+        <div id="lms-dash-course" style="display:none;">
+          <!-- Back to dashboard -->
+          <button onclick="lmsDashGoHome()" style="display:flex;align-items:center;gap:7px;background:var(--bg-alt);border:1px solid var(--border);border-radius:9px;padding:9px 14px;font-size:12.5px;font-weight:700;color:var(--fg2);cursor:pointer;width:100%;margin-bottom:14px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            My Courses
           </button>
-          <button class="lms-lvl-btn" id="lvl-btn-4" onclick="lmsSetLevel(4)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#e67e22;color:#fff;border:1.5px solid #ca6f1e;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
-            eBook 4 — Level 4 — P2 Standards &amp; Tracks
-          </button>
-          <button class="lms-lvl-btn" id="lvl-btn-5" onclick="lmsSetLevel(5)"
-            style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#27ae60;color:#fff;border:1.5px solid #1e8449;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .15s;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-            eBook 5 — Level 5 — Mock Exam &amp; Predictor ✓ Master
-          </button>
-        </div>
+
+          <!-- Level navigator (now inside course view) -->
+          <div id="lms-level-nav" style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;">
+            <button class="lms-lvl-btn" id="lvl-btn-1" onclick="lmsSetLevel(1)"
+              style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;background:#1E8540;color:#fff;border:1.5px solid #155f2e;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Book 1
+            </button>
+            <button class="lms-lvl-btn" id="lvl-btn-2" onclick="lmsSetLevel(2)"
+              style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;background:#2980b9;color:#fff;border:1.5px solid #2471a3;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
+              Book 2
+            </button>
+            <div id="lvl2-gate-msg" style="display:none;font-size:11.5px;color:#c0392b;padding:6px 12px;background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.25);border-radius:7px;text-align:center;white-space:nowrap;">
+              Complete Book 1 quiz first.
+            </div>
+            <button class="lms-lvl-btn" id="lvl-btn-3" onclick="lmsSetLevel(3)"
+              style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;background:#c0392b;color:#fff;border:1.5px solid #a93226;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+              Book 3 &mdash; P1
+            </button>
+            <button class="lms-lvl-btn" id="lvl-btn-4" onclick="lmsSetLevel(4)"
+              style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;background:#e67e22;color:#fff;border:1.5px solid #ca6f1e;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+              Book 4 &mdash; P2
+            </button>
+            <button class="lms-lvl-btn" id="lvl-btn-5" onclick="lmsSetLevel(5)"
+              style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;background:#27ae60;color:#fff;border:1.5px solid #1e8449;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+              Book 5
+            </button>
+          </div>
 
         <!-- ══ eBook 1 — LEVEL 1 — ORIENTATION ══ -->
         <div id="lms-level1-panel" style="display:block;">
@@ -1566,7 +1687,8 @@
           <button class="lms-logout" onclick="lmsLogout()">Sign out</button>
           <button class="lms-logout" onclick="lmsShowView('lms-forgot')">Forgot PIN / Reset</button>
         </div>
-      </div>
+      </div><!-- /lms-dash-course -->
+      </div><!-- /lms-dash -->
 
 
       <!-- ADMIN VIEW -->
@@ -6400,7 +6522,7 @@ function _lmsShowMistakeReview(){
   });
 })();
 
-function lmsShowDash(){
+function lmsShowDash(){lmsDashGoHome();lmsDashUpdateCards();
   if(!_lmsUser){lmsShowView('lms-login');return;}
   // Apply brand tab colours and active ring on each dash show
   // Read user-namespaced level first; shared key is a fallback for legacy compatibility
@@ -6469,6 +6591,47 @@ function lmsShowDash(){
   if(_lmsUser){try{if(typeof window.eb01Reload==='function')window.eb01Reload(_lmsUser);}catch(e){}}
   setTimeout(function(){if(typeof engageCheckPopups==='function')engageCheckPopups();}, 500);
 }
+window.lmsDashGoHome=function(){
+  var home=document.getElementById('lms-dash-home');
+  var course=document.getElementById('lms-dash-course');
+  if(home)home.style.display='';
+  if(course)course.style.display='none';
+  lmsDashUpdateCards();
+};
+window.lmsDashEnterLevel=function(n){
+  var home=document.getElementById('lms-dash-home');
+  var course=document.getElementById('lms-dash-course');
+  if(home)home.style.display='none';
+  if(course)course.style.display='block';
+  lmsSetLevel(n);
+};
+window.lmsDashUpdateCards=function(){
+  try{
+    var email=(localStorage.getItem('lms4_email')||'').toLowerCase();
+    if(!email)return;
+    var ns='lms4_'+email+'_';
+    var levels=[1,2,3,4,5];
+    levels.forEach(function(lv){
+      var pctEl=document.getElementById('dash-pct-'+lv);
+      var barEl=document.getElementById('dash-bar-'+lv);
+      if(!lv||lv>4)return;// level 5 no bar
+      // Count topics passed for this level
+      var total=0,passed=0;
+      LMS_TRACKS.forEach(function(t){
+        if(t.level!==lv)return;
+        (t.topics||[]).forEach(function(_,ti){
+          total++;
+          var key=ns+'q_'+t.num+'_'+(ti+1)+'_passed';
+          if(localStorage.getItem(key)==='1')passed++;
+        });
+      });
+      var pct=total?Math.round(passed/total*100):0;
+      if(pctEl)pctEl.textContent=pct+'%';
+      if(barEl)barEl.style.width=pct+'%';
+    });
+  }catch(e){}
+};
+
 
 /* ═══════════════════════════════════════════════════════════════════
    VOLUME TAXONOMY — 12 Volumes keyed by standard / act
@@ -6995,6 +7158,7 @@ function computeTrackAnalytics(track, horizonYears){
   return {n:n,counts:counts,modeQ:'Q'+modeQ,modePct:modePct,expectedQ:'Q'+expectedQ,stdQ:stdQ,minQ:minQ,maxQ:maxQ,meanGap:meanGap.toFixed(1),repeatProb:repeatProb,sinceLast:sinceLast};
 }
 
+function tDisplayNum(t){return t&&t.exam_paper==='P2'?t.num-16:t?t.num:0;}
 function lmsOpenEbook(trackNum){
   var track = null;
   for(var i=0;i<LMS_TRACKS.length;i++){
@@ -7005,7 +7169,7 @@ function lmsOpenEbook(trackNum){
   var a = computeTrackAnalytics(track, 2);
   var panel = document.getElementById('lms-ebook-panel');
 
-  document.getElementById('ebk-track-title').textContent = 'Track '+track.num+' — '+track.label;
+  document.getElementById('ebk-track-title').textContent = 'Track '+tDisplayNum(track)+' — '+track.label;
   document.getElementById('ebk-ebook-title').textContent = track.ebookTitle||'eBook — '+track.label;
   document.getElementById('ebk-scope').textContent = track.syllabusScope||'';
 
@@ -7869,7 +8033,7 @@ function _lmsUpdateTimer(){
 
 var _lmsQuizTrackLabel=null;
 function lmsStartQuizTrack(paper,sessIdx,trackNum,topicNum){
-  _lmsQuizTrackLabel='Track '+trackNum+' · Topic '+topicNum;
+  _lmsQuizTrackLabel='Track '+(trackNum>16?trackNum-16:trackNum)+' · Topic '+topicNum;
   window.scrollTo({top:0,behavior:'smooth'});
   lmsStartQuiz(paper,sessIdx);
 }
@@ -8339,7 +8503,7 @@ function lmsNextSession(){
     var track=LMS_TRACKS[vi];
     for(var ti=0;ti<track.topics.length;ti++){
       var t=track.topics[ti];
-      if(t.paper===_lmsPaper&&t.idx===nextIdx){vLabel='Track '+track.num+' · Topic '+(ti+1);break;}
+      if(t.paper===_lmsPaper&&t.idx===nextIdx){vLabel='Track '+tDisplayNum(track)+' · Topic '+(ti+1);break;}
     }
     if(vLabel) break;
   }
