@@ -2811,7 +2811,7 @@
             <span style="font-size:22px;">&#128221;</span>
             <div>
               <h3 style="font-size:15px;font-weight:800;margin:0;">LMS Content Editor</h3>
-              <p style="font-size:11.5px;color:var(--fg3);margin:0;">Edit lesson summaries, PDF links and YouTube URLs per level. Saved to Firestore — goes live immediately.</p>
+              <p style="font-size:11.5px;color:var(--fg3);margin:0;">Edit lesson summaries, PDF links and YouTube URLs per level. Saved locally to this browser's admin store.</p>
             </div>
           </div>
           <div id="content-toast" style="display:none;padding:9px 14px;border-radius:8px;font-size:12.5px;font-weight:600;margin:12px 0;background:#1e8540;color:#fff;"></div>
@@ -2865,8 +2865,8 @@
               </div>
             </div>
             <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-              <button class="lms-btn" style="font-size:12px;padding:9px 20px;background:var(--amb);" onclick="contentLoad()">&#128229; Load from Cloud</button>
-              <button class="lms-btn" style="font-size:12px;padding:9px 20px;background:#2a5ba8;" onclick="contentSave()">&#128190; Save to Cloud</button>
+              <button class="lms-btn" style="font-size:12px;padding:9px 20px;background:var(--amb);" onclick="contentLoad()">&#128229; Load Saved</button>
+              <button class="lms-btn" style="font-size:12px;padding:9px 20px;background:#2a5ba8;" onclick="contentSave()">&#128190; Save Content</button>
               <button class="lms-btn" style="font-size:12px;padding:9px 20px;background:var(--surface);color:var(--fg2);" onclick="contentClear()">Clear Fields</button>
             </div>
           </div>
@@ -4924,13 +4924,160 @@ function _lmsCheckGrpActive(key, cb){
     html+=_renderPaper(t2,paper,1,topicMap);
     html+=_renderPaper(t3,paper,2,topicMap);
 
+    /* ── PAPER 2 OVERDUE SIGNAL PANEL ──────────────────────────── */
+    if(paper==='p2'){
+      var TOTAL_S2=_HIST.length;
+      var gapTopics=topicMap.slice().sort(function(a,b){
+        var gapA=TOTAL_S2-a.appearances;
+        var gapB=TOTAL_S2-b.appearances;
+        return gapB-gapA;
+      }).slice(0,5);
+      var recentHist=_HIST.slice(-4);
+      html+='<div style="border:1.5px solid #b07c00;border-radius:12px;padding:14px 16px;margin-bottom:20px;background:rgba(255,165,0,.07);">';
+      html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#b07c00;margin-bottom:10px;">&#9888;&#65039; Paper 2 Gap Analysis — Overdue Topics</div>';
+      html+='<div style="font-size:12px;color:var(--fg2);margin-bottom:12px;">Topics that have appeared less frequently in recent sittings (last 4 cycles: '+recentHist.map(function(h){return h.year;}).join(', ')+') are statistically overdue and carry elevated exam risk.</div>';
+      gapTopics.forEach(function(t){
+        var missedIn=TOTAL_S2-t.appearances;
+        var recentCount=recentHist.filter(function(h){return (h.p2||[]).some(function(x){return x.t===t.t;});}).length;
+        var urgency=recentCount===0?'HIGH':recentCount<2?'MEDIUM':'LOW';
+        var urgencyColor=recentCount===0?'#c8360c':recentCount<2?'#b07c00':'#1e8540';
+        html+='<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;margin-bottom:6px;background:var(--bg);border:1px solid var(--border);">';
+        html+='<div style="flex:1;">';
+        html+='<div style="font-size:13px;font-weight:700;color:var(--fg);">'+_esc(t.t)+'</div>';
+        html+='<div style="font-size:11px;color:var(--fg3);">Missing from <strong>'+missedIn+'/'+TOTAL_S2+'</strong> sittings &middot; In last 4: <strong>'+recentCount+'/4</strong></div>';
+        html+='</div>';
+        html+='<span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;background:'+urgencyColor+'22;color:'+urgencyColor+';">'+urgency+'</span>';
+        html+='</div>';
+      });
+      html+='</div>';
+    }
+
     html+='<div style="font-size:11px;color:var(--fg3);text-align:center;padding:10px 0 4px;">Mock papers regenerate each run from the 20-year exam data bank. For self-study only. &copy; Riba T Tseke.</div>';
 
     out.innerHTML=html;
     out.scrollIntoView({behavior:'smooth',block:'start'});
   };
+
+  /* ── ADMIN PANEL WRAPPER ─────────────────────────────────────────────── */
+  window.predRun=function(){
+    var paperSel=document.getElementById('pred-paper');
+    var out=document.getElementById('pred-out');
+    var status=document.getElementById('pred-status');
+    if(!out) return;
+    var paper=(paperSel&&paperSel.value)||'p1';
+    if(status) status.textContent='Running…';
+    var topicMap=_buildTopicMap(paper);
+    var totalSittings=_HIST.length;
+    var paperLabel=paper==='p1'?'Paper 1 — T880 (11040412)':'Paper 2 — T890 (11040432)';
+    var html='';
+    html+='<div style="border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:20px;background:var(--bg-alt);">';
+    html+='<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--amb);margin-bottom:10px;">&#128202; Admin Prediction — '+_esc(paperLabel)+'</div>';
+    html+='<div style="font-size:12px;color:var(--fg2);margin-bottom:12px;">Based on <strong>'+totalSittings+' exam sitting cycles</strong> (2004–Aug 2026). Topic frequency × recency weighting.</div>';
+    html+='<div style="font-size:11.5px;font-weight:800;color:var(--fg2);margin-bottom:8px;">All topics ranked by cumulative weight:</div>';
+    var totalW=topicMap.reduce(function(s,t){return s+t.totalW;},0)||1;
+    topicMap.forEach(function(t,i){
+      var pct=Math.round(t.totalW/totalW*100);
+      var barW=Math.round(t.totalW/topicMap[0].totalW*100);
+      html+='<div style="margin-bottom:8px;">';
+      html+='<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:3px;">';
+      html+='<span>'+_esc(t.t)+'</span>';
+      html+='<span style="color:var(--amb);">'+pct+'% &middot; '+t.appearances+'/'+totalSittings+' sittings</span>';
+      html+='</div>';
+      html+='<div style="height:8px;border-radius:4px;background:var(--border);">';
+      html+='<div style="height:8px;border-radius:4px;background:var(--amb);width:'+barW+'%;"></div>';
+      html+='</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+    /* Generate 3 mock papers */
+    html+='<div style="font-size:13px;font-weight:800;color:var(--fg);margin-bottom:16px;">&#128203; 3 Predicted Mock Papers — '+_esc(paperLabel)+'</div>';
+    var t1=_selectTopics(paper,topicMap,'freq');
+    var t2=_selectTopics(paper,topicMap,'gap');
+    var t3=_selectTopics(paper,topicMap,'broad');
+    html+=_renderPaper(t1,paper,0,topicMap);
+    html+=_renderPaper(t2,paper,1,topicMap);
+    html+=_renderPaper(t3,paper,2,topicMap);
+    html+='<div style="font-size:11px;color:var(--fg3);text-align:center;padding:10px 0 4px;">Admin view. &copy; Riba T Tseke — not an official DHET document.</div>';
+    out.innerHTML=html;
+    if(status) status.textContent='Done — '+new Date().toLocaleTimeString('en-ZA');
+    out.scrollIntoView({behavior:'smooth',block:'start'});
+  };
 })();
 /* ===== END STUDENT PREDICTOR ===== */
+
+
+/* ===== ADMIN CONTENT EDITOR ===== */
+(function(){
+  'use strict';
+  var _CADM_NS='lms4_admincontent_';
+  var _curCtab=1;
+
+  var _LEVEL_LABELS=[null,'Orientation & Regulatory Framework','Electrical Fundamentals & Calculations','Paper 1 Standards & Books','Paper 2 Standards & Books','Mock Exam & Trimester Predictor'];
+
+  function _cKey(lvl){return _CADM_NS+'level'+lvl;}
+
+  function _cToast(msg,isErr){
+    var t=document.getElementById('content-toast');
+    if(!t) return;
+    t.textContent=msg;
+    t.style.display='block';
+    t.style.background=isErr?'#c8360c':'#1e8540';
+    clearTimeout(t._tid);
+    t._tid=setTimeout(function(){t.style.display='none';},3500);
+  }
+
+  window.contentTab=function(lvl,btn){
+    _curCtab=lvl;
+    for(var i=1;i<=5;i++){
+      var b=document.getElementById('ctab-btn-'+i);
+      if(b){b.style.background=i===lvl?'#2a5ba8':'var(--surface)';b.style.color=i===lvl?'#fff':'var(--fg2)';}
+    }
+    var title=document.getElementById('content-panel-title');
+    if(title) title.textContent='Level '+lvl+' — '+(_LEVEL_LABELS[lvl]||'');
+    var status=document.getElementById('content-load-status');
+    if(status) status.textContent='Level '+lvl+' selected. Click "Load Saved" to populate fields, or edit directly.';
+    contentClear();
+    contentLoad();
+  };
+
+  window.contentLoad=function(){
+    var status=document.getElementById('content-load-status');
+    var saved=null;
+    try{var raw=localStorage.getItem(_cKey(_curCtab));if(raw) saved=JSON.parse(raw);}catch(e){}
+    if(!saved){if(status) status.textContent='No saved content for Level '+_curCtab+'.';return;}
+    var F=function(id,val){var el=document.getElementById(id);if(el) el.value=val||'';};
+    F('cf-title',saved.title);
+    F('cf-summary',saved.summary);
+    F('cf-yt',saved.yt);
+    F('cf-pdf',saved.pdf);
+    F('cf-extra',saved.extra);
+    F('cf-sans',saved.sans);
+    F('cf-pass',saved.pass);
+    F('cf-notes',saved.notes);
+    if(status) status.textContent='Loaded Level '+_curCtab+' from local store.';
+  };
+
+  window.contentSave=function(){
+    var G=function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
+    var data={
+      title:G('cf-title'),summary:G('cf-summary'),yt:G('cf-yt'),
+      pdf:G('cf-pdf'),extra:G('cf-extra'),sans:G('cf-sans'),
+      pass:G('cf-pass'),notes:G('cf-notes'),
+      updated:new Date().toISOString(),level:_curCtab
+    };
+    try{localStorage.setItem(_cKey(_curCtab),JSON.stringify(data));}catch(e){_cToast('Save failed — storage error.',true);return;}
+    _cToast('Level '+_curCtab+' content saved locally. Changes are stored in this browser\'s LMS admin store.',false);
+    var status=document.getElementById('content-load-status');
+    if(status) status.textContent='Saved '+new Date().toLocaleTimeString('en-ZA')+'. Key: '+_cKey(_curCtab);
+  };
+
+  window.contentClear=function(){
+    ['cf-title','cf-summary','cf-yt','cf-pdf','cf-extra','cf-sans','cf-pass','cf-notes'].forEach(function(id){
+      var el=document.getElementById(id);if(el) el.value='';
+    });
+  };
+})();
+/* ===== END ADMIN CONTENT EDITOR ===== */
 
 
 /* ===== LMS ENGINE v2 ===== */
@@ -5164,7 +5311,7 @@ function ticketsRefresh(){
       +'<div style="font-size:11px;color:var(--fg3);margin-bottom:10px;">Opened: '+dateStr+'</div>'
       +'<div style="display:flex;gap:6px;flex-wrap:wrap;">';
     if(t.status!=='closed'){
-      html+='<button onclick="ticketAddResolution(\''+t.id+'\')" style="font-size:11px;padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);cursor:pointer;">Add Resolution</button>';
+      html+='<button onclick="ticketAddResolution(\''+t.id+'\',this)" style="font-size:11px;padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);cursor:pointer;">Add Resolution</button>';
       if(t.status==='open')html+='<button onclick="ticketSetStatus(\''+t.id+'\',\'in_progress\')" style="font-size:11px;padding:4px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);cursor:pointer;">Mark In Progress</button>';
       html+='<button onclick="ticketSetStatus(\''+t.id+'\',\'closed\')" style="font-size:11px;padding:4px 11px;border:1px solid #1e8540;border-radius:7px;background:rgba(30,133,64,.1);color:#1e8540;cursor:pointer;">Close Ticket</button>';
     }else{
@@ -5196,9 +5343,27 @@ function ticketSetStatus(id,status){
   if(t){t.status=status;t.updated=Date.now();_ticketSave(tickets);}
   ticketsRefresh();
 }
-function ticketAddResolution(id){
-  var res=window.prompt('Enter resolution notes for ticket #'+id+':');
-  if(res===null)return;
+function ticketAddResolution(id,btn){
+  var rowId='ticket-res-row-'+id;
+  var existing=document.getElementById(rowId);
+  if(existing){existing.style.display=existing.style.display==='none'?'block':'none';return;}
+  var card=btn?btn.closest('div[style*="border-radius:11px"]'):null;
+  if(!card)return;
+  var row=document.createElement('div');
+  row.id=rowId;
+  row.style.cssText='margin-top:10px;border-top:1px solid var(--border);padding-top:10px;';
+  row.innerHTML='<div style="font-size:12px;font-weight:600;color:var(--fg2);margin-bottom:6px;">Resolution notes for #'+_esc(id)+':</div>'
+    +'<textarea id="ticket-res-txt-'+id+'" rows="3" style="width:100%;box-sizing:border-box;font-size:12.5px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);resize:vertical;" placeholder="Describe how this issue was resolved…"></textarea>'
+    +'<div style="display:flex;gap:8px;margin-top:8px;">'
+    +'<button onclick="ticketSaveResolution(\''+id+'\')" style="font-size:12px;padding:5px 14px;border:none;border-radius:7px;background:#1e8540;color:#fff;cursor:pointer;font-weight:600;">Save</button>'
+    +'<button onclick="document.getElementById(\''+rowId+'\').style.display=\'none\'" style="font-size:12px;padding:5px 14px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg3);cursor:pointer;">Cancel</button>'
+    +'</div>';
+  card.appendChild(row);
+}
+function ticketSaveResolution(id){
+  var txt=document.getElementById('ticket-res-txt-'+id);
+  var res=txt?txt.value.trim():'';
+  if(!res)return;
   var tickets=_ticketLoad();
   var t=tickets.find(function(x){return x.id===id;});
   if(t){t.resolution=res;t.updated=Date.now();_ticketSave(tickets);}
