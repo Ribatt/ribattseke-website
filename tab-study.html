@@ -2,7 +2,7 @@
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
     <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Two structured learning paths, one platform.</p>
     <ul style="font-size:13.5px;color:var(--fg2);margin:0 0 22px;padding-left:20px;line-height:1.9;max-width:600px;">
-      <li><strong style="color:var(--fg);">Installation Rules Study Companion</strong> — guided study for the DHET 51108848 IE exam across both Paper 1 (T880) and Paper 2 (T890), with eBooks, quizzes, session recordings and a sitting predictor.</li>
+      <li><strong style="color:var(--fg);">Installation Rules Study Companion</strong> — guided study for the DHET 51108848 IE exam across both Paper 1 (DHET Installation Rules — Code 11040412) and Paper 2 (DHET Installation Rules — Code 11040432), with eBooks, quizzes, session recordings and a sitting predictor.</li>
       <li><strong style="color:var(--fg);">ECSA Companion</strong> — a structured mentorship platform guiding candidate engineers, technologists and technicians from Training Plan setup to Professional Review readiness, with direct WhatsApp access throughout.</li>
     </ul>
     <p style="font-size:12px;color:var(--fg3);margin:0 0 20px;">Sign in below to access your portal. No login is needed to watch YouTube session recordings.</p>
@@ -15,7 +15,7 @@
           <!-- Brand strip -->
           <div class="lms-login-brand">
             <div class="lms-login-logo">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <svg width="34" height="34" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="30" fill="rgba(255,255,255,0.18)"/><text x="30" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="700" fill="#fff" letter-spacing="1">RIBA</text><line x1="12" y1="27" x2="48" y2="27" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><text x="30" y="40" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="400" fill="rgba(255,255,255,0.9)" letter-spacing="2">T·TSEKE</text></svg>
             </div>
             <div>
               <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.1;">Riba T Tseke</div>
@@ -217,13 +217,19 @@
             <h3 style="margin:0 0 4px;">Business Hub Login</h3>
             <p style="font-size:12px;color:var(--fg3);margin:0;">Owner / Admin access only</p>
           </div>
-          <label class="lms-label">Admin Email</label>
-          <input class="lms-input" id="lms-adm-u" type="email" placeholder="Your admin email" autocomplete="username" autocapitalize="none">
-          <label class="lms-label" style="margin-top:10px;">Admin PIN</label>
+          <label class="lms-label">Select Administrator</label>
+          <select class="lms-input" id="lms-adm-u" style="cursor:pointer;" onchange="(function(s){var p=document.getElementById('lms-adm-pin-row');if(p)p.style.display=s.value?'block':'none';document.getElementById('lms-adm-p').value='';setTimeout(function(){if(s.value)document.getElementById('lms-adm-p').focus();},60);})(this)">
+            <option value="">— Choose your name —</option>
+            <option value="ribattseke@gmail.com">Riba T Tseke (Owner)</option>
+            <option value="ribatt3@gmail.com">Riba T Tseke (Backup)</option>
+            <option value="60523255@mylife.unisa.ac.za">Riba T Tseke (UNISA)</option>
+          </select>
+          <div id="lms-adm-pin-row" style="display:none;"><label class="lms-label" style="margin-top:10px;">Admin PIN</label>
           <div style="position:relative;">
             <input class="lms-input" id="lms-adm-p" type="password" placeholder="Your PIN" autocomplete="current-password" style="padding-right:42px;">
             <button type="button" onclick="(function(){var i=document.getElementById('lms-adm-p');if(i)i.type=i.type==='password'?'text':'password';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
           </div>
+          </div><!-- /lms-adm-pin-row -->
           <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
             <input type="checkbox" id="lms-adm-remember" style="width:16px;height:16px;cursor:pointer;accent-color:#1a3c5e;">
             <label for="lms-adm-remember" style="font-size:12.5px;color:var(--fg2);cursor:pointer;user-select:none;">Remember me on this device</label>
@@ -579,7 +585,7 @@
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
                 </div>
                 <div style="flex:1;min-width:0;">
-                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 3 &mdash; Level 3 &mdash; Paper 1 (T880)</div>
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 3 &mdash; Level 3 &mdash; Paper 1 (Code 11040412)</div>
                   <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 1 Standards &amp; Books</div>
                   <div style="font-size:11px;color:var(--fg3);margin-top:1px;">16 books: OHS, EIR, EMR, Construction Regs, SANS 10142-1 Sections 1&ndash;5 &amp; 7</div>
                 </div>
@@ -599,7 +605,7 @@
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
                 </div>
                 <div style="flex:1;min-width:0;">
-                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 4 &mdash; Level 4 &mdash; Paper 2 (T890)</div>
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 4 &mdash; Level 4 &mdash; Paper 2 (Code 11040432)</div>
                   <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 2 Standards &amp; Books</div>
                   <div style="font-size:11px;color:var(--fg3);margin-top:1px;">14 books: SANS 10142-1 Sections 6 &amp; 8, SANS 1973-3, calculation-heavy</div>
                 </div>
@@ -7075,7 +7081,7 @@ function lmsCertView(paper){
   try{if(passData.date)dateStr=new Date(passData.date).toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'});}catch(e){}
   var mo=document.createElement('div');
   mo.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;';
-  var nameDisp=(_lmsProgress&&_lmsProgress.name)||_lmsUser||'Student';
+  var nameDisp=(_lmsProgress&&(_lmsProgress.displayName||_lmsProgress.firstName||_lmsProgress.name))||_lmsUser||'Student';
   mo.innerHTML='<div style="background:#fff;border-radius:16px;padding:0;max-width:540px;width:100%;overflow:hidden;box-shadow:0 12px 60px rgba(0,0,0,.4);">'
     +'<div style="background:linear-gradient(135deg,#b8860b,#d4a017);padding:24px;text-align:center;">'
     +'<div style="font-size:36px;margin-bottom:4px;">&#127891;</div>'
@@ -7322,7 +7328,7 @@ function lmsShowDash(){lmsDashGoHome();lmsDashUpdateCards();
     return;
   }
   var _dn=document.getElementById('lms-dash-name');
-  if(_dn) _dn.textContent='Welcome, '+((_lmsProgress&&_lmsProgress.name)||_lmsUser);
+  if(_dn){var _fn=(_lmsProgress&&(_lmsProgress.displayName||_lmsProgress.firstName||_lmsProgress.name))||'';_dn.textContent='Welcome back, '+(_fn||'Student');}
   var tier=(_lmsProgress||{}).tier||'';
   var tierLabels={ir:'Installation Rules Companion',ecsa:'ECSA Companion'};
   var tierEl=document.getElementById('lms-tier-badge');
