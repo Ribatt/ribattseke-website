@@ -1,30 +1,78 @@
 <p class="sec-label">Study &amp; Development</p>
     <h2 class="sec-title" id="study-public-title">Learning Companion</h2>
-    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">The Learning Companion gives you guided study for the DHET 51108848 IE exam across two companions: the <strong style="color:var(--fg);">Installation Rules Study Companion</strong> (Paper 1 and Paper 2) and the <strong style="color:var(--fg);">ECSA Companion</strong> (professional registration guidance). To access the student portal, sign in with your email and password below. If you are new, create a free account first. No login is needed to watch YouTube session recordings.</p>
+    <p id="lms-public-desc" style="font-size:13.5px;color:var(--fg2);margin:0 0 20px;line-height:1.6;max-width:620px;">Two structured learning paths, one platform.</p>
+    <ul style="font-size:13.5px;color:var(--fg2);margin:0 0 22px;padding-left:20px;line-height:1.9;max-width:600px;">
+      <li><strong style="color:var(--fg);">Installation Rules Study Companion</strong> — guided study for the DHET 51108848 IE exam across both Paper 1 (T880) and Paper 2 (T890), with eBooks, quizzes, session recordings and a sitting predictor.</li>
+      <li><strong style="color:var(--fg);">ECSA Companion</strong> — a structured mentorship platform guiding candidate engineers, technologists and technicians from Training Plan setup to Professional Review readiness, with direct WhatsApp access throughout.</li>
+    </ul>
+    <p style="font-size:12px;color:var(--fg3);margin:0 0 20px;">Sign in below to access your portal. No login is needed to watch YouTube session recordings.</p>
 
     <div class="lms-wrap">
 
       <!-- LOGIN VIEW (direct login form, shown first) -->
       <div id="lms-login" class="lms-view active">
-        <div class="lms-card">
-          <h3 style="text-align:center;margin-bottom:16px;">Learning Companion</h3>
-          <label class="lms-label">Email or Username</label>
-          <input class="lms-input" id="lms-login-email" type="text" placeholder="your@email.com or username" autocomplete="username" autocapitalize="none">
-          <label class="lms-label" style="margin-top:10px;">PIN <span style="font-size:11px;color:var(--fg3);font-weight:normal;">(numeric — the PIN you chose at sign-up)</span></label>
-          <div style="position:relative;">
-            <input class="lms-input" id="lms-login-pw" type="password" placeholder="Your numeric PIN" autocomplete="current-password" inputmode="numeric" style="padding-right:42px;">
-            <button type="button" onclick="(function(btn){var i=document.getElementById('lms-login-pw');i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
+        <div class="lms-login-shell">
+          <!-- Brand strip -->
+          <div class="lms-login-brand">
+            <div class="lms-login-logo">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.1;">Riba T Tseke</div>
+              <div style="font-size:10.5px;color:rgba(255,255,255,.75);letter-spacing:.04em;text-transform:uppercase;margin-top:1px;">Learning Companion</div>
+            </div>
           </div>
-          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--fg2);margin:10px 0 12px;cursor:pointer;">
-            <input type="checkbox" id="lms-login-remember" style="width:15px;height:15px;cursor:pointer;" onchange="(function(c){try{localStorage.setItem('lms4__remember_email',c.checked?'1':'0');}catch(e){}})(this)">
-            Remember me
-          </label>
-          <div class="lms-err" id="lms-login-main-err"></div>
-          <button type="button" class="lms-btn" onclick="lmsDoEmailLogin()">Sign In</button>
-          <div style="margin:14px 0 10px;display:flex;align-items:center;gap:8px;"><span style="flex:1;border-top:1px solid var(--border);"></span><span style="font-size:11px;color:var(--fg3);white-space:nowrap;">new here?</span><span style="flex:1;border-top:1px solid var(--border);"></span></div>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-signup')">Create account</button>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
-          <button class="lms-btn-sec" onclick="lmsShowView('lms-signin')" style="margin-top:4px;font-size:11px;color:var(--fg3);">Forgot PIN / sign in with Access Key</button>
+
+          <!-- Route pill selector -->
+          <div class="lms-login-route-row">
+            <button class="lms-route-pill lms-route-active" id="lms-route-ir" onclick="lmsSetLoginRoute('ir')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+              Installation Rules
+            </button>
+            <button class="lms-route-pill" id="lms-route-ecsa" onclick="lmsSetLoginRoute('ecsa')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+              ECSA Companion
+            </button>
+          </div>
+
+          <!-- Form card -->
+          <div class="lms-card lms-login-card">
+            <div style="text-align:center;margin-bottom:20px;">
+              <div style="font-size:17px;font-weight:800;color:var(--fg);letter-spacing:-.01em;">Sign in</div>
+              <div style="font-size:12px;color:var(--fg3);margin-top:3px;" id="lms-login-route-label">Installation Rules Study Companion</div>
+            </div>
+
+            <label class="lms-label">Email address or username</label>
+            <input class="lms-input" id="lms-login-email" type="text" placeholder="your@email.com or username" autocomplete="username" autocapitalize="none">
+
+            <label class="lms-label" style="margin-top:10px;">Password / PIN</label>
+            <div style="position:relative;">
+              <input class="lms-input" id="lms-login-pw" type="password" placeholder="Your password or PIN" autocomplete="current-password" style="padding-right:42px;">
+              <button type="button" onclick="(function(btn){var i=document.getElementById('lms-login-pw');i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}).call(this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;padding:4px;line-height:1;">👁</button>
+            </div>
+
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--fg3);margin:10px 0 4px;cursor:pointer;">
+              <input type="checkbox" id="lms-login-remember" style="width:14px;height:14px;cursor:pointer;accent-color:var(--amb);" onchange="(function(c){try{localStorage.setItem('lms4__remember_email',c.checked?'1':'0');}catch(e){}})(this)">
+              Keep me signed in
+            </label>
+
+            <div class="lms-err" id="lms-login-main-err"></div>
+            <button type="button" class="lms-btn" style="margin-top:14px;" onclick="lmsDoEmailLogin()">Sign In</button>
+
+            <div style="margin:16px 0 10px;display:flex;align-items:center;gap:8px;">
+              <span style="flex:1;border-top:1px solid var(--border);"></span>
+              <span style="font-size:10.5px;color:var(--fg3);white-space:nowrap;">new learner?</span>
+              <span style="flex:1;border-top:1px solid var(--border);"></span>
+            </div>
+            <button class="lms-btn-sec" onclick="lmsShowView('lms-signup')">Create account</button>
+            <button class="lms-btn-sec" onclick="lmsShowView('lms-paywall')" style="margin-top:4px;">Get an access key</button>
+            <div style="text-align:center;margin-top:12px;">
+              <button onclick="lmsShowView('lms-signin')" style="background:none;border:none;font-size:11.5px;color:var(--fg3);cursor:pointer;text-decoration:underline;">Forgot password / sign in with access key</button>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div style="text-align:center;padding:14px 0 4px;font-size:10.5px;color:rgba(255,255,255,.55);">ribattseke.co.za &nbsp;·&nbsp; <span onclick="lmsShowView('lms-admin-login')" style="cursor:pointer;">&#128274;</span></div>
         </div>
       </div>
 
@@ -97,7 +145,7 @@
           </div>
           <input class="lms-input" id="lms-su-role" type="text" placeholder="Current role / occupation (e.g. Apprentice Electrician)" style="margin-top:6px;">
 
-          <!-- Track selection -->
+          <!-- Learning path selection -->
           <label class="lms-label" style="margin-top:10px;">Learning track / companion</label>
           <div style="display:flex;gap:12px;margin-top:4px;margin-bottom:2px;">
             <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
@@ -532,8 +580,8 @@
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 3 &mdash; Level 3 &mdash; Paper 1 (T880)</div>
-                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 1 Standards &amp; Tracks</div>
-                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">16 tracks: OHS, EIR, EMR, Construction Regs, SANS 10142-1 Sections 1&ndash;5 &amp; 7</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 1 Standards &amp; Books</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">16 books: OHS, EIR, EMR, Construction Regs, SANS 10142-1 Sections 1&ndash;5 &amp; 7</div>
                 </div>
                 <div style="text-align:right;flex-shrink:0;">
                   <div id="dash-pct-3" style="font-size:13px;font-weight:800;color:#c0392b;">0%</div>
@@ -552,8 +600,8 @@
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:1px;">Book 4 &mdash; Level 4 &mdash; Paper 2 (T890)</div>
-                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 2 Standards &amp; Tracks</div>
-                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">14 tracks: SANS 10142-1 Sections 6 &amp; 8, SANS 1973-3, calculation-heavy</div>
+                  <div style="font-size:13.5px;font-weight:700;color:var(--fg);line-height:1.25;">Paper 2 Standards &amp; Books</div>
+                  <div style="font-size:11px;color:var(--fg3);margin-top:1px;">14 books: SANS 10142-1 Sections 6 &amp; 8, SANS 1973-3, calculation-heavy</div>
                 </div>
                 <div style="text-align:right;flex-shrink:0;">
                   <div id="dash-pct-4" style="font-size:13px;font-weight:800;color:#e67e22;">0%</div>
@@ -1400,7 +1448,7 @@
             </div>
           </div>
 
-          <!-- Track blocks — rendered dynamically by _buildTrackDash() -->
+          <!-- Book blocks — rendered dynamically by _buildTrackDash() -->
           <div id="lms-tracks-container"></div>
 
           <!-- ── LEVEL 3 PROGRESS SUMMARY ── -->
@@ -1528,7 +1576,7 @@
           <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;">
             <div style="background:#2a5ba8;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
               <div>
-                <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Track 20 · Simulation</span>
+                <span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8);">Book 20 · Simulation</span>
                 <div style="font-size:13.5px;font-weight:700;color:#fff;margin-top:1px;">Full Mock Examination</div>
               </div>
               <span style="background:rgba(255,255,255,.18);border-radius:6px;padding:4px 9px;font-size:11.5px;font-weight:700;color:#fff;">Paper 1 + Paper 2</span>
@@ -4902,6 +4950,19 @@ var _lmsPendingU=null;
 var _lmsPendingK=null;
 
 var _lmsCompanionType = 'ir'; // 'ir' or 'ecsa'
+
+/* Login route selection (pre-login companion choice) */
+var _lmsLoginRoute = 'ir';
+function lmsSetLoginRoute(route){
+  _lmsLoginRoute = route || 'ir';
+  var irBtn = document.getElementById('lms-route-ir');
+  var ecsaBtn = document.getElementById('lms-route-ecsa');
+  var lbl = document.getElementById('lms-login-route-label');
+  if(irBtn) irBtn.className = 'lms-route-pill' + (route === 'ir' ? ' lms-route-active' : '');
+  if(ecsaBtn) ecsaBtn.className = 'lms-route-pill' + (route === 'ecsa' ? ' lms-route-active' : '');
+  if(lbl) lbl.textContent = route === 'ecsa' ? 'ECSA Companion — Professional Registration' : 'Installation Rules Study Companion';
+}
+
 function lmsSetCompanion(type){
   var requestedType = type || 'ir';
   var rawTier = (_lmsProgress||{}).tier || '';
@@ -6427,7 +6488,7 @@ function _lmsComputePredictor(){
     }
 
     /* ── collect all available scores ── */
-    /* Track quiz scores (Level 3 / Level 4 tracks) */
+    /* Book quiz scores (Level 3 / Level 4 books) */
     var p1Tracks=[1,2,3,4,5,6,7,8,9,10,11,12,13,14];
     var p2Tracks=[15,16,17,18,19];
     var p1Scores=[], p2Scores=[];
@@ -7341,7 +7402,7 @@ function _buildTrackDash(prog){
       if(track.placeholder) blk.style.opacity='0.6';
       blk.id=blkId;
 
-      var trackBadge='<span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+track.color+'22;color:'+track.color+';border:1px solid '+track.color+'55;margin-right:8px;">Track '+(vi+1)+'</span>';
+      var trackBadge='<span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+track.color+'22;color:'+track.color+';border:1px solid '+track.color+'55;margin-right:8px;">Book '+(vi+1)+'</span>';
       var slotTag=track.slot?'<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:var(--surface2);color:var(--fg3);border:1px solid var(--border);margin-left:4px;">'+track.slot+'</span>':'';
       var comingSoon=track.placeholder?'<span style="margin-left:8px;font-size:9px;padding:1px 6px;border-radius:8px;background:#ff990022;color:#cc7700;border:1px solid #ff990044;">coming soon</span>':'';
 
@@ -7556,7 +7617,7 @@ function _buildP2TrackDash(){
     if(track.placeholder) blk.style.opacity='0.6';
     blk.id=blkId;
 
-    var trackBadge='<span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+color+'22;color:'+color+';border:1px solid '+color+'55;margin-right:8px;">Track '+(vi+1)+'</span>';
+    var trackBadge='<span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;background:'+color+'22;color:'+color+';border:1px solid '+color+'55;margin-right:8px;">Book '+(vi+1)+'</span>';
     var slotTag=track.slot?'<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:var(--surface2);color:var(--fg3);border:1px solid var(--border);margin-left:4px;">'+track.slot+'</span>':'';
     var comingSoon=track.placeholder?'<span style="margin-left:8px;font-size:9px;padding:1px 6px;border-radius:8px;background:#ff990022;color:#cc7700;border:1px solid #ff990044;">coming soon</span>':'';
     var ebkBtn=track.ebookTitle?'<button onclick="event.stopPropagation();lmsOpenEbook('+track.num+');" style="margin-left:auto;padding:3px 9px;border-radius:7px;border:1px solid var(--amb);background:#1E854011;color:var(--amb);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">📖 eBook</button>':'';
@@ -8033,7 +8094,7 @@ function _lmsUpdateTimer(){
 
 var _lmsQuizTrackLabel=null;
 function lmsStartQuizTrack(paper,sessIdx,trackNum,topicNum){
-  _lmsQuizTrackLabel='Track '+(trackNum>16?trackNum-16:trackNum)+' · Topic '+topicNum;
+  _lmsQuizTrackLabel='Book '+(trackNum>16?trackNum-16:trackNum)+' · Topic '+topicNum;
   window.scrollTo({top:0,behavior:'smooth'});
   lmsStartQuiz(paper,sessIdx);
 }
@@ -8503,7 +8564,7 @@ function lmsNextSession(){
     var track=LMS_TRACKS[vi];
     for(var ti=0;ti<track.topics.length;ti++){
       var t=track.topics[ti];
-      if(t.paper===_lmsPaper&&t.idx===nextIdx){vLabel='Track '+tDisplayNum(track)+' · Topic '+(ti+1);break;}
+      if(t.paper===_lmsPaper&&t.idx===nextIdx){vLabel='Book '+tDisplayNum(track)+' · Topic '+(ti+1);break;}
     }
     if(vLabel) break;
   }
