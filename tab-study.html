@@ -2880,26 +2880,27 @@
 
         <!-- ===== FACILITATOR / PRESENTER MODE ===== -->
         <div id="hub-facilitator" class="hub-section">
-          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">&#127979; Facilitator &amp; Presenter Mode</div>
-          <p style="font-size:12.5px;color:var(--fg2);margin:0 0 14px;line-height:1.6;">Select a session below, then enter Presenter Mode to share your screen. All admin controls are hidden — only your session guide and the learner-facing slides are visible.</p>
-
-          <!-- Book selector tabs -->
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;" id="facil-book-tabs">
-            <button class="hub-nav-btn active" onclick="facilSelectBook(1,this)" style="font-size:11.5px;padding:6px 12px;">&#128218; Book 1</button>
-            <button class="hub-nav-btn" onclick="facilSelectBook(2,this)" style="font-size:11.5px;padding:6px 12px;">&#128218; Book 2</button>
-            <button class="hub-nav-btn" onclick="facilSelectBook(3,this)" style="font-size:11.5px;padding:6px 12px;">&#128218; Book 3</button>
-            <button class="hub-nav-btn" onclick="facilSelectBook(4,this)" style="font-size:11.5px;padding:6px 12px;">&#128218; Book 4</button>
-            <button class="hub-nav-btn" onclick="facilSelectBook(5,this)" style="font-size:11.5px;padding:6px 12px;">&#128218; Book 5</button>
+          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">Facilitator Mode</div>
+          <p style="font-size:12.5px;color:var(--fg2);margin:0 0 14px;line-height:1.6;">20-session guide aligned to DHET 51108848 IE syllabus. Edit facilitator guides below, then enter presenter mode — one screen, no switching.</p>
+          <!-- Hub tabs -->
+          <div style="display:flex;gap:6px;margin-bottom:14px;border-bottom:1.5px solid var(--border);padding-bottom:10px;">
+            <button id="ftab-sessions" onclick="facilHubTab('sessions')" class="hub-nav-btn active" style="font-size:11.5px;padding:6px 14px;">&#127979; Sessions</button>
+            <button id="ftab-edit" onclick="facilHubTab('edit')" class="hub-nav-btn" style="font-size:11.5px;padding:6px 14px;">&#9998; Edit Guides</button>
           </div>
-
-          <!-- Session selector -->
-          <div id="facil-session-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;"></div>
-
-          <!-- Enter presenter mode button -->
-          <button onclick="facilEnterPresenter()" style="width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#1E8540,#155f2e);color:#fff;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;">
-            &#9654; Enter Presenter Mode
-          </button>
-          <p style="font-size:11px;color:var(--fg3);margin:8px 0 0;text-align:center;">Opens a full-screen, clean view — share this window. No admin menus visible.</p>
+          <!-- Sessions panel -->
+          <div id="facil-hub-sessions">
+            <div id="facil-session-list" style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;"></div>
+            <button onclick="facilEnterPresenter()" style="width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#2a5ba8,#1a3d78);color:#fff;font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.03em;">&#9654; Enter Presenter Mode</button>
+            <p style="font-size:11px;color:var(--fg3);margin:8px 0 0;text-align:center;">Single screen. Navigate sessions, view SANS content, past papers and memos without leaving. Keyboard: &#8592;&#8594; navigate &nbsp;|&nbsp; G guide &nbsp;|&nbsp; P paper &nbsp;|&nbsp; M memo &nbsp;|&nbsp; Esc exit</p>
+          </div>
+          <!-- Edit Guides panel -->
+          <div id="facil-hub-edit" style="display:none;">
+            <div style="margin-bottom:12px;">
+              <label style="font-size:11px;font-weight:700;color:var(--fg3);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;">Select Session to Edit</label>
+              <select id="facil-edit-sel" onchange="facilLoadEditForm()" style="width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg);font-size:13px;"><option value="">-- Select a session --</option></select>
+            </div>
+            <div id="facil-edit-form"></div>
+          </div>
         </div>
         <!-- ===== END FACILITATOR ===== -->
 
@@ -2907,54 +2908,64 @@
       <div id="biz-print-area"></div>
 
       <!-- ===== PRESENTER MODE OVERLAY ===== -->
-      <div id="facil-presenter-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--bg);overflow:hidden;flex-direction:column;">
+      <div id="facil-presenter-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--bg);flex-direction:column;">
 
-        <!-- Top presenter bar (facilitator-only controls) -->
-        <div id="facil-pbar" style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg-alt);border-bottom:1.5px solid var(--border);flex-shrink:0;flex-wrap:wrap;">
-          <button onclick="facilPresenterPrev()" id="facil-prev-btn" style="padding:6px 12px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg2);font-size:12px;cursor:pointer;font-weight:600;">&#8592; Prev</button>
+        <!-- Top bar -->
+        <div id="facil-pbar" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-alt);border-bottom:1.5px solid var(--border);flex-shrink:0;flex-wrap:wrap;">
+          <button onclick="facilPresenterPrev()" id="facil-prev-btn" title="Previous session (Arrow Left)" style="padding:5px 12px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);font-size:14px;cursor:pointer;font-weight:700;">&#9664;</button>
           <div style="flex:1;min-width:0;text-align:center;">
-            <div id="facil-pbar-book" style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.08em;"></div>
-            <div id="facil-pbar-session" style="font-size:13px;font-weight:800;color:var(--fg);"></div>
+            <div id="facil-pbar-num" style="font-size:10px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.1em;"></div>
+            <div id="facil-pbar-title" style="font-size:13px;font-weight:800;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
           </div>
-          <button onclick="facilPresenterNext()" id="facil-next-btn" style="padding:6px 12px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg2);font-size:12px;cursor:pointer;font-weight:600;">Next &#8594;</button>
-          <button onclick="facilToggleGuide()" id="facil-guide-btn" style="padding:6px 12px;border:1.5px solid var(--amb);border-radius:7px;background:var(--bg);color:var(--amb);font-size:11.5px;cursor:pointer;font-weight:600;">&#128196; Guide</button>
-          <button onclick="facilExitPresenter()" style="padding:6px 14px;border:none;border-radius:7px;background:#c8360c;color:#fff;font-size:12px;cursor:pointer;font-weight:700;">&#10005; Exit</button>
+          <button onclick="facilPresenterNext()" id="facil-next-btn" title="Next session (Arrow Right)" style="padding:5px 12px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--fg);font-size:14px;cursor:pointer;font-weight:700;">&#9654;</button>
+          <div style="display:flex;gap:4px;border-left:1.5px solid var(--border);padding-left:10px;margin-left:4px;">
+            <button id="fv-btn-slides" onclick="facilSetView('slides')" title="SANS Content (S)" style="padding:5px 10px;border-radius:7px;border:1.5px solid var(--amb);background:var(--amb);color:#fff;font-size:11.5px;font-weight:700;cursor:pointer;">&#128218; Slides</button>
+            <button id="fv-btn-paper" onclick="facilSetView('paper')" title="Past Paper (P)" style="padding:5px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg2);font-size:11.5px;font-weight:700;cursor:pointer;">&#128196; Paper</button>
+            <button id="fv-btn-memo" onclick="facilSetView('memo')" title="Memorandum (M)" style="padding:5px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg2);font-size:11.5px;font-weight:700;cursor:pointer;">&#128203; Memo</button>
+            <button id="fv-btn-guide" onclick="facilSetView('guide')" title="Facilitator Guide (G)" style="padding:5px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg2);font-size:11.5px;font-weight:700;cursor:pointer;">&#128221; Guide</button>
+          </div>
+          <button onclick="facilExitPresenter()" title="Exit (Esc)" style="padding:5px 14px;border:none;border-radius:7px;background:#c83647;color:#fff;font-size:12px;font-weight:800;cursor:pointer;margin-left:4px;">&#10005; Exit</button>
         </div>
 
-        <!-- Main area: learner slide (left) + optional guide panel (right) -->
-        <div style="display:flex;flex:1;overflow:hidden;">
+        <!-- Main content area: 4 panels -->
+        <div style="flex:1;overflow:hidden;position:relative;">
 
-          <!-- LEARNER SLIDE — full width by default, shrinks when guide is open -->
-          <div id="facil-slide-area" style="flex:1;overflow-y:auto;padding:40px 48px;display:flex;flex-direction:column;align-items:center;">
-            <!-- Book badge -->
-            <div id="slide-book-badge" style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:20px;background:#1E8540;color:#fff;margin-bottom:20px;"></div>
-            <!-- Session title -->
-            <h1 id="slide-title" style="font-size:clamp(22px,4vw,38px);font-weight:900;color:var(--fg);text-align:center;margin:0 0 16px;line-height:1.15;max-width:800px;"></h1>
-            <!-- SANS reference strip -->
-            <div id="slide-sans-strip" style="font-size:13px;color:var(--fg3);font-weight:600;margin-bottom:28px;text-align:center;"></div>
-            <!-- Key objectives -->
-            <div id="slide-objectives" style="max-width:720px;width:100%;"></div>
-            <!-- SANS / QP quick-access row -->
-            <div id="slide-refs" style="max-width:720px;width:100%;margin-top:28px;"></div>
-          </div>
-
-          <!-- GUIDE PANEL — hidden by default -->
-          <div id="facil-guide-panel" style="display:none;width:320px;flex-shrink:0;border-left:1.5px solid var(--border);overflow-y:auto;padding:20px 18px;background:var(--bg-alt);">
-            <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amb);margin-bottom:12px;">Facilitator Guide</div>
-            <div id="guide-talking-points" style="font-size:12.5px;color:var(--fg2);line-height:1.7;"></div>
-            <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;">
-              <div style="font-size:10.5px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">SANS References</div>
-              <div id="guide-sans-refs" style="font-size:12px;color:var(--fg2);line-height:1.8;"></div>
-            </div>
-            <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;">
-              <div style="font-size:10.5px;font-weight:700;color:var(--fg3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">DHET Paper Focus</div>
-              <div id="guide-paper-focus" style="font-size:12px;color:var(--fg2);line-height:1.6;"></div>
+          <!-- SLIDES: SANS screenshots + objectives -->
+          <div id="fv-slides" style="position:absolute;inset:0;overflow-y:auto;padding:28px 36px;display:block;">
+            <div style="max-width:900px;margin:0 auto;">
+              <div id="fv-slides-ref" style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--amb);margin-bottom:10px;text-align:center;"></div>
+              <h1 id="fv-slides-title" style="font-size:clamp(18px,3vw,32px);font-weight:900;color:var(--fg);text-align:center;margin:0 0 20px;text-wrap:balance;"></h1>
+              <div id="fv-slides-images" style="display:flex;flex-direction:column;gap:14px;margin-bottom:22px;"></div>
+              <div id="fv-slides-objectives" style="display:flex;flex-direction:column;gap:9px;"></div>
             </div>
           </div>
+
+          <!-- PAST PAPER view -->
+          <div id="fv-paper" style="display:none;position:absolute;inset:0;flex-direction:column;">
+            <div id="fv-paper-sel" style="display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap;flex-shrink:0;"></div>
+            <div id="fv-paper-empty" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--fg3);font-size:14px;font-weight:600;text-align:center;padding:20px;">No past papers linked to this session yet. Open Edit Guides in the admin panel to add PDF URLs.</div>
+            <iframe id="fv-paper-frame" src="" style="display:none;flex:1;width:100%;border:none;"></iframe>
+          </div>
+
+          <!-- MEMO view -->
+          <div id="fv-memo" style="display:none;position:absolute;inset:0;flex-direction:column;">
+            <div id="fv-memo-sel" style="display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap;flex-shrink:0;"></div>
+            <div id="fv-memo-empty" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--fg3);font-size:14px;font-weight:600;text-align:center;padding:20px;">No memos linked to this session yet. Open Edit Guides in the admin panel to add PDF URLs.</div>
+            <iframe id="fv-memo-frame" src="" style="display:none;flex:1;width:100%;border:none;"></iframe>
+          </div>
+
+          <!-- GUIDE view: facilitator notes -->
+          <div id="fv-guide" style="display:none;position:absolute;inset:0;overflow-y:auto;padding:28px 36px;">
+            <div style="max-width:760px;margin:0 auto;">
+              <div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--amb);margin-bottom:14px;">Facilitator Guide</div>
+              <div id="fv-guide-content" style="font-size:14px;color:var(--fg);line-height:1.85;white-space:pre-wrap;"></div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Bottom session dots nav -->
-        <div id="facil-session-dots" style="display:flex;justify-content:center;gap:6px;padding:10px 16px;background:var(--bg-alt);border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;"></div>
+        <!-- Bottom session dots -->
+        <div id="facil-session-dots" style="display:flex;justify-content:center;gap:5px;padding:8px 14px;background:var(--bg-alt);border-top:1px solid var(--border);flex-wrap:wrap;"></div>
       </div>
       <!-- ===== END PRESENTER OVERLAY ===== -->
 
@@ -5164,612 +5175,395 @@ function _lmsCheckGrpActive(key, cb){
 /* ===== FACILITATOR / PRESENTER MODE ===== */
 (function(){
 'use strict';
+var _FAC_NS='lms4_facil_data';
+var _facSess=1;
+var _facView='slides';
+var _facPaperIdx=0;
+var _facMemoIdx=0;
 
-/* Session data — structured around DHET 51108848 IE syllabus
-   Objectives/talking points are facilitator scaffolding only;
-   actual eBook content is what learners study from. */
-var _BOOKS = [
-  {
-    num: 1, label: 'Book 1 — Level 1', color: '#1E8540', paper: 'P1 & P2',
-    title: 'Orientation & Regulatory Framework',
-    sessions: [
-      {
-        title: 'Exam Overview & Qualification Structure',
-        sans: 'DHET Circular 51108848',
-        objectives: [
-          'Understand what Paper 1 (T880) and Paper 2 (T890) cover',
-          'Know the qualification code 51108848 and what Installation Electrician means',
-          'Understand DHET examination sitting cycles and registration timelines',
-          'Identify the role of the DoEL (Department of Employment and Labour)'
-        ],
-        talking: [
-          'Start with the big picture: learner will write 2 papers — P1 is the regulation/book knowledge; P2 is calculation-heavy.',
-          'Stress that ALL answers must come from the prescribed SANS books and legislation — not general knowledge.',
-          'Walk through the exam sitting schedule: when to register, what to bring.',
-          'Ask: has everyone applied with their employer? DoEL registration is a prerequisite.'
-        ],
-        refs: ['DHET Circular 51108848', 'OHS Act 85/1993 — definitions', 'EIR Reg 2 — definitions'],
-        paperFocus: 'Paper 1: Regulation and statutory knowledge; short questions on definitions and duties.'
-      },
-      {
-        title: 'OHS Act 85 of 1993 — Key Duties',
-        sans: 'OHS Act 85/1993',
-        objectives: [
-          'State the duties of the employer and employee under the OHS Act',
-          'Identify offences and penalties under the OHS Act',
-          'Know the role of Health & Safety Representatives and Committees',
-          'Understand incident reporting requirements'
-        ],
-        talking: [
-          'Employer duties: provide safe plant, systems, training, PPE, health & safety policy.',
-          'Employee duties: take care of their own and others\' safety; report hazards.',
-          'Key sections learners must know: Sections 8, 9, 13, 14, 16, 17, 23, 24.',
-          'Penalties: fine or imprisonment — examiner loves testing this.',
-          'Accident/incident reporting: when and to whom.'
-        ],
-        refs: ['OHS Act 85/1993 Sections 8–9', 'OHS Act Section 13 (HS Reps)', 'OHS Act Section 24 (incidents)'],
-        paperFocus: 'Paper 1: Definitions, duties, sections by number. Expect 5–8 marks on OHS Act.'
-      },
-      {
-        title: 'Electrical Installation Regulations (EIR)',
-        sans: 'EIR — GNR 2920 of 2004 (as amended)',
-        objectives: [
-          'List the requirements for a Certificate of Compliance (CoC)',
-          'Know who may issue a CoC and what a Responsible Person is',
-          'State the registration requirements for an Installation Electrician',
-          'Understand when a CoC is required and its validity period'
-        ],
-        talking: [
-          'The EIR is the core legal document for the trade — know every regulation by number.',
-          'CoC: who signs, when, what happens if installation changes.',
-          'Responsible Person definition — Reg 2.',
-          'Registration: DoEL, proof of training, competency.',
-          'Common exam trap: CoC validity is NOT indefinite — changes trigger a new CoC.'
-        ],
-        refs: ['EIR Reg 2 (definitions)', 'EIR Reg 7–9 (CoC requirements)', 'EIR Reg 10 (registration)'],
-        paperFocus: 'Paper 1: EIR regulation numbers, CoC rules, Responsible Person definition.'
-      },
-      {
-        title: 'SANS Navigation & Exam Technique',
-        sans: 'SANS 10142-1:2022',
-        objectives: [
-          'Locate any clause in SANS 10142-1 within 60 seconds',
-          'Understand how the SANS is structured (Parts, Sections, Tables, Figures)',
-          'Read and interpret normative vs informative notes',
-          'Develop a time-management strategy for the 3-hour exam'
-        ],
-        talking: [
-          'Hands-on: open SANS 10142-1 and find a clause by chapter number.',
-          'Structure walkthrough: foreword → scope → definitions → main clauses → annexes → tables.',
-          'Normative vs informative: normative MUST be complied with; informative is guidance.',
-          'Exam strategy: attempt all questions; write the SANS clause you are answering from.',
-          'Remind: they may bring their SANS books — they MUST be in physical printed form (check current sitting rules).'
-        ],
-        refs: ['SANS 10142-1 Foreword & Scope', 'SANS 10142-1 Section 1 (Scope)', 'SANS 10142-1 Table of Contents'],
-        paperFocus: 'Paper 1 & 2: SANS navigation is implicit in every question. Clause citation earns marks.'
-      }
-    ]
-  },
-  {
-    num: 2, label: 'Book 2 — Level 2', color: '#2980b9', paper: 'P2',
-    title: 'Electrical Fundamentals & Calculations',
-    sessions: [
-      {
-        title: 'Ohm\'s Law, Series & Parallel Circuits',
-        sans: 'SANS 10142-1 — Annex calculations',
-        objectives: [
-          'Apply Ohm\'s Law: V = IR, P = VI, P = I²R in given scenarios',
-          'Calculate total resistance in series and parallel circuits',
-          'Determine current distribution in parallel branches',
-          'Solve multi-stage circuit problems step by step'
-        ],
-        talking: [
-          'Start from V = IR — write the triangle on the board, every session.',
-          'Series: R_total = R1 + R2 + R3; same current everywhere.',
-          'Parallel: 1/R_total = 1/R1 + 1/R2 — current splits; voltage same.',
-          'Work through the LMS practice questions together at board.',
-          'Common error: forgetting to convert mΩ to Ω or mA to A.'
-        ],
-        refs: ['SANS 10142-1 Clause 6 (conductors & cable sizing)', 'SABS/NRS references for load calculations'],
-        paperFocus: 'Paper 2: 2–4 calculation questions. Show full working — partial marks apply.'
-      },
-      {
-        title: 'Cable Sizing & Current-Carrying Capacity',
-        sans: 'SANS 10142-1 Tables 6–10',
-        objectives: [
-          'Size a cable using SANS 10142-1 current-carrying capacity tables',
-          'Apply correction factors for grouping, temperature and installation method',
-          'Determine voltage drop using SANS 10142-1 tables',
-          'Select the correct protective device for a given circuit'
-        ],
-        talking: [
-          'Key tables to know: Table 6 (CCC), Table 7 (correction factors), Table 8/9 (Zs limits).',
-          'Walk through a sizing calculation: load → design current → Iz (applying correction) → select cable.',
-          'Voltage drop: 5% rule for most circuits; cite the clause.',
-          'Show how to select MCB or fuse rating and check Zs is within limits.',
-          'Emphasise: answer must reference the specific table number and edition.'
-        ],
-        refs: ['SANS 10142-1 Tables 6–10', 'SANS 10142-1 Clause 6.5 (voltage drop)', 'SANS 10142-1 Clause 6.3 (grouping)'],
-        paperFocus: 'Paper 2: Cable sizing is 10–15% of P2 marks. Show table numbers cited.'
-      },
-      {
-        title: 'Voltage Drop, Power Factor & Energy',
-        sans: 'SANS 10142-1 Clause 6.5',
-        objectives: [
-          'Calculate voltage drop using resistance and current',
-          'Express power factor and understand its significance',
-          'Calculate energy consumption (kWh) from power and time',
-          'Identify the effect of power factor on cable sizing'
-        ],
-        talking: [
-          'VD = I × R × 2L (for single-phase loops; ×√3 for 3-phase).',
-          'Power factor: ratio of real to apparent power — lagging in inductive loads.',
-          'kWh calculation: P (kW) × hours = energy in kWh.',
-          'Low PF means higher current for same real power — requires larger cable.',
-          'Practice: give a scenario, ask learners to calculate VD and confirm within limit.'
-        ],
-        refs: ['SANS 10142-1 Clause 6.5', 'SANS 10142-1 Annex C (calculations)'],
-        paperFocus: 'Paper 2: 1–2 VD questions; 1 energy/PF question. Full working = full marks.'
-      },
-      {
-        title: 'Earth Fault Loop Impedance & RCD Coordination',
-        sans: 'SANS 10142-1 Tables 8–9, Clause 7',
-        objectives: [
-          'Understand what earth fault loop impedance (Zs) is and how to measure it',
-          'Look up maximum Zs from SANS 10142-1 tables for given protective devices',
-          'State RCD requirements: trip current, trip time and test intervals',
-          'Explain the purpose of supplementary equipotential bonding'
-        ],
-        talking: [
-          'Zs = Ze + (R1 + R2): external loop + supply cable + protective conductor.',
-          'Protective device must disconnect within prescribed time — 0.4s for socket outlets (TN system).',
-          'RCD: 30 mA for socket outlets and bathrooms; 300 ms max trip time.',
-          'Monthly test button requirement under EIR — link back to CoC.',
-          'Equipotential bonding: connects all exposed-conductive parts to prevent potential differences.'
-        ],
-        refs: ['SANS 10142-1 Clause 7 (protection for safety)', 'SANS 10142-1 Tables 8–9 (max Zs)', 'EIR Reg 11 (earthing)'],
-        paperFocus: 'Paper 2: Zs calculation or table lookup; RCD specification questions.'
-      }
-    ]
-  },
-  {
-    num: 3, label: 'Book 3 — Level 3', color: '#c0392b', paper: 'P1',
-    title: 'Paper 1 Standards & Books (16 books)',
-    sessions: [
-      {
-        title: 'OHS Act, EIR & EMR — Legislative Core',
-        sans: 'OHS Act 85/1993 · EIR · EMR',
-        objectives: [
-          'Recall the key sections of the OHS Act relevant to the IE trade',
-          'State EIR obligations from Regulations 2–13',
-          'Identify Electrical Machinery Regulations (EMR) duties',
-          'Answer mixed-legislation questions without confusion'
-        ],
-        talking: [
-          'P1 tests MULTIPLE regulations — learner must know which act applies.',
-          'OHS Act: duties, definitions, HSR, incident reporting.',
-          'EIR: CoC, responsible person, registration, work on supply systems.',
-          'EMR: safety when working near energised machinery; permit to work.',
-          'Exam tip: read the question stem carefully — which act is being tested?'
-        ],
-        refs: ['OHS Act 85/1993', 'GNR 2920 (EIR)', 'GNR 1593 (EMR)'],
-        paperFocus: 'Paper 1: Legislative questions — 20–30% of P1. Know definitions by heart.'
-      },
-      {
-        title: 'SANS 10142-1 Sections 1–5 Deep Dive',
-        sans: 'SANS 10142-1 Sections 1–5',
-        objectives: [
-          'State the scope of SANS 10142-1 and what it covers',
-          'Define terms used throughout the standard',
-          'State the fundamental principles in Section 3 (protection for safety)',
-          'List the characteristics of supply in Section 4'
-        ],
-        talking: [
-          'Section 1: Scope — what does and doesn\'t apply (e.g., mines, ships).',
-          'Section 2: Normative references — what standards SANS 10142-1 refers to.',
-          'Section 3: Definitions — the most-tested section. Run flashcard drill.',
-          'Section 4: General characteristics of installations — supply, nominal voltage, frequency.',
-          'Section 5: Safety protection — the foundational section for all protection design.'
-        ],
-        refs: ['SANS 10142-1 Section 1 (Scope)', 'SANS 10142-1 Section 3 (Definitions)', 'SANS 10142-1 Section 4 (Characteristics)', 'SANS 10142-1 Section 5 (Protection)'],
-        paperFocus: 'Paper 1: Definitions (Sec 3) and protection principles (Sec 5) = high mark density.'
-      },
-      {
-        title: 'SANS 10142-1 Section 7 — Earthing',
-        sans: 'SANS 10142-1 Section 7',
-        objectives: [
-          'Identify the earthing systems: TN-S, TN-C-S, TT',
-          'State the requirements for main protective bonding',
-          'List what must be bonded in a bathroom / special location',
-          'Understand the role of the main earthing terminal (MET)'
-        ],
-        talking: [
-          'TN-S, TN-C-S, TT — draw each system on the board.',
-          'Main bonding: gas, water, structural steel, other services.',
-          'Bathroom / zone requirements: supplementary bonding, RCD mandatory.',
-          'MET: the central bonding point — location and labelling requirements.',
-          'Common exam scenario: "identify the earthing system from a wiring diagram."'
-        ],
-        refs: ['SANS 10142-1 Section 7 (Earthing)', 'SANS 10142-1 Section 7.5 (supplementary bonding)'],
-        paperFocus: 'Paper 1: Earthing system identification, bonding requirements, RCD in bathrooms.'
-      },
-      {
-        title: 'Construction Regulations & Working at Heights',
-        sans: 'Construction Regulations 2014',
-        objectives: [
-          'List the duties of the principal contractor and contractor under the Regulations',
-          'State fall protection requirements for working at height',
-          'Know the requirements for a Health and Safety Plan on a construction site',
-          'Identify electrical safety requirements specific to construction sites'
-        ],
-        talking: [
-          'Construction Regs sit under OHS Act — they supplement it for construction work.',
-          'Principal contractor must appoint contractor and check competency.',
-          'Fall protection plan: required when work above 2 m; scaffolding, harnesses.',
-          'Electrical on site: temporary distribution boards, RCDs, cable protection.',
-          'The examiner often gives a site scenario — apply the correct regulation.'
-        ],
-        refs: ['Construction Regulations 2014 Reg 5–9', 'Construction Regs Annex 1 (H&S specifications)'],
-        paperFocus: 'Paper 1: Construction scenario questions, duties of parties, fall protection.'
-      }
-    ]
-  },
-  {
-    num: 4, label: 'Book 4 — Level 4', color: '#e67e22', paper: 'P2',
-    title: 'Paper 2 Standards & Books (14 books)',
-    sessions: [
-      {
-        title: 'SANS 10142-1 Section 6 — Wiring Systems',
-        sans: 'SANS 10142-1 Section 6',
-        objectives: [
-          'Select the correct wiring method for given installation conditions',
-          'State cable support spacing requirements from SANS 10142-1',
-          'Identify conductor colour codes for new and existing installations',
-          'Apply the rules for connection of conductors'
-        ],
-        talking: [
-          'Section 6 covers HOW to install wiring — the practical section.',
-          'Installation methods: conduit, trunking, surface, buried — each has spacing requirements.',
-          'Colour code: pre-2009 vs current SANS codes — both appear in exams.',
-          'Key table: cable support spacing by cable type and installation method.',
-          'Conductor connections: no joints in conduit; use proper connectors.'
-        ],
-        refs: ['SANS 10142-1 Section 6 (Wiring systems)', 'SANS 10142-1 Table 4 (colour codes)', 'SANS 10142-1 Table 5 (support spacing)'],
-        paperFocus: 'Paper 2: Installation method selection, support spacing, colour code questions.'
-      },
-      {
-        title: 'SANS 10142-1 Section 8 — Special Locations',
-        sans: 'SANS 10142-1 Section 8',
-        objectives: [
-          'List the special locations covered in Section 8',
-          'State the specific requirements for bathrooms and shower rooms',
-          'Apply zone rules (Zone 0, 1, 2) in a bathroom design',
-          'Know the IP ratings required in each zone'
-        ],
-        talking: [
-          'Special locations: bathrooms, swimming pools, agricultural, medical, explosive atmospheres.',
-          'Bathroom zones: draw the diagram — Zone 0 (inside bath/shower), Zone 1, Zone 2.',
-          'Each zone has minimum IP rating and prohibited/permitted equipment.',
-          'No standard socket outlets in Zone 0, 1 or 2 (shaver socket in Zone 2 only).',
-          'RCD 30 mA mandatory for all circuits in bathroom zones.'
-        ],
-        refs: ['SANS 10142-1 Section 8.2 (Bathrooms)', 'SANS 10142-1 Table 8.2 (IP ratings by zone)', 'SANS 10142-1 Section 8.3 (Swimming pools)'],
-        paperFocus: 'Paper 2: Bathroom zone diagram, IP rating, prohibited equipment = high-frequency question.'
-      },
-      {
-        title: 'SANS 1973-3 — Luminaire Installations',
-        sans: 'SANS 1973-3',
-        objectives: [
-          'State the requirements for luminaire installation in general and special locations',
-          'Know minimum heights and clearances for different lamp types',
-          'Identify when a flex is permitted to support a luminaire',
-          'State the maximum wattage for a given lampshade/fitting'
-        ],
-        talking: [
-          'SANS 1973-3 is the luminaire installation standard — frequently confused with luminaire design.',
-          'Clearances from surfaces depend on lamp wattage.',
-          'Support: a flex may only suspend a luminaire if specifically rated for that purpose.',
-          'Fire-rated downlights: when required and what markings to look for.',
-          'Common P2 question: given a scenario, state which SANS clause is violated.'
-        ],
-        refs: ['SANS 1973-3 Section 3 (installation requirements)', 'SANS 1973-3 Table 1 (clearances)'],
-        paperFocus: 'Paper 2: 1–2 questions on luminaire clearances and suspension rules.'
-      },
-      {
-        title: 'P2 Calculation Marathon — Mixed Paper Practice',
-        sans: 'SANS 10142-1 + DHET past papers',
-        objectives: [
-          'Solve a cable sizing question from start to finish in under 10 minutes',
-          'Complete a voltage drop calculation with correction factors applied',
-          'Determine Zs and confirm protective device coordination',
-          'Tackle a mixed 3-phase/single-phase load calculation'
-        ],
-        talking: [
-          'This session is ALL practice — facilitator calls questions, learners solve on paper.',
-          'Rotate: one learner works at board, others check at seat.',
-          'Focus on showing workings — DHET awards partial marks.',
-          'Common errors to highlight: unit conversion, wrong table row, missing correction factor.',
-          'End with: what to do in exam when stuck — move on, return; mark your attempt.'
-        ],
-        refs: ['SANS 10142-1 Tables 6–10', 'DHET past papers (available from RTTA)'],
-        paperFocus: 'Paper 2: Pure calculation session — 40–50% of P2 marks are calculations.'
-      }
-    ]
-  },
-  {
-    num: 5, label: 'Book 5 — Level 5', color: '#27ae60', paper: 'P1 & P2',
-    title: 'Mock Exam & Trimester Predictor',
-    sessions: [
-      {
-        title: 'Full P1 Mock Exam (3 Hours)',
-        sans: 'DHET 51108848 — Paper 1 format',
-        objectives: [
-          'Complete a timed mock Paper 1 under exam conditions',
-          'Practice reading questions carefully and citing SANS references',
-          'Identify gaps in knowledge from exam performance',
-          'Review incorrect answers immediately after the session'
-        ],
-        talking: [
-          'Set a strict 3-hour timer — no extensions.',
-          'Exam conditions: closed resources (unless open-book as per sitting rules).',
-          'After exam: mark together; every wrong answer → open SANS and read the clause.',
-          'Log which chapters had most errors → study plan for next session.',
-          'Use the LMS Quiz for targeted follow-up practice.'
-        ],
-        refs: ['DHET P1 past papers', 'All P1 SANS books'],
-        paperFocus: 'Paper 1: Full mock. Target: 60%+ = approaching readiness; 75%+ = exam-ready.'
-      },
-      {
-        title: 'Full P2 Mock Exam (3 Hours)',
-        sans: 'DHET 51108848 — Paper 2 format',
-        objectives: [
-          'Complete a timed mock Paper 2 under exam conditions',
-          'Show all working in calculation questions',
-          'Manage 3 hours across the balance of theory and calculations',
-          'Self-assess readiness against DHET pass mark'
-        ],
-        talking: [
-          'P2 is 60% calculations, 40% applied theory — time management is critical.',
-          'Advise: do all theory first, then tackle calculations in order of difficulty.',
-          'Show working is NOT optional — blank answers earn zero; partial working earns partial marks.',
-          'After exam: calculation errors first (biggest mark loss); then theory corrections.',
-          'Compare against predicted topics from the LMS Exam Predictor.'
-        ],
-        refs: ['DHET P2 past papers', 'SANS 10142-1 Tables 6–10 (for calculations)'],
-        paperFocus: 'Paper 2: Full mock. Target: 50%+ = approaching; 65%+ = exam-ready.'
-      },
-      {
-        title: 'Exam Predictor Review & Sitting Date Planning',
-        sans: 'DHET sitting cycle (RTTA / DoEL)',
-        objectives: [
-          'Review the LMS Exam Predictor output for the upcoming sitting',
-          'Identify the top 3 high-probability topics from the predictor',
-          'Build a final 2-week study plan targeting predicted gaps',
-          'Confirm registration with DoEL / employer for the next sitting'
-        ],
-        talking: [
-          'Show the LMS Exam Predictor (admin hub → Exam Predictor) on screen.',
-          'Walk through the predicted Paper 1 and Paper 2 topic weightings.',
-          'Each learner writes down their personal top 3 gaps (from attempt history).',
-          'Two-week plan: 3 days per predicted topic, 2 days mock, 2 days rest.',
-          'Registration checklist: DoEL application form, employer signature, ID copy.'
-        ],
-        refs: ['LMS Exam Predictor (20-year DHET data)', 'DoEL registration requirements'],
-        paperFocus: 'P1 & P2: Final prep session. Focus on predicted high-probability topics.'
-      }
-    ]
-  }
+/* 20 sessions — DHET 51108848 IE syllabus */
+var _FAC_SESSIONS=[
+  {id:1,paper:'P1',title:'Orientation and Programme Overview',ref:'DHET 51108848 — Installation Electrician Programme',
+   objectives:['Understand the DHET 51108848 Installation Electrician qualification structure and purpose','Know the two-paper format: Paper 1 (Installation Rules) and Paper 2 (Standards and Regulations)','Navigate SANS 10142-1 Edition 3.3 — section numbering, normative references and amendment history','Understand the examination sitting cycles, registration requirements and progression rules'],
+   notes:'Welcome students and introduce the programme.\n\nKey points to cover:\n- DHET 51108848 = Installation Electrician qualification\n- Paper 1 covers OHS Act, Electrical Installation Regulations and SANS 10142-1 (Sections 1-5, 7 + Annexes C and E)\n- Paper 2 covers SANS 10142-1 Sections 6 and 8 plus all calculation Annexes (A, B, D, G, H, I, J, K, L, N)\n- 10 questions per paper, choose 8 to answer; 50% minimum pass mark; 50% of marks at application level\n- Current examinable standard: SANS 10142-1 Edition 3.3 (published 26 June 2026)\n\nRemind students to bring their SANS book to every session. Show them the structure of the book — Section numbers, Annexes and their normative or informative status.'},
+  {id:2,paper:'P1',title:'OHS Act 85 of 1993 — Employer and Employee Duties',ref:'OHS Act 85 of 1993 — Paper 1 Question 1',
+   objectives:['State the general duties of an employer to employees under Section 8 of the OHS Act 85 of 1993','Explain the duties of an employee under Section 14 of the OHS Act 85 of 1993','Describe the role and appointment of health and safety representatives under Section 17','Outline the functions of a health and safety committee under Section 19','Identify what constitutes an incident and the notification requirements under Section 24'],
+   notes:'This is Paper 1 Question 1 — always OHS Act 85 of 1993.\n\nCommon exam topics (cite Section numbers in every answer):\n- Section 8: General duties of employer — safe plant, safe environment, training, risk assessment, written assessment\n- Section 14: General duties of employees — take reasonable care, cooperate, report unsafe situations, not wilfully misuse safety equipment\n- Section 17: Health and safety representatives — appoint per 20 employees in hazardous work; functions listed in Section 18\n- Section 19: Health and safety committees — composition, functions, meeting frequency\n- Section 24: Incidents — distinguish incident from accident; fatality: notify inspector immediately; serious injury: within 7 days\n\nPast paper patterns: Students often confuse Section numbers. Drill them to cite Sections in every exam answer. The examiner awards marks per Section cited correctly.'},
+  {id:3,paper:'P1',title:'Electrical Installation Regulations — CoC and Inspection',ref:'EIR 2009 (under OHS Act 85 of 1993) — Paper 1 Question 2',
+   objectives:['Explain the purpose and legal basis of the Electrical Installation Regulations under the OHS Act 85 of 1993','Describe who may issue a Certificate of Compliance (CoC) and when it is required','List the conditions under which a new CoC must be obtained for an existing installation','Explain the inspection and testing requirements before a CoC is issued','State the record-keeping obligations under the EIR'],
+   notes:'Paper 1 Question 2 — always Electrical Installation Regulations (EIR).\n\nKey points:\n- EIR are made under the OHS Act 85 of 1993; they are a Regulation, not a SANS standard\n- Only a registered person (Installation Electrician or higher) may issue a CoC\n- CoC required: new installation, change of occupancy, alteration or addition, before connecting supply\n- Periodic re-inspection: every 6 years for a leased installation (not 5 — common student error)\n- An accredited person must inspect and test before issuing a CoC\n- Keep CoC for 6 years; make available to the chief inspector on request\n\nCommon mistake: Students say "5 years" for periodic inspection. Correct answer is 6 years. This comes up in almost every past paper.'},
+  {id:4,paper:'P1',title:'SANS 10142-1 Sections 1 and 2 — Scope and Definitions',ref:'SANS 10142-1 Ed 3.3 Sections 1 and 2 — Paper 1',
+   objectives:['Identify the scope of SANS 10142-1 and what installations it covers and excludes','Distinguish between a dated and an undated normative reference in Section 2','Define key terms: installation, circuit, final circuit, distribution board, prospective short-circuit current','Explain the relationship between SANS 10142-1 and the Electrical Installation Regulations','Identify which standards appear in the normative references of SANS 10142-1 Ed 3.3'],
+   notes:'Sections 1 and 2 — often examined as single-mark definition or scope questions.\n\nSection 1 scope:\n- Covers LV electrical installations up to 1 kV AC or 1.5 kV DC\n- Excludes mines (covered by Mine Health and Safety Act), electrical machinery (Electrical Machinery Regulations), supply systems (utility regulations and NRS standards)\n\nSection 2 definitions — commonly examined terms:\n- Accredited person, Installation Electrician, master installation electrician\n- Circuit, final circuit, distribution board, consumer unit\n- Prospective short-circuit current (PSCC), earth fault loop impedance (Zs)\n- Dated vs undated normative reference: dated = only that specific edition applies; undated = latest edition applies at any time\n\nTip: Get students to open their SANS book to Section 2. Reading definitions from the actual book cements them better than any notes.'},
+  {id:5,paper:'P1',title:'SANS 10142-1 Section 3 — General Requirements',ref:'SANS 10142-1 Ed 3.3 Section 3 — Paper 1',
+   objectives:['Explain the basic protection requirements against electric shock — direct and indirect contact','Describe the conditions and applications for SELV, PELV and FELV circuits','Understand the requirements for electrical separation','Identify where earthing and main protective bonding are required under Section 3','State the general documentation requirements for an electrical installation'],
+   notes:'Section 3 — General Requirements covers protection principles. Usually 1-2 questions in Paper 1.\n\nKey areas:\n- Direct contact protection: insulation, barriers and enclosures, obstacles, placing out of reach\n- Indirect contact protection: automatic disconnection of supply (ADS), class II equipment, electrical separation, SELV and PELV\n- SELV: Safety Extra-Low Voltage — no earth connection, supplied from an isolating transformer; source and circuit unearthed\n- PELV: Protective Extra-Low Voltage — source or circuit earthed\n- FELV: Functional Extra-Low Voltage — not a safety measure; used for functional reasons only\n- Main protective bonding conductors: 10 mm2 copper minimum; bond gas, water, structural steel to main earthing terminal\n- Supplementary bonding: within special locations (bathroom zones 0, 1, 2)\n\nGet students to open the SANS book to Section 3 and walk through clause numbers. They need to cite clause numbers (e.g. Clause 3.4.2) in exam answers.'},
+  {id:6,paper:'P1',title:'SANS 10142-1 Section 4 — Cable Installations and Wiring Systems',ref:'SANS 10142-1 Ed 3.3 Section 4 — Paper 1',
+   objectives:['Identify approved wiring systems and their installation requirements under Section 4','State the minimum conductor sizes for final circuits and sub-mains','Explain the colour coding requirements for conductors in South African installations','Describe the requirements for conduit, trunking and cable tray installations','Identify where and why PVC-insulated cables cannot be used'],
+   notes:'Section 4 — Cable and Wiring Systems. This is a heavy section with detailed requirements.\n\nKey points:\n- Approved wiring systems: MICC, PVC-insulated in conduit, armoured cable, busbar trunking — each has specific installation rules\n- Minimum conductor size: 1.0 mm2 for circuits up to 16A lighting; 1.5 mm2 for 20A circuits\n- Conductor colours (from SANS 10142-1 Ed 3): Brown (live/phase), Blue (neutral), Green-Yellow (PE) — replaced old Red/Black/Green\n- Conduit types: rigid metal, flexible metal, PVC rigid, PVC flexible — each with its own installation and bend requirements\n- PVC cables: not suitable for temperatures above 70 degrees C, not in environments with chemical attack on PVC\n- Cable support spacing: horizontal — every 250 mm for most types; vertical — every 400 mm\n\nGet students to open the SANS book to Section 4 and work through the tables together. The examiner often quotes a table row and asks for interpretation.'},
+  {id:7,paper:'P1',title:'SANS 10142-1 Section 5 — Distribution Boards',ref:'SANS 10142-1 Ed 3.3 Section 5 — Paper 1',
+   objectives:['Describe the requirements for the installation and construction of a distribution board under Section 5','Identify the minimum protection devices required in a residential distribution board','Explain the labelling requirements for distribution boards and circuit breakers','State the requirements for the main switch and earth leakage protection','Describe what a split board is and when it is used'],
+   notes:'Section 5 — Distribution Boards. Usually 1-2 marks in Paper 1.\n\nKey requirements:\n- DB must be accessible, dry, well-lit and lockable if in a public or communal space\n- Minimum residential DB: main switch (double pole), earth leakage protection (RCCB or RCBO at 30 mA sensitivity), overcurrent protection per circuit\n- Earth leakage: 30 mA sensitivity for all socket outlet circuits; some municipalities require 30 mA for all circuits\n- Labelling: every circuit must be labelled; main switch labelled MAINS; inside cover must carry a circuit schedule\n- Split board: main switch plus earth leakage disconnect the whole installation; sub-boards protect specific areas; useful when PV or generator is installed\n- Neutral and PE bars must be separate (unless TN-C earthing system — not typical in South Africa)\n\nCommon exam question: What must be included on the label inside a DB cover? Answer: circuit schedule, issuer name, test date, CoC number.'},
+  {id:8,paper:'P1',title:'SANS 10142-1 Section 7 — Special Installations',ref:'SANS 10142-1 Ed 3.3 Section 7 — Paper 1',
+   objectives:['Identify categories of special installations under Section 7','State the zone definitions and equipment restrictions for bathroom and shower room installations (Section 7.2)','Describe the zones in a bathroom and what equipment is permitted in each zone','Explain the requirements for solar PV and BESS systems under Section 7 and new Annex S','State the EV charging installation requirements introduced in SANS 10142-1 Ed 3.3'],
+   notes:'Section 7 — Special Installations. This section expanded significantly in Edition 3.3.\n\nSection 7.2 — Bathroom and shower rooms (commonly examined):\n- Zone 0: inside the bath or shower tray — only SELV 12 V equipment; IPX7 minimum\n- Zone 1: above the bath or shower tray up to 2.25 m — only SELV equipment or specific listed equipment; IPX4 minimum\n- Zone 2: 0.6 m horizontal from zone 1 boundary — IPX4 minimum; general purpose socket not permitted\n- Shaver socket: only within 3 m of bath if it is an isolating transformer type (SANS 60742 compliant)\n- Section 7.3: Swimming pools — similar zone concept with different dimensions\n\nSection 7 and Annex S (new in Ed 3.3):\n- Mandatory Annex S test report required for ALL PV, BESS, generator and EV charging installations\n- EV charging: dedicated circuit; minimum 7 kW (32 A single-phase) recommended; earthing per Section 7.19\n\nThis is a popular exam topic. Sketch bathroom zones on the board — students find the visual much easier than reading text.'},
+  {id:9,paper:'P1',title:'SANS 10142-1 Annex C and Annex E',ref:'SANS 10142-1 Ed 3.3 Annex C and Annex E — Paper 1',
+   objectives:['Identify the purpose and normative status of Annex C (cable fill in conduit)','Use Annex C tables to determine the number of cables permitted in a conduit of a given size','Identify the purpose and content of Annex E (earthing requirements for outdoor installations)','Apply Annex E requirements to outdoor earthing scenarios involving rod electrodes','Understand the difference between Annex C (Paper 1) and Annex D (Paper 2)'],
+   notes:'Annex C and Annex E — both are normative (they form part of the installation requirements, not just informative guidance).\n\nAnnex C — Cable fill in conduit:\n- Tables give the maximum number of cables of a given size for a given conduit internal diameter\n- Read the table: find conduit size in one axis, cable size in the other, read the maximum number\n- Exam question type: "How many 2.5 mm2 PVC-insulated cables may be installed in a 20 mm conduit?" — open the book and read from Annex C\n- Note: Annex C is specific to the cable types listed; different tables for different cable types\n\nAnnex E — Outdoor earthing (installations without metallic service infrastructure):\n- Rod electrode: minimum 1.2 m driven into the ground; 16 mm copper or 20 mm coated steel\n- Multiple rods: spacing must be at least equal to the driven depth\n- When to use: farms, remote installations without a metallic supply service pipe to bond to\n\nGet students to open their SANS book to Annex C and read a value from the table together — the exam requires exactly this.'},
+  {id:10,paper:'P1',title:'Paper 1 Revision — Past Paper Practice',ref:'DHET Past Papers — Installation Rules Paper 1',
+   objectives:['Work through representative Paper 1 past questions from each topic area','Identify common mistakes and how to avoid them in examination conditions','Practise citing clause and section numbers in answers','Develop a time management strategy for 10 questions in a 3-hour sitting'],
+   notes:'Revision session — use real past papers throughout.\n\nStructure the session:\n1. Quick recap of each Paper 1 topic — 5 minutes per topic; 10 topics = 50 minutes\n2. Work through 1-2 past questions per major topic: OHS Act, EIR, Sections 3, 4, 5, Annexes C and E\n3. Mark together — show students exactly how the examiner awards marks\n4. Address the most common errors identified during teaching\n\nKey messages:\n- Always cite the relevant section or clause number (e.g. Section 8(1) of the OHS Act, or Clause 3.4.2 of SANS 10142-1)\n- Application questions require a step-by-step response — do not just list; explain or calculate\n- 10 questions, choose 8 to answer; choose your strongest topics first\n- If a question is worth 10 marks, the model answer has 10 marking points'},
+  {id:11,paper:'P2',title:'SANS 10142-1 Section 6 — Installation Requirements',ref:'SANS 10142-1 Ed 3.3 Section 6 — Paper 2',
+   objectives:['Identify the scope and structure of Section 6','State the requirements for socket outlets: type, height, quantity and earthing','Explain the requirements for luminaires and lighting circuits under Section 6','Describe the requirements for stove, oven and water heater connections','State the requirements for HVAC and motor circuits under Section 6'],
+   notes:'Section 6 — Installation Requirements is the backbone of Paper 2.\n\nKey areas:\n- Socket outlets: 15 A round pin (South African standard SANS 164-1), earthed, minimum height 150 mm from floor, maximum height 1200 mm in domestic installations\n- Dedicated circuits required for: stove (32 A or 40 A), geyser or water heater (20 A minimum), air-conditioner above 2 kW\n- Stove connection: 32 A or 40 A circuit, 4 mm2 or 6 mm2 cable, 4-pole socket or hardwired; use a cooker switch\n- Lighting circuits: maximum load per circuit governed by the MCB rating and cable size\n- HVAC and motor circuits: separate circuit from general purpose circuits; motor protection required\n\nSection 6 questions often ask students to identify faults in a described installation or circuit diagram. Work through past paper questions that require interpretation of a diagram against Section 6 requirements.'},
+  {id:12,paper:'P2',title:'SANS 10142-1 Section 8 — Inspection, Testing and Verification',ref:'SANS 10142-1 Ed 3.3 Section 8 — Paper 2',
+   objectives:['Explain the purpose and legal requirement for inspection and testing under Section 8','List the sequence of tests required under Section 8 before a CoC is issued','Describe the insulation resistance test: method, instrument requirements and pass values','Explain earth electrode resistance test methods and when each applies','Describe the earth fault loop impedance (Zs) test and its significance for automatic disconnection'],
+   notes:'Section 8 — Inspection, Testing and Verification. Directly linked to the CoC.\n\nTest sequence required by SANS 10142-1 Section 8 (must be done in this order):\n1. Continuity of protective conductors (PE conductors and main bonding)\n2. Continuity of ring final circuit conductors\n3. Insulation resistance — 500 V DC instrument; pass value: greater than 1 MΩ between phase and earth, and neutral and earth; disconnect sensitive equipment before testing\n4. Protection by SELV, PELV or electrical separation\n5. Protection by barriers and enclosures\n6. Polarity — verify line is connected to line terminal, neutral to neutral, PE to earth terminal\n7. Earth electrode resistance (where applicable)\n8. Earth fault loop impedance (Zs)\n9. Additional protection verification — RCD test: trip time must be 40 ms or less at rated residual current\n10. Prospective short-circuit current (PSCC)\n11. Check of phase sequence (three-phase only)\n12. Functional testing\n\nIR test detail: each circuit tested phase-to-earth and neutral-to-earth; if an entire circuit is tested together, disconnect all sensitive equipment (dimmers, electronic ballasts, surge protectors) before applying 500 V DC.'},
+  {id:13,paper:'P2',title:'SANS 10142-1 Annex A — Circuit Protection Calculations',ref:'SANS 10142-1 Ed 3.3 Annex A — Paper 2',
+   objectives:['Understand the purpose of Annex A and what it covers — overcurrent protection and coordination','Apply the ADS verification formula: Zs × Ia is less than or equal to U0','Calculate the maximum disconnection time for a circuit under fault conditions','Identify the relationship between fuse characteristics, cable protection and Annex A requirements','Verify that a circuit is adequately protected using Annex A methodology'],
+   notes:'Annex A — Circuit Protection. Mathematical — take students through step by step.\n\nKey concepts:\n- Overcurrent protection must protect both phase and neutral conductors from damage\n- For automatic disconnection of supply (ADS) to work: Zs × Ia is less than or equal to U0\n  - Zs = earth fault loop impedance in ohms (total loop resistance)\n  - Ia = current causing the protective device to operate within the required disconnection time (from device characteristic curves or tables)\n  - U0 = nominal voltage to earth = 230 V\n- Required disconnection times:\n  - Socket outlet circuits up to 32 A: maximum 0.4 seconds\n  - Distribution circuits (sub-mains and feeders): maximum 5 seconds\n- Cable protection: the device rating In must be less than or equal to the cable current-carrying capacity Iz\n\nWork through a past paper calculation together. Show students how to find Ia from the fuse or circuit breaker characteristic tables in the SANS annexes — the exam often requires reading a value from a characteristic table.'},
+  {id:14,paper:'P2',title:'SANS 10142-1 Annex B — Earth Fault Loop Impedance',ref:'SANS 10142-1 Ed 3.3 Annex B — Paper 2',
+   objectives:['Understand what earth fault loop impedance (Zs) is and its components','Apply the formula Zs = Ze + R1 + R2 to calculate the total earth fault loop impedance','Use Annex B tables to find maximum Zs values for different protective devices and ratings','Verify that a measured or calculated Zs value satisfies the ADS requirement','Identify the difference between Ze (external loop impedance) and Zs (total loop impedance)'],
+   notes:'Annex B — Earth Fault Loop Impedance. Frequently examined in Paper 2 calculations.\n\nFormula: Zs = Ze + R1 + R2\n- Ze = external earth fault loop impedance — the impedance of the supply up to the origin of the installation; measured at the incoming terminals; supplied by the utility\n- R1 = resistance of the phase conductor from the distribution board to the point of fault (depends on cable size and length)\n- R2 = resistance of the protective conductor from the point of fault back to the main earthing terminal\n\nTypical Ze values in South Africa: 0.3 ohm to 0.8 ohm depending on the supply transformer and service cable length.\n\nAnnex B tables: list the maximum Zs for each type and rating of protective device to achieve disconnection within the required time (0.4 s for socket circuits, 5 s for distribution circuits).\n\nExam approach:\n1. Read Ze from the question (usually given as a measured value)\n2. Calculate R1 + R2 from the cable resistance tables (often given as milli-ohm per metre or from SANS 1507-1)\n3. Add: Zs = Ze + R1 + R2\n4. Compare calculated Zs against the maximum Zs from the Annex B table — Zs must be less than or equal to the table value\n\nTemperature correction: cable resistance tables are at 20 degrees C; correct for 70 degrees C operating temperature using the multiplier given in SANS 10142-1 or SANS 1507-1 — this increases resistance by approximately 1.28.'},
+  {id:15,paper:'P2',title:'SANS 10142-1 Annex D — Conduit Fill',ref:'SANS 10142-1 Ed 3.3 Annex D — Paper 2',
+   objectives:['Identify the purpose of Annex D and how it differs from Annex C','Use Annex D space factor tables to determine maximum cable fill for a conduit','Calculate whether a proposed cable arrangement exceeds permitted fill for a straight run versus a run with bends','Apply the space factor correctly: typically 40% fill for straight runs and 35% for runs with bends','Verify a cable selection against Annex D requirements'],
+   notes:'Annex D — Conduit Fill in Paper 2 (versus Annex C in Paper 1 — do not confuse them in the exam).\n\nAnnex D uses a space factor approach:\n- Each cable has a quoted cross-sectional area from the Annex D table (not the nominal conductor size)\n- Each conduit internal diameter has a maximum permitted fill space from the Annex D table\n- Space factor (percentage of conduit cross-section that may be filled):\n  - Straight runs or runs with bends not exceeding 15 degrees: 40%\n  - Runs with bends exceeding 15 degrees: 35%\n- Calculation: total cable CSA must be less than or equal to conduit permitted fill\n\nExam question type: "Four 4 mm2 cables and two 1.5 mm2 cables are to be installed in a 25 mm conduit. Is this acceptable?"\n1. Find each cable CSA from Annex D table\n2. Sum the total cable CSA\n3. Find the permitted fill for the conduit internal diameter from Annex D table\n4. Compare — if total CSA is greater than permitted fill, it is not acceptable\n\nCommon student error: mixing up Annex C and Annex D. Remind them: Annex C = number of cables (simpler lookup); Annex D = space factor method (Paper 2 calculation).'},
+  {id:16,paper:'P2',title:'SANS 10142-1 Annex G — Prospective Short-Circuit Current',ref:'SANS 10142-1 Ed 3.3 Annex G — Paper 2',
+   objectives:['Explain what prospective short-circuit current (PSCC) is and why it matters for equipment selection','Use Annex G tables to determine PSCC at a point in the installation given the upstream PSCC and cable run','Explain how cable impedance reduces PSCC at the end of a cable run','Verify that a protective device has adequate breaking capacity (Icn) for the PSCC at its location','Understand the relationship between PSCC, cable impedance and protection coordination'],
+   notes:'Annex G — Prospective Short-Circuit Current. Mathematical — work through examples step by step.\n\nPSCC concept:\n- At the supply terminals, PSCC is highest — limited only by the supply transformer impedance and Ze\n- Moving further from the source, cable impedance adds to the total loop and PSCC decreases\n- Every protective device at every location must have a rated short-circuit breaking capacity Icn greater than or equal to the PSCC at that location\n\nAnnex G tables: give PSCC at the remote end of a cable given the source PSCC, cable size and cable length.\n\nExam approach:\n1. Read the PSCC at the source from the question (or calculate: PSCC = U0 divided by Ze)\n2. Use Annex G table to find PSCC at the end of the cable run (input: source PSCC, cable size, length)\n3. Verify: Icn of the protective device at that location is greater than or equal to the calculated PSCC\n\nCommon error: students use Zs instead of Ze for the initial PSCC calculation. Ze is external impedance only; Zs includes the internal cable resistance. Use Ze for source PSCC; use Zs to verify ADS disconnection time.'},
+  {id:17,paper:'P2',title:'SANS 1507-1 — Cable Rating, Volt Drop and Derating',ref:'SANS 1507-1 — Paper 2 Calculations',
+   objectives:['Use SANS 1507-1 current-carrying capacity tables to select the correct cable size for a given design current','Apply derating factors for grouping (Cg), ambient temperature (Ca) and installation method','Calculate volt drop using the mV/A/m method and verify compliance with the 5% limit','Size a cable considering both current-carrying capacity and volt drop in a single design process','Understand the relationship between SANS 1507-1 and SANS 10142-1 Section 6 requirements'],
+   notes:'SANS 1507-1 — Cable rating tables. Used in almost every cable sizing question in Paper 2.\n\nCurrent-carrying capacity (Iz):\n- Iz from SANS 1507-1 tables depends on: cable cross-sectional area, insulation type (XLPE or PVC), installation method (clipped direct, in conduit, in free air, buried)\n- Derating factors applied to tabulated Iz:\n  - Cg = group derating factor (from table, based on number of cables grouped together)\n  - Ca = ambient temperature derating factor (from table, based on ambient temperature)\n  - Combined: effective Iz = tabulated Iz × Cg × Ca\n  - Required: design current Ib is less than or equal to effective Iz\n\nVolt drop (mV/A/m method):\n- Tabulated value in mV per ampere per metre from SANS 1507-1 (also called the resistance value or mV/A/m)\n- Volt drop in mV = mV/A/m value × design current in amperes × cable length in metres\n- Convert to volts: divide by 1000\n- Maximum permitted volt drop: 5% of 230 V = 11.5 V for final circuits; 3% from origin to furthest point (check the specific requirement in the question)\n\nExam approach (cable sizing workflow):\n1. Read the design current Ib from the question\n2. Calculate required effective Iz accounting for all derating factors\n3. Select cable size from SANS 1507-1 tables where tabulated Iz × derating is greater than or equal to required Iz\n4. Calculate volt drop for the selected cable at design current and given length\n5. Verify volt drop does not exceed maximum; if it does, select the next larger cable size and recalculate\n6. Verify overcurrent protection: device rating In less than or equal to Iz of selected cable'},
+  {id:18,paper:'P2',title:'SANS 1973-3 — LV Switchgear Assemblies',ref:'SANS 1973-3 — Paper 2',
+   objectives:['Identify the scope of SANS 1973-3 and what assemblies it covers','Define the internal separation forms (Forms 1, 2a, 2b, 3a, 3b, 4a, 4b) and distinguish between them','Explain the rated characteristics of switchgear assemblies: Icw, Icc and Ipk','Describe the difference between a type-tested assembly (TTA) and a partially type-tested assembly (PTTA)','Identify where SANS 1973-3 applies in an installation and why it is examinable in the IE programme'],
+   notes:'SANS 1973-3 — LV Switchgear Assemblies. Many students find this topic difficult because it is unfamiliar.\n\nKey concepts:\n- SANS 1973-3 covers distribution boards and motor control centres in commercial and industrial applications\n- Internal separation forms (commonly examined — distinguish between them):\n  - Form 1: No internal separation between busbars, functional units and terminals\n  - Form 2a: Busbars separated from functional units; terminals not separated\n  - Form 2b: Busbars separated from functional units; terminals separated from busbars but in same compartment as functional units\n  - Form 3a: Busbars and functional units separated; terminals not separated from busbars\n  - Form 3b: Busbars separated from functional units; each functional unit in its own compartment; terminals not separated from busbars\n  - Form 4a: All functional units completely separated from each other; terminals not separated\n  - Form 4b: All functional units and all terminals completely separated\n- Rated characteristics:\n  - Icw = conditional short-circuit withstand current — the assembly can withstand this fault current for a specified time without damage\n  - Icc = rated short-circuit making current\n  - Ipk = peak short-circuit current\n- TTA vs PTTA: TTA = fully factory type-tested to SANS 1973-3; PTTA = individual components are type-tested but assembled in an untested arrangement — verification required by calculation or test\n\nExam approach: know the form definitions; know the abbreviations Icw, Icc, Ipk; be able to describe TTA vs PTTA. Students must cite SANS 1973-3 when answering.'},
+  {id:19,paper:'P2',title:'Calculations Practice — Full Paper 2 Methodology',ref:'DHET 51108848 Paper 2 — Calculation Framework',
+   objectives:['Apply a systematic calculation approach to Paper 2 questions','Combine multiple steps in one question: cable sizing, volt drop, earth fault loop impedance and PSCC','Interpret a circuit diagram and extract design data for each calculation step','Work through a full past paper calculation question under timed conditions','Identify and avoid common errors in Paper 2 calculation answers'],
+   notes:'Calculations practice session — work through full past paper questions.\n\nSystematic approach for every calculation question:\n1. Read the question carefully; identify exactly what is being asked and what must be shown\n2. List all given data — if a circuit diagram is provided, extract: load current, cable length, cable size, supply voltage, Ze, protective device rating and type\n3. Sketch the circuit if no diagram is given — it helps identify the calculation steps\n4. Identify which formula or table is needed for each step\n5. Show every calculation step clearly — the examiner awards marks per step, not just for the final answer\n6. State the result with correct units and a conclusion sentence (e.g. The volt drop is 8.5 V which is within the maximum permitted 5% = 11.5 V for this circuit)\n\nCommon mistakes to address in this session:\n- Forgetting to apply derating factors to SANS 1507-1 cable ratings\n- Using mV/A/m at 20 degrees C instead of the 70 degrees C value or the value stated in the question\n- Not converting mV to V (divide by 1000) before comparing to the limit\n- Calculating Zs but not comparing to the maximum allowed value from Annex B\n- Calculating PSCC but not comparing to the device Icn\n- Not citing SANS 1507-1 or SANS 10142-1 as the basis for the calculation in the answer\n\nUse real past paper questions only. Mark together after students attempt — the marking memo is the reference.'},
+  {id:20,paper:'P2',title:'Paper 2 Revision — Past Paper Practice',ref:'DHET Past Papers — Installation Rules Paper 2',
+   objectives:['Consolidate all Paper 2 topics through past paper questions','Identify and address any remaining gaps before the examination','Practise examination technique: choosing questions, time allocation, citing references','Build confidence through timed practice on real past examination questions from DHET'],
+   notes:'Final revision session before the Paper 2 examination.\n\nStructure the session:\n1. Quick recap of all Paper 2 topics — 5 minutes each: Section 6, Section 8, Annex A, Annex B, Annex D, Annex G, SANS 1507-1, SANS 1973-3 (and other Annexes where applicable)\n2. Work through 2-3 past Paper 2 questions that students found most difficult during the course\n3. Mark together and explain the model answer approach clause by clause\n4. Address any remaining gaps identified by students\n\nKey messages for the examination day:\n- 10 questions, choose 8 to answer — choose your strongest calculation topics first\n- Show every step — partial credit is awarded per step even if the final answer is wrong\n- Always state the conclusion after each calculation\n- Cite SANS clause numbers where asked to justify an answer\n- Bring to the exam: SANS 10142-1, SANS 1507-1, SANS 1973-3 and your calculator\n- Double-check all arithmetic before moving to the next question\n- Manage your time — 3 hours for 8 questions = approximately 22 minutes per question'}
 ];
 
-/* State */
-var _facilBook = 0;    /* index into _BOOKS */
-var _facilSession = 0; /* index into _BOOKS[_facilBook].sessions */
-var _facilGuideOpen = false;
-
-/* Populate book session list in the hub panel */
-window.facilSelectBook = function(num, btn){
-  _facilBook = num - 1;
-  _facilSession = 0;
-  /* Update tab buttons */
-  var tabs = document.querySelectorAll('#facil-book-tabs .hub-nav-btn');
-  tabs.forEach(function(b){ b.classList.remove('active'); });
-  if(btn) btn.classList.add('active');
-  _facilRenderSessionList();
-};
-
-function _facilRenderSessionList(){
-  var list = document.getElementById('facil-session-list');
-  if(!list) return;
-  var book = _BOOKS[_facilBook];
-  if(!book){ list.innerHTML = ''; return; }
-  var html = '';
-  book.sessions.forEach(function(s, idx){
-    var active = idx === _facilSession ? 'background:var(--amb);color:#fff;border-color:var(--amb);' : '';
-    html += '<button onclick="facilSelectSession('+idx+')" style="text-align:left;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;background:var(--bg);color:var(--fg);cursor:pointer;font-size:12px;line-height:1.4;'+active+'">';
-    html += '<span style="font-weight:700;display:block;">Session '+(idx+1)+': '+_esc(s.title)+'</span>';
-    html += '<span style="font-size:10.5px;opacity:.75;">'+_esc(s.sans)+'</span>';
-    html += '</button>';
-  });
-  list.innerHTML = html;
+/* Merge session defaults with any saved admin overrides */
+function _getSess(id){
+  var def=_FAC_SESSIONS.filter(function(s){return s.id===id;})[0];
+  if(!def) return null;
+  var out={id:def.id,paper:def.paper,title:def.title,ref:def.ref,objectives:def.objectives,notes:def.notes,images:[],papers:[],memos:[]};
+  try{
+    var stored=JSON.parse(localStorage.getItem(_FAC_NS)||'{}');
+    var ov=stored[String(id)]||{};
+    if(ov.notes!==undefined) out.notes=ov.notes;
+    if(ov.images) out.images=ov.images;
+    if(ov.papers) out.papers=ov.papers;
+    if(ov.memos) out.memos=ov.memos;
+  }catch(e){}
+  return out;
 }
 
-window.facilSelectSession = function(idx){
-  _facilSession = idx;
-  _facilRenderSessionList();
-};
-
-/* Enter / exit presenter mode */
-window.facilEnterPresenter = function(){
-  var overlay = document.getElementById('facil-presenter-overlay');
-  if(!overlay) return;
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  _facilRenderSlide();
-  _facilRenderDots();
-};
-
-window.facilExitPresenter = function(){
-  var overlay = document.getElementById('facil-presenter-overlay');
-  if(overlay) overlay.style.display = 'none';
-  document.body.style.overflow = '';
-};
-
-window.facilPresenterPrev = function(){
-  if(_facilSession > 0){
-    _facilSession--;
-  } else if(_facilBook > 0){
-    _facilBook--;
-    _facilSession = _BOOKS[_facilBook].sessions.length - 1;
-  }
-  _facilRenderSlide();
-  _facilRenderDots();
-};
-
-window.facilPresenterNext = function(){
-  var book = _BOOKS[_facilBook];
-  if(_facilSession < book.sessions.length - 1){
-    _facilSession++;
-  } else if(_facilBook < _BOOKS.length - 1){
-    _facilBook++;
-    _facilSession = 0;
-  }
-  _facilRenderSlide();
-  _facilRenderDots();
-};
-
-window.facilToggleGuide = function(){
-  _facilGuideOpen = !_facilGuideOpen;
-  var panel = document.getElementById('facil-guide-panel');
-  var btn = document.getElementById('facil-guide-btn');
-  if(panel) panel.style.display = _facilGuideOpen ? 'block' : 'none';
-  if(btn) btn.style.background = _facilGuideOpen ? 'var(--amb)' : 'var(--bg)';
-  if(btn) btn.style.color = _facilGuideOpen ? '#fff' : 'var(--amb)';
-};
-
-function _facilRenderSlide(){
-  var book = _BOOKS[_facilBook];
-  var session = book && book.sessions[_facilSession];
-  if(!book || !session) return;
-
-  /* Top bar */
-  var pbook = document.getElementById('facil-pbar-book');
-  var psess = document.getElementById('facil-pbar-session');
-  if(pbook) pbook.textContent = book.label + ' — ' + book.paper;
-  if(psess) psess.textContent = 'Session '+(_facilSession+1)+': '+session.title;
-
-  /* Slide area */
-  var badge = document.getElementById('slide-book-badge');
-  if(badge){ badge.textContent = book.label; badge.style.background = book.color; }
-
-  var title = document.getElementById('slide-title');
-  if(title) title.textContent = session.title;
-
-  var sans = document.getElementById('slide-sans-strip');
-  if(sans) sans.textContent = '&#128218; ' + session.sans;
-
-  /* Objectives */
-  var objEl = document.getElementById('slide-objectives');
-  if(objEl){
-    var oh = '<div style="display:flex;flex-direction:column;gap:14px;">';
-    session.objectives.forEach(function(o, i){
-      oh += '<div style="display:flex;align-items:flex-start;gap:14px;background:var(--bg-alt);border-radius:12px;padding:14px 18px;border-left:4px solid '+book.color+';">';
-      oh += '<span style="font-size:18px;font-weight:900;color:'+book.color+';flex-shrink:0;line-height:1.3;">'+(i+1)+'</span>';
-      oh += '<span style="font-size:clamp(13px,2vw,16px);color:var(--fg);line-height:1.5;font-weight:500;">'+_esc(o)+'</span>';
-      oh += '</div>';
-    });
-    oh += '</div>';
-    objEl.innerHTML = oh;
-  }
-
-  /* References quick-access */
-  var refsEl = document.getElementById('slide-refs');
-  if(refsEl && session.refs && session.refs.length){
-    var rh = '<div style="border-top:1.5px solid var(--border);padding-top:20px;">';
-    rh += '<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:12px;">&#128218; Key References for This Session</div>';
-    rh += '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
-    session.refs.forEach(function(r){
-      rh += '<span style="padding:5px 12px;background:var(--bg-alt);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--fg2);font-weight:600;">'+_esc(r)+'</span>';
-    });
-    rh += '</div></div>';
-    refsEl.innerHTML = rh;
-  }
-
-  /* Guide panel */
-  var tp = document.getElementById('guide-talking-points');
-  if(tp && session.talking){
-    var th = '<ul style="margin:0;padding-left:18px;">';
-    session.talking.forEach(function(t){ th += '<li style="margin-bottom:8px;">'+_esc(t)+'</li>'; });
-    th += '</ul>';
-    tp.innerHTML = th;
-  }
-  var sr = document.getElementById('guide-sans-refs');
-  if(sr && session.refs){
-    sr.innerHTML = session.refs.map(function(r){ return '&#8226; '+_esc(r); }).join('<br>');
-  }
-  var pf = document.getElementById('guide-paper-focus');
-  if(pf) pf.textContent = session.paperFocus || '';
-
-  /* Prev / next button state */
-  var prev = document.getElementById('facil-prev-btn');
-  var next = document.getElementById('facil-next-btn');
-  if(prev) prev.disabled = (_facilBook === 0 && _facilSession === 0);
-  var lastBook = _BOOKS[_BOOKS.length-1];
-  if(next) next.disabled = (_facilBook === _BOOKS.length-1 && _facilSession === lastBook.sessions.length-1);
+function _escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function _facilRenderDots(){
-  var el = document.getElementById('facil-session-dots');
+/* Hub tab switching */
+window.facilHubTab=function(tab){
+  document.getElementById('facil-hub-sessions').style.display=tab==='sessions'?'':'none';
+  document.getElementById('facil-hub-edit').style.display=tab==='edit'?'':'none';
+  var bs=document.getElementById('ftab-sessions');
+  var be=document.getElementById('ftab-edit');
+  if(bs) bs.className='hub-nav-btn'+(tab==='sessions'?' active':'');
+  if(be) be.className='hub-nav-btn'+(tab==='edit'?' active':'');
+  if(tab==='edit') _buildEditSelect();
+};
+
+/* Session list in hub panel */
+function _renderSessionList(){
+  var el=document.getElementById('facil-session-list');
   if(!el) return;
-  var book = _BOOKS[_facilBook];
-  if(!book){ el.innerHTML = ''; return; }
-  var html = '';
-  book.sessions.forEach(function(s, idx){
-    var isActive = idx === _facilSession;
-    html += '<button onclick="facilGoDot('+idx+')" title="'+_esc(s.title)+'" style="width:'+(isActive?'28':'10')+'px;height:10px;border-radius:5px;border:none;cursor:pointer;transition:width .25s;background:'+(isActive?book.color:'var(--border)')+'"></button>';
+  var html='';
+  var curPaper='';
+  _FAC_SESSIONS.forEach(function(s){
+    if(s.paper!==curPaper){
+      curPaper=s.paper;
+      var label=s.paper==='P1'?'Paper 1 — Installation Rules':'Paper 2 — Standards and Calculations';
+      var col=s.paper==='P1'?'#c97b2a':'#2a5ba8';
+      html+='<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:'+col+';margin:10px 0 5px;">'+label+'</div>';
+    }
+    var active=s.id===_facSess;
+    html+='<button onclick="facilSelectSess('+s.id+')" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px 12px;border:1.5px solid '+(active?'var(--amb)':'var(--border)')+';border-radius:9px;background:'+(active?'rgba(42,91,168,.1)':'var(--bg)')+';cursor:pointer;text-align:left;">';
+    html+='<span style="font-size:11px;font-weight:800;color:var(--fg3);min-width:20px;">'+s.id+'</span>';
+    html+='<span style="font-size:12.5px;font-weight:700;color:var(--fg);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+_escHtml(s.title)+'</span>';
+    html+='</button>';
   });
-  el.innerHTML = html;
+  el.innerHTML=html;
 }
 
-window.facilGoDot = function(idx){
-  _facilSession = idx;
-  _facilRenderSlide();
-  _facilRenderDots();
+window.facilSelectSess=function(id){
+  _facSess=id;
+  _renderSessionList();
 };
 
-/* Keyboard navigation in presenter mode */
-document.addEventListener('keydown', function(e){
-  var overlay = document.getElementById('facil-presenter-overlay');
-  if(!overlay || overlay.style.display === 'none') return;
-  if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') facilPresenterNext();
-  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') facilPresenterPrev();
-  if(e.key === 'Escape') facilExitPresenter();
-  if(e.key === 'g' || e.key === 'G') facilToggleGuide();
+/* Build edit dropdown options */
+function _buildEditSelect(){
+  var sel=document.getElementById('facil-edit-sel');
+  if(!sel||sel.options.length>1) return;
+  _FAC_SESSIONS.forEach(function(s){
+    var o=document.createElement('option');
+    o.value=s.id;
+    o.textContent=s.id+'. '+s.title;
+    sel.appendChild(o);
+  });
+}
+
+function _imgRow(url,caption){
+  return '<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;">'
+    +'<input class="fe-img-url" placeholder="Image URL (https://...)" value="'+_escHtml(url)+'" style="flex:2;min-width:0;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg);font-size:12px;">'
+    +'<input class="fe-img-cap" placeholder="Caption (optional)" value="'+_escHtml(caption)+'" style="flex:1;min-width:0;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg);font-size:12px;">'
+    +'<button onclick="this.parentElement.remove()" style="padding:4px 10px;border:none;border-radius:6px;background:#c83647;color:#fff;font-size:11px;cursor:pointer;flex-shrink:0;">&#10005;</button>'
+    +'</div>';
+}
+
+function _pdfRow(type,label,url){
+  return '<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;">'
+    +'<input class="fe-'+type+'-lbl" placeholder="Label (e.g. Nov 2022 Q3)" value="'+_escHtml(label)+'" style="flex:1;min-width:0;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg);font-size:12px;">'
+    +'<input class="fe-'+type+'-url" placeholder="PDF URL (https://...)" value="'+_escHtml(url)+'" style="flex:2;min-width:0;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg);font-size:12px;">'
+    +'<button onclick="this.parentElement.remove()" style="padding:4px 10px;border:none;border-radius:6px;background:#c83647;color:#fff;font-size:11px;cursor:pointer;flex-shrink:0;">&#10005;</button>'
+    +'</div>';
+}
+
+window.facilLoadEditForm=function(){
+  var sel=document.getElementById('facil-edit-sel');
+  var id=parseInt(sel.value,10);
+  if(!id){document.getElementById('facil-edit-form').innerHTML='';return;}
+  var s=_getSess(id);
+  var html='';
+  html+='<div style="background:var(--bg-alt);border-radius:9px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--fg2);line-height:1.5;">';
+  html+='<strong style="color:var(--fg);">Session '+s.id+': '+_escHtml(s.title)+'</strong><br>'+_escHtml(s.ref);
+  html+='</div>';
+  html+='<div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--fg3);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Facilitator Notes / Guide</label>';
+  html+='<textarea id="fe-notes" rows="12" style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);color:var(--fg);font-size:12.5px;line-height:1.6;resize:vertical;box-sizing:border-box;">'+_escHtml(s.notes)+'</textarea></div>';
+  html+='<div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--fg3);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Content Images — SANS Screenshots (paste image URL)</label>';
+  html+='<div id="fe-images-list">';
+  (s.images||[]).forEach(function(img){html+=_imgRow(img.url||'',img.caption||'');});
+  html+='</div><button onclick="facilAddImage()" style="font-size:11.5px;padding:5px 12px;border:1.5px dashed var(--border);border-radius:7px;background:var(--bg);color:var(--fg2);cursor:pointer;width:100%;margin-top:4px;">+ Add Image</button></div>';
+  html+='<div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--fg3);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Past Papers (PDF URLs — Firebase, Drive public link, etc.)</label>';
+  html+='<div id="fe-papers-list">';
+  (s.papers||[]).forEach(function(p){html+=_pdfRow('paper',p.label||'',p.url||'');});
+  html+='</div><button onclick="facilAddPdf(\'paper\')" style="font-size:11.5px;padding:5px 12px;border:1.5px dashed var(--border);border-radius:7px;background:var(--bg);color:var(--fg2);cursor:pointer;width:100%;margin-top:4px;">+ Add Past Paper</button></div>';
+  html+='<div style="margin-bottom:14px;"><label style="font-size:11px;font-weight:700;color:var(--fg3);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Memos / Model Answers (PDF URLs)</label>';
+  html+='<div id="fe-memos-list">';
+  (s.memos||[]).forEach(function(m){html+=_pdfRow('memo',m.label||'',m.url||'');});
+  html+='</div><button onclick="facilAddPdf(\'memo\')" style="font-size:11.5px;padding:5px 12px;border:1.5px dashed var(--border);border-radius:7px;background:var(--bg);color:var(--fg2);cursor:pointer;width:100%;margin-top:4px;">+ Add Memo</button></div>';
+  html+='<button onclick="facilSaveEdit('+id+')" style="width:100%;padding:11px;border:none;border-radius:9px;background:linear-gradient(135deg,#2a5ba8,#1a3d78);color:#fff;font-size:14px;font-weight:800;cursor:pointer;">Save Guide</button>';
+  html+='<div id="fe-save-msg" style="text-align:center;font-size:12px;color:var(--amb);margin-top:6px;height:16px;"></div>';
+  document.getElementById('facil-edit-form').innerHTML=html;
+};
+
+window.facilAddImage=function(){
+  var list=document.getElementById('fe-images-list');
+  if(list){var d=document.createElement('div');d.innerHTML=_imgRow('','');list.appendChild(d.firstChild);}
+};
+
+window.facilAddPdf=function(type){
+  var list=document.getElementById('fe-'+type+'s-list');
+  if(list){var d=document.createElement('div');d.innerHTML=_pdfRow(type,'','');list.appendChild(d.firstChild);}
+};
+
+window.facilSaveEdit=function(id){
+  var notes=(document.getElementById('fe-notes')||{value:''}).value;
+  var images=[];
+  var urlEls=document.querySelectorAll('.fe-img-url');
+  var capEls=document.querySelectorAll('.fe-img-cap');
+  for(var i=0;i<urlEls.length;i++){var u=urlEls[i].value.trim();var c=capEls[i]?capEls[i].value.trim():'';if(u)images.push({url:u,caption:c});}
+  var papers=[];
+  var pLbls=document.querySelectorAll('.fe-paper-lbl');
+  var pUrls=document.querySelectorAll('.fe-paper-url');
+  for(var j=0;j<pLbls.length;j++){var pl=pLbls[j].value.trim();var pu=pUrls[j]?pUrls[j].value.trim():'';if(pl||pu)papers.push({label:pl,url:pu});}
+  var memos=[];
+  var mLbls=document.querySelectorAll('.fe-memo-lbl');
+  var mUrls=document.querySelectorAll('.fe-memo-url');
+  for(var k=0;k<mLbls.length;k++){var ml=mLbls[k].value.trim();var mu=mUrls[k]?mUrls[k].value.trim():'';if(ml||mu)memos.push({label:ml,url:mu});}
+  try{
+    var stored=JSON.parse(localStorage.getItem(_FAC_NS)||'{}');
+    stored[String(id)]={notes:notes,images:images,papers:papers,memos:memos};
+    localStorage.setItem(_FAC_NS,JSON.stringify(stored));
+    var msg=document.getElementById('fe-save-msg');
+    if(msg){msg.textContent='Saved.';setTimeout(function(){msg.textContent='';},2500);}
+  }catch(e){var msg2=document.getElementById('fe-save-msg');if(msg2)msg2.textContent='Error saving.';}
+};
+
+/* ===== PRESENTER MODE ===== */
+
+window.facilEnterPresenter=function(){
+  var ov=document.getElementById('facil-presenter-overlay');
+  if(!ov) return;
+  ov.style.display='flex';
+  document.body.style.overflow='hidden';
+  _facView='slides';
+  _facilRenderPresenter();
+};
+
+window.facilExitPresenter=function(){
+  var ov=document.getElementById('facil-presenter-overlay');
+  if(ov) ov.style.display='none';
+  document.body.style.overflow='';
+  var pf=document.getElementById('fv-paper-frame');
+  var mf=document.getElementById('fv-memo-frame');
+  if(pf) pf.src='';
+  if(mf) mf.src='';
+};
+
+window.facilPresenterPrev=function(){
+  if(_facSess>1){_facSess--;_facView='slides';_facilRenderPresenter();}
+};
+window.facilPresenterNext=function(){
+  if(_facSess<20){_facSess++;_facView='slides';_facilRenderPresenter();}
+};
+
+window.facilSetView=function(view){
+  _facView=view;
+  _facilRenderPresenter();
+};
+
+function _facilRenderPresenter(){
+  var s=_getSess(_facSess);
+  if(!s) return;
+  var numEl=document.getElementById('facil-pbar-num');
+  var titleEl=document.getElementById('facil-pbar-title');
+  if(numEl) numEl.textContent='Session '+s.id+' of 20 — '+s.ref;
+  if(titleEl) titleEl.textContent=s.title;
+  ['slides','paper','memo','guide'].forEach(function(v){
+    var btn=document.getElementById('fv-btn-'+v);
+    if(!btn) return;
+    var active=_facView===v;
+    btn.style.background=active?'var(--amb)':'var(--bg)';
+    btn.style.color=active?'#fff':'var(--fg2)';
+    btn.style.border='1.5px solid '+(active?'var(--amb)':'var(--border)');
+  });
+  ['slides','paper','memo','guide'].forEach(function(v){
+    var el=document.getElementById('fv-'+v);
+    if(!el) return;
+    var show=v===_facView;
+    el.style.display=show?(v==='paper'||v==='memo'?'flex':'block'):'none';
+  });
+  if(_facView==='slides') _renderSlidesView(s);
+  else if(_facView==='paper') _renderPdfView('paper',s);
+  else if(_facView==='memo') _renderPdfView('memo',s);
+  else if(_facView==='guide') _renderGuideView(s);
+  _renderDots();
+}
+
+function _renderSlidesView(s){
+  var refEl=document.getElementById('fv-slides-ref');
+  var titleEl=document.getElementById('fv-slides-title');
+  var imagesEl=document.getElementById('fv-slides-images');
+  var objEl=document.getElementById('fv-slides-objectives');
+  if(refEl) refEl.textContent=s.ref;
+  if(titleEl) titleEl.textContent=s.title;
+  if(imagesEl){
+    if(s.images&&s.images.length){
+      var html='';
+      s.images.forEach(function(img){
+        html+='<div style="text-align:center;">';
+        html+='<img src="'+img.url+'" alt="'+_escHtml(img.caption)+'" style="max-width:100%;max-height:60vh;object-fit:contain;border-radius:8px;border:1px solid var(--border);">';
+        if(img.caption) html+='<div style="font-size:11px;color:var(--fg3);margin-top:6px;">'+_escHtml(img.caption)+'</div>';
+        html+='</div>';
+      });
+      imagesEl.innerHTML=html;
+    } else {
+      imagesEl.innerHTML='<div style="text-align:center;padding:16px;border:1.5px dashed var(--border);border-radius:10px;color:var(--fg3);font-size:13px;">No SANS screenshots added for this session yet. In the admin panel, open Edit Guides and paste image URLs for this session.</div>';
+    }
+  }
+  if(objEl){
+    var ohtml='<div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;">Learning Objectives</div>';
+    s.objectives.forEach(function(obj){
+      ohtml+='<div style="display:flex;gap:10px;padding:10px 14px;background:rgba(0,0,0,.04);border-radius:9px;font-size:14px;color:var(--fg);line-height:1.5;">';
+      ohtml+='<span style="color:var(--amb);font-weight:900;flex-shrink:0;">&#10003;</span>';
+      ohtml+='<span>'+_escHtml(obj)+'</span>';
+      ohtml+='</div>';
+    });
+    objEl.innerHTML=ohtml;
+  }
+}
+
+function _renderPdfView(type,s){
+  var items=type==='paper'?s.papers:s.memos;
+  var selEl=document.getElementById('fv-'+type+'-sel');
+  var frameEl=document.getElementById('fv-'+type+'-frame');
+  var emptyEl=document.getElementById('fv-'+type+'-empty');
+  if(!selEl||!frameEl||!emptyEl) return;
+  if(!items||!items.length){
+    selEl.innerHTML='';
+    frameEl.style.display='none';
+    frameEl.src='';
+    emptyEl.style.display='flex';
+    return;
+  }
+  emptyEl.style.display='none';
+  var idx=type==='paper'?_facPaperIdx:_facMemoIdx;
+  if(idx>=items.length) idx=0;
+  var html='';
+  items.forEach(function(item,i){
+    var active=i===idx;
+    html+='<button onclick="facilPdfSelect(\''+type+'\','+i+')" style="padding:5px 12px;border-radius:7px;border:1.5px solid '+(active?'var(--amb)':'var(--border)')+';background:'+(active?'var(--amb)':'var(--bg)')+';color:'+(active?'#fff':'var(--fg2)')+';font-size:11.5px;font-weight:700;cursor:pointer;">'+_escHtml(item.label||('Item '+(i+1)))+'</button>';
+  });
+  selEl.innerHTML=html;
+  var url=items[idx]&&items[idx].url?items[idx].url:'';
+  if(url){
+    frameEl.style.display='flex';
+    if(frameEl.src!==url) frameEl.src=url;
+  } else {
+    frameEl.style.display='none';
+  }
+}
+
+window.facilPdfSelect=function(type,idx){
+  if(type==='paper') _facPaperIdx=idx;
+  else _facMemoIdx=idx;
+  _facilRenderPresenter();
+};
+
+function _renderGuideView(s){
+  var el=document.getElementById('fv-guide-content');
+  if(el) el.textContent=s.notes||'No facilitator notes added for this session.';
+}
+
+function _renderDots(){
+  var el=document.getElementById('facil-session-dots');
+  if(!el) return;
+  var html='';
+  for(var i=1;i<=20;i++){
+    var active=i===_facSess;
+    var paper=_FAC_SESSIONS[i-1]?_FAC_SESSIONS[i-1].paper:'P1';
+    var col=paper==='P1'?'#c97b2a':'#2a5ba8';
+    html+='<button onclick="facilGoDot('+i+')" title="Session '+i+'" style="width:'+(active?'22':'10')+'px;height:10px;border-radius:5px;border:none;background:'+(active?col:'var(--border)')+';cursor:pointer;padding:0;transition:width .2s;flex-shrink:0;"></button>';
+  }
+  el.innerHTML=html;
+}
+
+window.facilGoDot=function(id){
+  _facSess=id;_facView='slides';_facilRenderPresenter();
+};
+
+/* Keyboard navigation */
+document.addEventListener('keydown',function(e){
+  var ov=document.getElementById('facil-presenter-overlay');
+  if(!ov||ov.style.display==='none') return;
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();facilPresenterNext();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();facilPresenterPrev();}
+  else if(e.key==='Escape'){facilExitPresenter();}
+  else if(e.key==='g'||e.key==='G'){facilSetView(_facView==='guide'?'slides':'guide');}
+  else if(e.key==='p'||e.key==='P'){facilSetView(_facView==='paper'?'slides':'paper');}
+  else if(e.key==='m'||e.key==='M'){facilSetView(_facView==='memo'?'slides':'memo');}
 });
 
-/* Populate admin email label in admin header */
-(function(){
-  var orig = window.lmsAdminSignin;
-  window.lmsAdminSignin = function(){
-    if(typeof orig === 'function') orig.apply(this, arguments);
-    setTimeout(function(){
-      var emailEl = document.getElementById('lms-admin-email-label');
-      var admu = document.getElementById('lms-adm-u');
-      if(emailEl && admu && admu.value){
-        emailEl.textContent = 'Signed in as ' + admu.value.toLowerCase();
-      }
-    }, 200);
-  };
-})();
+/* Public render hook for hubShow */
+window._facilRenderSessionList=function(){_renderSessionList();};
 
-/* Expose render for hubShow hook */
-window._facilRenderSessionList = function(){ _facilRenderSessionList(); };
-
-/* Init: render default session list on first hub open */
 setTimeout(function(){
-  if(document.getElementById('facil-session-list')){
-    _facilRenderSessionList();
-  }
-}, 500);
+  if(document.getElementById('facil-session-list')) _renderSessionList();
+},100);
 
 })(); /* END FACILITATOR IIFE */
 /* ===== END FACILITATOR / PRESENTER MODE ===== */
